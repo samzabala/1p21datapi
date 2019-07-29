@@ -15,7 +15,6 @@ function _1p21_dv_acf_not_installed(){
 }
 
 if( !post_type_exists('data-graph') ){
-    echo 'butthole';
 
 
 /********************************************************************************************
@@ -27,7 +26,7 @@ if( !post_type_exists('data-graph') ){
                 'data-graph',
                 array(
                     'menu_position' => 10,
-                    'public'        => false,
+                    'public'        => true,
                     'show_in_menu'  => true,
                     'show_ui'  => true,
                     'description'   => 'Data that is visually and interactively presented in the front end of the site',
@@ -41,16 +40,6 @@ if( !post_type_exists('data-graph') ){
                         'author',
                         'revisions',
                         'custom-fields'
-                    ),
-                    'capabilities'  => array(
-                        'edit_post'          => 'edit_data_graph', 
-                        'read_post'          => 'read_data_graph', 
-                        'delete_post'        => 'delete_data_graph', 
-                        'edit_posts'         => 'edit_data_graphs', 
-                        'edit_others_posts'  => 'edit_others_data_graphs', 
-                        'publish_posts'      => 'publish_data_graphs',       
-                        'read_private_posts' => 'read_private_data_graphs', 
-                        'create_posts'       => 'edit_data_graphs', 
                     ),
                     'labels' => array(
                         'name'               => _x( 'Data graphs', 'post type general name' ),
@@ -86,11 +75,21 @@ if( !post_type_exists('data-graph') ){
 
 
 
+
 /********************************************************************************************
-* Create settings page
+* Create field groups + settings fields
 *********************************************************************************************/
-        //whitelist our group of options so WP knows they exist
-        function _1p21_dv_options_register(){
+
+        if (is_plugin_active( 'advanced-custom-fields-pro/acf.php' )) {
+            
+        }else{
+            add_action( 'admin_notices', '_1p21_dv_acf_not_installed' );
+            
+            
+        }
+
+         //whitelist our group of options so WP knows they exist
+         function _1p21_dv_options_register(){
             //register_setting(name of group, DB entry,  validator callback)
             register_setting(
                 '_1p21_dv_options_group',
@@ -108,6 +107,8 @@ if( !post_type_exists('data-graph') ){
         //add the page to the admin menu to hold our form
         function _1p21_dv_options_add_page(){
             //add_options_page(title, menu name, capability, slug, form callback);
+
+            // add_options_page('Data Visualizer Settings', 'Data Visualizer Settings','manage_options', '1p21-dv-options-page', '_1p21_dv_options_build_form');
             add_submenu_page('edit.php?post_type=data-graph','Data Visualizer Settings', 'Data Visualizer Settings','manage_options', '1p21-dv-options-page', '_1p21_dv_options_build_form');
         }
         add_action( 'admin_menu', '_1p21_dv_options_add_page',11 );
@@ -148,24 +149,7 @@ if( !post_type_exists('data-graph') ){
             return $input;
         }
 
-
-
-/********************************************************************************************
-* Create field groups + settings fields
-*********************************************************************************************/
-
-        if (!class_exists('ACF')) {
-            
-            add_action( 'admin_notices', '_1p21_dv_acf_not_installed' );
-        }else{
-            
-        }
-
-
-
-/********************************************************************************************
-* AAAAAAAAAAAA
-*********************************************************************************************/
+       
 
 
 
