@@ -1,0 +1,1072 @@
+[
+    {
+        "key": "group_5d4206c985d00",
+        "title": "Data Visualizer",
+        "fields": [
+            {
+                "ID": 0,
+                "key": "field_5d420aa3de271",
+                "label": "Source",
+                "name": "",
+                "prefix": "acf",
+                "type": "accordion",
+                "value": false,
+                "menu_order": 0,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "",
+                "_prepare": 0,
+                "_valid": 1,
+                "open": 1,
+                "multi_expand": 1,
+                "endpoint": 0
+            },
+            {
+                "ID": 0,
+                "key": "field_5d420de06b6c9",
+                "label": "Source Type",
+                "name": "dv_src_type",
+                "prefix": "acf",
+                "type": "select",
+                "value": null,
+                "menu_order": 1,
+                "instructions": "Choose how file should be imported",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_src_type",
+                "_prepare": 0,
+                "_valid": 1,
+                "choices": {
+                    "file": "File (csv,tsv)",
+                    "url": "URL",
+                    "text": "Text (JSON code)",
+                    "rows": "Rows (UI Field)"
+                },
+                "default_value": [],
+                "allow_null": 1,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "value",
+                "ajax": 0,
+                "placeholder": ""
+            },
+            {
+                "ID": 0,
+                "key": "field_5d4206cdde265",
+                "label": "File",
+                "name": "dv_src_file",
+                "prefix": "acf",
+                "type": "file",
+                "value": null,
+                "menu_order": 2,
+                "instructions": "Must be tsv, csv",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420de06b6c9",
+                            "operator": "==",
+                            "value": "file"
+                        }
+                    ]
+                ],
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_src_file",
+                "_prepare": 0,
+                "_valid": 1,
+                "return_format": "array",
+                "library": "all",
+                "min_size": "",
+                "max_size": "",
+                "mime_types": ""
+            },
+            {
+                "ID": 0,
+                "key": "field_5d447ad169ee3",
+                "label": "Url",
+                "name": "dv_src_url",
+                "prefix": "acf",
+                "type": "url",
+                "value": null,
+                "menu_order": 3,
+                "instructions": "Url must link directly to data file in either .csv,.json, or .tsv format",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420de06b6c9",
+                            "operator": "==",
+                            "value": "url"
+                        }
+                    ]
+                ],
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_src_url",
+                "_prepare": 0,
+                "_valid": 1,
+                "default_value": "",
+                "placeholder": ""
+            },
+            {
+                "ID": 0,
+                "key": "field_5d420ebe6b6ca",
+                "label": "Text",
+                "name": "dv_src_text",
+                "prefix": "acf",
+                "type": "textarea",
+                "value": null,
+                "menu_order": 4,
+                "instructions": "input json code",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420de06b6c9",
+                            "operator": "==",
+                            "value": "text"
+                        }
+                    ]
+                ],
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_src_text",
+                "_prepare": 0,
+                "_valid": 1,
+                "default_value": "",
+                "placeholder": "",
+                "maxlength": "",
+                "rows": "",
+                "new_lines": ""
+            },
+            {
+                "ID": 0,
+                "key": "field_5d420719de267",
+                "label": "Rows",
+                "name": "dv_src_row",
+                "prefix": "acf",
+                "type": "repeater",
+                "value": null,
+                "menu_order": 5,
+                "instructions": "Input a basic data in rows",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420de06b6c9",
+                            "operator": "==",
+                            "value": "rows"
+                        }
+                    ]
+                ],
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_src_row",
+                "_prepare": 0,
+                "_valid": 1,
+                "collapsed": "",
+                "min": 0,
+                "max": 0,
+                "layout": "table",
+                "button_label": "",
+                "sub_fields": [
+                    {
+                        "ID": 0,
+                        "key": "field_5d420962de26e",
+                        "label": "Label",
+                        "name": "label",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 0,
+                        "instructions": "Name to represent amount of value",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d420719de267",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "label",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d42077fde268",
+                        "label": "Value",
+                        "name": "value",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 1,
+                        "instructions": "The value of the given label",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d420719de267",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "value",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    }
+                ]
+            },
+            {
+                "ID": 0,
+                "key": "field_5d42107c69b56",
+                "label": "Data Setup",
+                "name": "",
+                "prefix": "acf",
+                "type": "accordion",
+                "value": false,
+                "menu_order": 6,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "",
+                "_prepare": 0,
+                "_valid": 1,
+                "open": 1,
+                "multi_expand": 1,
+                "endpoint": 0
+            },
+            {
+                "ID": 0,
+                "key": "field_5d420a6cde270",
+                "label": "Data 1 Key",
+                "name": "dv_data_1",
+                "prefix": "acf",
+                "type": "text",
+                "value": null,
+                "menu_order": 7,
+                "instructions": "key or column name of the data that will represent the labels or a separate axis of the data",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_data_1",
+                "_prepare": 0,
+                "_valid": 1,
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "ID": 0,
+                "key": "field_5d420b33de274",
+                "label": "Data 2 Key",
+                "name": "dv_data_2",
+                "prefix": "acf",
+                "type": "text",
+                "value": null,
+                "menu_order": 8,
+                "instructions": "key or column name of the data that will represent the labels",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_data_2",
+                "_prepare": 0,
+                "_valid": 1,
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "ID": 0,
+                "key": "field_5d4492875982d",
+                "label": "",
+                "name": "dv_name_is_num",
+                "prefix": "acf",
+                "type": "true_false",
+                "value": null,
+                "menu_order": 9,
+                "instructions": "Setting this true will toggle data to behave as an axis of data 1 instead of labels",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420a45de26f",
+                            "operator": "!=",
+                            "value": "pie"
+                        }
+                    ]
+                ],
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_name_is_num",
+                "_prepare": 0,
+                "_valid": 1,
+                "message": "<b>Represent Name key data 1 as numeric<\/b>",
+                "default_value": 0,
+                "ui": 0,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "ID": 0,
+                "key": "field_5d420abade272",
+                "label": "Layout",
+                "name": "",
+                "prefix": "acf",
+                "type": "accordion",
+                "value": false,
+                "menu_order": 10,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "",
+                "_prepare": 0,
+                "_valid": 1,
+                "open": 1,
+                "multi_expand": 1,
+                "endpoint": 0
+            },
+            {
+                "ID": 0,
+                "key": "field_5d420a45de26f",
+                "label": "Type",
+                "name": "dv_type",
+                "prefix": "acf",
+                "type": "select",
+                "value": null,
+                "menu_order": 11,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_type",
+                "_prepare": 0,
+                "_valid": 1,
+                "choices": {
+                    "bar": "Bar",
+                    "line": "Line",
+                    "pie": "Pie"
+                },
+                "default_value": [],
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "value",
+                "ajax": 0,
+                "placeholder": ""
+            },
+            {
+                "ID": 0,
+                "key": "field_5d448fef59823",
+                "label": "X Settings",
+                "name": "dv_x",
+                "prefix": "acf",
+                "type": "group",
+                "value": null,
+                "menu_order": 12,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420a45de26f",
+                            "operator": "!=",
+                            "value": "pie"
+                        }
+                    ]
+                ],
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_x",
+                "_prepare": 0,
+                "_valid": 1,
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "ID": 0,
+                        "key": "field_5d42110769b59",
+                        "label": "Axis Data",
+                        "name": "ax",
+                        "prefix": "acf",
+                        "type": "select",
+                        "value": null,
+                        "menu_order": 0,
+                        "instructions": "Data to represent horizontally",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d448fef59823",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "ax",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "choices": {
+                            "data_1": "Data 1",
+                            "data_2": "Data 2"
+                        },
+                        "default_value": [
+                            "data_1"
+                        ],
+                        "allow_null": 0,
+                        "multiple": 0,
+                        "ui": 0,
+                        "return_format": "value",
+                        "ajax": 0,
+                        "placeholder": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d4211d969b5b",
+                        "label": "Label",
+                        "name": "lab",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 1,
+                        "instructions": "Label for horizontal data. will default to y axis key",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d448fef59823",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "lab",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d44905e59825",
+                        "label": "Alignment",
+                        "name": "align",
+                        "prefix": "acf",
+                        "type": "select",
+                        "value": null,
+                        "menu_order": 2,
+                        "instructions": "Where to align the axis",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d448fef59823",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "align",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "choices": {
+                            "top": "Top",
+                            "bottom": "Bottom"
+                        },
+                        "default_value": [
+                            "bottom"
+                        ],
+                        "allow_null": 0,
+                        "multiple": 0,
+                        "ui": 0,
+                        "return_format": "value",
+                        "ajax": 0,
+                        "placeholder": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d44915159827",
+                        "label": "Ticks Amount",
+                        "name": "ticks",
+                        "prefix": "acf",
+                        "type": "number",
+                        "value": null,
+                        "menu_order": 3,
+                        "instructions": "number of tick marks along the axis",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d448fef59823",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "ticks",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": 5,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "min": "",
+                        "max": "",
+                        "step": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d44948ed8de9",
+                        "label": "Tick Format",
+                        "name": "tick_format",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 4,
+                        "instructions": "Reference: <a href=\"https:\/\/github.com\/d3\/d3-format\">https:\/\/github.com\/d3\/d3-format<\/a>",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d448fef59823",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "tick_format",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    }
+                ]
+            },
+            {
+                "ID": 0,
+                "key": "field_5d4494e1f5294",
+                "label": "Y Settings",
+                "name": "dv_y",
+                "prefix": "acf",
+                "type": "group",
+                "value": null,
+                "menu_order": 13,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420a45de26f",
+                            "operator": "!=",
+                            "value": "pie"
+                        }
+                    ]
+                ],
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_y",
+                "_prepare": 0,
+                "_valid": 1,
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "ID": 0,
+                        "key": "field_5d4494e1f5295",
+                        "label": "Axis Data",
+                        "name": "ax",
+                        "prefix": "acf",
+                        "type": "select",
+                        "value": null,
+                        "menu_order": 0,
+                        "instructions": "Data to represent horizontally",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d4494e1f5294",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "ax",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "choices": {
+                            "data_1": "Data 1",
+                            "data_2": "Data 2"
+                        },
+                        "default_value": [
+                            "data_2"
+                        ],
+                        "allow_null": 0,
+                        "multiple": 0,
+                        "ui": 0,
+                        "return_format": "value",
+                        "ajax": 0,
+                        "placeholder": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d4494e1f5296",
+                        "label": "Label",
+                        "name": "lab",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 1,
+                        "instructions": "Label for horizontal data. will default to y axis key",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d4494e1f5294",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "lab",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d4494e1f5297",
+                        "label": "Alignment",
+                        "name": "align",
+                        "prefix": "acf",
+                        "type": "select",
+                        "value": null,
+                        "menu_order": 2,
+                        "instructions": "Where to align the axis",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d4494e1f5294",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "align",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "choices": {
+                            "left": "Right",
+                            "right": "Right"
+                        },
+                        "default_value": [
+                            "bottom"
+                        ],
+                        "allow_null": 0,
+                        "multiple": 0,
+                        "ui": 0,
+                        "return_format": "value",
+                        "ajax": 0,
+                        "placeholder": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d4494e1f5298",
+                        "label": "Ticks Amount",
+                        "name": "ticks",
+                        "prefix": "acf",
+                        "type": "number",
+                        "value": null,
+                        "menu_order": 3,
+                        "instructions": "number of tick marks along the axis",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d4494e1f5294",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "ticks",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": 5,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "min": "",
+                        "max": "",
+                        "step": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d4494e1f5299",
+                        "label": "Tick Format",
+                        "name": "tick_format",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 4,
+                        "instructions": "Reference: <a href=\"https:\/\/github.com\/d3\/d3-format\">https:\/\/github.com\/d3\/d3-format<\/a>",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d4494e1f5294",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "tick_format",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    }
+                ]
+            },
+            {
+                "ID": 0,
+                "key": "field_5d42ff6a5f461",
+                "label": "Advanced",
+                "name": "",
+                "prefix": "acf",
+                "type": "accordion",
+                "value": false,
+                "menu_order": 14,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "",
+                "_prepare": 0,
+                "_valid": 1,
+                "open": 0,
+                "multi_expand": 1,
+                "endpoint": 0
+            },
+            {
+                "ID": 0,
+                "key": "field_5d42ff755f462",
+                "label": "Color Scheme",
+                "name": "dv_color_scheme",
+                "prefix": "acf",
+                "type": "repeater",
+                "value": null,
+                "menu_order": 15,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_color_scheme",
+                "_prepare": 0,
+                "_valid": 1,
+                "collapsed": "",
+                "min": 0,
+                "max": 0,
+                "layout": "row",
+                "button_label": "",
+                "sub_fields": [
+                    {
+                        "ID": 0,
+                        "key": "field_5d42ff995f463",
+                        "label": "Color",
+                        "name": "color",
+                        "prefix": "acf",
+                        "type": "color_picker",
+                        "value": null,
+                        "menu_order": 0,
+                        "instructions": "",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d42ff755f462",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "color",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": ""
+                    }
+                ]
+            },
+            {
+                "ID": 0,
+                "key": "field_5d42ffcf5f464",
+                "label": "Color Reference",
+                "name": "dv_color_ref",
+                "prefix": "acf",
+                "type": "text",
+                "value": null,
+                "menu_order": 16,
+                "instructions": "Data key to link color scheme to",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_color_ref",
+                "_prepare": 0,
+                "_valid": 1,
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "data-visual"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 1,
+        "description": "",
+        "_valid": 1,
+        "local": "php"
+    },
+    {
+        "key": "group_5d40bfc5e49db",
+        "title": "Data Visualizer Settings",
+        "fields": [
+            {
+                "ID": 0,
+                "key": "field_5d40bfd2562be",
+                "label": "Legacy Support",
+                "name": "dv_legacy_support",
+                "prefix": "acf",
+                "type": "true_false",
+                "value": null,
+                "menu_order": 0,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d40bfc5e49db",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_legacy_support",
+                "_prepare": 0,
+                "_valid": 1,
+                "message": "",
+                "default_value": 0,
+                "ui": 0,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "ID": 0,
+                "key": "field_5d42155513d47",
+                "label": "Optimize for performance",
+                "name": "dv_optimize",
+                "prefix": "acf",
+                "type": "text",
+                "value": null,
+                "menu_order": 1,
+                "instructions": "Optimize rendering for performance (note: turning this one may cause script conflicts)",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d40bfc5e49db",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_optimize",
+                "_prepare": 0,
+                "_valid": 1,
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "options_page",
+                    "operator": "==",
+                    "value": "1p21-dv-settings"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 1,
+        "description": "",
+        "_valid": 1,
+        "local": "php"
+    }
+]

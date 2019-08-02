@@ -1,0 +1,7 @@
+.data-visualizer { background: #EEE; position: relative; text-align: center; }
+
+.data-visualizer:empty { padding-bottom: 30%; }
+
+.data-visualizer:empty:before { content: "Loading..."; position: absolute; }
+
+.data-visualizer-no-data { padding: 4em 0; }

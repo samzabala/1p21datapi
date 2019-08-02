@@ -1,0 +1,17 @@
+.data-visualizer {
+    background: #EEE;
+    position:relative;
+    text-align: center;
+
+    &:empty {
+        padding-bottom: 30%;
+        &:before {
+            content:"Loading...";
+            position: absolute;
+        }
+    }
+
+    &-no-data {
+        padding: 4em 0;
+    }
+}
