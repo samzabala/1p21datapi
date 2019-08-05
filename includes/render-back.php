@@ -54,9 +54,46 @@ function _1p21_dv_get_data_visual_object($args = array()) {
             $data_visual['settings'] =  wp_parse_args( $args, $_1p21_dv['defaults'] );
         }
 
+
+        //type
+        $data_visual['type'] = get_post_meta($id,'dv_type',true);
+
+        // data keys 
+        if(get_post_meta($id,'dv_data_key_1',true) || get_post_meta($id,'dv_data_key_2',true)){
+            $data_visual['data_key'] = array(
+                get_post_meta($id,'dv_data_key_1',true),
+                get_post_meta($id,'dv_data_key_2',true),
+            );
+        }
+
+        //x & y settings
+        if ($data_visual['type'] != 'pie') {
+            $data_visual['x'] = _1p21_dv_get_subbed_post_meta(array(
+                'id' => $id,
+                'key' => 'dv_x',
+                'is_incremented' => false
+            ));
+            $data_visual['y'] = _1p21_dv_get_subbed_post_meta(array(
+                'id' => $id,
+                'key' => 'dv_y',
+                'is_incremented' => false
+            ));
+        }
+
+        //colors
+        $data_visual['colors'] =  _1p21_dv_get_subbed_post_meta($id,'dv_colors',true);
+        $data_visual['colors_data_key'] =  get_post_meta($id,'dv_colors_data_key',true);
+        
+
         //type of src inpuut
         $data_visual['src_type'] = get_post_meta($id,'dv_src_type',true);
 
+
+        //validate data keys based from source
+        if(  $data_visual['src_type'] == 'rows' ){
+            $data_visual['data_key'] = array('label','value');
+        }
+        
         //src
         $data_visual['src'] = null;
         switch($data_visual['src_type']){
@@ -64,7 +101,7 @@ function _1p21_dv_get_data_visual_object($args = array()) {
                 $data_visual['src'] = wp_get_attachment_url(get_post_meta($id,'dv_src_file',true));
                 break;
             case 'url':
-                $data_visual['src'] = wp_get_attachment_url(get_post_meta($id,'dv_src_url',true));
+                $data_visual['src'] = get_post_meta($id,'dv_src_url',true);
                 break;
             case 'text':
                 $data_visual['src'] = get_post_meta($id,'dv_src_text',true);
@@ -77,43 +114,9 @@ function _1p21_dv_get_data_visual_object($args = array()) {
                 break;
         }
 
-        //type
-        $data_visual['type'] = get_post_meta($id,'dv_type',true);
+        //source key
+        $data_visual['srcKey'] =  get_post_meta($id,'src_key',true);
 
-        // name
-        $data_visual['data_1'] = get_post_meta($id,'dv_data_1',true);
-
-        // value
-        $data_visual['data_2'] = get_post_meta($id,'dv_data_2',true);
-
-        if ($data_visual['type'] != 'pie') {
-            $data_visual['x'] = _1p21_dv_get_subbed_post_meta(array(
-                'id' => $id,
-                'key' => 'dv_x',
-                'is_incremented' => false
-            ));
-            $data_visual['y'] = _1p21_dv_get_subbed_post_meta(array(
-                'id' => $id,
-                'key' => 'dv_y',
-                'is_incremented' => false
-            ));
-
-
-            //x axis
-            // $data_visual['x_ax'] = get_post_meta($id,'dv_x_ax',true);
-
-            // // y axis
-            // $data_visual['y_ax'] = get_post_meta($id,'dv_y_ax',true);
-
-            // //x label
-            // $data_visual['x_lab'] = get_post_meta($id,'dv_x_lab',true);
-
-            // //y label
-            // $data_visual['y_lab'] = get_post_meta($id,'dv_y_lab',true);
-
-            // $data_visual['type'] = get_post_meta($id,'dv_type',true);
-        }
-        
 
         $data_visual = apply_filters('_1p21_dv_data_visual_object',$data_visual);
 

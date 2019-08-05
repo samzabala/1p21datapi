@@ -93,6 +93,19 @@ function _1p21_dv_get_subbed_post_meta($args = array()){
 }
 
 
+function _1p21_dv_dashes_to_camel_case($string, $capitalizeFirstCharacter = false) 
+{
+
+    $str = str_replace(' ', '', ucwords(str_replace(array('_','-'), ' ', $string)));
+
+    if (!$capitalizeFirstCharacter) {
+        $str[0] = strtolower($str[0]);
+    }
+
+    return $str;
+}
+
+
 /********************************************************************************************
 * HELPERS BUT HMMM other ppl can use it i guess
 *********************************************************************************************/

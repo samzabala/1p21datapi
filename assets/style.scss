@@ -1,7 +1,19 @@
 .data-visualizer {
-    background: #EEE;
-    position:relative;
-    text-align: center;
+    &-wrapper {
+        background: #EEE;
+        position:relative;
+        text-align: center;
+        padding: 1em;
+
+        .no-data & {
+            padding: 4em 0;
+        }
+    }
+
+    svg {
+        display: block;
+        max-width: 100%;
+    }
 
     &:empty {
         padding-bottom: 30%;
@@ -9,9 +21,5 @@
             content:"Loading...";
             position: absolute;
         }
-    }
-
-    &-no-data {
-        padding: 4em 0;
     }
 }

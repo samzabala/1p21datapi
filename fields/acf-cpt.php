@@ -156,10 +156,10 @@ $_1p21_dv_fields_cpt = array(
 			'sub_fields' => array(
 				array(
 					'key' => 'field_5d420962de26e',
-					'label' => 'Label',
+					'label' => 'Label (Data 1)',
 					'name' => 'label',
 					'type' => 'text',
-					'instructions' => 'Name to represent amount of value',
+					'instructions' => 'data that will represent the labels or a separate axis of the data.',
 					'required' => 0,
 					'conditional_logic' => 0,
 					'wrapper' => array(
@@ -175,10 +175,10 @@ $_1p21_dv_fields_cpt = array(
 				),
 				array(
 					'key' => 'field_5d42077fde268',
-					'label' => 'Value',
+					'label' => 'Value (Data 2)',
 					'name' => 'value',
 					'type' => 'text',
-					'instructions' => 'The value of the given label',
+					'instructions' => 'data that will represent the labels.',
 					'required' => 0,
 					'conditional_logic' => 0,
 					'wrapper' => array(
@@ -212,13 +212,48 @@ $_1p21_dv_fields_cpt = array(
 			'endpoint' => 0,
 		),
 		array(
+			'key' => 'field_5d4875c085673',
+			'label' => 'Source Key',
+			'name' => 'dv_src_key',
+			'type' => 'text',
+			'instructions' => 'Fill in the key for the data to use if it is not in the root level',
+			'required' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_5d420de06b6c9',
+						'operator' => '!=',
+						'value' => 'rows',
+					),
+				),
+			),
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => 'content.items',
+			'prepend' => 'data.',
+			'append' => '',
+			'maxlength' => '',
+		),
+		array(
 			'key' => 'field_5d420a6cde270',
 			'label' => 'Data 1 Key',
-			'name' => 'dv_data_1',
+			'name' => 'dv_data_key_1',
 			'type' => 'text',
-			'instructions' => 'key or column name of the data that will represent the labels or a separate axis of the data',
+			'instructions' => 'Key or column name of the data that will represent the labels or a separate axis of the data. Type in the key relative to the Source Key',
 			'required' => 0,
-			'conditional_logic' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_5d420de06b6c9',
+						'operator' => '!=',
+						'value' => 'rows',
+					),
+				),
+			),
 			'wrapper' => array(
 				'width' => '50',
 				'class' => '',
@@ -226,18 +261,26 @@ $_1p21_dv_fields_cpt = array(
 			),
 			'default_value' => '',
 			'placeholder' => '',
-			'prepend' => '',
+			'prepend' => 'data.',
 			'append' => '',
 			'maxlength' => '',
 		),
 		array(
 			'key' => 'field_5d420b33de274',
 			'label' => 'Data 2 Key',
-			'name' => 'dv_data_2',
+			'name' => 'dv_data_key_2',
 			'type' => 'text',
-			'instructions' => 'key or column name of the data that will represent the labels',
+			'instructions' => 'key or column name of the data that will represent the labels. Type in the key relative to the Source Key',
 			'required' => 0,
-			'conditional_logic' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_5d420de06b6c9',
+						'operator' => '!=',
+						'value' => 'rows',
+					),
+				),
+			),
 			'wrapper' => array(
 				'width' => '50',
 				'class' => '',
@@ -245,7 +288,7 @@ $_1p21_dv_fields_cpt = array(
 			),
 			'default_value' => '',
 			'placeholder' => '',
-			'prepend' => '',
+			'prepend' => 'data.',
 			'append' => '',
 			'maxlength' => '',
 		),
@@ -254,7 +297,7 @@ $_1p21_dv_fields_cpt = array(
 			'label' => '',
 			'name' => 'dv_name_is_num',
 			'type' => 'true_false',
-			'instructions' => 'Setting this true will toggle data to behave as an axis of data 1 instead of labels',
+			'instructions' => 'Setting this true will toggle data to behave as an axis of numeric data instead of labels',
 			'required' => 0,
 			'conditional_logic' => array(
 				array(
@@ -346,7 +389,7 @@ $_1p21_dv_fields_cpt = array(
 				array(
 					'key' => 'field_5d42110769b59',
 					'label' => 'Axis Data',
-					'name' => 'ax',
+					'name' => 'data',
 					'type' => 'select',
 					'instructions' => 'Data to represent horizontally',
 					'required' => 0,
@@ -357,11 +400,11 @@ $_1p21_dv_fields_cpt = array(
 						'id' => '',
 					),
 					'choices' => array(
-						'data_1' => 'Data 1',
-						'data_2' => 'Data 2',
+						0 => 'Data 1',
+						1 => 'Data 2',
 					),
 					'default_value' => array(
-						0 => 'data_1',
+						0 => 0,
 					),
 					'allow_null' => 0,
 					'multiple' => 0,
@@ -373,7 +416,7 @@ $_1p21_dv_fields_cpt = array(
 				array(
 					'key' => 'field_5d4211d969b5b',
 					'label' => 'Label',
-					'name' => 'lab',
+					'name' => 'label',
 					'type' => 'text',
 					'instructions' => 'Label for horizontal data. will default to y axis key',
 					'required' => 0,
@@ -407,9 +450,8 @@ $_1p21_dv_fields_cpt = array(
 						'bottom' => 'Bottom',
 					),
 					'default_value' => array(
-						0 => 'bottom',
 					),
-					'allow_null' => 0,
+					'allow_null' => 1,
 					'multiple' => 0,
 					'ui' => 0,
 					'return_format' => 'value',
@@ -429,7 +471,7 @@ $_1p21_dv_fields_cpt = array(
 						'class' => '',
 						'id' => '',
 					),
-					'default_value' => 5,
+					'default_value' => '',
 					'placeholder' => '',
 					'prepend' => '',
 					'append' => '',
@@ -484,7 +526,7 @@ $_1p21_dv_fields_cpt = array(
 				array(
 					'key' => 'field_5d4494e1f5295',
 					'label' => 'Axis Data',
-					'name' => 'ax',
+					'name' => 'data',
 					'type' => 'select',
 					'instructions' => 'Data to represent horizontally',
 					'required' => 0,
@@ -495,11 +537,11 @@ $_1p21_dv_fields_cpt = array(
 						'id' => '',
 					),
 					'choices' => array(
-						'data_1' => 'Data 1',
-						'data_2' => 'Data 2',
+						0 => 'Data 1',
+						1 => 'Data 2',
 					),
 					'default_value' => array(
-						0 => 'data_2',
+						0 => 1,
 					),
 					'allow_null' => 0,
 					'multiple' => 0,
@@ -511,7 +553,7 @@ $_1p21_dv_fields_cpt = array(
 				array(
 					'key' => 'field_5d4494e1f5296',
 					'label' => 'Label',
-					'name' => 'lab',
+					'name' => 'label',
 					'type' => 'text',
 					'instructions' => 'Label for horizontal data. will default to y axis key',
 					'required' => 0,
@@ -541,13 +583,12 @@ $_1p21_dv_fields_cpt = array(
 						'id' => '',
 					),
 					'choices' => array(
-						'left' => 'Right',
+						'left' => 'Left',
 						'right' => 'Right',
 					),
 					'default_value' => array(
-						0 => 'bottom',
 					),
-					'allow_null' => 0,
+					'allow_null' => 1,
 					'multiple' => 0,
 					'ui' => 0,
 					'return_format' => 'value',
@@ -567,7 +608,7 @@ $_1p21_dv_fields_cpt = array(
 						'class' => '',
 						'id' => '',
 					),
-					'default_value' => 5,
+					'default_value' => '',
 					'placeholder' => '',
 					'prepend' => '',
 					'append' => '',
@@ -616,7 +657,7 @@ $_1p21_dv_fields_cpt = array(
 		array(
 			'key' => 'field_5d42ff755f462',
 			'label' => 'Color Scheme',
-			'name' => 'dv_color_scheme',
+			'name' => 'dv_colors',
 			'type' => 'repeater',
 			'instructions' => '',
 			'required' => 0,
@@ -651,8 +692,8 @@ $_1p21_dv_fields_cpt = array(
 		),
 		array(
 			'key' => 'field_5d42ffcf5f464',
-			'label' => 'Color Reference',
-			'name' => 'dv_color_ref',
+			'label' => 'Colors Data Key',
+			'name' => 'dv_colors_data_key',
 			'type' => 'text',
 			'instructions' => 'Data key to link color scheme to',
 			'required' => 0,

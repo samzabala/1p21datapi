@@ -16,23 +16,13 @@
 		"oAP": "/1p21-datavisualizer.php",
 		"oF": 0
 		},
-	"/assets/main-min.js": {
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/assets/main-min-min.js",
-		"oF": 0,
-		"sC": 3,
-		"tS": 0
-		},
 	"/assets/main.js": {
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "/assets/main-min.js",
-		"oF": 0,
+		"oF": 1,
 		"sC": 3,
 		"tS": 0
 		},
