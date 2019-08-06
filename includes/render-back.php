@@ -66,18 +66,47 @@ function _1p21_dv_get_data_visual_object($args = array()) {
             );
         }
 
-        //x & y settings
+        $data_visual['data_1_is_num'] = get_post_meta($id,'dv_data_1_is_num',true);
+
+        //x & y / pie settings
         if ($data_visual['type'] != 'pie') {
-            $data_visual['x'] = _1p21_dv_get_subbed_post_meta(array(
+            $coordinates = ['x','y'];
+
+            foreach($coordinates as $coordinate){
+                $data_visual[$coordinate] = _1p21_dv_get_subbed_post_meta(array(
+                    'id' => $id,
+                    'key' => 'dv_'.$coordinate,
+                    'is_incremented' => false
+                ));
+
+                //validate x
+                if(!$data_visual[$coordinate]['ticks']){
+                    unset($data_visual[$coordinate]['ticks_format']);
+                    unset($data_visual[$coordinate]['ticks_amount']);
+                    unset($data_visual[$coordinate]['label']);
+                }
+            }
+
+
+            // $data_visual['y'] = _1p21_dv_get_subbed_post_meta(array(
+            //     'id' => $id,
+            //     'key' => 'dv_y',
+            //     'is_incremented' => false
+            // ));
+
+            // //validate y
+            // if(!$data_visual['y']['ticks']){
+
+            // }
+
+
+        }else{
+            $data_visual['pi'] = _1p21_dv_get_subbed_post_meta(array(
                 'id' => $id,
-                'key' => 'dv_x',
+                'key' => 'dv_pi',
                 'is_incremented' => false
             ));
-            $data_visual['y'] = _1p21_dv_get_subbed_post_meta(array(
-                'id' => $id,
-                'key' => 'dv_y',
-                'is_incremented' => false
-            ));
+
         }
 
         //colors
@@ -87,6 +116,7 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
         //type of src inpuut
         $data_visual['src_type'] = get_post_meta($id,'dv_src_type',true);
+
 
 
         //validate data keys based from source
@@ -115,7 +145,7 @@ function _1p21_dv_get_data_visual_object($args = array()) {
         }
 
         //source key
-        $data_visual['srcKey'] =  get_post_meta($id,'src_key',true);
+        $data_visual['src_key'] = get_post_meta($id,'dv_src_key',true);
 
 
         $data_visual = apply_filters('_1p21_dv_data_visual_object',$data_visual);

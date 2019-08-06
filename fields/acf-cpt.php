@@ -243,7 +243,9 @@ $_1p21_dv_fields_cpt = array(
 			'label' => 'Data 1 Key',
 			'name' => 'dv_data_key_1',
 			'type' => 'text',
-			'instructions' => 'Key or column name of the data that will represent the labels or a separate axis of the data. Type in the key relative to the Source Key',
+			'instructions' => 'Type in the key relative to the Source Key<br>
+Key or column name to represent or name the data<br>
+Can represent separate axis of numeric data if Type is not set to pie.',
 			'required' => 0,
 			'conditional_logic' => array(
 				array(
@@ -260,7 +262,7 @@ $_1p21_dv_fields_cpt = array(
 				'id' => '',
 			),
 			'default_value' => '',
-			'placeholder' => '',
+			'placeholder' => 'content.item',
 			'prepend' => 'data.',
 			'append' => '',
 			'maxlength' => '',
@@ -270,7 +272,8 @@ $_1p21_dv_fields_cpt = array(
 			'label' => 'Data 2 Key',
 			'name' => 'dv_data_key_2',
 			'type' => 'text',
-			'instructions' => 'key or column name of the data that will represent the labels. Type in the key relative to the Source Key',
+			'instructions' => 'Type in the key relative to the Source Key<br>
+Key or column name of the data that will represent the labels<br><br>',
 			'required' => 0,
 			'conditional_logic' => array(
 				array(
@@ -287,7 +290,7 @@ $_1p21_dv_fields_cpt = array(
 				'id' => '',
 			),
 			'default_value' => '',
-			'placeholder' => '',
+			'placeholder' => 'content.item',
 			'prepend' => 'data.',
 			'append' => '',
 			'maxlength' => '',
@@ -295,9 +298,9 @@ $_1p21_dv_fields_cpt = array(
 		array(
 			'key' => 'field_5d4492875982d',
 			'label' => '',
-			'name' => 'dv_name_is_num',
+			'name' => 'dv_data_1_is_num',
 			'type' => 'true_false',
-			'instructions' => 'Setting this true will toggle data to behave as an axis of numeric data instead of labels',
+			'instructions' => 'Setting this true will toggle data 1 to behave as an axis of numeric data instead of labels',
 			'required' => 0,
 			'conditional_logic' => array(
 				array(
@@ -351,8 +354,9 @@ $_1p21_dv_fields_cpt = array(
 			),
 			'choices' => array(
 				'bar' => 'Bar',
-				'line' => 'Line',
-				'pie' => 'Pie',
+				'line' => 'Line (Not yet)',
+				'pie' => 'Pie (Not Yet)',
+				'scatter' => 'Scatter Plot (Coming Soon)',
 			),
 			'default_value' => array(
 			),
@@ -391,7 +395,7 @@ $_1p21_dv_fields_cpt = array(
 					'label' => 'Axis Data',
 					'name' => 'data',
 					'type' => 'select',
-					'instructions' => 'Data to represent horizontally',
+					'instructions' => 'Data key to represent horizontally',
 					'required' => 0,
 					'conditional_logic' => 0,
 					'wrapper' => array(
@@ -412,25 +416,6 @@ $_1p21_dv_fields_cpt = array(
 					'return_format' => 'value',
 					'ajax' => 0,
 					'placeholder' => '',
-				),
-				array(
-					'key' => 'field_5d4211d969b5b',
-					'label' => 'Label',
-					'name' => 'label',
-					'type' => 'text',
-					'instructions' => 'Label for horizontal data. will default to y axis key',
-					'required' => 0,
-					'conditional_logic' => 0,
-					'wrapper' => array(
-						'width' => '',
-						'class' => '',
-						'id' => '',
-					),
-					'default_value' => '',
-					'placeholder' => '',
-					'prepend' => '',
-					'append' => '',
-					'maxlength' => '',
 				),
 				array(
 					'key' => 'field_5d44905e59825',
@@ -459,13 +444,141 @@ $_1p21_dv_fields_cpt = array(
 					'placeholder' => '',
 				),
 				array(
+					'key' => 'field_5d49b51b576ae',
+					'label' => 'Use Ticks?',
+					'name' => 'ticks',
+					'type' => 'true_false',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'message' => 'Checking will display axis this on a rule instead of inside the graph element',
+					'default_value' => 0,
+					'ui' => 0,
+					'ui_on_text' => '',
+					'ui_off_text' => '',
+				),
+				array(
+					'key' => 'field_5d4211d969b5b',
+					'label' => 'Label',
+					'name' => 'label',
+					'type' => 'text',
+					'instructions' => 'Label for horizontal data. will default to y axis key',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'bar',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d49b51b576ae',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
 					'key' => 'field_5d44915159827',
 					'label' => 'Ticks Amount',
-					'name' => 'ticks',
+					'name' => 'ticks_amount',
 					'type' => 'number',
 					'instructions' => 'number of tick marks along the axis',
 					'required' => 0,
-					'conditional_logic' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d42110769b59',
+								'operator' => '==',
+								'value' => '0',
+							),
+							array(
+								'field' => 'field_5d4492875982d',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d49b51b576ae',
+								'operator' => '==',
+								'value' => '1',
+							),
+							array(
+								'field' => 'field_5d42110769b59',
+								'operator' => '==',
+								'value' => '0',
+							),
+							array(
+								'field' => 'field_5d4492875982d',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d42110769b59',
+								'operator' => '!=',
+								'value' => '0',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d49b51b576ae',
+								'operator' => '==',
+								'value' => '1',
+							),
+							array(
+								'field' => 'field_5d42110769b59',
+								'operator' => '!=',
+								'value' => '0',
+							),
+						),
+					),
 					'wrapper' => array(
 						'width' => '',
 						'class' => '',
@@ -481,12 +594,32 @@ $_1p21_dv_fields_cpt = array(
 				),
 				array(
 					'key' => 'field_5d44948ed8de9',
-					'label' => 'Tick Format',
-					'name' => 'tick_format',
+					'label' => 'Ticks Format',
+					'name' => 'ticks_format',
 					'type' => 'text',
 					'instructions' => 'Reference: <a href="https://github.com/d3/d3-format">https://github.com/d3/d3-format</a>',
 					'required' => 0,
-					'conditional_logic' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'bar',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d49b51b576ae',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+					),
 					'wrapper' => array(
 						'width' => '',
 						'class' => '',
@@ -497,6 +630,186 @@ $_1p21_dv_fields_cpt = array(
 					'prepend' => '',
 					'append' => '',
 					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5d499c699d0fc',
+					'label' => 'Minimum',
+					'name' => 'min',
+					'type' => 'number',
+					'instructions' => 'value of the minimum tick mark.<br>Leave blank if desired first tick mark value is the minimum value in the data<br> to disable tick marks to scale with data updates, setting a value is recommended.',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d49b51b576ae',
+								'operator' => '==',
+								'value' => '1',
+							),
+							array(
+								'field' => 'field_5d42110769b59',
+								'operator' => '==',
+								'value' => '0',
+							),
+							array(
+								'field' => 'field_5d4492875982d',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d49b51b576ae',
+								'operator' => '==',
+								'value' => '1',
+							),
+							array(
+								'field' => 'field_5d42110769b59',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d42110769b59',
+								'operator' => '==',
+								'value' => '0',
+							),
+							array(
+								'field' => 'field_5d4492875982d',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d42110769b59',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '50',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'min' => '',
+					'max' => '',
+					'step' => '',
+				),
+				array(
+					'key' => 'field_5d499c809d0fd',
+					'label' => 'Maximum',
+					'name' => 'max',
+					'type' => 'number',
+					'instructions' =>  'value of the maximum tick mark.<br>Leave blank if desired first tick mark value is the maximum value in the data<br> to disable tick marks to scale with data updates, setting a value is recommended.',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d49b51b576ae',
+								'operator' => '==',
+								'value' => '1',
+							),
+							array(
+								'field' => 'field_5d42110769b59',
+								'operator' => '==',
+								'value' => '0',
+							),
+							array(
+								'field' => 'field_5d4492875982d',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d49b51b576ae',
+								'operator' => '==',
+								'value' => '1',
+							),
+							array(
+								'field' => 'field_5d42110769b59',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d42110769b59',
+								'operator' => '==',
+								'value' => '0',
+							),
+							array(
+								'field' => 'field_5d4492875982d',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d42110769b59',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '50',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'min' => '',
+					'max' => '',
+					'step' => '',
 				),
 			),
 		),
@@ -528,7 +841,7 @@ $_1p21_dv_fields_cpt = array(
 					'label' => 'Axis Data',
 					'name' => 'data',
 					'type' => 'select',
-					'instructions' => 'Data to represent horizontally',
+					'instructions' => 'Data key to represent horizontally',
 					'required' => 0,
 					'conditional_logic' => 0,
 					'wrapper' => array(
@@ -549,25 +862,6 @@ $_1p21_dv_fields_cpt = array(
 					'return_format' => 'value',
 					'ajax' => 0,
 					'placeholder' => '',
-				),
-				array(
-					'key' => 'field_5d4494e1f5296',
-					'label' => 'Label',
-					'name' => 'label',
-					'type' => 'text',
-					'instructions' => 'Label for horizontal data. will default to y axis key',
-					'required' => 0,
-					'conditional_logic' => 0,
-					'wrapper' => array(
-						'width' => '',
-						'class' => '',
-						'id' => '',
-					),
-					'default_value' => '',
-					'placeholder' => '',
-					'prepend' => '',
-					'append' => '',
-					'maxlength' => '',
 				),
 				array(
 					'key' => 'field_5d4494e1f5297',
@@ -596,13 +890,141 @@ $_1p21_dv_fields_cpt = array(
 					'placeholder' => '',
 				),
 				array(
+					'key' => 'field_5d49b81e8a9b1',
+					'label' => 'Use Ticks?',
+					'name' => 'ticks',
+					'type' => 'true_false',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'message' => 'Checking will display axis this on a rule instead of inside the graph element',
+					'default_value' => 0,
+					'ui' => 0,
+					'ui_on_text' => '',
+					'ui_off_text' => '',
+				),
+				array(
+					'key' => 'field_5d4494e1f5296',
+					'label' => 'Label',
+					'name' => 'label',
+					'type' => 'text',
+					'instructions' => 'Label for horizontal data. will default to y axis key',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d49b81e8a9b1',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'bar',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
 					'key' => 'field_5d4494e1f5298',
 					'label' => 'Ticks Amount',
-					'name' => 'ticks',
+					'name' => 'ticks_amount',
 					'type' => 'number',
 					'instructions' => 'number of tick marks along the axis',
 					'required' => 0,
-					'conditional_logic' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d4494e1f5295',
+								'operator' => '==',
+								'value' => '0',
+							),
+							array(
+								'field' => 'field_5d4492875982d',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d49b81e8a9b1',
+								'operator' => '==',
+								'value' => '1',
+							),
+							array(
+								'field' => 'field_5d4494e1f5295',
+								'operator' => '==',
+								'value' => '0',
+							),
+							array(
+								'field' => 'field_5d4492875982d',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d4494e1f5295',
+								'operator' => '!=',
+								'value' => '0',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d49b81e8a9b1',
+								'operator' => '==',
+								'value' => '1',
+							),
+							array(
+								'field' => 'field_5d4494e1f5295',
+								'operator' => '!=',
+								'value' => '0',
+							),
+						),
+					),
 					'wrapper' => array(
 						'width' => '',
 						'class' => '',
@@ -618,8 +1040,280 @@ $_1p21_dv_fields_cpt = array(
 				),
 				array(
 					'key' => 'field_5d4494e1f5299',
-					'label' => 'Tick Format',
-					'name' => 'tick_format',
+					'label' => 'Ticks Format',
+					'name' => 'ticks_format',
+					'type' => 'text',
+					'instructions' => 'Reference: <a href="https://github.com/d3/d3-format">https://github.com/d3/d3-format</a>',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d49b81e8a9b1',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'bar',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5d499bac9d0fa',
+					'label' => 'Minimum',
+					'name' => 'min',
+					'type' => 'number',
+					'instructions' =>  'value of the minimum tick mark.<br>Leave blank if desired first tick mark value is the minimum value in the data<br> to disable tick marks to scale with data updates, setting a value is recommended.',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d49b81e8a9b1',
+								'operator' => '==',
+								'value' => '1',
+							),
+							array(
+								'field' => 'field_5d4494e1f5295',
+								'operator' => '==',
+								'value' => '0',
+							),
+							array(
+								'field' => 'field_5d4492875982d',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d49b81e8a9b1',
+								'operator' => '==',
+								'value' => '1',
+							),
+							array(
+								'field' => 'field_5d4494e1f5295',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d4494e1f5295',
+								'operator' => '==',
+								'value' => '0',
+							),
+							array(
+								'field' => 'field_5d4492875982d',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d4494e1f5295',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '50',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'min' => '',
+					'max' => '',
+					'step' => '',
+				),
+				array(
+					'key' => 'field_5d499c2a9d0fb',
+					'label' => 'Maximum',
+					'name' => 'max',
+					'type' => 'number',
+					'instructions' =>  'value of the maximum tick mark.<br>Leave blank if desired first tick mark value is the maximum value in the data<br> to disable tick marks to scale with data updates, setting a value is recommended.',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d49b81e8a9b1',
+								'operator' => '==',
+								'value' => '1',
+							),
+							array(
+								'field' => 'field_5d4494e1f5295',
+								'operator' => '==',
+								'value' => '0',
+							),
+							array(
+								'field' => 'field_5d4492875982d',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d49b81e8a9b1',
+								'operator' => '==',
+								'value' => '1',
+							),
+							array(
+								'field' => 'field_5d4494e1f5295',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d4494e1f5295',
+								'operator' => '==',
+								'value' => '0',
+							),
+							array(
+								'field' => 'field_5d4492875982d',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d4494e1f5295',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '50',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'min' => '',
+					'max' => '',
+					'step' => '',
+				),
+			),
+		),
+		array(
+			'key' => 'field_5d499f4b8f7aa',
+			'label' => 'Pie Settings',
+			'name' => 'dv_pi',
+			'type' => 'group',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_5d420a45de26f',
+						'operator' => '==',
+						'value' => 'pie',
+					),
+				),
+			),
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'layout' => 'block',
+			'sub_fields' => array(
+				array(
+					'key' => 'field_5d49a0598f7ac',
+					'label' => 'Label Style',
+					'name' => 'label_style',
+					'type' => 'select',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'choices' => array(
+						'linked' => 'Linked',
+						'within' => 'Within',
+						'corner' => 'Corner',
+						'donut' => 'Donut',
+					),
+					'default_value' => array(
+					),
+					'allow_null' => 0,
+					'multiple' => 0,
+					'ui' => 0,
+					'return_format' => 'value',
+					'ajax' => 0,
+					'placeholder' => '',
+				),
+				array(
+					'key' => 'field_5d49a79cdbf08',
+					'label' => 'Data Format',
+					'name' => 'data_format',
 					'type' => 'text',
 					'instructions' => 'Reference: <a href="https://github.com/d3/d3-format">https://github.com/d3/d3-format</a>',
 					'required' => 0,

@@ -1,4 +1,6 @@
-.data-visualizer {
+$prefix: '.data-visualizer';
+
+#{$prefix} {
     &-wrapper {
         background: #EEE;
         position:relative;
@@ -8,18 +10,24 @@
         .no-data & {
             padding: 4em 0;
         }
+
+        &:empty {
+            padding-bottom: 75%;
+            &:before {
+                content:"Loading...";
+                position: absolute;
+                margin: auto;
+                top:50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+            }
+        }
     }
 
     svg {
         display: block;
         max-width: 100%;
-    }
-
-    &:empty {
-        padding-bottom: 30%;
-        &:before {
-            content:"Loading...";
-            position: absolute;
-        }
+        margin: 0 auto;
+        outline: 1px solid red;
     }
 }

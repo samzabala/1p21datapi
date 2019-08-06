@@ -345,7 +345,7 @@
                 "type": "text",
                 "value": null,
                 "menu_order": 8,
-                "instructions": "Key or column name of the data that will represent the labels or a separate axis of the data. Type in the key relative to the Source Key",
+                "instructions": "Type in the key relative to the Source Key<br>\nKey or column name to represent or name the data<br>\nCan represent separate axis of numeric data if Type is not set to pie.",
                 "required": 0,
                 "id": "",
                 "class": "",
@@ -368,7 +368,7 @@
                 "_prepare": 0,
                 "_valid": 1,
                 "default_value": "",
-                "placeholder": "",
+                "placeholder": "content.item",
                 "prepend": "data.",
                 "append": "",
                 "maxlength": ""
@@ -382,7 +382,7 @@
                 "type": "text",
                 "value": null,
                 "menu_order": 9,
-                "instructions": "key or column name of the data that will represent the labels. Type in the key relative to the Source Key",
+                "instructions": "Type in the key relative to the Source Key<br>\nKey or column name of the data that will represent the labels<br><br>",
                 "required": 0,
                 "id": "",
                 "class": "",
@@ -405,7 +405,7 @@
                 "_prepare": 0,
                 "_valid": 1,
                 "default_value": "",
-                "placeholder": "",
+                "placeholder": "content.item",
                 "prepend": "data.",
                 "append": "",
                 "maxlength": ""
@@ -414,12 +414,12 @@
                 "ID": 0,
                 "key": "field_5d4492875982d",
                 "label": "",
-                "name": "dv_name_is_num",
+                "name": "dv_data_1_is_num",
                 "prefix": "acf",
                 "type": "true_false",
                 "value": null,
                 "menu_order": 10,
-                "instructions": "Setting this true will toggle data to behave as an axis of numeric data instead of labels",
+                "instructions": "Setting this true will toggle data 1 to behave as an axis of numeric data instead of labels",
                 "required": 0,
                 "id": "",
                 "class": "",
@@ -438,7 +438,7 @@
                     "class": "",
                     "id": ""
                 },
-                "_name": "dv_name_is_num",
+                "_name": "dv_data_1_is_num",
                 "_prepare": 0,
                 "_valid": 1,
                 "message": "<b>Represent Name key data 1 as numeric<\/b>",
@@ -499,8 +499,9 @@
                 "_valid": 1,
                 "choices": {
                     "bar": "Bar",
-                    "line": "Line",
-                    "pie": "Pie"
+                    "line": "Line (Not yet)",
+                    "pie": "Pie (Not Yet)",
+                    "scatter": "Scatter Plot (Coming Soon)"
                 },
                 "default_value": [],
                 "allow_null": 0,
@@ -552,7 +553,7 @@
                         "type": "select",
                         "value": null,
                         "menu_order": 0,
-                        "instructions": "Data to represent horizontally",
+                        "instructions": "Data key to represent horizontally",
                         "required": 0,
                         "id": "",
                         "class": "",
@@ -582,42 +583,13 @@
                     },
                     {
                         "ID": 0,
-                        "key": "field_5d4211d969b5b",
-                        "label": "Label",
-                        "name": "label",
-                        "prefix": "acf",
-                        "type": "text",
-                        "value": null,
-                        "menu_order": 1,
-                        "instructions": "Label for horizontal data. will default to y axis key",
-                        "required": 0,
-                        "id": "",
-                        "class": "",
-                        "conditional_logic": 0,
-                        "parent": "field_5d448fef59823",
-                        "wrapper": {
-                            "width": "",
-                            "class": "",
-                            "id": ""
-                        },
-                        "_name": "label",
-                        "_prepare": 0,
-                        "_valid": 1,
-                        "default_value": "",
-                        "placeholder": "",
-                        "prepend": "",
-                        "append": "",
-                        "maxlength": ""
-                    },
-                    {
-                        "ID": 0,
                         "key": "field_5d44905e59825",
                         "label": "Alignment",
                         "name": "align",
                         "prefix": "acf",
                         "type": "select",
                         "value": null,
-                        "menu_order": 2,
+                        "menu_order": 1,
                         "instructions": "Where to align the axis",
                         "required": 0,
                         "id": "",
@@ -646,14 +618,14 @@
                     },
                     {
                         "ID": 0,
-                        "key": "field_5d44915159827",
-                        "label": "Ticks Amount",
+                        "key": "field_5d49b51b576ae",
+                        "label": "Use Ticks?",
                         "name": "ticks",
                         "prefix": "acf",
-                        "type": "number",
+                        "type": "true_false",
                         "value": null,
-                        "menu_order": 3,
-                        "instructions": "number of tick marks along the axis",
+                        "menu_order": 2,
+                        "instructions": "",
                         "required": 0,
                         "id": "",
                         "class": "",
@@ -667,6 +639,153 @@
                         "_name": "ticks",
                         "_prepare": 0,
                         "_valid": 1,
+                        "message": "Checking will display axis this on a rule instead of inside the graph element",
+                        "default_value": 0,
+                        "ui": 0,
+                        "ui_on_text": "",
+                        "ui_off_text": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d4211d969b5b",
+                        "label": "Label",
+                        "name": "label",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 3,
+                        "instructions": "Label for horizontal data. will default to y axis key",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "bar"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d49b51b576ae",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d448fef59823",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "label",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d44915159827",
+                        "label": "Ticks Amount",
+                        "name": "ticks_amount",
+                        "prefix": "acf",
+                        "type": "number",
+                        "value": null,
+                        "menu_order": 4,
+                        "instructions": "number of tick marks along the axis",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d42110769b59",
+                                    "operator": "==",
+                                    "value": "0"
+                                },
+                                {
+                                    "field": "field_5d4492875982d",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d49b51b576ae",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d42110769b59",
+                                    "operator": "==",
+                                    "value": "0"
+                                },
+                                {
+                                    "field": "field_5d4492875982d",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d42110769b59",
+                                    "operator": "!=",
+                                    "value": "0"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d49b51b576ae",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d42110769b59",
+                                    "operator": "!=",
+                                    "value": "0"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d448fef59823",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "ticks_amount",
+                        "_prepare": 0,
+                        "_valid": 1,
                         "default_value": "",
                         "placeholder": "",
                         "prepend": "",
@@ -678,24 +797,44 @@
                     {
                         "ID": 0,
                         "key": "field_5d44948ed8de9",
-                        "label": "Tick Format",
-                        "name": "tick_format",
+                        "label": "Ticks Format",
+                        "name": "ticks_format",
                         "prefix": "acf",
                         "type": "text",
                         "value": null,
-                        "menu_order": 4,
+                        "menu_order": 5,
                         "instructions": "Reference: <a href=\"https:\/\/github.com\/d3\/d3-format\">https:\/\/github.com\/d3\/d3-format<\/a>",
                         "required": 0,
                         "id": "",
                         "class": "",
-                        "conditional_logic": 0,
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "bar"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d49b51b576ae",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ]
+                        ],
                         "parent": "field_5d448fef59823",
                         "wrapper": {
                             "width": "",
                             "class": "",
                             "id": ""
                         },
-                        "_name": "tick_format",
+                        "_name": "ticks_format",
                         "_prepare": 0,
                         "_valid": 1,
                         "default_value": "",
@@ -703,6 +842,206 @@
                         "prepend": "",
                         "append": "",
                         "maxlength": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d499c699d0fc",
+                        "label": "Minimum",
+                        "name": "min",
+                        "prefix": "acf",
+                        "type": "number",
+                        "value": null,
+                        "menu_order": 6,
+                        "instructions": "value of the minimum tick mark.<br>Leave blank if desired first tick mark value is the minimum value in the data<br> to disable tick marks to scale with data updates, setting a value is recommended.",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d49b51b576ae",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d42110769b59",
+                                    "operator": "==",
+                                    "value": "0"
+                                },
+                                {
+                                    "field": "field_5d4492875982d",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d49b51b576ae",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d42110769b59",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d42110769b59",
+                                    "operator": "==",
+                                    "value": "0"
+                                },
+                                {
+                                    "field": "field_5d4492875982d",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d42110769b59",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d448fef59823",
+                        "wrapper": {
+                            "width": "50",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "min",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "min": "",
+                        "max": "",
+                        "step": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d499c809d0fd",
+                        "label": "Maximum",
+                        "name": "max",
+                        "prefix": "acf",
+                        "type": "number",
+                        "value": null,
+                        "menu_order": 7,
+                        "instructions": "value of the maximum tick mark.<br>Leave blank if desired first tick mark value is the maximum value in the data<br> to disable tick marks to scale with data updates, setting a value is recommended.",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d49b51b576ae",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d42110769b59",
+                                    "operator": "==",
+                                    "value": "0"
+                                },
+                                {
+                                    "field": "field_5d4492875982d",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d49b51b576ae",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d42110769b59",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d42110769b59",
+                                    "operator": "==",
+                                    "value": "0"
+                                },
+                                {
+                                    "field": "field_5d4492875982d",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d42110769b59",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d448fef59823",
+                        "wrapper": {
+                            "width": "50",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "max",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "min": "",
+                        "max": "",
+                        "step": ""
                     }
                 ]
             },
@@ -748,7 +1087,7 @@
                         "type": "select",
                         "value": null,
                         "menu_order": 0,
-                        "instructions": "Data to represent horizontally",
+                        "instructions": "Data key to represent horizontally",
                         "required": 0,
                         "id": "",
                         "class": "",
@@ -778,42 +1117,13 @@
                     },
                     {
                         "ID": 0,
-                        "key": "field_5d4494e1f5296",
-                        "label": "Label",
-                        "name": "label",
-                        "prefix": "acf",
-                        "type": "text",
-                        "value": null,
-                        "menu_order": 1,
-                        "instructions": "Label for horizontal data. will default to y axis key",
-                        "required": 0,
-                        "id": "",
-                        "class": "",
-                        "conditional_logic": 0,
-                        "parent": "field_5d4494e1f5294",
-                        "wrapper": {
-                            "width": "",
-                            "class": "",
-                            "id": ""
-                        },
-                        "_name": "label",
-                        "_prepare": 0,
-                        "_valid": 1,
-                        "default_value": "",
-                        "placeholder": "",
-                        "prepend": "",
-                        "append": "",
-                        "maxlength": ""
-                    },
-                    {
-                        "ID": 0,
                         "key": "field_5d4494e1f5297",
                         "label": "Alignment",
                         "name": "align",
                         "prefix": "acf",
                         "type": "select",
                         "value": null,
-                        "menu_order": 2,
+                        "menu_order": 1,
                         "instructions": "Where to align the axis",
                         "required": 0,
                         "id": "",
@@ -842,14 +1152,14 @@
                     },
                     {
                         "ID": 0,
-                        "key": "field_5d4494e1f5298",
-                        "label": "Ticks Amount",
+                        "key": "field_5d49b81e8a9b1",
+                        "label": "Use Ticks?",
                         "name": "ticks",
                         "prefix": "acf",
-                        "type": "number",
+                        "type": "true_false",
                         "value": null,
-                        "menu_order": 3,
-                        "instructions": "number of tick marks along the axis",
+                        "menu_order": 2,
+                        "instructions": "",
                         "required": 0,
                         "id": "",
                         "class": "",
@@ -863,6 +1173,153 @@
                         "_name": "ticks",
                         "_prepare": 0,
                         "_valid": 1,
+                        "message": "Checking will display axis this on a rule instead of inside the graph element",
+                        "default_value": 0,
+                        "ui": 0,
+                        "ui_on_text": "",
+                        "ui_off_text": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d4494e1f5296",
+                        "label": "Label",
+                        "name": "label",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 3,
+                        "instructions": "Label for horizontal data. will default to y axis key",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d49b81e8a9b1",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "bar"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d4494e1f5294",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "label",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d4494e1f5298",
+                        "label": "Ticks Amount",
+                        "name": "ticks_amount",
+                        "prefix": "acf",
+                        "type": "number",
+                        "value": null,
+                        "menu_order": 4,
+                        "instructions": "number of tick marks along the axis",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d4494e1f5295",
+                                    "operator": "==",
+                                    "value": "0"
+                                },
+                                {
+                                    "field": "field_5d4492875982d",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d49b81e8a9b1",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d4494e1f5295",
+                                    "operator": "==",
+                                    "value": "0"
+                                },
+                                {
+                                    "field": "field_5d4492875982d",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d4494e1f5295",
+                                    "operator": "!=",
+                                    "value": "0"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d49b81e8a9b1",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d4494e1f5295",
+                                    "operator": "!=",
+                                    "value": "0"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d4494e1f5294",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "ticks_amount",
+                        "_prepare": 0,
+                        "_valid": 1,
                         "default_value": "",
                         "placeholder": "",
                         "prepend": "",
@@ -874,24 +1331,345 @@
                     {
                         "ID": 0,
                         "key": "field_5d4494e1f5299",
-                        "label": "Tick Format",
-                        "name": "tick_format",
+                        "label": "Ticks Format",
+                        "name": "ticks_format",
                         "prefix": "acf",
                         "type": "text",
                         "value": null,
-                        "menu_order": 4,
+                        "menu_order": 5,
                         "instructions": "Reference: <a href=\"https:\/\/github.com\/d3\/d3-format\">https:\/\/github.com\/d3\/d3-format<\/a>",
                         "required": 0,
                         "id": "",
                         "class": "",
-                        "conditional_logic": 0,
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d49b81e8a9b1",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "bar"
+                                }
+                            ]
+                        ],
                         "parent": "field_5d4494e1f5294",
                         "wrapper": {
                             "width": "",
                             "class": "",
                             "id": ""
                         },
-                        "_name": "tick_format",
+                        "_name": "ticks_format",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d499bac9d0fa",
+                        "label": "Minimum",
+                        "name": "min",
+                        "prefix": "acf",
+                        "type": "number",
+                        "value": null,
+                        "menu_order": 6,
+                        "instructions": "value of the minimum tick mark.<br>Leave blank if desired first tick mark value is the minimum value in the data<br> to disable tick marks to scale with data updates, setting a value is recommended.",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d49b81e8a9b1",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d4494e1f5295",
+                                    "operator": "==",
+                                    "value": "0"
+                                },
+                                {
+                                    "field": "field_5d4492875982d",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d49b81e8a9b1",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d4494e1f5295",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d4494e1f5295",
+                                    "operator": "==",
+                                    "value": "0"
+                                },
+                                {
+                                    "field": "field_5d4492875982d",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d4494e1f5295",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d4494e1f5294",
+                        "wrapper": {
+                            "width": "50",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "min",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "min": "",
+                        "max": "",
+                        "step": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d499c2a9d0fb",
+                        "label": "Maximum",
+                        "name": "max",
+                        "prefix": "acf",
+                        "type": "number",
+                        "value": null,
+                        "menu_order": 7,
+                        "instructions": "value of the maximum tick mark.<br>Leave blank if desired first tick mark value is the maximum value in the data<br> to disable tick marks to scale with data updates, setting a value is recommended.",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d49b81e8a9b1",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d4494e1f5295",
+                                    "operator": "==",
+                                    "value": "0"
+                                },
+                                {
+                                    "field": "field_5d4492875982d",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d49b81e8a9b1",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d4494e1f5295",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d4494e1f5295",
+                                    "operator": "==",
+                                    "value": "0"
+                                },
+                                {
+                                    "field": "field_5d4492875982d",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d4494e1f5295",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d4494e1f5294",
+                        "wrapper": {
+                            "width": "50",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "max",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "min": "",
+                        "max": "",
+                        "step": ""
+                    }
+                ]
+            },
+            {
+                "ID": 0,
+                "key": "field_5d499f4b8f7aa",
+                "label": "Pie Settings",
+                "name": "dv_pi",
+                "prefix": "acf",
+                "type": "group",
+                "value": null,
+                "menu_order": 15,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420a45de26f",
+                            "operator": "==",
+                            "value": "pie"
+                        }
+                    ]
+                ],
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_pi",
+                "_prepare": 0,
+                "_valid": 1,
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "ID": 0,
+                        "key": "field_5d49a0598f7ac",
+                        "label": "Label Style",
+                        "name": "label_style",
+                        "prefix": "acf",
+                        "type": "select",
+                        "value": null,
+                        "menu_order": 0,
+                        "instructions": "",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d499f4b8f7aa",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "label_style",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "choices": {
+                            "linked": "Linked",
+                            "within": "Within",
+                            "corner": "Corner",
+                            "donut": "Donut"
+                        },
+                        "default_value": [],
+                        "allow_null": 0,
+                        "multiple": 0,
+                        "ui": 0,
+                        "return_format": "value",
+                        "ajax": 0,
+                        "placeholder": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d49a79cdbf08",
+                        "label": "Data Format",
+                        "name": "data_format",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 1,
+                        "instructions": "Reference: <a href=\"https:\/\/github.com\/d3\/d3-format\">https:\/\/github.com\/d3\/d3-format<\/a>",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d499f4b8f7aa",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "data_format",
                         "_prepare": 0,
                         "_valid": 1,
                         "default_value": "",
@@ -910,7 +1688,7 @@
                 "prefix": "acf",
                 "type": "accordion",
                 "value": false,
-                "menu_order": 15,
+                "menu_order": 16,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -937,7 +1715,7 @@
                 "prefix": "acf",
                 "type": "repeater",
                 "value": null,
-                "menu_order": 16,
+                "menu_order": 17,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -993,7 +1771,7 @@
                 "prefix": "acf",
                 "type": "text",
                 "value": null,
-                "menu_order": 17,
+                "menu_order": 18,
                 "instructions": "Data key to link color scheme to",
                 "required": 0,
                 "id": "",
