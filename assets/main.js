@@ -36,10 +36,6 @@
     //         return dis[args.dataKey[args.yData]];
     //     })
     // }
-    
-    Object.prototype.createSelector = function (){
-
-    }
 
     
 
