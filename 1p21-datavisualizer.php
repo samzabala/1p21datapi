@@ -28,6 +28,7 @@ $_1p21_dv['defaults'] = array(
     'margin_offset' => null, //multiplier for spacing
     'width' => null, //duh
     'height' => null, //duh
+    'transition' => null, //duh
 );
 
 define('_1P21_DV_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );

@@ -39,4 +39,17 @@
     add_action( 'wp_enqueue_scripts', '_1p21_dv_enqueue_scripts' );
 
 
-  
+function _1p21_dv_acf_fields_styles(){
+    ?>
+    <style type="text/css">
+
+    #acf-group_5d4206c985d00 .dv-code input,
+    #acf-group_5d4206c985d00 .dv-code textarea{
+        font-family: monospace;
+        
+    }
+    </style>
+    <?php 
+}
+
+add_action('acf/input/admin_head', '_1p21_dv_acf_fields_styles');

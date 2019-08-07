@@ -129,7 +129,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
 
                             $coordinates = ['x','y'];
-                            $string_values = array('label','align','ticks_format');
+                            $string_values = array('label','align');
                             $boolean_values = array('ticks');
 
                             foreach($coordinates as $coordinate){
@@ -160,7 +160,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                             }
                             if($data_visual['colors_data_key']) {
                                 $render .= "
-                                colors: '{$data_visual['colors_data_key']}',\n";
+                                colorsData: '{$data_visual['colors_data_key']}',\n";
                             }
             
                         //src

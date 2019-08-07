@@ -43,8 +43,8 @@
     dataVisualizer = function(selector,arr){
         dataContainer = document.querySelector(selector);
 
-        //stor variables initiated after sucessful data call + parameter declaration
-        var dv = {};
+        //stor variables initiated after sucessful data call + parameter declaration set as something_x so its easier to tell apart which shit is set by hooman and which one javascript sets up for hooman
+        var _ = {};
 
         //default params
         var defaults  = {
@@ -52,12 +52,13 @@
             height:400,
             margin: 20,
             marginOffset: 3,
-            dataOneIsNum: false,
+            duration: 100,
             type: 'bar',
             dataKey: [
                 0, //data 1 / name
                 1 //data 2 / value
             ],
+            dataOneIsNum: false,
             //x settings
             xData: 0,
             xAlign: 'bottom',
@@ -80,9 +81,10 @@
     
             //kulay
             colors : [],
-            colorData: [],
+            colorsData: '',
     
-            //area? in case scatter plot
+            //area? in case scatter plot ir pi idk what the fuck i'm doing right now
+            areaKey: '',
     
             //src
             srcType: '',
@@ -101,32 +103,86 @@
 
 
 
+
         // x = setScale(args.xData,args.dataOneIsNum,range);
-        var setScale = function(dataKeyI,dataOneIsNum,range){
+        // args.xData,_.range_x
+        var setScale = function(axisString){
             var axis;
-            if(dataKeyI == 0 && !dataOneIsNum) {
+
+            var dataKeyI = args[ axisString+'Data'];
+            if(dataKeyI == 0 && !args.dataOneIsNum) {
                 axis = d3.scaleBand() //scales shit to dimensios
-                    .range(range); // scaled data from available space
+                    .range(_['range_'+axisString]) // scaled data from available space
+                    .paddingInner(.1) //spacing between
+                    .paddingOuter(.1); //spacing of first and last item from canvas
             }else{
                 axis = d3.scaleLinear()
-                .range(range);
+                .range(_['range_'+axisString]);
             }
 
+            if(args.type == 'bar'){
+                axis
+            }
             return axis;
 
         };
 
-        var setRange = function(dimension,whenMaxIsTheDimension){
+        //what the fucking fuk
+        var setRange = function(dimension,axisString){
+
+            var oppositeAxisString = (axisString == 'x') ? 'y' : 'x';
 
             var range = [];
-            if(whenMaxIsTheDimension) {
+            if(args[oppositeAxisString+'Align'] == 'top' || args[oppositeAxisString+'Align'] == 'left') {
                 range = [0,dimension]
             }else{
                 range = [dimension,0]
             }
             return range;
         }
+        
+        var setDomain = function(axisString,dat){
 
+            var dataKeyI =  args[ axisString+'Data'];
+            axisString = axisString.toLowerCase();
+            
+            if( dataKeyI  == 0 && !args.dataOneIsNum) {
+
+                return dat.map(function(dis){
+                    return dis[ args.dataKey[ dataKeyI ] ];
+                });
+            }else{
+                var domain = [],
+                min,
+                max;
+
+                if(args.hasOwnProperty(axisString + 'Min')){
+                    min = args[axisString + 'Min'];
+
+                }else{
+                    min = d3.min(dat,function(dis){
+                        return dis[ args.dataKey[ dataKeyI ] ];
+                    });
+                    console.log(args[axisString + 'Min']);
+                }
+
+
+
+                if(args.hasOwnProperty(axisString + 'Max')){
+                    max = args[axisString + 'Max']
+                }else{
+                    max = d3.max(dat,function(dis){
+                        return dis[ args.dataKey[ dataKeyI ] ];
+                    });
+                }
+                domain = [min,max];
+
+                return domain;
+                
+            }
+        };
+
+        // @TODO gmake this happen for dataY,dataX,colorda
         var getData = function(data,dataKeyArr){
             data = data || [];
             //remove the shit dumbass str_replace of php didn't get to
@@ -145,137 +201,166 @@
             return data;
         }
 
-        var setDomain = function(dataKeyI,axisString,dat){
-
-            axisString = axisString.toLowerCase();
-            
-            if(dataKeyI == 0 && !args.dataOneIsNum) {
-
-                return dat.map(function(dis){
-                    return dis[args.dataKey[dataKeyI]];
-                });
-            }else{
-                var domain = [],
-                min,
-                max;
-
-                if(args[axisString + 'Min']){
-                    min = args[axisString + 'Min']
-                }else{
-                    min = d3.max(dat,function(dis){
-                        return dis[args.dataKey[dataKeyI]];
-                    });
-                }
-
-
-                if(args[axisString + 'Max']){
-                    max = args[axisString + 'Max']
-                }else{
-                    max = d3.max(dat,function(dis){
-                        return dis[args.dataKey[dataKeyI]];
-                    });
-                }
-
-                domain = [min,max];
-
-                return domain;
-                
-            }
-        };
+        
 
         var setAxis = function(axisString) {
+            var axis;
+            switch(args[axisString+'Align']) {
+                case 'top':
+                    axis = d3.axisTop(_[axisString]);
+                    break;
+                case 'bottom':
+                    axis = d3.axisBottom(_[axisString]);
+                    break;
+                case 'left':
+                    axis = d3.axisLeft(_[axisString]);
+                    break;
+                case 'right':
+                    axis = d3.axisRight(_[axisString]);
+                    break;
+            }
+
+
+
+            if(args[axisString +'Ticks']){
+                args[axisString +'TicksFormat'] && axis.tickFormat( args[axisString +'TicksFormat'] );
+                args[axisString +'TicksAmount'] && axis.ticks( args[axisString +'TicksAmount'] );
+            }
+
+            return axis;
             
+        }
+
+        var setRuleContainer = function(axisString){
+            var rule = _.rule.append('g')
+                .attr('class','data-visualizer-axis-x');
+
+            var transformCoord = '0,0';
+            switch([axisString,args[axisString+'Align']]) {
+                case ['x','bottom']:
+                    transformCoord = '0,'+ args.height;
+                    break;
+                case ['y','right']:
+                    transformCoord = args.width+',0';
+                    break;
+            }
+
+            rule.attr('transform','translate('+transformCoord+')');
+
+            return rule;
         }
 
 
         //render a good boi
-        var renderData = function(selector,data,dv){
+        var renderData = function(selector,data,_){
             // heck if src key exists
-            var parsedData = data;
+            var retrievedData = data;
+
+            //duration
+            _.duration = d3.transition().duration(args.duration);
+
+
+            //element
+            switch(args.type){
+                case 'bar':
+                    _.graphItem = 'rect';
+                    break;
+                case 'scatter':
+                    _.graphItem = 'circle';
+                    break;
+            }
 
             if (args.srcKey) {
 
-                parsedData = getData(data,args.srcKey);
+                retrievedData = getData(data,args.srcKey);
 
             }
 
-            // console.log(parsedData);
+
+            //have ass parse dem numeric data bois
+            retrievedData.forEach(function(dis){
+                if(dis.hasOwnProperty(args.dataKey[args.yData])){
+                    dis[args.dataKey[args.yData]] = +dis[args.dataKey[args.yData]];
+                }
+
+                if(args.dataOneIsNum) {
+                    if(dis.hasOwnProperty(args.dataKey[args.xData])){
+                        dis[args.dataKey[args.xData]] = +dis[args.dataKey[args.xData]];
+                    }
+                }
+            })
+            // console.log(retrievedData);
 
             //canvas
-                dv.canvas = d3.select(selector)
+                _.canvas = d3.select(selector)
                     .append('div')
                     .attr('class','data-visualizer-wrapper'),
 
-                    dv.offH = args.margin * args.marginOffset,
-                    dv.offV = args.margin * (args.marginOffset * 1.5),
-                    dv.outerWidth = args.width + dv.offH,
-                    dv.outerHeight = args.height + dv.offV
+                    _.offH = args.margin * args.marginOffset,
+                    _.offV = args.margin * (args.marginOffset * 1.5),
+                    _.outerWidth = args.width + _.offH,
+                    _.outerHeight = args.height + _.offV
 
 
-                dv.dimensionString = '0 0 '+ dv.outerWidth +' ' + dv.outerHeight;
+                _.dimensionString = '0 0 '+ _.outerWidth +' ' + _.outerHeight;
 
 
 
-                dv.svg = dv.canvas.append('svg')
+                _.svg = _.canvas.append('svg')
                     .attr('id',selector+'-svg')
                     .attr('class','data-visualizer-svg')
-                    .attr('viewBox',dv.dimensionString)
+                    .attr('viewBox',_.dimensionString)
                     .attr("preserveAspectRatio", "xMinYMin meet")
-                    .style('style','enable-background','new '+dv.dimensionString)
-                    .attr('width',dv.outerWidth)
-                    .attr('height',dv.outerHeight);
+                    .style('style','enable-background','new '+_.dimensionString)
+                    .attr('width',_.outerWidth)
+                    .attr('height',_.outerHeight);
 
                     
-                dv.container = dv.svg.append('g');
-                dv.containerTransform = null;
+                _.container = _.svg.append('g');
+                _.containerTransform = null;
                     switch ([args.xAlign,args.yAlign]){
                         case ['top','left']:
-                            dv.containerTransform = dv.offH+','+dv.offV;
+                            _.containerTransform = _.offH+','+_.offV;
                             break;
                         case ['top','right']:
-                            dv.containerTransform = '0,'+dv.offV;
+                            _.containerTransform = '0,'+_.offV;
                             break;
                         case ['bottom','right']:
-                            dv.containerTransform = '0,0';
+                            _.containerTransform = '0,0';
                             break;
                         default:
-                            dv.containerTransform = dv.offH +',0'
+                            _.containerTransform = _.offH +',0'
                     }
-                dv.container.attr('transform','translate('+ dv.containerTransform +')');
+                _.container.attr('transform','translate('+ _.containerTransform +')');
 
             // legends and shit
-            dv.labels = dv.container.append('g')
+            _.labels = _.container.append('g')
                 .attr('class','data-visualizer-labels');
             if(args.type == 'pie'){
 
             }else{
 
                 // scale
-                dv.rangeX = setRange(args.width,args.xAlign == 'left'),
-                dv.rangeY =  setRange(args.height,args.yAlign == 'top');
+                _.range_x = setRange(args.width,'x'),
+                _.range_y =  setRange(args.height,'y');
 
-                dv.x = setScale(args.xData,args.dataOneIsNum,dv.rangeX)
-                        .paddingInner(.1) //spacing between
-                        .paddingOuter(.1); //spacing of first and last item from canvas
-
-                dv.y = setScale(args.xData,args.dataOneIsNum,dv.rangeY)
-                    .paddingInner(.1) //spacing between
-                    .paddingOuter(.1); //spacing of first and last item from canvas
+                //vars
+                _.the_x = setScale('x');
+                _.the_y = setScale('y');
 
                 if(args.xTicks || args.yTicks) {
 
                     // x label
-                        dv.labX = dv.labels.append('text')
-                        
-                        .attr('class','data-visualizer-label-x')
-                        .attr('y', args.height - args.margin)
-                        .attr('x', args.width / 2)
-                        .attr('font-size', '1em')
-                        .attr('text-anchor', 'middle')
-                        .text(args.xLabel || args.dataKey[args.xData] || '');
+                        _.lab_x = _.labels.append('text')
+                            .attr('class','data-visualizer-label-x')
+                            .attr('y', args.height - args.margin)
+                            .attr('x', args.width / 2)
+                            .attr('font-size', '1em')
+                            .attr('text-anchor', 'middle')
+                            .text(args.xLabel || args.dataKey[args.xData] || '');
 
                     // Y Label
-                        dv.labY = dv.labels.append('text')
+                        _.lab_y = _.labels.append('text')
                             .attr('class','data-visualizer-label-y')
                             .attr('y', -40)
                             .attr('x', -(args.height / 2))
@@ -283,26 +368,25 @@
                             .attr('text-anchor', 'middle')
                             .attr('transform', 'rotate(-90)')
                             .text(args.yLabel || args.dataKey[args.yData] || '');
+
+
+
+                    _.axis_x = setAxis('x');
+                    _.axis_y = setAxis('y');
+
+                    _.rule = _.container.append('g')
+                        .attr('class','data-visualizer-axis');
+    
+                    args.xTicks &&  (_.rule_x = setRuleContainer('x'));
+                    args.yTicks &&  (_.rule_y = setRuleContainer('y'));
+                    
                 }
 
-                dv.rule = dv.container.append('g')
-                    .attr('class','data-visualizer-axis');
-
-                args.xTicks && (
-                    dv.ruleX = dv.rule.append('g')
-                        .attr('class','data-visualizer-axis-x')
-                );
-                
-                args.yTicks && (
-                    dv.ruleY = dv.rule.append('g')
-                        .attr('class','data-visualizer-axis-y')
-                );
 
 
+            } 
 
-                } 
-
-            update(parsedData,dv)
+            update(retrievedData,_)
 
         }
                 
@@ -310,26 +394,69 @@
 
 
         // tick inits
-        var update = function(dat,dv) {
-            // console.log(dv);
+        var update = function(dat,_) {
+            console.log(_);
+            // console.log(dat);
+            console.log(args);
 
-            // // ok do the thing now
-            // dv.x.domain(setDomain(
-            //     args.xData,
-            //     'x',
-            //     dat
-            // ));
+            // ok do the thing now
+            _.dom_x = setDomain(
+                'x',
+                dat
+            );
+            _.dom_y = setDomain(
+                'y',
+                dat
+            );
 
-            // dv.y.domain(setDomain(
-            //     args.yData,
-            //     'y',
-            //     dat
-            // ));
-            
+            console.log('X:\n','Domain: ',_.dom_x,'\n ','Rang:',_.range_x);
+            console.log('Y:\n','Domain: ',_.dom_y,'\n ','Rang:',_.range_y);
 
-                
+            _.the_x.domain(_.dom_x);
+            _.the_y.domain(_.dom_y);
+
+            if(args.xTicks || args.yTicks) {
+
+                _.rule_x.transition(_.duration).call( _.axis_x);
+                _.rule_y.transition(_.duration).call( _.axis_y);
+            }
+
+            //select
+            _.bitches = _.container.selectAll(_.graphItem)
+                .data(dat,function(dis){
+                    return dis[args.dataKey[args.xData]]
+                });
+
+            // delete unqualified bois
 
 
+            if(args.type == 'bar'){
+                _.bitches.exit()
+                    .transition(_.duration)
+                    .attr('height',0)
+                    .attr('fill-opacity',0)
+                    .remove();
+
+                _.bitches
+                    .enter()
+                    .append(_.graphItem)
+                    .attr('width',function(dis,i){
+                        
+                        return _.the_x.bandwidth()
+                    }) // calculated width
+                    // .attr('height',function(dis,i){
+                        
+                    //     return args.height - _.the_y(dis[args.dataKey[args.yData]])
+                    // })
+
+                    .attr('x',function(dis,i){
+                        return _.the_x(dis[args.dataKey[args.xData]])
+                    })
+
+                    .attr('y',function(dis,i){
+                        return _.the_y(dis[args.dataKey[args.yData]])
+                    });
+            }
 
 
         }
@@ -338,18 +465,18 @@
         switch(args.srcPath.getFileExtension()) {
             case 'csv':
                 d3.csv(args.srcPath).then(function(data){
-                    renderData(selector,data,dv);
+                    renderData(selector,data,_);
                 });
                 break;
             case 'tsv':
                 d3.tsv(args.srcPath).then(function(data){
-                    renderData(selector,data,dv);
+                    renderData(selector,data,_);
                 });
                 break;
             
-            case 'json':
+            case 'json' || 'geojson':
                 d3.json(args.srcPath).then(function(data){
-                    renderData(selector,data,dv);
+                    renderData(selector,data,_);
                 });
                 break;
             //probably embeded
@@ -359,9 +486,9 @@
                     jsonSelector = dataContainer.querySelector('script[type="application/json"').innerHTML;
                     if(jsonSelector.isValidJSONString()){
 
-                        var parsedData = JSON.parse(jsonSelector);
+                        var dataAsJSON = JSON.parse(jsonSelector);
                     
-                        renderData(selector,parsedData,dv);
+                        renderData(selector,dataAsJSON,_);
                     }else{
                         console.error('The data source is not a supported format. Please make sure data is linked either as a json,csv, tsv or direct input in the fields')
                     }
