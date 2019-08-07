@@ -222,32 +222,67 @@
 
 
 
-            if(args[axisString +'Ticks']){
-                args[axisString +'TicksFormat'] && axis.tickFormat( args[axisString +'TicksFormat'] );
-                args[axisString +'TicksAmount'] && axis.ticks( args[axisString +'TicksAmount'] );
+            if(args.hasOwnProperty(axisString +'Ticks')){
+                args.hasOwnProperty(axisString +'TicksFormat') && axis.tickFormat( args[axisString +'TicksFormat'] );
+                args.hasOwnProperty(axisString +'TicksAmount') && axis.ticks( args[axisString +'TicksAmount'] );
             }
+
 
             return axis;
             
         }
 
-        var setRuleContainer = function(axisString){
-            var rule = _.rule.append('g')
-                .attr('class','data-visualizer-axis-x');
+        var setRuleContainer = function(axisString,containerObj){
+            var rule = containerObj.append('g')
+                .attr('class','data-visualizer-axis-'+axisString+' data-visualizer-axis-align-'+args[axisString+'Align']);
 
-            var transformCoord = '0,0';
-            switch([axisString,args[axisString+'Align']]) {
-                case ['x','bottom']:
+            var transformCoord = '';
+            
+            switch( axisString+' '+args[axisString+'Align'] ) {
+                case 'x bottom':
                     transformCoord = '0,'+ args.height;
                     break;
-                case ['y','right']:
+                case 'y right':
                     transformCoord = args.width+',0';
                     break;
+                default: 
+                    transformCoord = '0,0'
             }
+
 
             rule.attr('transform','translate('+transformCoord+')');
 
             return rule;
+        }
+
+        var renderAxis = function(axisString,containerObj) {
+            if(args[axisString+'Ticks']) {
+
+                // x label
+                    _['lab_'+axisString] = _.labels.append('text')
+                        .attr('class','data-visualizer-label-'+axisString)
+                        .attr('y', function(){
+                            return (axisString == 'x') ? args.height - args.margin : -40;
+                        })
+                        .attr('x', function(){
+                            return (axisString == 'x') ? args.width / 2 : -(args.height / 2);
+                        })
+                        .attr('font-size', '1em')
+                        .attr('text-anchor', 'middle')
+                        .text(args[axisString+'Label'] || args.dataKey[ args[axisString+'Data'] ] || '');
+
+
+                    if(axisString == 'y') {
+                        _['lab_'+axisString].attr('transform', 'rotate(-90)');
+                    }
+
+                //ruler
+                    _['rule_'+axisString] = setRuleContainer(axisString,containerObj);
+
+                //axis
+                    _['axis_'+axisString] = setAxis(axisString);
+                
+            }
         }
 
 
@@ -271,9 +306,7 @@
             }
 
             if (args.srcKey) {
-
                 retrievedData = getData(data,args.srcKey);
-
             }
 
 
@@ -318,14 +351,14 @@
                     
                 _.container = _.svg.append('g');
                 _.containerTransform = null;
-                    switch ([args.xAlign,args.yAlign]){
-                        case ['top','left']:
+                    switch ( args.xAlign+' '+args.yAlign ){
+                        case 'top'+' '+'left':
                             _.containerTransform = _.offH+','+_.offV;
                             break;
-                        case ['top','right']:
+                        case 'top'+' '+'right':
                             _.containerTransform = '0,'+_.offV;
                             break;
-                        case ['bottom','right']:
+                        case 'bottom'+' '+'right':
                             _.containerTransform = '0,0';
                             break;
                         default:
@@ -333,54 +366,29 @@
                     }
                 _.container.attr('transform','translate('+ _.containerTransform +')');
 
-            // legends and shit
-            _.labels = _.container.append('g')
-                .attr('class','data-visualizer-labels');
+
+
             if(args.type == 'pie'){
 
             }else{
+                // legends and shit
+                _.labels = _.container.append('g')
+                    .attr('class','data-visualizer-labels');
+    
+                _.rule = _.container.append('g')
+                    .attr('class','data-visualizer-axis');
 
                 // scale
                 _.range_x = setRange(args.width,'x'),
                 _.range_y =  setRange(args.height,'y');
 
                 //vars
-                _.the_x = setScale('x');
-                _.the_y = setScale('y');
-
-                if(args.xTicks || args.yTicks) {
-
-                    // x label
-                        _.lab_x = _.labels.append('text')
-                            .attr('class','data-visualizer-label-x')
-                            .attr('y', args.height - args.margin)
-                            .attr('x', args.width / 2)
-                            .attr('font-size', '1em')
-                            .attr('text-anchor', 'middle')
-                            .text(args.xLabel || args.dataKey[args.xData] || '');
-
-                    // Y Label
-                        _.lab_y = _.labels.append('text')
-                            .attr('class','data-visualizer-label-y')
-                            .attr('y', -40)
-                            .attr('x', -(args.height / 2))
-                            .attr('font-size', '1em')
-                            .attr('text-anchor', 'middle')
-                            .attr('transform', 'rotate(-90)')
-                            .text(args.yLabel || args.dataKey[args.yData] || '');
+                _._x = setScale('x');
+                _._y = setScale('y');
 
 
-
-                    _.axis_x = setAxis('x');
-                    _.axis_y = setAxis('y');
-
-                    _.rule = _.container.append('g')
-                        .attr('class','data-visualizer-axis');
-    
-                    args.xTicks &&  (_.rule_x = setRuleContainer('x'));
-                    args.yTicks &&  (_.rule_y = setRuleContainer('y'));
-                    
-                }
+                renderAxis('x',_.rule);
+                renderAxis('y',_.rule);
 
 
 
@@ -395,31 +403,28 @@
 
         // tick inits
         var update = function(dat,_) {
-            console.log(_);
-            // console.log(dat);
-            console.log(args);
+            // ok do the thing now
+            // _.dom_x = setDomain(
+            //     'x',
+            //     dat
+            // );
+            // _._x.domain(_.dom_x);
+            // args.xTicks && _.rule_x.transition(_.duration).call( _.axis_x);
+
+            // _.rule_x.call( _.axis_x);
+
 
             // ok do the thing now
-            _.dom_x = setDomain(
-                'x',
-                dat
-            );
             _.dom_y = setDomain(
                 'y',
                 dat
             );
+            _._y.domain(_.dom_y);
 
-            console.log('X:\n','Domain: ',_.dom_x,'\n ','Rang:',_.range_x);
-            console.log('Y:\n','Domain: ',_.dom_y,'\n ','Rang:',_.range_y);
 
-            _.the_x.domain(_.dom_x);
-            _.the_y.domain(_.dom_y);
+            
+            args.yTicks && _.rule_y.transition(_.duration).call( _.axis_y);
 
-            if(args.xTicks || args.yTicks) {
-
-                _.rule_x.transition(_.duration).call( _.axis_x);
-                _.rule_y.transition(_.duration).call( _.axis_y);
-            }
 
             //select
             _.bitches = _.container.selectAll(_.graphItem)
@@ -440,22 +445,22 @@
                 _.bitches
                     .enter()
                     .append(_.graphItem)
-                    .attr('width',function(dis,i){
+                    // .attr('width',function(dis,i){
                         
-                        return _.the_x.bandwidth()
-                    }) // calculated width
+                    //     return _._x.bandwidth()
+                    // }) // calculated width
                     // .attr('height',function(dis,i){
                         
-                    //     return args.height - _.the_y(dis[args.dataKey[args.yData]])
+                    //     return args.height + _._y(dis[args.dataKey[args.yData]])
                     // })
 
-                    .attr('x',function(dis,i){
-                        return _.the_x(dis[args.dataKey[args.xData]])
-                    })
+                    // .attr('x',function(dis,i){
+                    //     return _._x(dis[args.dataKey[args.xData]])
+                    // })
 
-                    .attr('y',function(dis,i){
-                        return _.the_y(dis[args.dataKey[args.yData]])
-                    });
+                    // .attr('y',function(dis,i){
+                    //     return _._y(dis[args.dataKey[args.yData]])
+                    // });
             }
 
 
