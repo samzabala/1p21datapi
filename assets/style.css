@@ -6,4 +6,6 @@
 
 .data-visualizer-wrapper:empty:before { content: "Loading..."; position: absolute; margin: auto; top: 50%; left: 50%; transform: translate(-50%, -50%); }
 
-.data-visualizer svg { display: block; max-width: 100%; margin: 0 auto; outline: 1px solid red; }
+.data-visualizer svg { display: block; width: 100%; max-width: 100%; margin: 0 auto; }
+
+.data-visualizer rect, .data-visualizer circle { fill: #666; }

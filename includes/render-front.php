@@ -138,14 +138,18 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                                     if($value !== ''){
                                         $parsed_settings_key = _1p21_dv_dashes_to_camel_case($coordinate . '_' . $settings ); 
                 
-                                        $parsed_value = $value;
-                                        if(in_array($settings,$string_values)){
-                                            $parsed_value = '\''.$value. '\'';
-                                        }elseif(in_array($settings,$boolean_values)){
-                                            $parsed_value = ($value == 1) ? 'true' : 'false';
+                                        if($value !== null){
+                                            $parsed_value = $value;
+
+                                            
+                                            if(in_array($settings,$string_values)){
+                                                $parsed_value = '\''.$value. '\'';
+                                            }elseif(in_array($settings,$boolean_values)){
+                                                $parsed_value = ($value == 1) ? 'true' : 'false';
+                                            }
+                    
+                                            $render .= "{$parsed_settings_key}: {$parsed_value},\n";
                                         }
-                
-                                        $render .= "{$parsed_settings_key}: {$parsed_value},\n";
                                     }
                                 }
                             }

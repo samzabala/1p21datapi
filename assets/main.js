@@ -1,7 +1,21 @@
+// "use strict";
+
 (function(window,d3){
     var _1p21 = _1p21 || {};
 
-    //default parameters
+    // helpful variables
+    //for bar
+    var coordinates = ['x','y']
+    
+    
+    var dimensionAttribute = function(axisString,opposite){
+        
+        if(opposite){
+            return (axisString == 'x') ? 'height' : 'width';
+        }else{
+            return (axisString == 'x') ? 'width' : 'height';
+        }
+    }
     
 
     //string helpers
@@ -40,8 +54,8 @@
     
 
     //initial function
-    dataVisualizer = function(selector,arr){
-        dataContainer = document.querySelector(selector);
+    var dataVisualizer = function(selector,arr){
+        var dataContainer = document.querySelector(selector);
 
         //stor variables initiated after sucessful data call + parameter declaration set as something_x so its easier to tell apart which shit is set by hooman and which one javascript sets up for hooman
         var _ = {};
@@ -52,7 +66,8 @@
             height:400,
             margin: 20,
             marginOffset: 3,
-            duration: 100,
+            duration: 1000,
+            delay: 500,
             type: 'bar',
             dataKey: [
                 0, //data 1 / name
@@ -63,17 +78,17 @@
             xData: 0,
             xAlign: 'bottom',
             xTicks: false,
-            xLabel: '',
+            xLabel: null,
             xTicksAmount: null,
             xTicksFormat: null,
             xMin: null,
             xMax: null,
     
             //y settings
-            yData: 0,
+            yData: 1,
             yAlign: 'left',
             yTicks: false,
-            yLabel: '',
+            yLabel: null,
             yTicksAmount: null,
             yTickFormat: null,
             yMin: null,
@@ -101,85 +116,6 @@
             }
         }
 
-
-
-
-        //set the scale function thingy for the axis shit
-        var setScale = function(axisString){
-            var axis;
-            var dataKeyI = args[ axisString+'Data'];
-            if(dataKeyI == 0 && !args.dataOneIsNum) {
-                axis = d3.scaleBand() //scales shit to dimensios
-                    .range(_['range_'+axisString]) // scaled data from available space
-                    .paddingInner(.1) //spacing between
-                    .paddingOuter(.1); //spacing of first and last item from canvas
-            }else{
-                axis = d3.scaleLinear()
-                .range(_['range_'+axisString]);
-            }
-
-            if(args.type == 'bar'){
-                axis
-            }
-            return axis;
-
-        };
-
-        //set range of the bois
-        var setRange = function(dimension,axisString){
-
-            var oppositeAxisString = (axisString == 'x') ? 'y' : 'x';
-
-            var range = [];
-            if(args[oppositeAxisString+'Align'] == 'top' || args[oppositeAxisString+'Align'] == 'left') {
-                range = [0,dimension]
-            }else{
-                range = [dimension,0]
-            }
-            return range;
-        }
-        
-        var setDomain = function(axisString,dat){
-
-            var dataKeyI =  args[ axisString+'Data'];
-            axisString = axisString.toLowerCase();
-            
-            if( dataKeyI  == 0 && !args.dataOneIsNum) {
-
-                return dat.map(function(dis){
-                    return dis[ args.dataKey[ dataKeyI ] ];
-                });
-            }else{
-                var domain = [],
-                min,
-                max;
-
-                if(args.hasOwnProperty(axisString + 'Min')){
-                    min = args[axisString + 'Min'];
-
-                }else{
-                    min = d3.min(dat,function(dis){
-                        return dis[ args.dataKey[ dataKeyI ] ];
-                    });
-                    console.log(args[axisString + 'Min']);
-                }
-
-
-
-                if(args.hasOwnProperty(axisString + 'Max')){
-                    max = args[axisString + 'Max']
-                }else{
-                    max = d3.max(dat,function(dis){
-                        return dis[ args.dataKey[ dataKeyI ] ];
-                    });
-                }
-                domain = [min,max];
-
-                return domain;
-                
-            }
-        };
-
         // @TODO gmake this happen for dataY,dataX,colorda
         var getData = function(data,dataKeyArr){
             data = data || [];
@@ -199,7 +135,204 @@
             return data;
         }
 
+        //set range of the bois
+        var getRange = function(dimension,axisString){
+
+            var oppositeAxisString = (axisString == 'x') ? 'y' : 'x';
+
+            var range = [];
+            if(args[oppositeAxisString+'Align'] == 'top' || args[oppositeAxisString+'Align'] == 'left') {
+                range = [0,dimension]
+            }else{
+                range = [dimension,0]
+            }
+            return range;
+        }
         
+        var getDomain = function(axisString,dat){
+
+            var dataKeyI =  args[ axisString+'Data'];
+            axisString = axisString.toLowerCase();
+            
+            if( dataKeyI  == 0 && !args.dataOneIsNum) {
+
+                return dat.map(function(dis){
+                    return dis[ args.dataKey[ dataKeyI ] ];
+                });
+            }else{
+                var domain = [],
+                min,
+                max;
+
+                if(args[axisString + 'Min'] !== null){
+                    min = args[axisString + 'Min'];
+
+                }else{
+                    min = d3.min(dat,function(dis){
+                        return dis[ args.dataKey[ dataKeyI ] ];
+                    });
+                }
+
+
+
+                if(args[axisString + 'Max'] !== null){
+                    max = args[axisString + 'Max']
+                }else{
+                    max = d3.max(dat,function(dis){
+                        return dis[ args.dataKey[ dataKeyI ] ];
+                    });
+                }
+                domain = [min,max];
+
+                return domain;
+                
+            }
+        };
+
+
+    //AXIS STRING AND AXIS POSITION COORDINATES ARE VERY DIFFERENT THINGS U DUMB FUCK
+        var getLabelPosition = function(coordinateAttribute,axisString){ 
+            var theOffset = 0;
+
+            if(coordinateAttribute == 'x'){ //x
+
+                if(axisString == 'x'){
+                    theOffset = args[dimensionAttribute(axisString)] / 2;
+                }else if(axisString == 'y'){
+                    theOffset = -(args[dimensionAttribute(axisString)] / 2)
+                };
+                
+            }else{ //y
+                
+                if(axisString == 'x'){
+                    if(args[axisString+'Align'] == 'top'){
+                        theOffset = -(_.offV - (args.margin * .75));
+                    }else{
+                        theOffset = args[dimensionAttribute(axisString,true)] + (_.offV - (args.margin * .75)); //args.height + ()
+                    }
+                }else if(axisString == 'y'){
+                    if(args[axisString+'Align'] == 'right'){
+                        theOffset = args[dimensionAttribute(axisString,true)] + (_.offH * .75);
+                    }else{
+                        theOffset = -(_.offH * .75)
+                    }
+                };
+            }
+
+            return theOffset;
+        }
+
+        //attricutie setup for types
+            //BAR
+
+        var getBlobSize = function(dimensionAttribute,dis,i,initial) {
+            var axisString = (dimensionAttribute == 'width') ? 'x' : 'y',
+                oppositeAxisString = (axisString == 'x') ? 'y' : 'x',
+                dataKeyI =  args[ axisString+'Data'],
+                dataKey = args.dataKey[dataKeyI],
+                oppositeAxisAlignment = args[ oppositeAxisString+'Align'],
+                dimension = 20,
+                initial = initial || false;
+
+
+
+            switch(args.type) {
+                case 'pie':
+                    break;
+                case 'scatter':
+                        //radius
+                    break;
+                default:
+
+                    if(dataKeyI  == 0 && !args.dataOneIsNum){
+                        dimension = _['the_'+axisString].bandwidth()
+                    }else{
+                        if(initial) {
+                            dimension = 0;
+                        }else{
+
+                            if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
+                                dimension = args[dimensionAttribute] - _['the_'+axisString](dis[dataKey]);
+                            }else{
+
+                                dimension = _['the_'+axisString](dis[dataKey]);
+                            }
+                        }
+                    }
+
+            }
+            
+
+            return dimension
+        }
+
+        var getBlobPosition = function(coordinateAttribute,dis,i,initial){
+            //coordinate is influenced by the axis right now so this is the only time coordinate and axis is one and the same. i think... do not trust me on this
+            var axisString = coordinateAttribute,
+                dimensionAttribute = (axisString == 'x') ? 'width' : 'height',
+                oppositeAxisString = (axisString == 'x') ? 'y' : 'x',
+                dataKeyI =  args[ axisString+'Data'],
+                dataKey = args.dataKey[dataKeyI],
+                oppositeAxisAlignment = args[ oppositeAxisString+'Align'],
+                initial = initial || false,
+                offset = 0;
+
+                switch(args.type) {
+                case 'pie':
+                    break;
+                case 'scatter':
+                        //radius
+                    break;
+                default:
+                    
+
+                    
+                    if(dataKeyI  == 0 && !args.dataOneIsNum){
+                        offset = _['the_'+axisString](dis[dataKey]);
+                    }else{
+                        if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
+                            if(initial){
+                                offset = args[dimensionAttribute];
+
+                            }else{
+                                offset = args[dimensionAttribute] - (args[dimensionAttribute] - _['the_'+axisString](dis[dataKey]));
+                            }
+                        }
+                    }
+                    
+
+            }
+            
+
+            return offset;
+        }
+
+
+        var setRuleContainer = function(axisString,containerObj){
+            var rule = containerObj.append('g')
+                .attr('class','data-visualizer-axis-'+axisString+' data-visualizer-axis-align-'+args[axisString+'Align']);
+
+            var transformCoord = '';
+            
+            switch( axisString+' '+args[axisString+'Align'] ) {
+                case 'x bottom':
+                    transformCoord = '0,'+ args.height;
+                    break;
+                case 'y right':
+                    transformCoord = args.width+',0';
+                    break;
+                default: 
+                    transformCoord = '0,0'
+            }
+
+
+            rule.attr('transform','translate('+transformCoord+')');
+
+            return rule;
+        }
+
+
+
 
         var setAxis = function(axisString) {
             var axis;
@@ -230,82 +363,49 @@
             
         }
 
-        var setRuleContainer = function(axisString,containerObj){
-            var rule = containerObj.append('g')
-                .attr('class','data-visualizer-axis-'+axisString+' data-visualizer-axis-align-'+args[axisString+'Align']);
-
-            var transformCoord = '';
-            
-            switch( axisString+' '+args[axisString+'Align'] ) {
-                case 'x bottom':
-                    transformCoord = '0,'+ args.height;
-                    break;
-                case 'y right':
-                    transformCoord = args.width+',0';
-                    break;
-                default: 
-                    transformCoord = '0,0'
+        //set the scale function thingy for the axis shit
+        var setScale = function(axisString){
+            var axis;
+            var dataKeyI = args[ axisString+'Data'];
+            if(dataKeyI == 0 && !args.dataOneIsNum) {
+                axis = d3.scaleBand() //scales shit to dimensios
+                    .range(_['range_'+axisString]) // scaled data from available space
+                    .paddingInner(.1) //spacing between
+                    .paddingOuter(.1); //spacing of first and last item from canvas
+            }else{
+                axis = d3.scaleLinear()
+                .range(_['range_'+axisString]);
             }
 
-
-            rule.attr('transform','translate('+transformCoord+')');
-
-            return rule;
-        }
-
-
-
-        var setLabelPosition = function(coordinateAttribute,axS){
-            var theOffset = 0;
-
-            if(coordinateAttribute == 'x'){ //x
-
-                if(axS == 'x'){
-                    theOffset = args.width / 2;
-                }else{
-                    theOffset = -(args.height / 2)
-                };
-                
-            }else{ //y
-                
-                if(axS == 'x'){
-                    if(args[axS+'Align'] == 'top'){
-                        theOffset = -(_.offV - args.margin);
-                    }else{
-                        theOffset = args.height + (_.offV - args.margin); //args.height + ()
-                    }
-                }else{
-                    if(args[axS+'Align'] == 'right'){
-                        theOffset = args.width + (_.offH - args.margin);
-                    }else{
-                        theOffset = -(_.offH - args.margin)
-                    }
-                };
+            if(args.type == 'bar'){
+                axis
             }
+            return axis;
 
-            return theOffset;
-        }
+        };
 
         var renderAxis = function(axisString,containerObj) {
-            if(args[axisString+'Ticks']) {
+            if( args[axisString+'Ticks']) {
 
                 // x label
+                if( args[axisString+'Label'] ){
                     _['lab_'+axisString] = _.labels.append('text')
                         .attr('class','data-visualizer-label-'+axisString)
                         .attr('y', function(){
-                            return setLabelPosition('y',axisString);
+                            return getLabelPosition('y',axisString);
                         })
                         .attr('x', function(){
-                            return setLabelPosition('x',axisString);
+                            return getLabelPosition('x',axisString);
                         })
                         .attr('font-size', '1em')
                         .attr('text-anchor', 'middle')
-                        .text(args[axisString+'Label'] || args.dataKey[ args[axisString+'Data'] ] || '');
+                        .text(args[axisString+'Label']);
 
 
                     if(axisString == 'y') {
                         _['lab_'+axisString].attr('transform', 'rotate(-90)');
                     }
+                }
 
                 //ruler
                     _['rule_'+axisString] = setRuleContainer(axisString,containerObj);
@@ -341,29 +441,27 @@
             }
 
 
-            //have ass parse dem numeric data bois
-            retrievedData.forEach(function(dis){
-                if(dis.hasOwnProperty(args.dataKey[args.yData])){
-                    dis[args.dataKey[args.yData]] = +dis[args.dataKey[args.yData]];
-                }
+            //half ass parse dem numeric data bois
 
-                if(args.dataOneIsNum) {
-                    if(dis.hasOwnProperty(args.dataKey[args.xData])){
-                        dis[args.dataKey[args.xData]] = +dis[args.dataKey[args.xData]];
+            coordinates.forEach(function(coordinate){
+
+                retrievedData.forEach(function(dis){
+                    var currentDataKey = args.dataKey[ args[ coordinate+'Data' ] ];
+                    if(  !args.dataOneIsNum && args[coordinate + 'Data'] !== 0 ){
+                        dis[ currentDataKey ] = +dis[ currentDataKey ];
                     }
-                }
+                });
             })
-            // console.log(retrievedData);
 
             //canvas
                 _.canvas = d3.select(selector)
                     .append('div')
                     .attr('class','data-visualizer-wrapper'),
 
-                    _.offH = args.margin * args.marginOffset,
-                    _.offV = args.margin * args.marginOffset,
-                    _.outerWidth = args.width + _.offH,
-                    _.outerHeight = args.height + _.offV + (args.marginOffset * 1.5)
+                    _.offH = (args.yLabel) ?  args.margin * args.marginOffset : args.margin * (args.marginOffset * .5),
+                    _.offV = (args.xLabel) ?  args.margin * args.marginOffset : args.margin * (args.marginOffset * .5),
+                    _.outerWidth = args.width + (_.offH * 2),
+                    _.outerHeight = args.height + (_.offV * 2)
 
 
                 _.dimensionString = '0 0 '+ _.outerWidth +' ' + _.outerHeight;
@@ -382,20 +480,58 @@
                     
                 _.container = _.svg.append('g');
                 _.containerTransform = null;
-                    switch ( args.xAlign+' '+args.yAlign ){
-                        case 'top'+' '+'left':
-                            _.containerTransform = _.offH+','+_.offV;
+
+                    var shift = {
+                        more: 1.25,
+                        less: .75
+                    };
+
+                    transformX = _.offH;
+                    transformY = _.offV;
+
+                    //x COORDINATE value
+                    switch ( args.yAlign+' '+ ((args.xLabel == '') ? 'empty' : 'has') ){
+                        case 'left has':
+                            _.transformX = (_.offH * shift.more);
                             break;
-                        case 'top'+' '+'right':
-                            _.containerTransform = '0,'+_.offV;
-                            break;
-                        case 'bottom'+' '+'right':
-                            _.containerTransform = '0,'+ (args.marginOffset * 1.5);
+                        case 'right has':
+                            _.transformX = (_.offH * shift.less);
                             break;
                         default:
-                            _.containerTransform = _.offH +','+ (args.marginOffset * 1.5);
+                            _.transformX = (_.offH);
                     }
-                _.container.attr('transform','translate('+ _.containerTransform +')');
+
+
+                    //y COORDINATE value
+                    switch ( args.xAlign+' '+ ((args.yLabel == '') ? 'empty' : 'has') ){
+                        case 'top has':
+                            _.transformX = (_.offV * shift.more);
+                            break;
+                        case 'bottom has':
+                            _.transformX = (_.offV * shift.less);
+                            break;
+                        default:
+                            _.transformX = (_.offV);
+                    }
+
+
+
+
+
+                    // switch ( args.yAlign+' '+args.xAlign ){
+                    //     case 'left'+' '+'top':
+                    //         _.containerTransform = (_.offH * shift.more)+','+(_.offV * shift.more);
+                    //         break;
+                    //     case 'right'+' '+'top':
+                    //         _.containerTransform = (_.offH * shift.less)+','+(_.offV * shift.more);
+                    //         break;
+                    //     case 'right'+' '+'bottom':
+                    //         _.containerTransform = (_.offH * shift.less)+','+ (_.offV * shift.less);
+                    //         break;
+                    //     default:
+                    //         _.containerTransform = (_.offH * shift.more) +','+ (_.offV * shift.less);
+                    // }
+                _.container.attr('transform','translate('+ transformX +','+ transformY +')');
 
 
 
@@ -409,23 +545,37 @@
                 _.rule = _.container.append('g')
                     .attr('class','data-visualizer-axis');
 
-                // scale
-                _.range_x = setRange(args.width,'x'),
-                _.range_y =  setRange(args.height,'y');
+                coordinates.forEach(function(coordinate){
+                    // scale
+                    _['range_'+coordinate] = getRange(args[dimensionAttribute(coordinate)],coordinate),
 
-                //vars
-                _.the_x = setScale('x');
-                _.the_y = setScale('y');
+                    //vars
+                    _['the_'+coordinate] = setScale(coordinate);
 
 
-                renderAxis('x',_.rule);
-                renderAxis('y',_.rule);
+                    renderAxis(coordinate,_.rule);
+                })
+
+                // // scale
+                // _.range_x = getRange(args.width,'x'),
+                // _.range_y =  getRange(args.height,'y');
+
+                // //vars
+                // _.the_x = setScale('x');
+                // _.the_y = setScale('y');
+
+
+                // renderAxis('x',_.rule);
+                // renderAxis('y',_.rule);
 
 
 
             } 
 
-            update(retrievedData,_)
+            setTimeout(function(){
+
+                renderUpdate(retrievedData,_);
+            },args.delay);
 
         }
                 
@@ -433,11 +583,12 @@
 
 
         // tick inits
-        var update = function(dat,_) {
+        var renderUpdate = function(dat,_) {
             // ok do the thing now
-            console.log(_);
-            console.log(args);
-            _.dom_x = setDomain(
+            console.log('calculated',_);
+            console.log('data',dat);
+            console.log('args',args);
+            _.dom_x = getDomain(
                 'x',
                 dat
             );
@@ -446,7 +597,7 @@
 
 
             // ok do the thing now
-            _.dom_y = setDomain(
+            _.dom_y = getDomain(
                 'y',
                 dat
             );
@@ -455,42 +606,113 @@
 
 
             //select
-            _.bitches = _.container.selectAll(_.graphItem)
+            _.graph = _.container.append('g')
+                .attr('class','data-visualizer-graph');
+
+            _.blob = _.graph.selectAll(_.graphItem)
                 .data(dat,function(dis){
                     return dis[args.dataKey[args.xData]]
                 });
 
-            // delete unqualified bois
+                
+            console.log('x');
+            console.log('domain',_.dom_x);
+            console.log('range',_.range_x);
+
+            console.log('----------------');
+
+            console.log('y');
+            console.log('domain',_.dom_y);
+            console.log('range',_.range_y);
 
 
             if(args.type == 'line'){
 
             }else{
-                _.bitches.exit()
+                
+                _.blob.exit()
                     .transition(_.duration)
                     .attr('height',0)
-                    .attr('fill-opacity',0)
                     .remove();
 
-                _.bitches
+                    
+                _.blobWrap = _.blob
                     .enter()
+                    .append('g')
+                        .attr('class','data-visualizer-item')
+                        
+
+                _.blobWrap
                     .append(_.graphItem)
-                    // .attr('width',function(dis,i){
-                        
-                    //     return _.the_x.bandwidth()
-                    // }) // calculated width
-                    // .attr('height',function(dis,i){
-                        
-                    //     return args.height + _.the_y(dis[args.dataKey[args.yData]])
-                    // })
+                    .attr('width',function(dis,i){
+                        return getBlobSize('width',dis,i,true);
+                    }) // calculated width
+                    .attr('height',function(dis,i){
+                        return getBlobSize('height',dis,i,true);
+                    })
 
-                    // .attr('x',function(dis,i){
-                    //     return _.the_x(dis[args.dataKey[args.xData]])
-                    // })
+                    .attr('x',function(dis,i){
+                        return getBlobPosition('x',dis,i,true)
+                        // return _.the_x(dis[args.dataKey[args.xData]])
+                    })
 
-                    // .attr('y',function(dis,i){
-                    //     return _.the_y(dis[args.dataKey[args.yData]])
-                    // });
+                    .attr('y',function(dis,i){
+                        return getBlobPosition('y',dis,i,true)
+                        // return getBlobPosition('y','y',dis,i)
+                        // return 0;
+                        // return args.height - _.the_y(dis[args.dataKey[args.yData]])
+                        // return _.the_y(dis[args.dataKey[args.yData]])
+                    })
+
+                    // .merge(_.blob)
+                    .transition(_.duration)
+                        .attr('width',function(dis,i){
+                            return getBlobSize('width',dis,i);
+                        }) // calculated width
+                        .attr('height',function(dis,i){
+                            return getBlobSize('height',dis,i);
+                        })
+
+                        .attr('x',function(dis,i){
+                            return getBlobPosition('x',dis,i)
+                            // return _.the_x(dis[args.dataKey[args.xData]])
+                        })
+
+                        .attr('y',function(dis,i){
+                            return getBlobPosition('y',dis,i)
+                            // return getBlobPosition('y','y',dis,i)
+                            // return 0;
+                            // return args.height - _.the_y(dis[args.dataKey[args.yData]])
+                            // return _.the_y(dis[args.dataKey[args.yData]])
+                        });
+                        
+                
+
+
+                if( !args.xTicks || !args.yTicks ){
+                    // data 1
+
+                    _.blobText = _.blobWrap.append('g')
+                        .attr('class','data-visualizer-item-text')
+
+                        .attr('transform', function(dis,i){
+                            return 'translate('+getBlobPosition('x',dis,i) / 2+', '+getBlobPosition('y',dis,i)+')';
+                        })
+
+                    _.blobText.append('text')
+                        .attr('font-size','.75em')
+                        .attr('font-weight','700')
+                        .text(function(dis,i){
+                            return dis[args.dataKey[0]];
+                        })
+
+                    _.blobText.append('text')
+                        .attr('font-size','.5em')
+                        .text(function(dis,i){
+                            return dis[args.dataKey[1]];
+                        })
+                }
+
             }
 
 

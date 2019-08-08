@@ -85,6 +85,13 @@ function _1p21_dv_get_data_visual_object($args = array()) {
                     unset($data_visual[$coordinate]['ticks_amount']);
                     unset($data_visual[$coordinate]['label']);
                 }
+
+                //validate minimum and maximum
+                if($data_visual[$coordinate]['data'] == 0 && !$data_visual['data_1_is_num']) {
+                    unset($data_visual[$coordinate]['min']);
+                    unset($data_visual[$coordinate]['max']);
+
+                }
             }
 
 
