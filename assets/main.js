@@ -5,16 +5,22 @@
 
     // helpful variables
     //for bar
-    var coordinates = ['x','y']
+    var coordinates = ['x','y'],
+        prefix = 'data-visualizer-';
     
     
     var dimensionAttribute = function(axisString,opposite){
+
         
         if(opposite){
             return (axisString == 'x') ? 'height' : 'width';
         }else{
             return (axisString == 'x') ? 'width' : 'height';
         }
+    }
+
+    var oppositeAxisString = function(axisString) {
+        return (axisString == 'x') ? 'y' : 'x';
     }
     
 
@@ -138,10 +144,9 @@
         //set range of the bois
         var getRange = function(dimension,axisString){
 
-            var oppositeAxisString = (axisString == 'x') ? 'y' : 'x';
 
             var range = [];
-            if(args[oppositeAxisString+'Align'] == 'top' || args[oppositeAxisString+'Align'] == 'left') {
+            if(args[oppositeAxisString(axisString)+'Align'] == 'top' || args[oppositeAxisString(axisString)+'Align'] == 'left') {
                 range = [0,dimension]
             }else{
                 range = [dimension,0]
@@ -155,6 +160,7 @@
             axisString = axisString.toLowerCase();
             
             if( dataKeyI  == 0 && !args.dataOneIsNum) {
+
 
                 return dat.map(function(dis){
                     return dis[ args.dataKey[ dataKeyI ] ];
@@ -205,10 +211,10 @@
             }else{ //y
                 
                 if(axisString == 'x'){
-                    if(args[axisString+'Align'] == 'top'){
-                        theOffset = -(_.offV - (args.margin * .75));
-                    }else{
+                    if(args[axisString+'Align'] == 'bottom'){
                         theOffset = args[dimensionAttribute(axisString,true)] + (_.offV - (args.margin * .75)); //args.height + ()
+                    }else{
+                        theOffset = -(_.offV - (args.margin * .75));
                     }
                 }else if(axisString == 'y'){
                     if(args[axisString+'Align'] == 'right'){
@@ -225,12 +231,10 @@
         //attricutie setup for types
             //BAR
 
-        var getBlobSize = function(dimensionAttribute,dis,i,initial) {
-            var axisString = (dimensionAttribute == 'width') ? 'x' : 'y',
-                oppositeAxisString = (axisString == 'x') ? 'y' : 'x',
-                dataKeyI =  args[ axisString+'Data'],
+        var getBlobSize = function(axisString,dis,i,initial) {
+            var dataKeyI =  args[ axisString+'Data'],
                 dataKey = args.dataKey[dataKeyI],
-                oppositeAxisAlignment = args[ oppositeAxisString+'Align'],
+                oppositeAxisAlignment = args[ oppositeAxisString(axisString)+'Align'],
                 dimension = 20,
                 initial = initial || false;
 
@@ -252,7 +256,7 @@
                         }else{
 
                             if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
-                                dimension = args[dimensionAttribute] - _['the_'+axisString](dis[dataKey]);
+                                dimension = args[dimensionAttribute(axisString)] - _['the_'+axisString](dis[dataKey]);
                             }else{
 
                                 dimension = _['the_'+axisString](dis[dataKey]);
@@ -265,15 +269,119 @@
 
             return dimension
         }
+        
+        //oh god im so confuse
+        var getBlobTextBaseline = function (dis,i){
+            var baseline = 'middle';
 
-        var getBlobPosition = function(coordinateAttribute,dis,i,initial){
+            if(args.xData == 0 && !args.dataOneIsNum) {
+                if(args.xAlign == 'bottom'){
+                    baseline = 'hanging';
+                }else{
+                    baseline = 'auto';
+                }
+            }
+
+            return baseline;
+
+        }
+        var getBlobTextAnchor = function(dis,i){
+            var anchor = 'middle';
+
+            if(args.type == 'pie'){
+            }else{
+
+                if(args.yData == 0 && !args.dataOneIsNum) {
+                        anchor = 'start';
+                }
+
+            }
+            return anchor;
+        }
+
+
+        //pls do not ask me this broke my brain i will not likely know what just happened
+        var getBlobTextShift = function(coordinateAttribute,axisString,dis,i){
+
+            var shift = 0;
+            if(args.type == 'pie'){
+
+            }else{
+                if((!args.xTicks && args.yTicks) || (args.xTicks && !args.yTicks) ){
+                    if(args[coordinateAttribute+'Data'] !== 0 && !args.dataOneIsNum ){
+                        console.log('fuck');
+                        if(args[oppositeAxisString(coordinateAttribute)+'Data'] == 'top' ){
+
+                            shift = -1;
+                        }else{
+                            
+                            shift = 1;
+
+                        }
+                    }
+                }else{
+                    if(coordinateAttribute == 'x'){
+                    }else{ //y
+
+                        if(args[coordinateAttribute+'Data'] == 0 && args.dataOneIsNum){
+
+                        }else{
+                        
+                            if(args[oppositeAxisString(coordinateAttribute) + 'Align'] == 'bottom'){ //aligned to coordinate which is y
+                                shift = 1.5
+                            }else{
+                                if( dis[ args.dataKey[ args[coordinateAttribute + 'Data'] ] ] !== dis[ args.dataKey[ args[axisString + 'Data'] ] ] ){ //current
+    
+                                    shift = -2
+                                }else{
+                                    shift = -1.75
+    
+                                }
+                            }
+
+                        }
+                        
+                    }
+                }
+            }
+
+            var shiftString = shift + "em";
+            return shiftString;
+        }
+
+        var getBlobTextOrigin = function(coordinate,dis,i){
             //coordinate is influenced by the axis right now so this is the only time coordinate and axis is one and the same. i think... do not trust me on this
-            var axisString = coordinateAttribute,
-                dimensionAttribute = (axisString == 'x') ? 'width' : 'height',
-                oppositeAxisString = (axisString == 'x') ? 'y' : 'x',
-                dataKeyI =  args[ axisString+'Data'],
+            var dataKeyI =  args[ coordinate+'Data'];
+
+                offset = 0;
+
+            if(args.type == 'pie'){
+            
+            }else if(args.type == 'line'){
+            }else{
+
+                    if(dataKeyI  == 0 && !args.dataOneIsNum) {
+
+                        offset = getBlobOrigin(coordinate,dis,i) + (getBlobSize(coordinate,dis,i) / 2)
+                    }else{
+                        if( args[oppositeAxisString(coordinate)+'Align'] == 'bottom' || args[oppositeAxisString(coordinate)+'Align'] == 'right' ){
+                            offset = args[dimensionAttribute(coordinate)] - getBlobSize(coordinate,dis,i)
+                        }else if( args[oppositeAxisString(coordinate)+'Align'] == 'top'){
+                            offset = getBlobSize(coordinate,dis,i);
+
+                        }
+
+                    }
+            }
+
+            return offset;
+        }
+
+        var getBlobOrigin = function(coordinate,dis,i,initial){
+            // same here.. could be the same probably
+            var dataKeyI =  args[ coordinate+'Data'],
                 dataKey = args.dataKey[dataKeyI],
-                oppositeAxisAlignment = args[ oppositeAxisString+'Align'],
+                oppositeAxisAlignment = args[ oppositeAxisString(coordinate)+'Align'],
                 initial = initial || false,
                 offset = 0;
 
@@ -288,14 +396,14 @@
 
                     
                     if(dataKeyI  == 0 && !args.dataOneIsNum){
-                        offset = _['the_'+axisString](dis[dataKey]);
+                        offset = _['the_'+coordinate](dis[dataKey]);
                     }else{
                         if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
                             if(initial){
-                                offset = args[dimensionAttribute];
+                                offset = args[dimensionAttribute(coordinate)];
 
                             }else{
-                                offset = args[dimensionAttribute] - (args[dimensionAttribute] - _['the_'+axisString](dis[dataKey]));
+                                offset = args[dimensionAttribute(coordinate)] - (args[dimensionAttribute(coordinate)] - _['the_'+coordinate](dis[dataKey]));
                             }
                         }
                     }
@@ -310,7 +418,7 @@
 
         var setRuleContainer = function(axisString,containerObj){
             var rule = containerObj.append('g')
-                .attr('class','data-visualizer-axis-'+axisString+' data-visualizer-axis-align-'+args[axisString+'Align']);
+                .attr('class', prefix + 'axis-'+axisString+' '+ prefix +'axis-align-'+args[axisString+'Align'])
 
             var transformCoord = '';
             
@@ -390,7 +498,7 @@
                 // x label
                 if( args[axisString+'Label'] ){
                     _['lab_'+axisString] = _.labels.append('text')
-                        .attr('class','data-visualizer-label-'+axisString)
+                        .attr('class', prefix + 'label-'+axisString)
                         .attr('y', function(){
                             return getLabelPosition('y',axisString);
                         })
@@ -455,8 +563,9 @@
 
             //canvas
                 _.canvas = d3.select(selector)
+                    .style('padding-top', (args.margin * args.marginOffset) + 'px')
                     .append('div')
-                    .attr('class','data-visualizer-wrapper'),
+                    .attr('class', prefix + 'wrapper'),
 
                     _.offH = (args.yLabel) ?  args.margin * args.marginOffset : args.margin * (args.marginOffset * .5),
                     _.offV = (args.xLabel) ?  args.margin * args.marginOffset : args.margin * (args.marginOffset * .5),
@@ -470,7 +579,7 @@
 
                 _.svg = _.canvas.append('svg')
                     .attr('id',selector+'-svg')
-                    .attr('class','data-visualizer-svg')
+                    .attr('class', prefix + 'svg')
                     .attr('viewBox',_.dimensionString)
                     .attr("preserveAspectRatio", "xMinYMin meet")
                     .style('style','enable-background','new '+_.dimensionString)
@@ -540,10 +649,10 @@
             }else{
                 // legends and shit
                 _.labels = _.container.append('g')
-                    .attr('class','data-visualizer-labels');
+                    .attr('class', prefix + 'labels');
     
                 _.rule = _.container.append('g')
-                    .attr('class','data-visualizer-axis');
+                    .attr('class', prefix + 'axis');
 
                 coordinates.forEach(function(coordinate){
                     // scale
@@ -593,7 +702,8 @@
                 dat
             );
             _.the_x.domain(_.dom_x);
-            args.xTicks && _.rule_x.transition(_.duration).call( _.axis_x);
+            args.xTicks && _.rule_x.transition(_.duration).call( _.axis_x)
+                .attr('font-family','inherit');
 
 
             // ok do the thing now
@@ -602,12 +712,13 @@
                 dat
             );
             _.the_y.domain(_.dom_y);
-            args.yTicks && _.rule_y.transition(_.duration).call( _.axis_y);
+            args.yTicks && _.rule_y.transition(_.duration).call( _.axis_y)
+                .attr('font-family','inherit');
 
 
             //select
-            _.graph = _.container.append('g')
-                .attr('class','data-visualizer-graph');
+            _.graph = _.container.insert('g',':first-child')
+                .attr('class', prefix + 'graph');
 
             _.blob = _.graph.selectAll(_.graphItem)
                 .data(dat,function(dis){
@@ -639,26 +750,26 @@
                 _.blobWrap = _.blob
                     .enter()
                     .append('g')
-                        .attr('class','data-visualizer-item')
+                        .attr('class', prefix + 'item')
                         
 
                 _.blobWrap
                     .append(_.graphItem)
                     .attr('width',function(dis,i){
-                        return getBlobSize('width',dis,i,true);
+                        return getBlobSize('x',dis,i,true);
                     }) // calculated width
                     .attr('height',function(dis,i){
-                        return getBlobSize('height',dis,i,true);
+                        return getBlobSize('y',dis,i,true);
                     })
 
                     .attr('x',function(dis,i){
-                        return getBlobPosition('x',dis,i,true)
+                        return getBlobOrigin('x',dis,i,true)
                         // return _.the_x(dis[args.dataKey[args.xData]])
                     })
 
                     .attr('y',function(dis,i){
-                        return getBlobPosition('y',dis,i,true)
-                        // return getBlobPosition('y','y',dis,i)
+                        return getBlobOrigin('y',dis,i,true)
+                        // return getBlobOrigin('y','y',dis,i)
                         // return 0;
                         // return args.height - _.the_y(dis[args.dataKey[args.yData]])
                         // return _.the_y(dis[args.dataKey[args.yData]])
@@ -667,20 +778,20 @@
                     // .merge(_.blob)
                     .transition(_.duration)
                         .attr('width',function(dis,i){
-                            return getBlobSize('width',dis,i);
+                            return getBlobSize('x',dis,i);
                         }) // calculated width
                         .attr('height',function(dis,i){
-                            return getBlobSize('height',dis,i);
+                            return getBlobSize('y',dis,i);
                         })
 
                         .attr('x',function(dis,i){
-                            return getBlobPosition('x',dis,i)
+                            return getBlobOrigin('x',dis,i)
                             // return _.the_x(dis[args.dataKey[args.xData]])
                         })
 
                         .attr('y',function(dis,i){
-                            return getBlobPosition('y',dis,i)
-                            // return getBlobPosition('y','y',dis,i)
+                            return getBlobOrigin('y',dis,i)
+                            // return getBlobOrigin('y','y',dis,i)
                             // return 0;
                             // return args.height - _.the_y(dis[args.dataKey[args.yData]])
                             // return _.the_y(dis[args.dataKey[args.yData]])
@@ -693,24 +804,45 @@
                     // data 1
 
                     _.blobText = _.blobWrap.append('g')
-                        .attr('class','data-visualizer-item-text')
-
-                        .attr('transform', function(dis,i){
-                            return 'translate('+getBlobPosition('x',dis,i) / 2+', '+getBlobPosition('y',dis,i)+')';
+                        .attr('class', prefix + 'item-text' + ( (!args.dataOneIsNum) ? ' '+ prefix +'item-data-one-not-num' : '') )
+                        .attr('transform',function(dis,i){
+                            return 'translate('+getBlobTextOrigin('x',dis,i)+','+getBlobTextOrigin('y',dis,i)+')'
                         })
+                        .text('butthole');
 
-                    _.blobText.append('text')
-                        .attr('font-size','.75em')
-                        .attr('font-weight','700')
-                        .text(function(dis,i){
-                            return dis[args.dataKey[0]];
-                        })
+                        if(args.type == 'pie'){
 
-                    _.blobText.append('text')
-                        .attr('font-size','.5em')
-                        .text(function(dis,i){
-                            return dis[args.dataKey[1]];
-                        })
+                        }else{
+
+                            coordinates.forEach(function(coordinate){
+
+                                if( !args[coordinate+'Ticks'] ){
+
+                                    _['blobText'+coordinate] = _.blobText.append('text')
+                                        .attr('class', prefix + 'item-data-'+args[coordinate+'Data'])
+                                        .attr('dominant-baseline',function(dis,i){
+                                            return getBlobTextBaseline(dis,i);
+                                        })
+                                        .attr('text-anchor',function(dis,i){
+                                            return getBlobTextAnchor(dis,i);
+                                        })
+                                        .attr('font-size',null)
+                                        .text(function(dis,i){
+                                            return dis[args.dataKey[ args[coordinate+'Data'] ]];
+                                        })
+                                        .attr('x',function(dis,i){
+                                            return getBlobTextShift('x',coordinate,dis,i)
+                                        })
+                                        .attr('y',function(dis,i){
+                                            return getBlobTextShift('y',coordinate,dis,i)
+                                        })
+                                }
+                            });
+
+                        }
+
+
+                    
                 }
 
             }

@@ -1,12 +1,12 @@
 $prefix: '.data-visualizer';
 
 #{$prefix} {
-    &-wrapper {
-        background: #EEE;
-        position:relative;
-        text-align: center;
-        padding: 1em;
+    background: #EEE;
+    position:relative;
+    text-align: center;
+    padding: 1em;
 
+    &-wrapper {
         .no-data & {
             padding: 4em 0;
         }
@@ -29,10 +29,53 @@ $prefix: '.data-visualizer';
         width: 100%;
         max-width:100%;
         margin: 0 auto;
+        font-size: 16px;
+        font-family: inherit!important;
         // outline: 1px solid red;
     }
 
-    rect,circle {
-        fill: #666;
+    text {
+        font-family: inherit!important;
     }
+
+    &-axis {
+        line,path {
+            stroke: #888;
+        }
+
+        text {
+            fill: #888;
+        }
+    }
+
+    &-item {
+        
+        rect,circle {
+            fill: #222;
+        }
+
+        &-text {
+            fill: #FFF;
+            line-height: 2;
+            font-size: .75em;
+        }
+
+        &-data {
+            // fill: #fff;data-visualizer-item-data-0 data-visualizer-item-data-non-numeric
+            &-one-not-num {
+            }
+
+            &-one-not-num #{&}-0 {
+                font-weight: 700;
+                font-size: .75em;
+            }
+            &-one-not-num #{&}-1 {
+                font-size: 1.75em;
+                font-weight: 300;
+            }
+        }
+
+        
+    }
+
 }
