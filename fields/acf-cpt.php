@@ -201,7 +201,15 @@ $_1p21_dv_fields_cpt = array(
 			'type' => 'accordion',
 			'instructions' => '',
 			'required' => 0,
-			'conditional_logic' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_5d420de06b6c9',
+						'operator' => '!=',
+						'value' => 'rows',
+					),
+				),
+			),
 			'wrapper' => array(
 				'width' => '',
 				'class' => '',
@@ -240,12 +248,11 @@ $_1p21_dv_fields_cpt = array(
 		),
 		array(
 			'key' => 'field_5d420a6cde270',
-			'label' => 'Data 1 Key',
-			'name' => 'dv_data_key_1',
+			'label' => 'Name Key',
+			'name' => 'dv_data_key_0',
 			'type' => 'text',
-			'instructions' => 'Type in the key relative to the Source Key<br>
-Key or column name to represent or name the data<br>
-Can represent separate axis of numeric data if Type is not set to pie.',
+			'instructions' => 'Type in the key relative to the data instance<br>
+Key or column name to represent or name the data',
 			'required' => 0,
 			'conditional_logic' => array(
 				array(
@@ -263,17 +270,17 @@ Can represent separate axis of numeric data if Type is not set to pie.',
 			),
 			'default_value' => '',
 			'placeholder' => 'content',
-			'prepend' => 'data.',
+			'prepend' => 'data[0].',
 			'append' => '',
 			'maxlength' => '',
 		),
 		array(
 			'key' => 'field_5d420b33de274',
-			'label' => 'Data 2 Key',
-			'name' => 'dv_data_key_2',
+			'label' => 'Value Key',
+			'name' => 'dv_data_key_1',
 			'type' => 'text',
-			'instructions' => 'Type in the key relative to the Source Key<br>
-Key or column name of the data that will represent the labels<br><br>',
+			'instructions' => 'Type in the key relative to the data instance<br>
+Key or column name of the data that will represent data based on the name key',
 			'required' => 0,
 			'conditional_logic' => array(
 				array(
@@ -291,36 +298,9 @@ Key or column name of the data that will represent the labels<br><br>',
 			),
 			'default_value' => '',
 			'placeholder' => 'content',
-			'prepend' => 'data.',
+			'prepend' => 'data[0].',
 			'append' => '',
 			'maxlength' => '',
-		),
-		array(
-			'key' => 'field_5d4492875982d',
-			'label' => '',
-			'name' => 'dv_data_1_is_num',
-			'type' => 'true_false',
-			'instructions' => 'Setting this true will toggle data 1 to behave as an axis of numeric data instead of labels',
-			'required' => 0,
-			'conditional_logic' => array(
-				array(
-					array(
-						'field' => 'field_5d420a45de26f',
-						'operator' => '!=',
-						'value' => 'pie',
-					),
-				),
-			),
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'message' => '<b>Represent Name key data 1 as numeric</b>',
-			'default_value' => 0,
-			'ui' => 0,
-			'ui_on_text' => '',
-			'ui_off_text' => '',
 		),
 		array(
 			'key' => 'field_5d420abade272',

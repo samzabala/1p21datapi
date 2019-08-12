@@ -85,32 +85,28 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                         // data
                             if($data_visual['data_key']) {
 
-                                // $parsed_data_keys_arr = [];
 
-                                // foreach($data_visual['data_key'] as $coordinate_keys){
-                                //     $coordinate = str_replace(array("'"),'',$coordinate_keys);//quotes
-
-
-                                //     $coordinate = '[\''. str_replace(array('.','][','[',']'),'\',\'',$coordinate_keys). '\']'; //separators
-
-                                //     $parsed_data_keys_arr[] = $coordinate;
-
-
-                                // }
-
-                                // $parsed_data_keys = implode(',',$parsed_data_keys_arr);
-
+                                // $parsed_data_keys  = implode('\',\'',$data_visual['data_key']);
                                 // $render .= "
-                                // dataKeyTest: [{$parsed_data_keys}],\n";
+                                // dataKey: ['{$parsed_data_keys}'],\n";
 
 
-                                $parsed_data_keys  = implode('\',\'',$data_visual['data_key']);
+
+
+                                $parsed_data_keys_arr = [];
+
+                                foreach($data_visual['data_key'] as $coordinate_keys){
+                                    $coordinate = _1p21_parse_key($coordinate_keys);
+                                    $parsed_data_keys_arr[] = $coordinate;
+
+
+                                }
+
+                                $parsed_data_keys_arr_string = implode('\',\'',$parsed_data_keys_arr);
+
                                 $render .= "
-                                dataKey: ['{$parsed_data_keys}'],\n";
+                                dataKey: ['{$parsed_data_keys_arr_string}'],\n";
                             }
-                        //data is num
-                        $parsed_data_1_is_num = ($data_visual['data_1_is_num']) ? 'true' : 'false';
-                        $render .=" dataOneIsNum: {$parsed_data_1_is_num},\n";
             
             
                         // X & y settings
@@ -180,11 +176,12 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
             
                         //src key
                             if($data_visual['src_key']) {
-
-                                $parsed_src_key  = str_replace(array("'"),'',$data_visual['src_key']); //quotes
-                                $parsed_src_key  = str_replace(array('.','][','[',']'),'\',\'',$parsed_src_key); //separator
+                                $parsed_src_key = _1p21_parse_key($data_visual['src_key']);
+                                // $parsed_src_key  = str_replace(array("'"),'',$data_visual['src_key']); //quotes
+                                // $parsed_src_key  = str_replace(array('.','][','[',']'),'.',$parsed_src_key); //separator
                                 $render .= "
-                                srcKey: ['{$parsed_src_key}'],\n";
+                                srcKey: '{$parsed_src_key}',\n";
+                                // srcKey: ['{$parsed_src_key}'],\n";
                             }
             
                         
@@ -202,7 +199,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
         // // echo '<h3>POST META</h3>';
         // _1p21_dv_output_arr(get_metadata('post',$args['id']));
 
-        _1p21_dv_output_arr( $data_visual);
+        // _1p21_dv_output_arr( $data_visual);
 
 
         

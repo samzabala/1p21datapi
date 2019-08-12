@@ -285,7 +285,15 @@
                 "required": 0,
                 "id": "",
                 "class": "",
-                "conditional_logic": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420de06b6c9",
+                            "operator": "!=",
+                            "value": "rows"
+                        }
+                    ]
+                ],
                 "parent": "group_5d4206c985d00",
                 "wrapper": {
                     "width": "",
@@ -339,13 +347,50 @@
             {
                 "ID": 0,
                 "key": "field_5d420a6cde270",
-                "label": "Data 1 Key",
-                "name": "dv_data_key_1",
+                "label": "Name Key",
+                "name": "dv_data_key_0",
                 "prefix": "acf",
                 "type": "text",
                 "value": null,
                 "menu_order": 8,
-                "instructions": "Type in the key relative to the Source Key<br>\nKey or column name to represent or name the data<br>\nCan represent separate axis of numeric data if Type is not set to pie.",
+                "instructions": "Type in the key relative to the data instance<br>\nKey or column name to represent or name the data",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420de06b6c9",
+                            "operator": "!=",
+                            "value": "rows"
+                        }
+                    ]
+                ],
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "50",
+                    "class": "dv-code",
+                    "id": ""
+                },
+                "_name": "dv_data_key_0",
+                "_prepare": 0,
+                "_valid": 1,
+                "default_value": "",
+                "placeholder": "content",
+                "prepend": "data[0].",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "ID": 0,
+                "key": "field_5d420b33de274",
+                "label": "Value Key",
+                "name": "dv_data_key_1",
+                "prefix": "acf",
+                "type": "text",
+                "value": null,
+                "menu_order": 9,
+                "instructions": "Type in the key relative to the data instance<br>\nKey or column name of the data that will represent data based on the name key",
                 "required": 0,
                 "id": "",
                 "class": "",
@@ -369,83 +414,9 @@
                 "_valid": 1,
                 "default_value": "",
                 "placeholder": "content",
-                "prepend": "data.",
+                "prepend": "data[0].",
                 "append": "",
                 "maxlength": ""
-            },
-            {
-                "ID": 0,
-                "key": "field_5d420b33de274",
-                "label": "Data 2 Key",
-                "name": "dv_data_key_2",
-                "prefix": "acf",
-                "type": "text",
-                "value": null,
-                "menu_order": 9,
-                "instructions": "Type in the key relative to the Source Key<br>\nKey or column name of the data that will represent the labels<br><br>",
-                "required": 0,
-                "id": "",
-                "class": "",
-                "conditional_logic": [
-                    [
-                        {
-                            "field": "field_5d420de06b6c9",
-                            "operator": "!=",
-                            "value": "rows"
-                        }
-                    ]
-                ],
-                "parent": "group_5d4206c985d00",
-                "wrapper": {
-                    "width": "50",
-                    "class": "dv-code",
-                    "id": ""
-                },
-                "_name": "dv_data_key_2",
-                "_prepare": 0,
-                "_valid": 1,
-                "default_value": "",
-                "placeholder": "content",
-                "prepend": "data.",
-                "append": "",
-                "maxlength": ""
-            },
-            {
-                "ID": 0,
-                "key": "field_5d4492875982d",
-                "label": "",
-                "name": "dv_data_1_is_num",
-                "prefix": "acf",
-                "type": "true_false",
-                "value": null,
-                "menu_order": 10,
-                "instructions": "Setting this true will toggle data 1 to behave as an axis of numeric data instead of labels",
-                "required": 0,
-                "id": "",
-                "class": "",
-                "conditional_logic": [
-                    [
-                        {
-                            "field": "field_5d420a45de26f",
-                            "operator": "!=",
-                            "value": "pie"
-                        }
-                    ]
-                ],
-                "parent": "group_5d4206c985d00",
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "_name": "dv_data_1_is_num",
-                "_prepare": 0,
-                "_valid": 1,
-                "message": "<b>Represent Name key data 1 as numeric<\/b>",
-                "default_value": 0,
-                "ui": 0,
-                "ui_on_text": "",
-                "ui_off_text": ""
             },
             {
                 "ID": 0,
@@ -455,7 +426,7 @@
                 "prefix": "acf",
                 "type": "accordion",
                 "value": false,
-                "menu_order": 11,
+                "menu_order": 10,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -482,7 +453,7 @@
                 "prefix": "acf",
                 "type": "select",
                 "value": null,
-                "menu_order": 12,
+                "menu_order": 11,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -519,7 +490,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 13,
+                "menu_order": 12,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -1100,7 +1071,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 14,
+                "menu_order": 13,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -1681,7 +1652,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 15,
+                "menu_order": 14,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -1782,7 +1753,7 @@
                 "prefix": "acf",
                 "type": "accordion",
                 "value": false,
-                "menu_order": 16,
+                "menu_order": 15,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -1809,7 +1780,7 @@
                 "prefix": "acf",
                 "type": "repeater",
                 "value": null,
-                "menu_order": 17,
+                "menu_order": 16,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -1865,7 +1836,7 @@
                 "prefix": "acf",
                 "type": "text",
                 "value": null,
-                "menu_order": 18,
+                "menu_order": 17,
                 "instructions": "Data key to link color scheme to",
                 "required": 0,
                 "id": "",

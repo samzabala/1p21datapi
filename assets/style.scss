@@ -57,19 +57,19 @@ $prefix: '.data-visualizer';
         &-text {
             fill: #FFF;
             line-height: 2;
-            font-size: .75em;
+            font-size: 1em;
         }
 
         &-data {
             // fill: #fff;data-visualizer-item-data-0 data-visualizer-item-data-non-numeric
-            &-one-not-num {
+            &-no-ticks {
             }
 
-            &-one-not-num #{&}-0 {
+            &-no-ticks #{&}-0 {
                 font-weight: 700;
                 font-size: .75em;
             }
-            &-one-not-num #{&}-1 {
+            &-no-ticks #{&}-1 {
                 font-size: 1.75em;
                 font-weight: 300;
             }

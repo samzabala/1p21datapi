@@ -59,14 +59,14 @@ function _1p21_dv_get_data_visual_object($args = array()) {
         $data_visual['type'] = get_post_meta($id,'dv_type',true);
 
         // data keys 
-        if(get_post_meta($id,'dv_data_key_1',true) || get_post_meta($id,'dv_data_key_2',true)){
+        if(get_post_meta($id,'dv_data_key_0',true) || get_post_meta($id,'dv_data_key_1',true)){
             $data_visual['data_key'] = array(
+                get_post_meta($id,'dv_data_key_0',true),
                 get_post_meta($id,'dv_data_key_1',true),
-                get_post_meta($id,'dv_data_key_2',true),
             );
         }
 
-        $data_visual['data_1_is_num'] = get_post_meta($id,'dv_data_1_is_num',true);
+        // $data_visual['data_1_is_num'] = get_post_meta($id,'dv_data_1_is_num',true);
 
         //x & y / pie settings
         if ($data_visual['type'] != 'pie') {
