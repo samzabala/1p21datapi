@@ -594,28 +594,30 @@
             //half ass parse dem numeric data bois
 
             
-            // coordinates.forEach(function(coordinate){
 
             //     retrievedData.forEach(function(dis,i){
-            //         var currentDataKey = args.dataKey[ args[ coordinate+'Data' ] ];
-            //         if(  args[coordinate + 'Data'] !== 0 ){
-            //             dis = deepSet(dis,currentDataKey, parseFloat( deepGet(dis,currentDataKey) ));
-            //         }
-            //     });
-            // })
+            //         coordinates.forEach(function(coordinate){
+            //             var currentDataKey = args.dataKey[ args[ coordinate+'Data' ] ];
+            //             if(  args[coordinate + 'Data'] !== 0 ){
+            //                 dis['parsed_'+currentDataKey] = parseFloat( deepGet(dis,currentDataKey) );
+            //             }
+            //         });
+            //     })
+
+            // console.log(retrievedData);
 
 
 
             //canvas
+                _.off_x = getCanvasPadding('x'),
+                _.off_y = getCanvasPadding('y'),
+                _.outerWidth = args.width + (_.off_x * 2),
+                _.outerHeight = args.height + (_.off_y * 2),
                 _.canvas = d3.select(selector)
-                    .style('padding-top', (args.margin *( args.marginOffset * .5)) + 'px')
+                    .style('padding-top', (args.margin * (args.marginOffset * .75)) + 'px')
                     .append('div')
                     .attr('class', prefix + 'wrapper'),
 
-                    _.off_x = getCanvasPadding('x'),
-                    _.off_y = getCanvasPadding('y'),
-                    _.outerWidth = args.width + (_.off_x * 2),
-                    _.outerHeight = args.height + (_.off_y * 2)
 
 
                 _.dimensionString = '0 0 '+ _.outerWidth +' ' + _.outerHeight;
@@ -757,15 +759,15 @@
                 });
 
                 
-            // console.log('x');
-            // console.log('domain',_.dom_x);
-            // console.log('range',_.range_x);
+            console.log('x');
+            console.log('domain',_.dom_x);
+            console.log('range',_.range_x);
 
-            // console.log('----------------');
+            console.log('----------------');
 
-            // console.log('y');
-            // console.log('domain',_.dom_y);
-            // console.log('range',_.range_y);
+            console.log('y');
+            console.log('domain',_.dom_y);
+            console.log('range',_.range_y);
 
 
             if(args.type == 'line'){

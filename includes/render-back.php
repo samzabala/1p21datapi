@@ -6,24 +6,6 @@
 
 
 /*
-        DRAFT FOR SETTINGS
-
-
-        'color_scheme' => array(),
-        'externalData' => null,
-        'x_data' => null,
-        'y_data' => null,
-        'x_data_key' => null,
-        'y_data_key' => null,
-        'x_label' => null,
-        'y_label' => null,
-        'type' => 'bar', // line,pie,donut,scatter
-
-
-        //custom to front end
-            'aspect_ratio' => '1:1', // 1:1,3:4,6:9
-            'margin' => 20,
-            'tool_tip' => ''
 
 
 */
