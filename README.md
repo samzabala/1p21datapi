@@ -21,9 +21,9 @@ Hi. If you like graphs use this :)
 ### margin_offset (default: 2 | type: number),
     - multiplier of the gutter
 ### width (default: 600 | type: number),
-    - dug
+    - duh
 ### height (default: 600 | type: number),
-    - dug
+    - duh
 ### transition (default: 100 | type: number),
     - how long should all animations or transitions take
 ### delay (default: 500 | type: number),
