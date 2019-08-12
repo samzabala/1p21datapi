@@ -100,7 +100,7 @@ Whether to use a tick ruler for the axis
 Custom text label for the axis
 
 
-#### Advanced tab
+#### Advanced Settings
 
 | Settings name | Default | Available Options | Description  |
 | ------------- | ------- | ----------------- | ------------ |
@@ -117,3 +117,7 @@ Only available for Pie graph
 # Filters
 ### apply_filters( '_1p21_dv_info', boolean $debug )
 - output array of the current data visuals on the page
+
+
+## Advanced Tab
+COMING SOON
