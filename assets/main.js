@@ -1,10 +1,11 @@
 // "use strict";
-
+/* DO NOT TOUCH I DEV ON THIS BOI I ENQUEUE THE MINIFIED ONE ANYWAY  :< */
 (function(window,d3){
     var _1p21 = _1p21 || {};
 
     // helpful variables
     var coordinates = ['x','y'],
+        itemAttributes = ['x','y','colors','area'],
         prefix = 'data-visualizer-';
     
     //get the length attribute to associate with the axis bro
@@ -175,58 +176,84 @@
 
         //set range of the bois
         // @param - axisString : duh
-        var getRange = function(axisString){
-
+        var getRange = function(itemAttribute){
 
             var range = [];
-            if(args[oppositeAxisString(axisString)+'Align'] == 'top' || args[oppositeAxisString(axisString)+'Align'] == 'left') {
-                range = [ 0, args[ dimensionAttribute(axisString) ] ];
-            }else{
-                range = [ args[ dimensionAttribute(axisString) ] , 0 ];
+
+            switch(itemAttribute){
+                case 'colors':
+                    range = args[itemAttribute];
+                    break;
+                    case 'x':
+                    case 'y':
+                        if(args[oppositeAxisString(itemAttribute)+'Align'] == 'top' || args[oppositeAxisString(itemAttribute)+'Align'] == 'left') {
+                            range = [ 0, args[ dimensionAttribute(itemAttribute) ] ];
+                        }else{
+                            range = [ args[ dimensionAttribute(itemAttribute) ] , 0 ];
+                        }
+                        break;
             }
             return range;
         }
         
-        var getDomain = function(axisString,dat){
+        var getDomain = function(itemAttribute,dat){
 
-            var dataKeyI =  args[ axisString+'Data'];
+            var dataKeyI =  args[ itemAttribute+'Data'],
+                domain = [];
             // var dataKeyI = deepGet();
-            axisString = axisString.toLowerCase();
-            
-            if( dataKeyI  == 0) {
+
+            switch(itemAttribute){
+                case 'colors':
+                    
+                    var keyString =  args.colorsData || args.dataKey[0];
+                    
+                    const instances = dat.reduce(function(acc,dis){
+                        console.log(acc);
+                        if(!acc.includes(deepGet(dis,keyString))){
+                            acc.push(deepGet(dis,keyString));
+                        }
+                        return acc;
+                    },[]);
+
+                    domain = instances;
+
+                    break;
+                case 'x':
+                case 'y':
+                    switch(dataKeyI){
+                        case 1: // numeric fuck
+                            var min,max;
+
+                            if(args[itemAttribute + 'Min'] !== null){
+                                min = args[itemAttribute + 'Min'];
+
+                            }else{
+                                min = d3.min(dat,function(dis){
+                                    return deepGet(dis,args.dataKey[ dataKeyI ],dataKeyI);
+                                });
+                            }
 
 
-                return dat.map(function(dis){
-                    return deepGet(dis,args.dataKey[ dataKeyI ], dataKeyI);
-                });
-            }else{
-                var domain = [],
-                min,
-                max;
 
-                if(args[axisString + 'Min'] !== null){
-                    min = args[axisString + 'Min'];
-
-                }else{
-                    min = d3.min(dat,function(dis){
-                        return deepGet(dis,args.dataKey[ dataKeyI ],dataKeyI);
-                    });
-                }
-
-
-
-                if(args[axisString + 'Max'] !== null){
-                    max = args[axisString + 'Max']
-                }else{
-                    max = d3.max(dat,function(dis){
-                        return deepGet(dis,args.dataKey[ dataKeyI ],dataKeyI);
-                    });
-                }
-                domain = [min,max];
-
-                return domain;
-                
+                            if(args[itemAttribute + 'Max'] !== null){
+                                max = args[itemAttribute + 'Max']
+                            }else{
+                                max = d3.max(dat,function(dis){
+                                    return deepGet(dis,args.dataKey[ dataKeyI ],dataKeyI);
+                                });
+                            }
+                            domain = [min,max];
+                            break;
+                        default: //not a numeric fuck and each instance is ok
+                            domain =  dat.map(function(dis){
+                                return deepGet(dis,args.dataKey[ dataKeyI ], dataKeyI);
+                            });
+                            break;
+                    }
+                    break;
             }
+
+            return domain;
         };
 
 
@@ -282,7 +309,9 @@
                     break;
                 default:
 
+
                     if(dataKeyI  == 0){
+                        
                         dimension = _['the_'+axisString].bandwidth()
                     }else{
                         if(initial) {
@@ -516,22 +545,34 @@
         }
 
         //set the scale function thingy for the axis shit
-        var setScale = function(axisString){
+        var setScale = function(itemAttribute){
             var axis;
-            var dataKeyI = args[ axisString+'Data'];
-            if(dataKeyI == 0) {
-                axis = d3.scaleBand() //scales shit to dimensios
-                    .range(_['range_'+axisString]) // scaled data from available space
-                    .paddingInner(.1) //spacing between
-                    .paddingOuter(.1); //spacing of first and last item from canvas
-            }else{
-                axis = d3.scaleLinear()
-                .range(_['range_'+axisString]);
-            }
+            var dataKeyI = args[ itemAttribute+'Data'];
 
-            if(args.type == 'bar'){
-                axis
+            switch(itemAttribute){
+                case 'colors':
+                        axis = d3.scaleOrdinal()
+                            .range(_['range_'+itemAttribute]) 
+                    break;
+                case 'x':
+                case 'y':
+                    switch(dataKeyI){
+                        case 0:
+                            axis = d3.scaleBand() //scales shit to dimensios
+                            .range(_['range_'+itemAttribute]) // scaled data from available space
+                            .paddingInner(.1) //spacing between
+                            .paddingOuter(.1); //spacing of first and last item from canvas
+                            break;
+                        default:
+                            axis = d3.scaleLinear()
+                            .range(_['range_'+itemAttribute]);
+                            break;
+                    }
+                        
+                    
+
             }
+            
             return axis;
 
         };
@@ -729,9 +770,9 @@
         // tick inits
         var renderUpdate = function(dat,_) {
             // ok do the thing now
-            // console.log('calculated',_);
-            // console.log('data',dat);
-            // console.log('args',args);
+            console.log('calculated',_);
+            console.log('data',dat);
+            console.log('args',args);
 
 
             //x axis
@@ -764,6 +805,13 @@
                 .data(dat,function(dis){
                     return dis[args.dataKey[args.xData]]
                 });
+
+            //colors kung meron
+
+            if(args.colors) {
+                // _.dom_color = getDomain('colors',dat);
+                
+            }
 
                 
             console.log('x');
@@ -903,7 +951,7 @@
                 });
                 break;
             
-            case 'json' || 'geojson':
+            case 'json':
                 d3.json(args.srcPath).then(function(data){
                     renderData(selector,data,_);
                 });

@@ -1857,7 +1857,7 @@
                 "_valid": 1,
                 "default_value": "",
                 "placeholder": "",
-                "prepend": "",
+                "prepend": "data[0].",
                 "append": "",
                 "maxlength": ""
             }
