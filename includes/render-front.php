@@ -48,7 +48,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
         
             $render .= "<div id='$wrapper_id' class='{$att_prefix} {$att_prefix}-type-{$data_visual['type']}'>";
-            $render .= "<h3>{$data_visual['title']}</h3>";
+            $render .= "<span class='{$att_prefix}-title'>{$data_visual['title']}</span>";
             // $render .= "<div class='data-visualizer-wrapper'><!-- Render Data here boi --></div>";
         
         
@@ -204,7 +204,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
         
     }else{
-        $render =  '<div class="data-visualizer no-data"><div class="data-visualizer-wrapper">Sorry, data visual doesn not exist</div></div>';
+        $render =  '<div class="data-visualizer no-data"><div class="data-visualizer-wrapper">Sorry, data visual does not exist</div></div>';
     }
 
 

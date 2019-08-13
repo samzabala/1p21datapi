@@ -4,7 +4,7 @@ $prefix: '.data-visualizer';
     background: #EEE;
     position:relative;
     text-align: center;
-    padding: 1em;
+    padding: 2em 1em 1em;
 
     &-wrapper {
         .no-data & {
@@ -45,6 +45,7 @@ $prefix: '.data-visualizer';
 
         text {
             fill: #888;
+            font-size: .625em;
         }
     }
 
@@ -76,6 +77,10 @@ $prefix: '.data-visualizer';
         }
 
         
+    }
+
+    @media only screen and (max-width: 700px){
+        padding: .5em;
     }
 
 }

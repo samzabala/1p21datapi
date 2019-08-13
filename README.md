@@ -82,7 +82,7 @@ available options:
 ### X and Y Settings
 Only available for Bar and line graph. Each axis setting has the following fields
 
-#### Axis Data (default: Name Key)
+#### Axis Data (default: Name Key (x)| Value Key (y))
 Key that will represent the axis ( name key or value key)
 
 options available:

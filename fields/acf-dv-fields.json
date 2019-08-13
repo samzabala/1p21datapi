@@ -579,8 +579,10 @@
                             "top": "Top",
                             "bottom": "Bottom"
                         },
-                        "default_value": [],
-                        "allow_null": 1,
+                        "default_value": [
+                            "bottom"
+                        ],
+                        "allow_null": 0,
                         "multiple": 0,
                         "ui": 0,
                         "return_format": "value",
@@ -1160,8 +1162,10 @@
                             "left": "Left",
                             "right": "Right"
                         },
-                        "default_value": [],
-                        "allow_null": 1,
+                        "default_value": [
+                            "left"
+                        ],
+                        "allow_null": 0,
                         "multiple": 0,
                         "ui": 0,
                         "return_format": "value",

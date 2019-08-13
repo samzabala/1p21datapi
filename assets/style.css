@@ -1,4 +1,4 @@
-.data-visualizer { background: #EEE; position: relative; text-align: center; padding: 1em; }
+.data-visualizer { background: #EEE; position: relative; text-align: center; padding: 2em 1em 1em; }
 
 .no-data .data-visualizer-wrapper { padding: 4em 0; }
 
@@ -12,7 +12,7 @@
 
 .data-visualizer-axis line, .data-visualizer-axis path { stroke: #888; }
 
-.data-visualizer-axis text { fill: #888; }
+.data-visualizer-axis text { fill: #888; font-size: .625em; }
 
 .data-visualizer-item rect, .data-visualizer-item circle { fill: #222; }
 
@@ -21,3 +21,5 @@
 .data-visualizer-item-data-no-ticks .data-visualizer-item-data-0 { font-weight: 700; font-size: .75em; }
 
 .data-visualizer-item-data-no-ticks .data-visualizer-item-data-1 { font-size: 1.75em; font-weight: 300; }
+
+@media only screen and (max-width: 700px) { .data-visualizer { padding: .5em; } }

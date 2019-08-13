@@ -4,14 +4,11 @@
     var _1p21 = _1p21 || {};
 
     // helpful variables
-    //for bar
     var coordinates = ['x','y'],
         prefix = 'data-visualizer-';
     
-    
+    //get the length attribute to associate with the axis bro
     var dimensionAttribute = function(axisString,opposite){
-
-        
         if(opposite){
             return (axisString == 'x') ? 'height' : 'width';
         }else{
@@ -19,58 +16,51 @@
         }
     }
 
+    // get the opposite boi for alignmeny purposes
     var oppositeAxisString = function(axisString) {
         return (axisString == 'x') ? 'y' : 'x';
     }
     
 
     //string helpers
-
-    String.prototype.getFileExtension = function() {
-        return this.split('.').pop();
-    }
-
-    String.prototype.getHash = function() {
-        var hash = 0, i, chr;
-        if (this.length === 0) return hash;
-        for (i = 0; i < this.length; i++) {
-          chr   = this.charCodeAt(i);
-          hash  = ((hash << 5) - hash) + chr;
-          hash |= 0; // Convert to 32bit integer
+        // duh
+        String.prototype.getFileExtension = function() {
+            return this.split('.').pop();
         }
-        return hash;
-    };
+        // duh
+        String.prototype.getHash = function() {
+            var hash = 0, i, chr;
+            if (this.length === 0) return hash;
+            for (i = 0; i < this.length; i++) {
+            chr   = this.charCodeAt(i);
+            hash  = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+            }
+            return hash;
+        };
 
-    String.prototype.isValidJSONString = function() {
-        try {
-            JSON.parse(this);
-        } catch (e) {
-            return false;
+        String.prototype.isValidJSONString = function() {
+            try {
+                JSON.parse(this);
+            } catch (e) {
+                return false;
+            }
+            return true;
         }
-        return true;
-    }
-
-    // y.domain([
-    //     0,
-    //     d3.max(dat,function(dis){
-    //         return dis[args.dataKey[args.yData]];
-    //     })
-    // }
-
     
 
-    //initial function
+    // function that is open to the pooblic. this initiates the shiet
     var dataVisualizer = function(selector,arr){
         var dataContainer = document.querySelector(selector);
 
-        //stor variables initiated after sucessful data call + parameter declaration set as something_x so its easier to tell apart which shit is set by hooman and which one javascript sets up for hooman
+        //stor variables initiated after sucessful data call + parameter declaration set as something_`axis` so its easier to tell apart which shit is set by hooman and which one javascript sets up for hooman
         var _ = {};
 
-        //default params
+        //default params for hooman
         var defaults  = {
             width: 600,
             height:400,
-            margin: 20,
+            margin: 20, // @TODO option to separate padding
             marginOffset: 2,
             duration: 1000,
             delay: 500,
@@ -103,7 +93,7 @@
             colors : [],
             colorsData: '',
     
-            //area? in case scatter plot ir pi idk what the fuck i'm doing right now
+            //area? in case scatter plot ir pi idk what the fuck i'm doing right now but its here in case. yes i shall need this boi
             areaKey: '',
     
             //src
@@ -121,34 +111,45 @@
             }
         }
 
+        // set up padding 
+        // @param - axisString : duh 
         var getCanvasPadding = function(axisString){
             var padding = 0;
 
             if(args.type !== 'pie'){
                 padding = args.margin * (args.marginOffset * .5);
 
+                // @TODO option to separate padding
 
+                // if this axis has a label give it more space
                 if( args[axisString+'Label'] ){
                     padding = args.margin * args.marginOffset;
                 }
                 
+                // x axis with name keys need more space because text is long
                 if(axisString == 'x' && args[oppositeAxisString(axisString)+'Data'] == 0 ){
                     padding = (args.margin * (args.marginOffset * 1.5));
 
+                    //link @ line 123 boi
                     if( args[oppositeAxisString(axisString)+'Label'] ){
                         padding = padding + (args.marginOffset * .5);
                     }
                 }
             }
-            return padding  
+            return padding;
         }
 
-        var deepGet = function (obj,string, isNum) { 
 
-            var splitString = string.split('.');
+        // get data but with aility to get down deep because we never know where the fuck the date will be at
+        // @param - obj : duh 
+        // @param - keystring : hooman provided object key string that is hopefully correct 
+        // @param - isNum : if the data is a number 
+        var deepGet = function (obj,keysString, isNum) { 
+
+            var splitString = keysString.split('.');
 
 
-            //remove empty instances because i am so confused right now
+            //remove empty instances because they just mess with the loop
             splitString.forEach(function(key,i){
                 if(key == ''){
                     splitString.splice(i, 1);
@@ -173,14 +174,15 @@
         }
 
         //set range of the bois
-        var getRange = function(dimension,axisString){
+        // @param - axisString : duh
+        var getRange = function(axisString){
 
 
             var range = [];
             if(args[oppositeAxisString(axisString)+'Align'] == 'top' || args[oppositeAxisString(axisString)+'Align'] == 'left') {
-                range = [0,dimension]
+                range = [ 0, args[ dimensionAttribute(axisString) ] ];
             }else{
-                range = [dimension,0]
+                range = [ args[ dimensionAttribute(axisString) ] , 0 ];
             }
             return range;
         }
@@ -230,34 +232,34 @@
 
     //AXIS STRING AND AXIS POSITION COORDINATES ARE VERY DIFFERENT THINGS U DUMB FUCK
         var getLabelPosition = function(coordinateAttribute,axisString){ 
-            var theOffset = 0;
+            var offset = 0;
 
             if(coordinateAttribute == 'x'){ //x
 
                 if(axisString == 'x'){
-                    theOffset = args[dimensionAttribute(axisString)] / 2;
+                    offset = args[dimensionAttribute(axisString)] / 2;
                 }else if(axisString == 'y'){
-                    theOffset = -(args[dimensionAttribute(axisString)] / 2)
+                    offset = -(args[dimensionAttribute(axisString)] / 2)
                 };
                 
             }else{ //y
                 
                 if(axisString == 'x'){
                     if(args[axisString+'Align'] == 'bottom'){
-                        theOffset = args[dimensionAttribute(axisString,true)] + (_.off_y - (args.margin * .75)); //args.height + ()
+                        offset = args[dimensionAttribute(axisString,true)] + (_.off_y - (args.margin * .75)); //args.height + ()
                     }else{
-                        theOffset = -(_.off_y - (args.margin * 1.5));
+                        offset = -(_.off_y - (args.margin * 1.5));
                     }
                 }else if(axisString == 'y'){
                     if(args[axisString+'Align'] == 'right'){
-                        theOffset = args[dimensionAttribute(axisString,true)] + (_.off_x * .75);
+                        offset = args[dimensionAttribute(axisString,true)] + (_.off_x * .75);
                     }else{
-                        theOffset = -(_.off_x * .75)
+                        offset = -(_.off_x * .75)
                     }
                 };
             }
 
-            return theOffset;
+            return offset;
         }
 
         //attricutie setup for types
@@ -393,8 +395,7 @@
 
         var getBlobTextOrigin = function(coordinate,dis,i){
             //coordinate is influenced by the axis right now so this is the only time coordinate and axis is one and the same. i think... do not trust me on this
-            var dataKeyI =  args[ coordinate+'Data'];
-
+            var dataKeyI =  args[ coordinate+'Data'],
                 offset = 0;
 
             if(args.type == 'pie'){
@@ -509,6 +510,7 @@
             }
 
 
+
             return axis;
             
         }
@@ -614,7 +616,7 @@
                 _.outerWidth = args.width + (_.off_x * 2),
                 _.outerHeight = args.height + (_.off_y * 2),
                 _.canvas = d3.select(selector)
-                    .style('padding-top', (args.margin * (args.marginOffset * .75)) + 'px')
+                    // .style('padding-top', (args.margin * (args.marginOffset * .75)) + 'px')
                     .append('div')
                     .attr('class', prefix + 'wrapper'),
 
@@ -640,9 +642,9 @@
                     var shift = {
                         more: 1.25,
                         less: .75
-                    };
+                    },
 
-                    transformX = _.off_x;
+                    transformX = _.off_x,
                     transformY = _.off_y;
 
                     //x COORDINATE value
@@ -689,7 +691,7 @@
 
                 coordinates.forEach(function(coordinate){
                     // scale
-                    _['range_'+coordinate] = getRange(args[dimensionAttribute(coordinate)],coordinate),
+                    _['range_'+coordinate] = getRange(coordinate),
 
                     //vars
                     _['the_'+coordinate] = setScale(coordinate);
@@ -730,23 +732,28 @@
             // console.log('calculated',_);
             // console.log('data',dat);
             // console.log('args',args);
+
+
+            //x axis
             _.dom_x = getDomain(
                 'x',
                 dat
             );
             _.the_x.domain(_.dom_x);
             args.xTicks && _.rule_x.transition(_.duration).call( _.axis_x)
-                .attr('font-family','inherit');
+                .attr('font-family','inherit')
+                .attr('font-size',null);
 
 
-            // ok do the thing now
+            // y axis
             _.dom_y = getDomain(
                 'y',
                 dat
             );
             _.the_y.domain(_.dom_y);
             args.yTicks && _.rule_y.transition(_.duration).call( _.axis_y)
-                .attr('font-family','inherit');
+                .attr('font-family','inherit')
+                .attr('font-size',null);
 
 
             //select
@@ -770,7 +777,7 @@
             console.log('range',_.range_y);
 
 
-            if(args.type == 'line'){
+            if(args.type == 'pie'){
 
             }else{
                 
@@ -904,7 +911,7 @@
             //probably embeded
             default:
                 if(args.srcPath.getHash()){
-                    jsonSelector = dataContainer.querySelector('script[type="application/json"').innerHTML;
+                    var jsonSelector = dataContainer.querySelector('script[type="application/json"').innerHTML;
                     if(jsonSelector.isValidJSONString()){
 
                         var dataIsJSON = JSON.parse(jsonSelector);
