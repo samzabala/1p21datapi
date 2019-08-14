@@ -56,7 +56,7 @@
 
             // Variables for red, green, blue values
             var r, g, b, hsp;
-            console.log(color);
+            
             // Check the format of the color, HEX or RGB?
             if (color.match(/^rgb/)) {
         
@@ -86,8 +86,7 @@
             );
         
             // Using the HSP value, determine whether the color is light or dark
-            console.log(hsp);
-            console.log('------');
+            
             if (hsp>170) { //127.5
         
                 return false;
@@ -534,7 +533,9 @@
                                 offset = getBlobSize(coordinate,dis,i);
                             }
 
-                        }else{}
+                        }else{
+                            console.log(selector,'size of boi for alignment', getBlobSize('x',dis,i));
+                        }
 
                     }
             }
@@ -1064,7 +1065,6 @@
                                                         && !isDark(_.the_colors(i))
                                                     )
                                             ){
-                                                console.log('punyeta');
                                                 classString += ' item-text-dark';
                                             }
 
