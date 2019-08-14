@@ -25,15 +25,15 @@ gutter to set on graph canvas to compensate spaces for ticks and labels
 multiplier of the gutter
 
 ### width (default: 600 | type: number),
-duh
+width of canvas. if graph spacing seems broken, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired
 
 ### height (default: 600 | type: number),
-duh
+height canvas. if graph spacing seems broken, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired
 
-### transition (default: 100 | type: number),
+### transition (default: 1500 | type: number),
 how long should all animations or transitions take
 
-### delay (default: 500 | type: number),
+### delay (default: 250 | type: number),
 delay of rendering the boi. useful in case there is a script that needs to load before the graph rendering
 
 
@@ -100,6 +100,10 @@ Whether to use a tick ruler for the axis
 Custom text label for the axis
 
 
+#### Colors Palette
+Scheme to color graphic items
+
+
 #### Advanced Settings
 
 | Settings name | Default | Available Options | Description  |
@@ -114,10 +118,7 @@ Custom text label for the axis
 ### Pie Settings
 Only available for Pie graph
 
+## Advanced Tab
 # Filters
 ### apply_filters( '_1p21_dv_info', boolean $debug )
 - output array of the current data visuals on the page
-
-
-## Advanced Tab
-COMING SOON

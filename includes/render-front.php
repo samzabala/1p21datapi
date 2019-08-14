@@ -124,8 +124,9 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                         }else{
 
 
+                            //hi im a lazy fuck so im shortcutting because my laziness will pay of as optimal code hahahahah
                             $coordinates = ['x','y'];
-                            $string_values = array('label','align');
+                            $string_values = array('label','align','prepend','append');
                             $boolean_values = array('ticks');
 
                             foreach($coordinates as $coordinate){

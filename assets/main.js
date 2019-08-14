@@ -4,8 +4,10 @@
     var _1p21 = _1p21 || {};
 
     // helpful variables
-    var coordinates = ['x','y'],
-        itemAttributes = ['x','y','colors','area'],
+    var coordinates = ['x','y',],
+        itemAttributes = ['x','y','colors','area','r'],
+        mIHeight = 70,
+        mIWidth = 70
         prefix = 'data-visualizer-';
     
     //get the length attribute to associate with the axis bro
@@ -48,6 +50,51 @@
             }
             return true;
         }
+
+        //thank u internet
+        var isDark = function(color) {
+
+            // Variables for red, green, blue values
+            var r, g, b, hsp;
+            
+            // Check the format of the color, HEX or RGB?
+            if (color.match(/^rgb/)) {
+        
+                // If HEX --> store the red, green, blue values in separate variables
+                color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
+                
+                r = color[1];
+                g = color[2];
+                b = color[3];
+            } 
+            else {
+                
+                // If RGB --> Convert it to HEX: http://gist.github.com/983661
+                color = +("0x" + color.slice(1).replace( 
+                color.length < 5 && /./g, '$&$&'));
+        
+                r = color >> 16;
+                g = color >> 8 & 255;
+                b = color & 255;
+            }
+            
+            // HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
+            hsp = Math.sqrt(
+            0.299 * (r * r) +
+            0.587 * (g * g) +
+            0.114 * (b * b)
+            );
+        
+            // Using the HSP value, determine whether the color is light or dark
+            if (hsp>127.5) {
+        
+                return false;
+            } 
+            else {
+        
+                return true;
+            }
+        }
     
 
     // function that is open to the pooblic. this initiates the shiet
@@ -63,8 +110,8 @@
             height:400,
             margin: 20, // @TODO option to separate padding
             marginOffset: 2,
-            duration: 1000,
-            delay: 500,
+            transition: 1500,
+            delay: 250,
             type: 'bar',
             dataKey: [
                 0, //data 1 / name
@@ -76,9 +123,12 @@
             xTicks: false,
             xLabel: null,
             xTicksAmount: null,
-            xTicksFormat: null,
+            xTicksParameter: null,
             xMin: null,
             xMax: null,
+            xPrepend: '',
+            xAppend: '',
+            xDivider: 1,
     
             //y settings
             yData: 1,
@@ -86,9 +136,12 @@
             yTicks: false,
             yLabel: null,
             yTicksAmount: null,
-            yTickFormat: null,
+            yTicksParameter: null,
             yMin: null,
             yMax: null,
+            yPrepend: '',
+            yAppend: '',
+            yDivider: 1,
     
             //kulay
             colors : [],
@@ -118,7 +171,7 @@
             var padding = 0;
 
             if(args.type !== 'pie'){
-                padding = args.margin * (args.marginOffset * .5);
+                padding = args.margin * (args.marginOffset * .75);
 
                 // @TODO option to separate padding
 
@@ -129,7 +182,7 @@
                 
                 // x axis with name keys need more space because text is long
                 if(axisString == 'x' && args[oppositeAxisString(axisString)+'Data'] == 0 ){
-                    padding = (args.margin * (args.marginOffset * 1.5));
+                    padding = (args.margin * (args.marginOffset * 1.75));
 
                     //link @ line 123 boi
                     if( args[oppositeAxisString(axisString)+'Label'] ){
@@ -141,13 +194,17 @@
         }
 
 
+
         // get data but with aility to get down deep because we never know where the fuck the date will be at
         // @param - obj : duh 
         // @param - keystring : hooman provided object key string that is hopefully correct 
         // @param - isNum : if the data is a number 
-        var deepGet = function (obj,keysString, isNum) { 
+        var deepGet = function (obj,keysString, isNum,debug) { 
+            debug && console.log('parameters',obj,keysString,isNum);
 
             var splitString = keysString.split('.');
+
+            debug && console.log ('split keys:',splitString)
 
 
             //remove empty instances because they just mess with the loop
@@ -182,6 +239,7 @@
 
             switch(itemAttribute){
                 case 'colors':
+                    
                     range = args[itemAttribute];
                     break;
                     case 'x':
@@ -207,8 +265,7 @@
                     
                     var keyString =  args.colorsData || args.dataKey[0];
                     
-                    const instances = dat.reduce(function(acc,dis){
-                        console.log(acc);
+                    var instances = dat.reduce(function(acc,dis){
                         if(!acc.includes(deepGet(dis,keyString))){
                             acc.push(deepGet(dis,keyString));
                         }
@@ -273,15 +330,15 @@
                 
                 if(axisString == 'x'){
                     if(args[axisString+'Align'] == 'bottom'){
-                        offset = args[dimensionAttribute(axisString,true)] + (_.off_y - (args.margin * .75)); //args.height + ()
+                        offset = args[dimensionAttribute(axisString,true)] + (_.off_y - (args.margin * .125)); //args.height + ()
                     }else{
                         offset = -(_.off_y - (args.margin * 1.5));
                     }
                 }else if(axisString == 'y'){
                     if(args[axisString+'Align'] == 'right'){
-                        offset = args[dimensionAttribute(axisString,true)] + (_.off_x * .75);
+                        offset = args[dimensionAttribute(axisString,true)] + (_.off_x);
                     }else{
-                        offset = -(_.off_x * .75)
+                        offset = -(_.off_x * .125)
                     }
                 };
             }
@@ -296,7 +353,8 @@
             var dataKeyI =  args[ axisString+'Data'],
                 dataKey = args.dataKey[dataKeyI],
                 oppositeAxisAlignment = args[ oppositeAxisString(axisString)+'Align'],
-                dimension = 20,
+                dimension = 20;
+
                 initial = initial || false;
 
 
@@ -364,18 +422,36 @@
 
 
         //pls do not ask me this broke my brain i will not likely know what just happened
-        var getBlobTextShift = function(coordinateAttribute,axisString,dis,i){
+        var getBlobTextShift = function(coordinateAttribute,axisString,dis,i,initial){
 
             var shift = 0;
+            initial = initial || false;
             if(args.type == 'pie'){
 
             }else{
                 if((!args.xTicks && args.yTicks) || (args.xTicks && !args.yTicks) ){ //if only one of the ticks is set
-                    if(args[coordinateAttribute+'Data'] !== 0 ){
-                        
-                        if(args[oppositeAxisString(coordinateAttribute)+'Data'] == 'top' ){
+                    if(args[coordinateAttribute+'Data'] == 1 ){ // wait what the fuck wait
+                        if(args['xAlign'] == 'top' ){ //doesnt matter what data is in x i have to set the vertical boi
 
-                            shift = '-1em';
+                            if( ( parseFloat( getBlobSize('y',dis,i,false) ) > mIHeight )
+                                || (
+                                    initial && parseFloat( getBlobSize('y',dis,i,false) ) < mIHeight
+                                )
+                            ) {
+                                shift = '-1em';
+                            }else{
+                                    shift = '2em';
+                            }
+                            
+                            // if(
+                            //     ( parseFloat( getBlobSize('y',dis,i) ) < 70 && initial )
+                            //     || ( parseFloat( getBlobSize('y',dis,i) ) > 70 && !initial )
+                            // ){
+                            //     shift = '-1em';
+                            //     console.log(dis.color,parseFloat( getBlobSize('y',dis,i) ) < 70 , initial);
+                            // }else{
+                            //     shift = '2em';
+                            // }
                         }else{
                             
                             shift = '1em';
@@ -422,10 +498,11 @@
             return shift;
         }
 
-        var getBlobTextOrigin = function(coordinate,dis,i){
+        var getBlobTextOrigin = function(coordinate,dis,i,initial){
             //coordinate is influenced by the axis right now so this is the only time coordinate and axis is one and the same. i think... do not trust me on this
             var dataKeyI =  args[ coordinate+'Data'],
                 offset = 0;
+                initial = initial || false;
 
             if(args.type == 'pie'){
             
@@ -436,12 +513,26 @@
 
                         offset = getBlobOrigin(coordinate,dis,i) + (getBlobSize(coordinate,dis,i) / 2)
                     }else{
-                        if( args[oppositeAxisString(coordinate)+'Align'] == 'bottom' || args[oppositeAxisString(coordinate)+'Align'] == 'right' ){
-                            offset = args[dimensionAttribute(coordinate)] - getBlobSize(coordinate,dis,i)
-                        }else if( args[oppositeAxisString(coordinate)+'Align'] == 'top'){
-                            offset = getBlobSize(coordinate,dis,i);
 
-                        }
+                        if( args[oppositeAxisString(coordinate)+'Align'] == 'bottom' || args[oppositeAxisString(coordinate)+'Align'] == 'right' ){
+                            if(initial) {
+                                offset = args[dimensionAttribute(coordinate)] - ((!args.xTicks && !args.yTicks) ? 65 : 30)
+                            }else{
+                                offset = args[dimensionAttribute(coordinate)] - getBlobSize(coordinate,dis,i);
+                            }
+                            
+                        }else if( args[oppositeAxisString(coordinate)+'Align'] == 'top' ){
+                            if(initial) {
+                                if( args[oppositeAxisString(coordinate)+'Data'] !== 0 ){
+                                    offset = args[dimensionAttribute(coordinate)] - getBlobSize(coordinate,dis,i);
+                                }else{
+                                    offset = offset + ((!args.xTicks && !args.yTicks) ? 70 : 30) 
+                                }
+                            }else{
+                                offset = getBlobSize(coordinate,dis,i);
+                            }
+
+                        }else{}
 
                     }
             }
@@ -454,8 +545,9 @@
             var dataKeyI =  args[ coordinate+'Data'],
                 dataKey = args.dataKey[dataKeyI],
                 oppositeAxisAlignment = args[ oppositeAxisString(coordinate)+'Align'],
-                initial = initial || false,
                 offset = 0;
+
+                initial = initial || false;
 
                 switch(args.type) {
                 case 'pie':
@@ -534,7 +626,10 @@
 
 
             if(args.hasOwnProperty(axisString +'Ticks')){
-                args.hasOwnProperty(axisString +'TicksFormat') && axis.tickFormat( args[axisString +'TicksFormat'] );
+               if( args.hasOwnProperty(axisString +'TicksFormat') ){
+                    axis.tickFormat( _['format_'+axisString] );
+                };
+
                 args.hasOwnProperty(axisString +'TicksAmount') && axis.ticks( args[axisString +'TicksAmount'] );
             }
 
@@ -611,12 +706,12 @@
 
 
         //render a good boi
-        var renderData = function(selector,data,_){
+        var setData = function(selector,retrievedData,_){
             // heck if src key exists
-            var retrievedData = data;
+            var data = null;
 
             //duration
-            _.duration = d3.transition().duration(args.duration);
+            _.duration = d3.transition().duration(args.transition);
 
 
             //element
@@ -629,9 +724,13 @@
                     break;
             }
 
+            
             if (args.srcKey) {
-                retrievedData = deepGet(data,args.srcKey);
+                data = deepGet(retrievedData,args.srcKey);
+            }else{
+                data = retrievedData;
             }
+
 
 
             //half ass parse dem numeric data bois
@@ -729,17 +828,73 @@
     
                 _.rule = _.container.append('g')
                     .attr('class', prefix + 'axis');
+                    
 
-                coordinates.forEach(function(coordinate){
+                itemAttributes.forEach(function(itemAttribute){
+
+
                     // scale
-                    _['range_'+coordinate] = getRange(coordinate),
+                    _['range_'+itemAttribute] = getRange(itemAttribute),
 
                     //vars
-                    _['the_'+coordinate] = setScale(coordinate);
+                    _['the_'+itemAttribute] = setScale(itemAttribute);
+
+                    if (itemAttribute == 'x' || itemAttribute == 'y'){
+                        renderAxis(itemAttribute,_.rule)
 
 
-                    renderAxis(coordinate,_.rule);
+                        //formatter
+                        _['format_'+itemAttribute] = args[itemAttribute+'Parameter'] || function(dis){
+                            var dataPossiblyDivided = (args[axisString+'Data'] == 1 ) ? (dis / args[axisString+'Divider']): dis,
+                            formatted = args[axisString+'Prepend'] + dataPossiblyDivided + args[axisString+'Append'];
+                            
+
+                            return formatted;
+                        }
+                    };
+
+
                 })
+
+                //x axis
+                _.dom_x = getDomain(
+                    'x',
+                    data
+                );
+                _.the_x.domain(_.dom_x);
+                args.xTicks && _.rule_x.transition(args.delay).call( _.axis_x)
+                    .attr('font-family','inherit')
+                    .attr('font-size',null);
+
+
+                // y axis
+                _.dom_y = getDomain(
+                    'y',
+                    data
+                );
+                _.the_y.domain(_.dom_y);
+                args.yTicks && _.rule_y.transition(args.delay).call( _.axis_y)
+                    .attr('font-family','inherit')
+                    .attr('font-size',null);
+
+
+                //select
+                _.graph = _.container.insert('g',':first-child')
+                    .attr('class', prefix + 'graph' + ' ' + prefix + ( (args.colors.length > 0) ?  'has-palette' : 'no-palette' ));
+                    if(data.length > 9 && args.width == defaults.width && args.height == defaults.height){
+
+                        console.log(selector+' Width and height was not adjusted. graph elements may not fit in the canvas');
+                    }
+
+                _.blob = _.graph.selectAll(_.graphItem)
+                    .data(data,function(dis){
+                        return dis[args.dataKey[args.xData]]
+                    });
+
+                //colors kung meron
+                if(args.colors.length > 0) {
+                    _.dom_color = getDomain('colors',data);
+                }
 
                 // // scale
                 // _.range_x = getRange(args.width,'x'),
@@ -757,10 +912,20 @@
 
             } 
 
-            setTimeout(function(){
+            //check if it's loaded boi
+            _.dv_init = false;
 
-                renderUpdate(retrievedData,_);
-            },args.delay);
+            document.addEventListener('scroll',function(e) {
+                scrollOffset = window.pageYOffset;
+                graphPosition = dataContainer.getBoundingClientRect().y;
+
+                if(graphPosition < (window.innerHeight * .5) && !_.dv_init) {
+                    _.dv_init = true;
+                    setTimeout(function(){
+                        renderUpdate(_);
+                    },args.delay);
+                }
+            },true);
 
         }
                 
@@ -768,65 +933,26 @@
 
 
         // tick inits
-        var renderUpdate = function(dat,_) {
+        var renderUpdate = function(_) {
             // ok do the thing now
-            console.log('calculated',_);
-            console.log('data',dat);
-            console.log('args',args);
-
-
-            //x axis
-            _.dom_x = getDomain(
-                'x',
-                dat
-            );
-            _.the_x.domain(_.dom_x);
-            args.xTicks && _.rule_x.transition(_.duration).call( _.axis_x)
-                .attr('font-family','inherit')
-                .attr('font-size',null);
-
-
-            // y axis
-            _.dom_y = getDomain(
-                'y',
-                dat
-            );
-            _.the_y.domain(_.dom_y);
-            args.yTicks && _.rule_y.transition(_.duration).call( _.axis_y)
-                .attr('font-family','inherit')
-                .attr('font-size',null);
-
-
-            //select
-            _.graph = _.container.insert('g',':first-child')
-                .attr('class', prefix + 'graph');
-
-            _.blob = _.graph.selectAll(_.graphItem)
-                .data(dat,function(dis){
-                    return dis[args.dataKey[args.xData]]
-                });
-
-            //colors kung meron
-
-            if(args.colors) {
-                // _.dom_color = getDomain('colors',dat);
-                
-            }
+            // console.log('calculated',_);
+            // console.log('data',dat);
+            // console.log('args',args);
 
                 
-            console.log('x');
-            console.log('domain',_.dom_x);
-            console.log('range',_.range_x);
+            // console.log('x');
+            // console.log('domain',_.dom_x);
+            // console.log('range',_.range_x);
 
-            console.log('----------------');
+            // console.log('----------------');
 
-            console.log('y');
-            console.log('domain',_.dom_y);
-            console.log('range',_.range_y);
+            // console.log('y');
+            // console.log('domain',_.dom_y);
+            // console.log('range',_.range_y);
 
 
             if(args.type == 'pie'){
-
+                
             }else{
                 
                 _.blob.exit()
@@ -839,9 +965,11 @@
                     .enter()
                     .append('g')
                         .attr('class', prefix + 'item')
+
+                
                         
 
-                _.blobWrap
+                _.blobItem = _.blobWrap
                     .append(_.graphItem)
                     .attr('width',function(dis,i){
                         return getBlobSize('x',dis,i,true);
@@ -861,10 +989,18 @@
                         // return 0;
                         // return args.height - _.the_y(dis[args.dataKey[args.yData]])
                         // return _.the_y(dis[args.dataKey[args.yData]])
-                    })
+                    });
 
+
+                    if(args.colors.length > 0) {
+                        _.blobItem
+                            .attr('fill',function(dis,i){
+                                return _.the_colors(i);
+                            });
+                        }
+                    _.blobItem 
                     // .merge(_.blob)
-                    .transition(_.duration)
+                        .transition(_.duration)
                         .attr('width',function(dis,i){
                             return getBlobSize('x',dis,i);
                         }) // calculated width
@@ -894,8 +1030,17 @@
                     _.blobText = _.blobWrap.append('g')
                         .attr('class', prefix + 'item-text' + ( (!args.xTicks && !args.yTicks) ? ' '+ prefix +'item-data-no-ticks' : '') )
                         .attr('transform',function(dis,i){
-                            return 'translate('+getBlobTextOrigin('x',dis,i)+','+getBlobTextOrigin('y',dis,i)+')'
+                            return 'translate('+getBlobTextOrigin('x',dis,i,true)+','+getBlobTextOrigin('y',dis,i,true)+')'
                         })
+                        .style('opacity',0);
+
+                        _.blobText
+                        
+                            .transition(_.duration)
+                            .attr('transform',function(dis,i){
+                                return 'translate('+getBlobTextOrigin('x',dis,i)+','+getBlobTextOrigin('y',dis,i)+')'
+                            })
+                            .style('opacity',1);
 
                         if(args.type == 'pie'){
 
@@ -906,7 +1051,23 @@
                                 if( !args[coordinate+'Ticks'] ){
 
                                     _['blobText'+coordinate] = _.blobText.append('text')
-                                        .attr('class', prefix + 'item-data-'+args[coordinate+'Data'])
+                                        .attr('class', function(dis,i){
+                                            var classString =  prefix + 'item-data-'+args[coordinate+'Data'];
+                                            
+                                            if( 
+                                                parseFloat(getBlobSize('y',dis,i,false)) < mIHeight
+                                                    || (
+                                                        (args.colors.length > 0)
+                                                        && (parseFloat(getBlobSize('y',dis,i,false)) > mIHeight)
+                                                        && !isDark(_.the_colors(i))
+                                                    )
+                                            ){
+                                                console.log('punyeta');
+                                                classString += ' item-text-dark';
+                                            }
+
+                                            return classString;
+                                        })
                                         .attr('dominant-baseline',function(dis,i){
                                             return getBlobTextBaseline(dis,i);
                                         })
@@ -917,6 +1078,16 @@
                                         .text(function(dis,i){
                                             return deepGet(dis,args.dataKey[ args[coordinate+'Data'] ],args[coordinate+'Data']);
                                         })
+                                        .attr('x',function(dis,i){
+                                            return getBlobTextShift('x',coordinate,dis,i,true)
+                                            // return 0;
+                                        })
+                                        .attr('y',function(dis,i){
+                                            return getBlobTextShift('y',coordinate,dis,i,true)
+                                        })
+
+                                    _['blobText'+coordinate]
+                                        .transition(_.duration)
                                         .attr('x',function(dis,i){
                                             return getBlobTextShift('x',coordinate,dis,i)
                                             // return 0;
@@ -942,18 +1113,18 @@
         switch(args.srcPath.getFileExtension()) {
             case 'csv':
                 d3.csv(args.srcPath).then(function(data){
-                    renderData(selector,data,_);
+                    setData(selector,data,_);
                 });
                 break;
             case 'tsv':
                 d3.tsv(args.srcPath).then(function(data){
-                    renderData(selector,data,_);
+                    setData(selector,data,_);
                 });
                 break;
             
             case 'json':
                 d3.json(args.srcPath).then(function(data){
-                    renderData(selector,data,_);
+                    setData(selector,data,_);
                 });
                 break;
             //probably embeded
@@ -964,7 +1135,7 @@
 
                         var dataIsJSON = JSON.parse(jsonSelector);
 
-                        renderData(selector,dataIsJSON,_);
+                        setData(selector,dataIsJSON,_);
                     }else{
                         if(args.srcType == 'text'){
 

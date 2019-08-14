@@ -14,9 +14,11 @@
 
 .data-visualizer-axis text { fill: #888; font-size: .625em; }
 
-.data-visualizer-item rect, .data-visualizer-item circle { fill: #222; }
+.data-visualizer-no-palette rect, .data-visualizer-no-palette circle { fill: #222; }
 
 .data-visualizer-item-text { fill: #FFF; line-height: 2; font-size: 1em; }
+
+.data-visualizer-item-text .item-text-dark { fill: #222; }
 
 .data-visualizer-item-data-no-ticks .data-visualizer-item-data-0 { font-weight: 700; font-size: .75em; }
 

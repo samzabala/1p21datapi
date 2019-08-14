@@ -50,15 +50,22 @@ $prefix: '.data-visualizer';
     }
 
     &-item {
-        
-        rect,circle {
-            fill: #222;
+        @at-root #{$prefix}-no-palette {
+            rect,circle {
+                fill: #222;
+            }
         }
+        
 
         &-text {
             fill: #FFF;
             line-height: 2;
             font-size: 1em;
+
+            .item-text-dark {
+                fill: #222;
+            }
+            
         }
 
         &-data {

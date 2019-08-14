@@ -101,7 +101,18 @@ function _1p21_dv_get_data_visual_object($args = array()) {
         //@TODO AREA
 
         //colors
-        $data_visual['colors'] =  _1p21_dv_get_subbed_post_meta($id,'dv_colors',true);
+        $data_visual['colors'] = array();
+        $got_color_data = _1p21_dv_get_subbed_post_meta(array(
+            'id' => $id,
+            'key' => 'dv_colors',
+            'is_incremented' => true
+        ));
+
+        foreach($got_color_data as $color) {
+            $data_visual['colors'][] = $color['color'];
+        }
+
+
         $data_visual['colors_data_key'] =  get_post_meta($id,'dv_colors_data_key',true);
         
 
