@@ -983,7 +983,7 @@
                     {
                         "ID": 0,
                         "key": "field_5d548a3e2c501",
-                        "label": "Add Grid",
+                        "label": "Add Grid (testing)",
                         "name": "grid",
                         "prefix": "acf",
                         "type": "true_false",
@@ -1609,7 +1609,7 @@
                     {
                         "ID": 0,
                         "key": "field_5d548a8f2c505",
-                        "label": "Add Grid",
+                        "label": "Add Grid (testing)",
                         "name": "grid",
                         "prefix": "acf",
                         "type": "true_false",
@@ -2042,7 +2042,7 @@
                 {
                     "param": "post_type",
                     "operator": "==",
-                    "value": "post"
+                    "value": "data-visual"
                 }
             ]
         ],

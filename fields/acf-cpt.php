@@ -1488,7 +1488,7 @@ Key or column name of the data that will represent data based on the name key',
 			array(
 				'param' => 'post_type',
 				'operator' => '==',
-				'value' => 'post',
+				'value' => 'data-visual',
 			),
 		),
 	),

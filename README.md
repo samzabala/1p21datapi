@@ -114,9 +114,17 @@ Scheme to color graphic items
 | Maximum       | null | n/a | number to maximum of axis |
 
 
+### Line Settings
+Only available for Pie graph
+
 
 ### Pie Settings
-Only available for Pie graph
+
+#### Stroke Color
+yes
+
+#### Add Plot Points
+add a doot doot on a data instance
 
 ## Advanced Tab
 # Filters

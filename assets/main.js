@@ -56,7 +56,7 @@
 
             // Variables for red, green, blue values
             var r, g, b, hsp;
-            
+            console.log(color);
             // Check the format of the color, HEX or RGB?
             if (color.match(/^rgb/)) {
         
@@ -86,7 +86,9 @@
             );
         
             // Using the HSP value, determine whether the color is light or dark
-            if (hsp>127.5) {
+            console.log(hsp);
+            console.log('------');
+            if (hsp>170) { //127.5
         
                 return false;
             } 
