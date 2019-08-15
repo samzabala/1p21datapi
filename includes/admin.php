@@ -43,18 +43,37 @@
     }
     add_action( 'wp_enqueue_scripts', '_1p21_dv_enqueue_scripts' );
 
+// display id on edit page
+function _1p21_dv_display_id_to_edit_page() {
+    global $post;
+    $scr = get_current_screen();
+    // _1p21_dv_output_arr($scr);
+    // _1p21_dv_output_arr($post);
 
-function _1p21_dv_acf_fields_styles(){
-    ?>
-    <style type="text/css">
 
-    #acf-group_5d4206c985d00 .dv-code input,
-    #acf-group_5d4206c985d00 .dv-code textarea{
-        font-family: monospace;
-        
+    if ( $scr->base !== 'data-visual' && $scr->parent_base === 'edit' ){
+
+        echo '<h2 style="font-size: 1.25em;margin-top:.75em;display:inline-block;border: 1px solid #ccc;">Data Visual ID: <span class="wp-ui-highlight" style="position:relative; bottom: .0625em; left: .125em; padding: .25em .5em; font-family: monospace;">'.$post->ID.'</span></h2>';
     }
-    </style>
-    <?php 
+        return;
 }
+
+add_action( 'edit_form_after_title', '_1p21_dv_display_id_to_edit_page' );
+
+
+//style classes of acf
+    function _1p21_dv_acf_fields_styles(){
+        ?>
+        <style type="text/css">
+
+        #acf-group_5d4206c985d00 .dv-code input,
+        #acf-group_5d4206c985d00 .dv-code textarea{
+            font-family: monospace;
+            
+        }
+        </style>
+        <?php 
+    }
+
 
 add_action('acf/input/admin_head', '_1p21_dv_acf_fields_styles');

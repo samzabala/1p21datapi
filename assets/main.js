@@ -1,37 +1,49 @@
-// "use strict";
+"use strict";
 /* DO NOT TOUCH I DEV ON THIS BOI I ENQUEUE THE MINIFIED ONE ANYWAY  :< */
 (function(window,d3){
     var _1p21 = _1p21 || {};
 
     // helpful variables
-    var coordinates = ['x','y',],
-        itemAttributes = ['x','y','colors','area','r'],
-        mIHeight = 70,
-        mIWidth = 70
-        prefix = 'data-visualizer-';
+    var coordinates = ['x','y'], //yes
+        itemAtts = ['x','y','colors','area','r'], //opo //check if the graph item's length is enough for vertical bois idk i'll work on this some more later
+        prefix = 'data-visualizer-'; //yeeee
     
     //get the length attribute to associate with the axis bro
     var dimensionAttribute = function(axisString,opposite){
+        
+
         if(opposite){
             return (axisString == 'x') ? 'height' : 'width';
         }else{
+            // switch(axisString){
+            //     case 'x':
+            //         return 'width';
+            //     case 'y':
+            //         return 'height';
+            //     case 'r':
+            //         return 'r';
+            // }
             return (axisString == 'x') ? 'width' : 'height';
         }
     }
 
     // get the opposite boi for alignmeny purposes
     var oppositeAxisString = function(axisString) {
+
         return (axisString == 'x') ? 'y' : 'x';
+
     }
-    
 
     //string helpers
         // duh
         String.prototype.getFileExtension = function() {
+
             return this.split('.').pop();
+
         }
         // duh
         String.prototype.getHash = function() {
+
             var hash = 0, i, chr;
             if (this.length === 0) return hash;
             for (i = 0; i < this.length; i++) {
@@ -40,18 +52,29 @@
             hash |= 0; // Convert to 32bit integer
             }
             return hash;
+
         };
 
         String.prototype.isValidJSONString = function() {
+
             try {
                 JSON.parse(this);
             } catch (e) {
                 return false;
             }
             return true;
+
         }
 
-        //thank u internet
+        String.prototype.toCamelCase = function(){
+            var str = this;
+            return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
+                return index == 0 ? word.toLowerCase() : word.toUpperCase();
+            }).replace(/\s+/g, '');
+
+        }
+
+        //is that bitch boi dark? thank u internet
         var isDark = function(color) {
 
             // Variables for red, green, blue values
@@ -98,12 +121,14 @@
         }
     
 
-    // function that is open to the pooblic. this initiates the shiet
+    // function that is open to the pooblic. this initiates the speshal boi
     var dataVisualizer = function(selector,arr){
+        
         var dataContainer = document.querySelector(selector);
 
         //stor variables initiated after sucessful data call + parameter declaration set as something_`axis` so its easier to tell apart which shit is set by hooman and which one javascript sets up for hooman
         var _ = {};
+
 
         //default params for hooman
         var defaults  = {
@@ -112,7 +137,7 @@
             margin: 20, // @TODO option to separate padding
             marginOffset: 2,
             transition: 1500,
-            delay: 250,
+            delay: 300,
             type: 'bar',
             dataKey: [
                 0, //data 1 / name
@@ -127,6 +152,7 @@
             xTicksParameter: null,
             xMin: null,
             xMax: null,
+            xGrid: false,
             xPrepend: '',
             xAppend: '',
             xDivider: 1,
@@ -140,13 +166,25 @@
             yTicksParameter: null,
             yMin: null,
             yMax: null,
+            yGrid: false,
             yPrepend: '',
             yAppend: '',
             yDivider: 1,
+
+            //line
+            lineStyle: '',
+            lineColor: null,
+            linePoints: false,
+            lineFill: false,
+            linePointsColor: null,
+            linePointsSize: null,
+            lineFillColor: null,
+            lineFillAxis: 'x',
+            lineDash: [],
     
             //kulay
             colors : [],
-            colorsData: '',
+            colorsData: null,
     
             //area? in case scatter plot ir pi idk what the fuck i'm doing right now but its here in case. yes i shall need this boi
             areaKey: '',
@@ -166,31 +204,37 @@
             }
         }
 
+        //set a minimum height
+        _.mLength = (!args.xTicks && !args.yTicks) ? 120 : 70;
+
         // set up padding 
         // @param - axisString : duh 
         var getCanvasPadding = function(axisString){
+
             var padding = 0;
 
             if(args.type !== 'pie'){
                 padding = args.margin * (args.marginOffset * .75);
-
+                
                 // @TODO option to separate padding
-
                 // if this axis has a label give it more space
                 if( args[axisString+'Label'] ){
                     padding = args.margin * args.marginOffset;
                 }
-                
+        
                 // x axis with name keys need more space because text is long
                 if(axisString == 'x' && args[oppositeAxisString(axisString)+'Data'] == 0 ){
+                    
                     padding = (args.margin * (args.marginOffset * 1.75));
 
                     //link @ line 123 boi
                     if( args[oppositeAxisString(axisString)+'Label'] ){
                         padding = padding + (args.marginOffset * .5);
                     }
+
                 }
             }
+
             return padding;
         }
 
@@ -200,118 +244,127 @@
         // @param - obj : duh 
         // @param - keystring : hooman provided object key string that is hopefully correct 
         // @param - isNum : if the data is a number 
-        var deepGet = function (obj,keysString, isNum,debug) { 
-            debug && console.log('parameters',obj,keysString,isNum);
-
+        var deepGet = function (obj,keysString, isNum) { 
             var splitString = keysString.split('.');
-
-            debug && console.log ('split keys:',splitString)
-
 
             //remove empty instances because they just mess with the loop
             splitString.forEach(function(key,i){
+
                 if(key == ''){
                     splitString.splice(i, 1);
                 }
+
             })
 
             function multiIndex(obj,is) {
+
                 var toReturn = null;
 
                 if(is.length){
                     toReturn = multiIndex(obj[is[0]],is.slice(1))
                 }else{
-
                     toReturn = obj;
                 }
+
                 return toReturn;
             }
 
             var value = isNum ? parseFloat(multiIndex(obj,splitString)) : multiIndex(obj,splitString);
-
             return value;
         }
 
         //set range of the bois
-        // @param - axisString : duh
-        var getRange = function(itemAttribute){
+        // @param - itemAtt : duh
+        var getRange = function(itemAtt){
 
             var range = [];
 
-            switch(itemAttribute){
+            switch(itemAtt){
+
                 case 'colors':
-                    
-                    range = args[itemAttribute];
+                    range = args[itemAtt];
                     break;
+
                     case 'x':
                     case 'y':
-                        if(args[oppositeAxisString(itemAttribute)+'Align'] == 'top' || args[oppositeAxisString(itemAttribute)+'Align'] == 'left') {
-                            range = [ 0, args[ dimensionAttribute(itemAttribute) ] ];
+                        
+                        if(args[oppositeAxisString(itemAtt)+'Align'] == 'top' || args[oppositeAxisString(itemAtt)+'Align'] == 'left') {
+                            range = [ 0, args[ dimensionAttribute(itemAtt) ] ];
                         }else{
-                            range = [ args[ dimensionAttribute(itemAttribute) ] , 0 ];
+                            range = [ args[ dimensionAttribute(itemAtt) ] , 0 ];
                         }
+
                         break;
+
             }
             return range;
         }
         
-        var getDomain = function(itemAttribute,dat){
+        var getDomain = function(itemAtt,dat){
 
-            var dataKeyI =  args[ itemAttribute+'Data'],
+            var dataKeyI =  args[ itemAtt+'Data'],
                 domain = [];
             // var dataKeyI = deepGet();
 
-            switch(itemAttribute){
-                case 'colors':
-                    
-                    var keyString =  args.colorsData || args.dataKey[0];
-                    
-                    var instances = dat.reduce(function(acc,dis){
-                        if(!acc.includes(deepGet(dis,keyString))){
-                            acc.push(deepGet(dis,keyString));
+            if(dataKeyI !== null){
+                switch(itemAtt){
+                    case 'colors':
+                        
+                        var keyString =  args.colorsData || args.dataKey[0];
+                        
+                        var instances = dat.reduce(function(acc,dis){
+                            if(!acc.includes(deepGet(dis,keyString))){
+                                acc.push(deepGet(dis,keyString));
+                            }
+                            return acc;
+                        },[]);
+
+                        domain = instances;
+
+                        break;
+
+                    case 'x':
+                    case 'y':
+                        
+                        switch(dataKeyI){
+                            case 1: // numeric fuck
+                                var min,max;
+                                
+                                if(args[itemAtt + 'Min'] !== null){
+                                    min = args[itemAtt + 'Min'];
+
+                                }else{
+                                    min = d3.min(dat,function(dis){
+                                        return deepGet(dis,args.dataKey[ dataKeyI ],dataKeyI);
+                                    });
+                                }
+                                
+                                if(args[itemAtt + 'Max'] !== null){
+                                    max = args[itemAtt + 'Max']
+                                }else{
+                                    max = d3.max(dat,function(dis){
+                                        return deepGet(dis,args.dataKey[ dataKeyI ],dataKeyI);
+                                    });
+                                }
+
+                                domain = [min,max];
+
+                                break;
+                            
+                            default: //not a numeric fuck and each instance is ok
+                                
+                                domain =  dat.map(function(dis){
+                                    return deepGet(dis,args.dataKey[ dataKeyI ], dataKeyI);
+                                });
+
+                                break;
                         }
-                        return acc;
-                    },[]);
 
-                    domain = instances;
-
-                    break;
-                case 'x':
-                case 'y':
-                    switch(dataKeyI){
-                        case 1: // numeric fuck
-                            var min,max;
-
-                            if(args[itemAttribute + 'Min'] !== null){
-                                min = args[itemAttribute + 'Min'];
-
-                            }else{
-                                min = d3.min(dat,function(dis){
-                                    return deepGet(dis,args.dataKey[ dataKeyI ],dataKeyI);
-                                });
-                            }
-
-
-
-                            if(args[itemAttribute + 'Max'] !== null){
-                                max = args[itemAttribute + 'Max']
-                            }else{
-                                max = d3.max(dat,function(dis){
-                                    return deepGet(dis,args.dataKey[ dataKeyI ],dataKeyI);
-                                });
-                            }
-                            domain = [min,max];
-                            break;
-                        default: //not a numeric fuck and each instance is ok
-                            domain =  dat.map(function(dis){
-                                return deepGet(dis,args.dataKey[ dataKeyI ], dataKeyI);
-                            });
-                            break;
+                        break;
                     }
-                    break;
-            }
 
-            return domain;
+                return domain;
+            }
         };
 
 
@@ -347,9 +400,7 @@
             return offset;
         }
 
-        //attricutie setup for types
-            //BAR
-
+        //width,height or radius boi
         var getBlobSize = function(axisString,dis,i,initial) {
             var dataKeyI =  args[ axisString+'Data'],
                 dataKey = args.dataKey[dataKeyI],
@@ -361,18 +412,15 @@
 
 
             switch(args.type) {
-                case 'pie':
-                    break;
-                case 'scatter':
-                        //radius
+                case 'pie': //eehhhh
                     break;
                 default:
 
 
                     if(dataKeyI  == 0){
-                        
                         dimension = _['the_'+axisString].bandwidth()
                     }else{
+                        
                         if(initial) {
                             dimension = 0;
                         }else{
@@ -380,10 +428,11 @@
                             if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
                                 dimension = args[dimensionAttribute(axisString)] - _['the_'+axisString]( deepGet(dis,dataKey,dataKey) );
                             }else{
-
                                 dimension = _['the_'+axisString]( deepGet( dis,dataKey,dataKey ) );
                             }
+
                         }
+
                     }
 
             }
@@ -391,38 +440,57 @@
 
             return dimension
         }
-        
-        //oh god im so confuse
-        var getBlobTextBaseline = function (dis,i){
-            var baseline = 'middle';
 
-            if(args.xData == 0) {
-                if(args.xAlign == 'bottom'){
-                    baseline = 'hanging';
-                }else{
-                    baseline = 'auto';
+        var getBlobRadius = function(dis,i,initial){
+            var radius = 2;
+            if(!initial){
+                if(args.type == 'line' && args.linePointsSize){
+                    radius = args.linePointsSize
                 }
-            }
-
-            return baseline;
-
-        }
-        var getBlobTextAnchor = function(dis,i){
-            var anchor = 'middle';
-
-            if(args.type == 'pie'){
             }else{
-
-                if(args.yData == 0) {
-                        anchor = 'start';
-                }
-
+                radius = 0;
             }
-            return anchor;
+            return radius;
+
         }
 
+        //set baseline and alignment for text labels of graphic items. it works and it is confusion so dont fuck with it anymore
+            //oh god i am confusion
+            var getBlobTextBaseline = function (dis,i){
+                var baseline = 'middle';
 
-        //pls do not ask me this broke my brain i will not likely know what just happened
+                if(args.xData == 0) {
+                    
+                    if(args.xAlign == 'bottom'){
+                        baseline = 'hanging';
+                    }else{
+                        baseline = 'auto';
+                    }
+
+                }
+
+                return baseline;
+
+            }
+
+            //more confusuin
+            var getBlobTextAnchor = function(dis,i){
+                var anchor = 'middle';
+
+                if(args.type == 'pie'){
+                
+                }else{
+
+                    if(args.yData == 0) {
+                            anchor = 'start';
+                    }
+
+                }
+                return anchor;
+            }
+
+
+        //pls do not ask me po this broke my brain i will not likely know what just happened
         var getBlobTextShift = function(coordinateAttribute,axisString,dis,i,initial){
 
             var shift = 0;
@@ -433,26 +501,14 @@
                 if((!args.xTicks && args.yTicks) || (args.xTicks && !args.yTicks) ){ //if only one of the ticks is set
                     if(args[coordinateAttribute+'Data'] == 1 ){ // wait what the fuck wait
                         if(args['xAlign'] == 'top' ){ //doesnt matter what data is in x i have to set the vertical boi
-
-                            if( ( parseFloat( getBlobSize('y',dis,i,false) ) > mIHeight )
-                                || (
-                                    initial && parseFloat( getBlobSize('y',dis,i,false) ) < mIHeight
-                                )
+                            if(
+                                ( parseFloat( getBlobSize('y',dis,i,false) ) > _.mLength )
+                                || ( initial && parseFloat( getBlobSize('y',dis,i,false) ) < _.mLength )
                             ) {
                                 shift = '-1em';
                             }else{
                                     shift = '2em';
                             }
-                            
-                            // if(
-                            //     ( parseFloat( getBlobSize('y',dis,i) ) < 70 && initial )
-                            //     || ( parseFloat( getBlobSize('y',dis,i) ) > 70 && !initial )
-                            // ){
-                            //     shift = '-1em';
-                            //     console.log(dis.color,parseFloat( getBlobSize('y',dis,i) ) < 70 , initial);
-                            // }else{
-                            //     shift = '2em';
-                            // }
                         }else{
                             
                             shift = '1em';
@@ -465,12 +521,16 @@
                             shift = '10'
                         }
                     }else{ //set y coordinate
-
                         if(args[oppositeAxisString(coordinateAttribute) + 'Data'] == 0 ){ //if x axis is labels
-
-                        
                             if(args[oppositeAxisString(coordinateAttribute) + 'Align'] == 'bottom'){ //aligned to coordinate which is y
-                                shift = '1.5em'
+                                if(
+                                    ( parseFloat( getBlobSize('y',dis,i,false) ) > _.mLength )
+                                    || ( initial && parseFloat( getBlobSize('y',dis,i,false) ) < _.mLength )
+                                ) {
+                                    shift = '1.5em';
+                                }else{
+                                        shift = '-2.5em';
+                                }
                             }else{
                                 if( dis[ args.dataKey[ args[coordinateAttribute + 'Data'] ] ] !== dis[ args.dataKey[ args[axisString + 'Data'] ] ] ){ // if text is the label data
     
@@ -482,15 +542,11 @@
                             }
                         }else{
                             if( dis[ args.dataKey[ args[coordinateAttribute + 'Data'] ] ] !== dis[ args.dataKey[ args[axisString + 'Data'] ] ] ){ // if text is the label data
-
                                 shift = '-.25em'
                             }else{
                                 shift = '1.375em'
-
                             }
-
                         }
-                        
                     }
                 }
             }
@@ -507,12 +563,13 @@
 
             if(args.type == 'pie'){
             
-            }else if(args.type == 'line'){
             }else{
 
                     if(dataKeyI  == 0) {
-
-                        offset = getBlobOrigin(coordinate,dis,i) + (getBlobSize(coordinate,dis,i) / 2)
+                        offset = getBlobOrigin(coordinate,dis,i) + (getBlobSize(coordinate,dis,i) / 2);
+                        if(args.type == 'line' || args.type == 'scatter') {
+                            offset -= getBlobSize(coordinate,dis,i) / 2;
+                        }
                     }else{
 
                         if( args[oppositeAxisString(coordinate)+'Align'] == 'bottom' || args[oppositeAxisString(coordinate)+'Align'] == 'right' ){
@@ -527,14 +584,14 @@
                                 if( args[oppositeAxisString(coordinate)+'Data'] !== 0 ){
                                     offset = args[dimensionAttribute(coordinate)] - getBlobSize(coordinate,dis,i);
                                 }else{
-                                    offset = offset + ((!args.xTicks && !args.yTicks) ? 70 : 30) 
+                                    offset = offset + ((!args.xTicks && !args.yTicks) ? _.mLength : 30) 
                                 }
                             }else{
                                 offset = getBlobSize(coordinate,dis,i);
                             }
 
                         }else{
-                            console.log(selector,'size of boi for alignment', getBlobSize('x',dis,i));
+                            
                         }
 
                     }
@@ -556,14 +613,16 @@
                 case 'pie':
                     break;
                 case 'scatter':
-                        //radius
-                    break;
+                case 'line':
                 default:
                     
 
                     
                     if(dataKeyI  == 0){
                         offset = _['the_'+coordinate](deepGet(dis,dataKey,dataKeyI));
+                        if(args.type == 'line' || args.type == 'scatter') {
+                            offset += getBlobSize(coordinate,dis,i) / 2;
+                        }
                     }else{
                         if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
                             if(initial){
@@ -571,6 +630,10 @@
 
                             }else{
                                 offset = args[dimensionAttribute(coordinate)] - (args[dimensionAttribute(coordinate)] - _['the_'+coordinate]( deepGet(dis,dataKey,dataKeyI )));
+                            }
+                        }else{
+                            if(args.type == 'line' || args.type == 'scatter'){
+                                offset = _['the_'+coordinate]( deepGet(dis,dataKey,dataKeyI ));
                             }
                         }
                     }
@@ -582,6 +645,51 @@
             return offset;
         }
 
+        // var getPathPoints = function(axisString,dis,i,initial){
+        //     var point = 0,
+        //         dataKeyI =  args[ axisString+'Data'],
+        //         dataKey = args.dataKey[dataKeyI],
+        //         oppositeAxisAlignment = args[ oppositeAxisString(axisString)+'Align'];
+        //     if(initial){
+        //         if(axisString == 'x'){
+
+        //             if( dataKeyI == 0 ){
+        //                 point = _['the_'+axisString]( deepGet(dis,dataKey,dataKeyI ));
+        //             }
+        //         }else{
+
+        //             if( oppositeAxisAlignment == 'bottom' ){
+        //                 point = args[dimensionAttribute(axisString)]
+        //             }
+        //         }
+
+        //     }else{
+        //         console.log(deepGet(dis,dataKey,dataKeyI ));
+        //         point = _['the_'+axisString]( deepGet(dis,dataKey,dataKeyI ));
+
+        //         if(dataKeyI  == 0) {
+        //             point += getBlobSize(axisString,dis,i) / 2;
+        //         }
+
+        //     }
+        //     return point;
+        // }
+
+        var getLinePath = function(data,initial){
+
+            initial = initial || false;
+
+            var line = d3.line()
+                .x(function(dis,i){
+                    return getBlobOrigin('x',dis,i,initial);
+                })
+                .y(function(dis,i){
+                    return getBlobOrigin('y',dis,i,initial);
+                });
+
+            return line(data);
+
+        }
 
         var setRuleContainer = function(axisString,containerObj){
             var rule = containerObj.append('g')
@@ -610,22 +718,14 @@
 
 
         var setAxis = function(axisString) {
-            var axis;
-            switch(args[axisString+'Align']) {
-                case 'top':
-                    axis = d3.axisTop(_['the_'+axisString]);
-                    break;
-                case 'bottom':
-                    axis = d3.axisBottom(_['the_'+axisString]);
-                    break;
-                case 'left':
-                    axis = d3.axisLeft(_['the_'+axisString]);
-                    break;
-                case 'right':
-                    axis = d3.axisRight(_['the_'+axisString]);
-                    break;
-            }
+            var axis,
+                axisKey = 'Axis '+args[axisString+'Align'];
 
+
+
+
+            
+            axis = d3[axisKey.toCamelCase()](_['the_'+axisString]);
 
 
             if(args.hasOwnProperty(axisString +'Ticks')){
@@ -643,27 +743,31 @@
         }
 
         //set the scale function thingy for the axis shit
-        var setScale = function(itemAttribute){
+        var setScale = function(itemAtt){
             var axis;
-            var dataKeyI = args[ itemAttribute+'Data'];
+            var dataKeyI = args[ itemAtt+'Data'];
 
-            switch(itemAttribute){
+            switch(itemAtt){
                 case 'colors':
                         axis = d3.scaleOrdinal()
-                            .range(_['range_'+itemAttribute]) 
+                            .range(_['range_'+itemAtt]) 
                     break;
                 case 'x':
                 case 'y':
                     switch(dataKeyI){
                         case 0:
                             axis = d3.scaleBand() //scales shit to dimensios
-                            .range(_['range_'+itemAttribute]) // scaled data from available space
-                            .paddingInner(.1) //spacing between
-                            .paddingOuter(.1); //spacing of first and last item from canvas
+                            .range(_['range_'+itemAtt]) // scaled data from available space
+
+                            if(args.type == 'bar'){
+                            axis
+                                .paddingInner(.1) //spacing between
+                                .paddingOuter(.1); //spacing of first and last item from canvas
+                            }
                             break;
                         default:
                             axis = d3.scaleLinear()
-                            .range(_['range_'+itemAttribute]);
+                            .range(_['range_'+itemAtt]);
                             break;
                     }
                         
@@ -709,8 +813,7 @@
 
 
         //render a good boi
-        var setData = function(selector,retrievedData,_){
-            // heck if src key exists
+        var setData = function(retrievedData,_){
             var data = null;
 
             //duration
@@ -722,12 +825,14 @@
                 case 'bar':
                     _.graphItem = 'rect';
                     break;
+                case 'line':
                 case 'scatter':
                     _.graphItem = 'circle';
                     break;
             }
 
             
+            // heck if src key exists
             if (args.srcKey) {
                 data = deepGet(retrievedData,args.srcKey);
             }else{
@@ -761,9 +866,7 @@
                 _.canvas = d3.select(selector)
                     // .style('padding-top', (args.margin * (args.marginOffset * .75)) + 'px')
                     .append('div')
-                    .attr('class', prefix + 'wrapper'),
-
-
+                    .attr('class', prefix + 'wrapper');
 
                 _.dimensionString = '0 0 '+ _.outerWidth +' ' + _.outerHeight;
 
@@ -833,21 +936,21 @@
                     .attr('class', prefix + 'axis');
                     
 
-                itemAttributes.forEach(function(itemAttribute){
+                itemAtts.forEach(function(itemAtt){
 
 
                     // scale
-                    _['range_'+itemAttribute] = getRange(itemAttribute),
+                    _['range_'+itemAtt] = getRange(itemAtt),
 
                     //vars
-                    _['the_'+itemAttribute] = setScale(itemAttribute);
+                    _['the_'+itemAtt] = setScale(itemAtt);
 
-                    if (itemAttribute == 'x' || itemAttribute == 'y'){
-                        renderAxis(itemAttribute,_.rule)
+                    if (itemAtt == 'x' || itemAtt == 'y'){
+                        renderAxis(itemAtt,_.rule)
 
 
                         //formatter
-                        _['format_'+itemAttribute] = args[itemAttribute+'Parameter'] || function(dis){
+                        _['format_'+itemAtt] = args[itemAtt+'Parameter'] || function(dis){
                             var dataPossiblyDivided = (args[axisString+'Data'] == 1 ) ? (dis / args[axisString+'Divider']): dis,
                             formatted = args[axisString+'Prepend'] + dataPossiblyDivided + args[axisString+'Append'];
                             
@@ -883,16 +986,37 @@
 
                 //select
                 _.graph = _.container.insert('g',':first-child')
-                    .attr('class', prefix + 'graph' + ' ' + prefix + ( (args.colors.length > 0) ?  'has-palette' : 'no-palette' ));
+                    .attr('class', prefix + 'graph' + ' ' + prefix + ( (args.colors.length > 0 || args.linePointsColor || args.lineColor) ?  'has-palette' : 'no-palette' ));
                     if(data.length > 9 && args.width == defaults.width && args.height == defaults.height){
 
                         console.log(selector+' Width and height was not adjusted. graph elements may not fit in the canvas');
                     }
 
-                _.blob = _.graph.selectAll(_.graphItem)
-                    .data(data,function(dis){
-                        return dis[args.dataKey[args.xData]]
-                    });
+                if(!(args.type == 'line' && !args.linePoints)){
+
+
+                    _.blob = _.graph.selectAll(_.graphItem)
+                        .data(data,function(dis){
+                            return dis[args.dataKey[args.xData]]
+                        });
+                }
+
+
+                if(args.type == 'line'){
+                    _.line = _.graph.append('path')
+                        .attr('class',prefix+'line')
+                        .attr('fill','none')
+                        .attr('d',function(){
+                            return getLinePath(data,true)
+                        });
+
+                        if(args.lineColor) {
+                            _.line
+                                .attr('stroke',args.lineColor)
+                        }
+
+                
+                }
 
                 //colors kung meron
                 if(args.colors.length > 0) {
@@ -919,13 +1043,12 @@
             _.dv_init = false;
 
             document.addEventListener('scroll',function(e) {
-                scrollOffset = window.pageYOffset;
-                graphPosition = dataContainer.getBoundingClientRect().y;
+                var graphPosition = dataContainer.getBoundingClientRect().y;
 
                 if(graphPosition < (window.innerHeight * .5) && !_.dv_init) {
                     _.dv_init = true;
                     setTimeout(function(){
-                        renderUpdate(_);
+                        renderGraph(_,data);
                     },args.delay);
                 }
             },true);
@@ -936,8 +1059,9 @@
 
 
         // tick inits
-        var renderUpdate = function(_) {
+        var renderGraph = function(_,data) {
             // ok do the thing now
+            // console.log(selector,'-------------------------------------------------------------------')
             // console.log('calculated',_);
             // console.log('data',dat);
             // console.log('args',args);
@@ -954,158 +1078,205 @@
             // console.log('range',_.range_y);
 
 
+            //generate the graph boi
+
             if(args.type == 'pie'){
                 
             }else{
+                if(
+                    !(args.type == 'line' && !args.linePoints)
+                ){
                 
-                _.blob.exit()
-                    .transition(_.duration)
-                    .attr('height',0)
-                    .remove();
+                    _.blob.exit()
+                        .transition(_.duration)
+                        .attr('height',0)
+                        .remove();
+
+                        
+                    _.blobWrap = _.blob
+                        .enter()
+                        .append('g')
+                            .attr('class', prefix + 'item')
 
                     
-                _.blobWrap = _.blob
-                    .enter()
-                    .append('g')
-                        .attr('class', prefix + 'item')
+                            
 
-                
-                        
+                    _.blobItem = _.blobWrap
+                        .append(_.graphItem)
+                        .attr(
+                            (args.type == 'line' || args.type == 'scatter') ? 'cx' : 'x',
+                            function(dis,i){
+                                return getBlobOrigin('x',dis,i,true)
+                            }
+                        )
 
-                _.blobItem = _.blobWrap
-                    .append(_.graphItem)
-                    .attr('width',function(dis,i){
-                        return getBlobSize('x',dis,i,true);
-                    }) // calculated width
-                    .attr('height',function(dis,i){
-                        return getBlobSize('y',dis,i,true);
-                    })
-
-                    .attr('x',function(dis,i){
-                        return getBlobOrigin('x',dis,i,true)
-                        // return _.the_x(dis[args.dataKey[args.xData]])
-                    })
-
-                    .attr('y',function(dis,i){
-                        return getBlobOrigin('y',dis,i,true)
-                        // return getBlobOrigin('y','y',dis,i)
-                        // return 0;
-                        // return args.height - _.the_y(dis[args.dataKey[args.yData]])
-                        // return _.the_y(dis[args.dataKey[args.yData]])
-                    });
-
-
-                    if(args.colors.length > 0) {
-                        _.blobItem
-                            .attr('fill',function(dis,i){
-                                return _.the_colors(i);
-                            });
-                        }
-                    _.blobItem 
-                    // .merge(_.blob)
-                        .transition(_.duration)
-                        .attr('width',function(dis,i){
-                            return getBlobSize('x',dis,i);
-                        }) // calculated width
-                        .attr('height',function(dis,i){
-                            return getBlobSize('y',dis,i);
-                        })
-
-                        .attr('x',function(dis,i){
-                            return getBlobOrigin('x',dis,i)
-                            // return _.the_x(dis[args.dataKey[args.xData]])
-                        })
-
-                        .attr('y',function(dis,i){
-                            return getBlobOrigin('y',dis,i)
-                            // return getBlobOrigin('y','y',dis,i)
-                            // return 0;
-                            // return args.height - _.the_y(dis[args.dataKey[args.yData]])
-                            // return _.the_y(dis[args.dataKey[args.yData]])
-                        });
-                        
-                
-
-
-                if( !args.xTicks || !args.yTicks ){
-                    // data 1
-
-                    _.blobText = _.blobWrap.append('g')
-                        .attr('class', prefix + 'item-text' + ( (!args.xTicks && !args.yTicks) ? ' '+ prefix +'item-data-no-ticks' : '') )
-                        .attr('transform',function(dis,i){
-                            return 'translate('+getBlobTextOrigin('x',dis,i,true)+','+getBlobTextOrigin('y',dis,i,true)+')'
-                        })
-                        .style('opacity',0);
-
-                        _.blobText
-                        
-                            .transition(_.duration)
-                            .attr('transform',function(dis,i){
-                                return 'translate('+getBlobTextOrigin('x',dis,i)+','+getBlobTextOrigin('y',dis,i)+')'
+                        .attr(
+                            (args.type == 'line' || args.type == 'scatter') ? 'cy' : 'y',
+                            function(dis,i){
+                                return getBlobOrigin('y',dis,i,true)
                             })
-                            .style('opacity',1);
+                        ;
 
-                        if(args.type == 'pie'){
+                        if(args.type == 'line' || args.type == 'scatter'){
+                            _.blobItem
+                                .attr('r',function(dis,i){
+                                    return getBlobRadius(dis,i,true)
+                                })
 
                         }else{
-
-                            coordinates.forEach(function(coordinate){
-
-                                if( !args[coordinate+'Ticks'] ){
-
-                                    _['blobText'+coordinate] = _.blobText.append('text')
-                                        .attr('class', function(dis,i){
-                                            var classString =  prefix + 'item-data-'+args[coordinate+'Data'];
-                                            
-                                            if( 
-                                                parseFloat(getBlobSize('y',dis,i,false)) < mIHeight
-                                                    || (
-                                                        (args.colors.length > 0)
-                                                        && (parseFloat(getBlobSize('y',dis,i,false)) > mIHeight)
-                                                        && !isDark(_.the_colors(i))
-                                                    )
-                                            ){
-                                                classString += ' item-text-dark';
-                                            }
-
-                                            return classString;
-                                        })
-                                        .attr('dominant-baseline',function(dis,i){
-                                            return getBlobTextBaseline(dis,i);
-                                        })
-                                        .attr('text-anchor',function(dis,i){
-                                            return getBlobTextAnchor(dis,i);
-                                        })
-                                        .attr('font-size',null)
-                                        .text(function(dis,i){
-                                            return deepGet(dis,args.dataKey[ args[coordinate+'Data'] ],args[coordinate+'Data']);
-                                        })
-                                        .attr('x',function(dis,i){
-                                            return getBlobTextShift('x',coordinate,dis,i,true)
-                                            // return 0;
-                                        })
-                                        .attr('y',function(dis,i){
-                                            return getBlobTextShift('y',coordinate,dis,i,true)
-                                        })
-
-                                    _['blobText'+coordinate]
-                                        .transition(_.duration)
-                                        .attr('x',function(dis,i){
-                                            return getBlobTextShift('x',coordinate,dis,i)
-                                            // return 0;
-                                        })
-                                        .attr('y',function(dis,i){
-                                            return getBlobTextShift('y',coordinate,dis,i)
-                                        })
-                                }
-                            });
-
+                            _.blobItem
+                                .attr('width',function(dis,i){
+                                    return getBlobSize('x',dis,i,true);
+                                }) // calculated width
+                                .attr('height',function(dis,i){
+                                    return getBlobSize('y',dis,i,true);
+                                })
                         }
 
+                        if(!args.colors.length){
+                            if(
+                                args.type == 'line'
+                                && (
+                                    args.linePointsColor
+                                    || args.lineColor
+                                )
+                            ) {
+                                _.blobItem
+                                    .attr('fill',function(){
+                                        return args.linePointsColor || args.lineColor;
+                                    });
 
-                    
+                            }
+                        }else{
+                            _.blobItem
+                                .attr('fill',function(dis,i){
+                                    return _.the_colors(dis[args.colorsData]);
+                                });
+                        }
+
+                        _.blobItem 
+                        // .merge(_.blob)
+                            .transition(_.duration)
+                            .attr(
+                                (args.type == 'line' || args.type == 'scatter' ) ? 'cx' : 'x',
+                                function(dis,i){
+                                    return getBlobOrigin('x',dis,i)
+                                }
+                            )
+    
+                            .attr(
+                                (args.type == 'line' || args.type == 'scatter' ) ? 'cy' : 'y',
+                                function(dis,i){
+                                    return getBlobOrigin('y',dis,i)
+                                })
+                            ;
+    
+                            if(args.type == 'line' || args.type == 'scatter'){
+                                _.blobItem
+                                    .transition(_.duration)
+                                    .attr('r',function(dis,i){
+                                        return getBlobRadius(dis,i);
+                                    })
+    
+                            }else{
+                                _.blobItem
+                                    .transition(_.duration)
+                                    .attr('width',function(dis,i){
+                                        return getBlobSize('x',dis,i);
+                                    }) // calculated width
+                                    .attr('height',function(dis,i){
+                                        return getBlobSize('y',dis,i);
+                                    })
+                            }
+
                 }
 
+
+                if(args.type == 'line') {
+
+
+
+                    if(args.type == 'line'){
+                        _.line
+                            .transition(_.duration)
+                            .attr('d',function(){
+                                return getLinePath(data)
+                            });
+                    }
+                }
+            }
+                    
+            //graph item label if ticks are not set
+            if( !args.xTicks || !args.yTicks ){
+
+                _.blobText = _.blobWrap.append('g')
+                    .attr('class', prefix + 'item-text' + ( (!args.xTicks && !args.yTicks) ? ' '+ prefix +'item-data-no-ticks' : '') )
+                    .attr('transform',function(dis,i){
+                        return 'translate('+getBlobTextOrigin('x',dis,i,true)+','+getBlobTextOrigin('y',dis,i,true)+')'
+                    })
+                    .style('opacity',0);
+
+                _.blobText
+                    .transition(_.duration)
+                    .attr('transform',function(dis,i){
+                        return 'translate('+getBlobTextOrigin('x',dis,i)+','+getBlobTextOrigin('y',dis,i)+')'
+                    })
+                    .style('opacity',1);
+
+
+
+                ['x','y'].forEach(function(coordinate){
+
+                    if( !args[coordinate+'Ticks'] ){
+
+                        _['blobText'+coordinate] = _.blobText.append('text')
+                            .attr('class', function(dis,i){
+                                var classString =  prefix + 'item-data-'+args[coordinate+'Data'];
+                                
+                                if( 
+                                    parseFloat(getBlobSize('y',dis,i,false)) < _.mLength
+                                    || (
+                                        (args.colors.length > 0)
+                                        && (parseFloat(getBlobSize('y',dis,i,false)) > _.mLength)
+                                        && !isDark( _.the_colors(dis[args.colorsData]) )
+                                    )
+                                    || (args.type == 'line')
+                                ){
+                                    classString += ' item-text-dark' + ' color-palette-'+args.colors.length;
+                                }
+
+                                return classString;
+                            })
+                            .attr('dominant-baseline',function(dis,i){
+                                return getBlobTextBaseline(dis,i);
+                            })
+                            .attr('text-anchor',function(dis,i){
+                                return getBlobTextAnchor(dis,i);
+                            })
+                            .attr('font-size',null)
+                            .text(function(dis,i){
+                                return deepGet(dis,args.dataKey[ args[coordinate+'Data'] ],args[coordinate+'Data']);
+                            })
+                            .attr('x',function(dis,i){
+                                return getBlobTextShift('x',coordinate,dis,i,true)
+                                // return 0;
+                            })
+                            .attr('y',function(dis,i){
+                                return getBlobTextShift('y',coordinate,dis,i,true)
+                            })
+
+                        _['blobText'+coordinate]
+                            .transition(_.duration)
+                            .attr('x',function(dis,i){
+                                return getBlobTextShift('x',coordinate,dis,i)
+                                // return 0;
+                            })
+                            .attr('y',function(dis,i){
+                                return getBlobTextShift('y',coordinate,dis,i)
+                            })
+                    }
+                });
+                
             }
 
 
@@ -1115,18 +1286,18 @@
         switch(args.srcPath.getFileExtension()) {
             case 'csv':
                 d3.csv(args.srcPath).then(function(data){
-                    setData(selector,data,_);
+                    setData(data,_);
                 });
                 break;
             case 'tsv':
                 d3.tsv(args.srcPath).then(function(data){
-                    setData(selector,data,_);
+                    setData(data,_);
                 });
                 break;
             
             case 'json':
                 d3.json(args.srcPath).then(function(data){
-                    setData(selector,data,_);
+                    setData(data,_);
                 });
                 break;
             //probably embeded
@@ -1137,7 +1308,7 @@
 
                         var dataIsJSON = JSON.parse(jsonSelector);
 
-                        setData(selector,dataIsJSON,_);
+                        setData(dataIsJSON,_);
                     }else{
                         if(args.srcType == 'text'){
 

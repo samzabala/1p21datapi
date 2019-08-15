@@ -107,9 +107,15 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                                 $render .= "
                                 dataKey: ['{$parsed_data_keys_arr_string}'],\n";
                             }
+
+                        
+                            if( $data_visual['data_key_0_num'] ){
+                                $parsed_value = ($data_visual['data_key_0_num'] == 1 )? 'true' : '';
+                                $render .= "
+                                dataKey0IsNum: ['{$parsed_value}'],\n";
+                            }
             
             
-                        // X & y settings
 
                         if($data_visual['type'] == 'pie'){
                             foreach($data_visual['pi'] as $settings=> $value) {
@@ -123,6 +129,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                             }
                         }else{
 
+                            // X & y settings
 
                             //hi im a lazy fuck so im shortcutting because my laziness will pay of as optimal code hahahahah
                             $coordinates = ['x','y'];
@@ -149,6 +156,40 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                                         }
                                     }
                                 }
+                            }
+
+                            if($data_visual['type'] == 'line'){
+                                $string_values = array('style','stroke','color','points_color','fill_color','fill_axis');
+                                $boolean_values = array('points','fill');
+                                $array_values = array('dash');
+
+                                foreach($data_visual['line'] as $settings=> $value) {
+                                    if($value !== ''){
+                                        $parsed_settings_key = _1p21_dv_dashes_to_camel_case('line_' . $settings ); 
+                
+                                        if($value !== null){
+                                            $parsed_value = $value;
+
+                                            
+                                            if(in_array($settings,$string_values)){
+
+                                                $parsed_value = '\''.$value. '\'';
+
+                                            }elseif(in_array($settings,$array_values)){
+
+                                                $parsed_value = '['. $value .']';
+
+                                            }elseif(in_array($settings,$boolean_values)){
+
+                                                $parsed_value = ($value == 1) ? 'true' : 'false';
+
+                                            }
+                    
+                                            $render .= "{$parsed_settings_key}: {$parsed_value},\n";
+                                        }
+                                    }
+                                }
+
                             }
                         }
                         
@@ -197,10 +238,13 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
         //end wrapper
         $render .= "</div>";
 
-        // // echo '<h3>POST META</h3>';
-        // _1p21_dv_output_arr(get_metadata('post',$args['id']));
+        if($data_visual['type'] == 'line'){
 
-        // _1p21_dv_output_arr( $data_visual);
+            // echo '<h3>POST META</h3>';
+            // _1p21_dv_output_arr(get_metadata('post',$args['id']));
+
+            _1p21_dv_output_arr( $data_visual);
+        }
 
 
         

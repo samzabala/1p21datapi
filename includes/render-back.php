@@ -48,6 +48,10 @@ function _1p21_dv_get_data_visual_object($args = array()) {
             );
         }
 
+        if($data_visual['type'] == 'line' || $data_visual['type'] == 'scatter'){
+            $data_visual['data_key_0_num'] = get_post_meta($id,'dv_data_key_0_is_num',true);
+        }
+
         // $data_visual['data_1_is_num'] = get_post_meta($id,'dv_data_1_is_num',true);
 
         //x & y / pie settings
@@ -74,6 +78,15 @@ function _1p21_dv_get_data_visual_object($args = array()) {
                     unset($data_visual[$coordinate]['max']);
 
                 }
+            }
+
+            //line boi
+            if($data_visual['type'] == 'line'){
+                $data_visual['line'] = _1p21_dv_get_subbed_post_meta(array(
+                    'id' => $id,
+                    'key' => 'dv_line',
+                    'is_incremented' => false
+                ));
             }
 
 
