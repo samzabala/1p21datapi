@@ -172,6 +172,7 @@
             yDivider: 1,
 
             //line
+            dataKey0IsNum: false,
             lineStyle: '',
             lineColor: null,
             linePoints: false,
@@ -325,20 +326,20 @@
 
                     case 'x':
                     case 'y':
-                        
-                        switch(dataKeyI){
-                            case 1: // numeric fuck
-                                var min,max;
-                                
+
+                        if(args.dataKey0IsNum || dataKeyI == 1){
+
+                            var min,max;
+                                //min
                                 if(args[itemAtt + 'Min'] !== null){
                                     min = args[itemAtt + 'Min'];
-
                                 }else{
                                     min = d3.min(dat,function(dis){
                                         return deepGet(dis,args.dataKey[ dataKeyI ],dataKeyI);
                                     });
                                 }
                                 
+                               //max
                                 if(args[itemAtt + 'Max'] !== null){
                                     max = args[itemAtt + 'Max']
                                 }else{
@@ -348,16 +349,10 @@
                                 }
 
                                 domain = [min,max];
-
-                                break;
-                            
-                            default: //not a numeric fuck and each instance is ok
-                                
-                                domain =  dat.map(function(dis){
-                                    return deepGet(dis,args.dataKey[ dataKeyI ], dataKeyI);
-                                });
-
-                                break;
+                        }else{
+                            domain =  dat.map(function(dis){
+                                return deepGet(dis,args.dataKey[ dataKeyI ], dataKeyI);
+                            });
                         }
 
                         break;
@@ -417,10 +412,7 @@
                 default:
 
 
-                    if(dataKeyI  == 0){
-                        dimension = _['the_'+axisString].bandwidth()
-                    }else{
-                        
+                    if(args.dataKey0IsNum || dataKeyI == 1){
                         if(initial) {
                             dimension = 0;
                         }else{
@@ -432,7 +424,8 @@
                             }
 
                         }
-
+                    }else{
+                        dimension = _['the_'+axisString].bandwidth()
                     }
 
             }
@@ -618,12 +611,7 @@
                     
 
                     
-                    if(dataKeyI  == 0){
-                        offset = _['the_'+coordinate](deepGet(dis,dataKey,dataKeyI));
-                        if(args.type == 'line' || args.type == 'scatter') {
-                            offset += getBlobSize(coordinate,dis,i) / 2;
-                        }
-                    }else{
+                    if(args.dataKey0IsNum || dataKeyI  == 1){
                         if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
                             if(initial){
                                 offset = args[dimensionAttribute(coordinate)];
@@ -635,6 +623,11 @@
                             if(args.type == 'line' || args.type == 'scatter'){
                                 offset = _['the_'+coordinate]( deepGet(dis,dataKey,dataKeyI ));
                             }
+                        }
+                    }else{
+                        offset = _['the_'+coordinate](deepGet(dis,dataKey,dataKeyI));
+                        if(args.type == 'line' || args.type == 'scatter') {
+                            offset += getBlobSize(coordinate,dis,i) / 2;
                         }
                     }
                     
@@ -754,22 +747,17 @@
                     break;
                 case 'x':
                 case 'y':
-                    switch(dataKeyI){
-                        case 0:
-                            axis = d3.scaleBand() //scales shit to dimensios
-                            .range(_['range_'+itemAtt]) // scaled data from available space
-
-                            if(args.type == 'bar'){
-                            axis
-                                .paddingInner(.1) //spacing between
-                                .paddingOuter(.1); //spacing of first and last item from canvas
-                            }
-                            break;
-                        default:
-                            axis = d3.scaleLinear()
+                    if(args.dataKey0IsNum || dataKeyI == 1 ){
+                        axis = d3.scaleLinear()
                             .range(_['range_'+itemAtt]);
-                            break;
+                    }else{
+                        axis = d3.scaleBand() //scales shit to dimensios
+                            .range(_['range_'+itemAtt]) // scaled data from available space
+                            .paddingInner(.1) //spacing between
+                            .paddingOuter(.1);
                     }
+
+                    break;
                         
                     
 
@@ -837,6 +825,13 @@
                 data = deepGet(retrievedData,args.srcKey);
             }else{
                 data = retrievedData;
+            }
+
+            //sort if all number
+            if(args.dataKey0IsNum){
+                data.sort(function(a,b){
+                    return deepGet(a,args.dataKey[0],true) - deepGet(b,args.dataKey[0],true)
+                });
             }
 
 
@@ -1061,21 +1056,21 @@
         // tick inits
         var renderGraph = function(_,data) {
             // ok do the thing now
-            // console.log(selector,'-------------------------------------------------------------------')
+            console.log(selector,'-------------------------------------------------------------------')
             // console.log('calculated',_);
             // console.log('data',dat);
-            // console.log('args',args);
+            console.log('args',args);
 
                 
-            // console.log('x');
-            // console.log('domain',_.dom_x);
-            // console.log('range',_.range_x);
+            console.log('x');
+            console.log('domain',_.dom_x);
+            console.log('range',_.range_x);
 
-            // console.log('----------------');
+            console.log('----------------');
 
-            // console.log('y');
-            // console.log('domain',_.dom_y);
-            // console.log('range',_.range_y);
+            console.log('y');
+            console.log('domain',_.dom_y);
+            console.log('range',_.range_y);
 
 
             //generate the graph boi

@@ -70,13 +70,19 @@ function _1p21_dv_get_data_visual_object($args = array()) {
                     unset($data_visual[$coordinate]['ticks_format']);
                     unset($data_visual[$coordinate]['ticks_amount']);
                     unset($data_visual[$coordinate]['label']);
-                }
+                    unset($data_visual[$coordinate]['prepend']);
+                    unset($data_visual[$coordinate]['append']);
+                    unset($data_visual[$coordinate]['grid']);
 
-                //validate minimum and maximum
-                if($data_visual[$coordinate]['data'] == 0 && !$data_visual['data_1_is_num']) {
-                    unset($data_visual[$coordinate]['min']);
-                    unset($data_visual[$coordinate]['max']);
 
+
+                    //validate minimum and maximum
+                    if( !($data_visual['dv_data_key_0_is_num'] || $data_visual[$coordinate]['data'] == 1) ) {
+                        unset($data_visual[$coordinate]['min']);
+                        unset($data_visual[$coordinate]['max']);
+                        unset($data_visual[$coordinate]['divider']);
+
+                    }
                 }
             }
 

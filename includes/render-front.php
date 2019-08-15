@@ -112,7 +112,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                             if( $data_visual['data_key_0_num'] ){
                                 $parsed_value = ($data_visual['data_key_0_num'] == 1 )? 'true' : '';
                                 $render .= "
-                                dataKey0IsNum: ['{$parsed_value}'],\n";
+                                dataKey0IsNum: {$parsed_value},\n";
                             }
             
             
