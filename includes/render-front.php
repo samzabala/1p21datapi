@@ -109,10 +109,10 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                             }
 
                         
-                            if( $data_visual['data_key_0_num'] ){
-                                $parsed_value = ($data_visual['data_key_0_num'] == 1 )? 'true' : '';
+                            if( $data_visual['name_is_num'] ){
+                                $parsed_value = ($data_visual['name_is_num'] == 1 )? 'true' : '';
                                 $render .= "
-                                dataKey0IsNum: {$parsed_value},\n";
+                                nameIsNum: {$parsed_value},\n";
                             }
             
             
@@ -160,7 +160,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
                             if($data_visual['type'] == 'line'){
                                 $string_values = array('style','stroke','color','points_color','fill_color','fill_axis');
-                                $boolean_values = array('points','fill');
+                                $boolean_values = array('points','fill','invert');
                                 $array_values = array('dash');
 
                                 foreach($data_visual['line'] as $settings=> $value) {
@@ -198,11 +198,11 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                             if($data_visual['colors']) {
                                 $data_keys  = implode('\',\'',$data_visual['colors']);
                                 $render .= "
-                                colors: ['{$data_keys}'],\n";
+                                colorPalette: ['{$data_keys}'],\n";
                             }
                             if($data_visual['colors_data_key']) {
                                 $render .= "
-                                colorsData: '{$data_visual['colors_data_key']}',\n";
+                                colorData: '{$data_visual['colors_data_key']}',\n";
                             }
             
                         //src
@@ -238,13 +238,8 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
         //end wrapper
         $render .= "</div>";
 
-        if($data_visual['type'] == 'line'){
-
-            // echo '<h3>POST META</h3>';
-            // _1p21_dv_output_arr(get_metadata('post',$args['id']));
-
-            _1p21_dv_output_arr( $data_visual);
-        }
+        
+        _1p21_dv_output_arr( $data_visual);
 
 
         

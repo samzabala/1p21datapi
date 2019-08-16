@@ -22,6 +22,80 @@ function _1p21_dv_output_arr($args) {
     echo '</pre></div>';
 }
 
+
+
+
+/*
+for validating the fields
+*/
+
+function _1p21_dv_deep_sub_fields($array = array()){
+    global $post;
+    
+
+    $defaults = array(
+        'id' => null,
+        'fields' => array(),
+        'prefix' => '', //for getting post meta
+        'field_name' => '' // doing like the_sub_field
+    );
+    
+    $args = wp_parse_args($array, $defaults);
+
+
+    if(!$args['id']){
+        return false;
+    }
+
+    $return_arr = array();
+    $acf_prefix = 'dv_';
+
+
+    foreach($args['fields'] as $field){
+
+        if(isset( $field[ 'name' ] )){
+            //parse so we can loop as long as fuck as we want
+            $prepend =  $acf_prefix . str_replace($acf_prefix,'',$args['prefix'] );
+            
+            $_new_prefix =  $prepend.'_'.$field[ 'name' ];
+
+
+            if( isset($field['sub_fields']) ){
+                
+                if($field['type'] == 'repeater'){
+
+                    $return_arr[ str_replace($acf_prefix,'',$field['name']) ] = _1p21_dv_get_subbed_post_meta(
+                        array(
+                            'id' => $args['id'],
+                            'key' =>$_new_prefix,
+                            'is_incremented' => true
+                        )
+                    );
+
+                }else{
+
+                    $return_arr[ str_replace($acf_prefix,'',$field['name']) ] = _1p21_dv_deep_sub_fields(
+                        array(
+                            'id' => $args['id'],
+                            'fields' => $field['sub_fields'],
+                            'prefix' => $_new_prefix,
+                            'field_name' => $field['name']
+                        )
+                    );
+                }
+                echo $_new_prefix.'<br>';
+                
+            }else{
+                //VALIDATE SUB KEYS
+                $return_arr[ str_replace($acf_prefix,'',$field['name']) ] = get_post_meta($args['id'], $field['name'],true);
+            }
+
+        }
+    }
+
+    return $return_arr;
+}
+
 function _1p21_dv_get_subbed_post_meta($args = array()){
     $args = wp_parse_args($args,array(
         'id' => null,

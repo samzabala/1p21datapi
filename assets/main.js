@@ -5,7 +5,7 @@
 
     // helpful variables
     var coordinates = ['x','y'], //yes
-        itemAtts = ['x','y','colors','area','r'], //opo //check if the graph item's length is enough for vertical bois idk i'll work on this some more later
+        itemAtts = ['x','y','color','area','r'], //opo //check if the graph item's length is enough for vertical bois idk i'll work on this some more later
         prefix = 'data-visualizer-'; //yeeee
     
     //get the length attribute to associate with the axis bro
@@ -136,13 +136,15 @@
             height:400,
             margin: 20, // @TODO option to separate padding
             marginOffset: 2,
-            transition: 1500,
+            transition: 2000,
             delay: 300,
             type: 'bar',
             dataKey: [
                 0, //data 1 / name
                 1 //data 2 / value
             ],
+            nameIsNum: false,
+
             //x settings
             xData: 0,
             xAlign: 'bottom',
@@ -172,20 +174,21 @@
             yDivider: 1,
 
             //line
-            dataKey0IsNum: false,
             lineStyle: '',
+            lineWeight: 1,
             lineColor: null,
             linePoints: false,
             lineFill: false,
             linePointsColor: null,
             linePointsSize: null,
             lineFillColor: null,
-            lineFillAxis: 'x',
-            lineDash: [],
+            lineFillOpacity: 1,
+            lineFillInvert: 'x',
+            lineDash: [100,0],
     
             //kulay
-            colors : [],
-            colorsData: null,
+            colorPalette : [],
+            colorData: null,
     
             //area? in case scatter plot ir pi idk what the fuck i'm doing right now but its here in case. yes i shall need this boi
             areaKey: '',
@@ -282,8 +285,8 @@
 
             switch(itemAtt){
 
-                case 'colors':
-                    range = args[itemAtt];
+                case 'color':
+                    range = args[itemAtt+'Palette'];
                     break;
 
                     case 'x':
@@ -309,9 +312,9 @@
 
             if(dataKeyI !== null){
                 switch(itemAtt){
-                    case 'colors':
+                    case 'color':
                         
-                        var keyString =  args.colorsData || args.dataKey[0];
+                        var keyString =  args.colorData || args.dataKey[0];
                         
                         var instances = dat.reduce(function(acc,dis){
                             if(!acc.includes(deepGet(dis,keyString))){
@@ -327,7 +330,7 @@
                     case 'x':
                     case 'y':
 
-                        if(args.dataKey0IsNum || dataKeyI == 1){
+                        if(args.nameIsNum || dataKeyI == 1){
 
                             var min,max;
                                 //min
@@ -412,7 +415,7 @@
                 default:
 
 
-                    if(args.dataKey0IsNum || dataKeyI == 1){
+                    if(args.nameIsNum || dataKeyI == 1){
                         if(initial) {
                             dimension = 0;
                         }else{
@@ -553,11 +556,10 @@
             var dataKeyI =  args[ coordinate+'Data'],
                 offset = 0;
                 initial = initial || false;
-
-            if(args.type == 'pie'){
-            
-            }else{
-
+            switch(args.type) {
+                case 'pie':
+                    break;
+                default:
                     if(dataKeyI  == 0) {
                         offset = getBlobOrigin(coordinate,dis,i) + (getBlobSize(coordinate,dis,i) / 2);
                         if(args.type == 'line' || args.type == 'scatter') {
@@ -566,6 +568,7 @@
                     }else{
 
                         if( args[oppositeAxisString(coordinate)+'Align'] == 'bottom' || args[oppositeAxisString(coordinate)+'Align'] == 'right' ){
+                            
                             if(initial) {
                                 offset = args[dimensionAttribute(coordinate)] - ((!args.xTicks && !args.yTicks) ? 65 : 30)
                             }else{
@@ -573,18 +576,19 @@
                             }
                             
                         }else if( args[oppositeAxisString(coordinate)+'Align'] == 'top' ){
+                            
                             if(initial) {
-                                if( args[oppositeAxisString(coordinate)+'Data'] !== 0 ){
-                                    offset = args[dimensionAttribute(coordinate)] - getBlobSize(coordinate,dis,i);
-                                }else{
-                                    offset = offset + ((!args.xTicks && !args.yTicks) ? _.mLength : 30) 
+                                if(args.type !== 'line' && args.type !== 'scatter') {
+                                    if( args[oppositeAxisString(coordinate)+'Data'] !== 0 ){
+                                        offset = args[dimensionAttribute(coordinate)] - getBlobSize(coordinate,dis,i);
+                                    }else{
+                                        offset = offset + ((!args.xTicks && !args.yTicks) ? _.mLength : 30) 
+                                    }
                                 }
                             }else{
                                 offset = getBlobSize(coordinate,dis,i);
                             }
 
-                        }else{
-                            
                         }
 
                     }
@@ -605,13 +609,8 @@
                 switch(args.type) {
                 case 'pie':
                     break;
-                case 'scatter':
-                case 'line':
                 default:
-                    
-
-                    
-                    if(args.dataKey0IsNum || dataKeyI  == 1){
+                    if( dataKeyI  !== 0){
                         if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
                             if(initial){
                                 offset = args[dimensionAttribute(coordinate)];
@@ -621,14 +620,17 @@
                             }
                         }else{
                             if(args.type == 'line' || args.type == 'scatter'){
-                                offset = _['the_'+coordinate]( deepGet(dis,dataKey,dataKeyI ));
+                                if(!(initial && dataKeyI !== 0)){
+                                    offset = _['the_'+coordinate]( deepGet(dis,dataKey,dataKeyI ));
+
+                                }
                             }
                         }
                     }else{
                         offset = _['the_'+coordinate](deepGet(dis,dataKey,dataKeyI));
-                        if(args.type == 'line' || args.type == 'scatter') {
-                            offset += getBlobSize(coordinate,dis,i) / 2;
-                        }
+                        // if(args.type == 'line' || args.type == 'scatter') {
+                        //     offset += getBlobSize(coordinate,dis,i) / 2;
+                        // }
                     }
                     
 
@@ -668,19 +670,67 @@
         //     return point;
         // }
 
-        var getLinePath = function(data,initial){
+        var getLinePath = function(data,isArea,initial){
 
             initial = initial || false;
 
-            var line = d3.line()
-                .x(function(dis,i){
-                    return getBlobOrigin('x',dis,i,initial);
-                })
-                .y(function(dis,i){
-                    return getBlobOrigin('y',dis,i,initial);
-                });
 
-            return line(data);
+            var pathInitiator = isArea ? 'area' : 'line',
+                axisToFill = (args.xData == 0)  ? 'x' : 'y',
+                path = d3[pathInitiator]()
+
+                console.log('axisTofill',axisToFill);
+
+            if(pathInitiator == 'area') {
+                //name coord, value coord, fill coordinate
+                var aCord = { //default is top
+                    name: axisToFill,
+                    value: oppositeAxisString(axisToFill)+1,
+                    fill: oppositeAxisString(axisToFill)+0 //initial of data name is the bottom of the fill
+                };
+
+                
+
+                if( (
+                        !args.lineFillInvert
+                        && (args[axisToFill+'Align'] == 'right' || args[axisToFill+'Align'] == 'bottom')
+                    )
+                    || (
+                        args.lineFillInvert
+                        && !(args[axisToFill+'Align'] == 'right' || args[axisToFill+'Align'] == 'bottom')
+                    )
+                ){
+
+                    aCord.value = oppositeAxisString(axisToFill)+0,
+                    aCord.fill = oppositeAxisString(axisToFill)+1
+                }
+
+                    
+
+                console.log(aCord);
+                
+                path
+                    [aCord.name](function(dis,i){
+                        return getBlobOrigin(axisToFill,dis,i,initial);
+                    })
+                    [aCord.value](function(dis,i){
+                        return getBlobOrigin(oppositeAxisString(axisToFill),dis,i,initial);
+                    })
+
+                    [aCord.fill](function(dis,i){
+                        return getBlobOrigin( oppositeAxisString(axisToFill) ,dis,i,true);
+                    })
+            }else{
+                path
+                    .x(function(dis,i){
+                        return getBlobOrigin('x',dis,i,initial);
+                    })
+                    .y(function(dis,i){
+                        return getBlobOrigin('y',dis,i,initial);
+                    });
+            }
+
+            return path(data);
 
         }
 
@@ -741,13 +791,13 @@
             var dataKeyI = args[ itemAtt+'Data'];
 
             switch(itemAtt){
-                case 'colors':
+                case 'color':
                         axis = d3.scaleOrdinal()
                             .range(_['range_'+itemAtt]) 
                     break;
                 case 'x':
                 case 'y':
-                    if(args.dataKey0IsNum || dataKeyI == 1 ){
+                    if(args.nameIsNum || dataKeyI == 1 ){
                         axis = d3.scaleLinear()
                             .range(_['range_'+itemAtt]);
                     }else{
@@ -828,7 +878,7 @@
             }
 
             //sort if all number
-            if(args.dataKey0IsNum){
+            if(args.nameIsNum){
                 data.sort(function(a,b){
                     return deepGet(a,args.dataKey[0],true) - deepGet(b,args.dataKey[0],true)
                 });
@@ -981,7 +1031,7 @@
 
                 //select
                 _.graph = _.container.insert('g',':first-child')
-                    .attr('class', prefix + 'graph' + ' ' + prefix + ( (args.colors.length > 0 || args.linePointsColor || args.lineColor) ?  'has-palette' : 'no-palette' ));
+                    .attr('class', prefix + 'graph' + ' ' + prefix + ( (args.colorPalette.length > 0 || args.linePointsColor || args.lineColor) ?  'has-palette' : 'no-palette' ));
                     if(data.length > 9 && args.width == defaults.width && args.height == defaults.height){
 
                         console.log(selector+' Width and height was not adjusted. graph elements may not fit in the canvas');
@@ -998,12 +1048,30 @@
 
 
                 if(args.type == 'line'){
+
+                    if(args.lineFill){
+                        _.fill = _.graph.append('path')
+                        .attr('class',prefix+'fill')
+                        .attr('fill-opacity',0)
+                        .attr('d',function(){
+                            return getLinePath(data,true,true)
+                        });
+
+                        if( args.lineFillColor || args.lineColor ) {
+                            _.fill
+                                .attr('fill', args.lineFillColor || args.lineColor);
+                        }
+                    }
                     _.line = _.graph.append('path')
                         .attr('class',prefix+'line')
                         .attr('fill','none')
+                        .attr('stroke-width',args.lineWeight)
+                        .attr('stroke-linejoin','round')
+                        .attr('stroke-opacity',0)
                         .attr('d',function(){
-                            return getLinePath(data,true)
-                        });
+                            return getLinePath(data,false,true)
+                        })
+                        .attr('stroke-dasharray','0,0');
 
                         if(args.lineColor) {
                             _.line
@@ -1014,8 +1082,8 @@
                 }
 
                 //colors kung meron
-                if(args.colors.length > 0) {
-                    _.dom_color = getDomain('colors',data);
+                if(args.colorPalette.length > 0) {
+                    _.dom_color = getDomain('color',data);
                 }
 
                 // // scale
@@ -1057,7 +1125,7 @@
         var renderGraph = function(_,data) {
             // ok do the thing now
             console.log(selector,'-------------------------------------------------------------------')
-            // console.log('calculated',_);
+            console.log('calculated',_);
             // console.log('data',dat);
             console.log('args',args);
 
@@ -1128,7 +1196,7 @@
                                 })
                         }
 
-                        if(!args.colors.length){
+                        if(!args.colorPalette.length){
                             if(
                                 args.type == 'line'
                                 && (
@@ -1145,7 +1213,7 @@
                         }else{
                             _.blobItem
                                 .attr('fill',function(dis,i){
-                                    return _.the_colors(dis[args.colorsData]);
+                                    return _.the_color(dis[args.colorData]);
                                 });
                         }
 
@@ -1190,14 +1258,22 @@
                 if(args.type == 'line') {
 
 
-
-                    if(args.type == 'line'){
-                        _.line
-                            .transition(_.duration)
+                    if(args.lineFill){
+                        _.fill 
+                        .transition(_.duration)
+                            .attr('fill-opacity',args.lineFillOpacity)
                             .attr('d',function(){
-                                return getLinePath(data)
+                                return getLinePath(data,true)
                             });
                     }
+                    
+                    _.line
+                        .transition(_.duration)
+                        .attr('d',function(){
+                            return getLinePath(data,false)
+                        })
+                        .attr('stroke-dasharray',args.lineDash)
+                        .attr('stroke-opacity',1);
                 }
             }
                     
@@ -1231,13 +1307,13 @@
                                 if( 
                                     parseFloat(getBlobSize('y',dis,i,false)) < _.mLength
                                     || (
-                                        (args.colors.length > 0)
+                                        (args.colorPalette.length > 0)
                                         && (parseFloat(getBlobSize('y',dis,i,false)) > _.mLength)
-                                        && !isDark( _.the_colors(dis[args.colorsData]) )
+                                        && !isDark( _.the_color(dis[args.colorData]) )
                                     )
                                     || (args.type == 'line')
                                 ){
-                                    classString += ' item-text-dark' + ' color-palette-'+args.colors.length;
+                                    classString += ' item-text-dark' + ' color-palette-'+args.colorPalette.length;
                                 }
 
                                 return classString;

@@ -4,13 +4,13 @@
 * Render data
 *********************************************************************************************/
 
-
 /*
 
-
+ this where u generate php bois and validate which ones are valid
 */
 function _1p21_dv_get_data_visual_object($args = array()) {
     global $_1p21_dv;
+
 
     $id = $args['id'];
 
@@ -19,6 +19,118 @@ function _1p21_dv_get_data_visual_object($args = array()) {
     if(!$post_exists) {
         return false;
     }else{
+
+
+        include _1P21_DV_PLUGIN_PATH . 'fields/acf-cpt.php';
+    
+    
+        $data_visual_test = array();
+        $prefix = 'dv_';
+    
+
+        //the id
+        $data_visual_test['id'] = $id;
+
+        //title and shit
+        $data_visual_test['title'] = get_the_title($id);
+
+        //settings
+        $data_visual_test['settings'] =  wp_parse_args( $args, $_1p21_dv['defaults'] );
+        if(!empty($args)){
+            $data_visual_test['settings'] =  wp_parse_args( $args, $_1p21_dv['defaults'] );
+        }
+
+        //type
+        $data_visual_test['type'] = get_post_meta($id,'dv_type',true);
+
+        if($data_visual_test['type'] == 'line' || $data_visual_test['type'] == 'scatter'){
+            $data_visual_test['name_is_num'] = get_post_meta($id,'dv_name_is_num',true);
+        }
+
+    
+        // $to_parse_as_sub_field = array('src','data_key','x','y','line','pi','color');
+
+
+        foreach($_1p21_dv_fields_cpt['fields'] as $field) {
+            if( !(strpos($field['name'],$prefix) === false) ){ //get the ones with valid acf field keys or some shit
+                $key = str_replace($prefix,'',$field['name']);
+    
+                if($field['name']){
+    
+                    if(isset($field['sub_fields'])){
+
+                        switch($key) {
+                            // case 'src':
+                            //     break;
+                            // case 'color':
+                            //     break;
+                            default:
+                                $sub_fields = _1p21_dv_deep_sub_fields(array(
+
+                                    'id' => $id,
+                                    'prefix' => $field['name'],
+                                    'fields' => $field['sub_fields'],
+                                ));
+
+                            $data_visual_test[$key] = $sub_fields;
+                        }
+
+                        if($key == 'src') {
+                            
+                        }else{
+                        
+
+                        }
+                    }else{
+    
+                        $data_visual_test[$key] = get_post_meta($id,$field['name'],true);
+                    }
+    
+                }
+    
+            }
+        }
+
+
+
+        echo 'new args';
+        _1p21_dv_output_arr($data_visual_test);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         //create Array of the metadata and content given on each boi
@@ -36,9 +148,14 @@ function _1p21_dv_get_data_visual_object($args = array()) {
             $data_visual['settings'] =  wp_parse_args( $args, $_1p21_dv['defaults'] );
         }
 
-
         //type
         $data_visual['type'] = get_post_meta($id,'dv_type',true);
+
+        if($data_visual['type'] == 'line' || $data_visual['type'] == 'scatter'){
+            $data_visual['name_is_num'] = get_post_meta($id,'dv_name_is_num',true);
+        }
+
+
 
         // data keys 
         if(get_post_meta($id,'dv_data_key_0',true) || get_post_meta($id,'dv_data_key_1',true)){
@@ -47,11 +164,6 @@ function _1p21_dv_get_data_visual_object($args = array()) {
                 get_post_meta($id,'dv_data_key_1',true),
             );
         }
-
-        if($data_visual['type'] == 'line' || $data_visual['type'] == 'scatter'){
-            $data_visual['data_key_0_num'] = get_post_meta($id,'dv_data_key_0_is_num',true);
-        }
-
         // $data_visual['data_1_is_num'] = get_post_meta($id,'dv_data_1_is_num',true);
 
         //x & y / pie settings
@@ -173,5 +285,6 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
 
         return $data_visual;
+        // return $data_visual_test;
     }
 }
