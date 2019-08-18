@@ -26,7 +26,7 @@ function _1p21_dv_output_arr($args) {
 
 
 /*
-for validating the fields
+deep sub field get but only get the post meta that this fuck actually needs
 */
 
 function _1p21_dv_deep_sub_fields($array = array()){
@@ -37,7 +37,6 @@ function _1p21_dv_deep_sub_fields($array = array()){
         'id' => null,
         'fields' => array(),
         'prefix' => '', //for getting post meta
-        'field_name' => '' // doing like the_sub_field
     );
     
     $args = wp_parse_args($array, $defaults);
@@ -49,50 +48,68 @@ function _1p21_dv_deep_sub_fields($array = array()){
 
     $return_arr = array();
     $acf_prefix = 'dv_';
+    
 
 
     foreach($args['fields'] as $field){
 
-        if(isset( $field[ 'name' ] )){
+
+        if(isset( $field[ 'name' ] ) && $field[ 'name' ] !== ''){ //if it exists and its not a fucking tab or some layout shit fuck it uP
+
+
+
             //parse so we can loop as long as fuck as we want
-            $prepend =  $acf_prefix . str_replace($acf_prefix,'',$args['prefix'] );
-            
-            $_new_prefix =  $prepend.'_'.$field[ 'name' ];
+            $root_field_name = str_replace($acf_prefix,'',$field['name']); //remove dv_ because i dont need it on the object plus it makes js args pretty
+            $new_prefix = ($args['prefix'] == '') ? $field['name'] : $args['prefix'].'_'.$root_field_name;
+
+
 
 
             if( isset($field['sub_fields']) ){
+
+
                 
                 if($field['type'] == 'repeater'){
 
-                    $return_arr[ str_replace($acf_prefix,'',$field['name']) ] = _1p21_dv_get_subbed_post_meta(
-                        array(
-                            'id' => $args['id'],
-                            'key' =>$_new_prefix,
-                            'is_incremented' => true
-                        )
-                    );
+                    $meta_subbed_length = get_post_meta($args['id'],$new_prefix,true);
+                    
+                    // o boy
+                    $return_arr[ $root_field_name ] = array();
+
+                    if($meta_subbed_length){
+
+                        for( $i = 0; $i < $meta_subbed_length; $i++ ) {
+
+                            $return_arr[ $root_field_name ][$i] = _1p21_dv_deep_sub_fields(
+                                array(
+                                    'id' => $args['id'],
+                                    'fields' => $field['sub_fields'],
+                                    'prefix' => $new_prefix.'_'.$i
+                                )
+                            );
+
+                        }
+
+                    }
 
                 }else{
 
-                    $return_arr[ str_replace($acf_prefix,'',$field['name']) ] = _1p21_dv_deep_sub_fields(
+                    $return_arr[ $root_field_name ] = _1p21_dv_deep_sub_fields(
                         array(
                             'id' => $args['id'],
                             'fields' => $field['sub_fields'],
-                            'prefix' => $_new_prefix,
-                            'field_name' => $field['name']
+                            'prefix' => $new_prefix
                         )
                     );
                 }
-                echo $_new_prefix.'<br>';
                 
             }else{
-                //VALIDATE SUB KEYS
-                $return_arr[ str_replace($acf_prefix,'',$field['name']) ] = get_post_meta($args['id'], $field['name'],true);
+                $return_arr[ $root_field_name ] = get_post_meta($args['id'], $new_prefix,true);
             }
 
         }
     }
-
+    
     return $return_arr;
 }
 

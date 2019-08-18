@@ -5,6 +5,30 @@
 * Render markup
 *********************************************************************************************/
 
+function _1p21_dv_validate_boolean($value){
+    return $value == 0 ? 'false' : 'true';
+}
+
+
+function _1p21_dv_validate_arr($value){
+    return $value == 0 ? 'false' : 'true';
+}
+
+function _1p21_dv_get_js_args($args = array()){
+    $data_visual = _1p21_dv_get_data_visual_object($args);
+
+    foreach($data_visual as $setting=>$value){
+        // switch($setting){
+        //     case 'src':
+            
+
+        // }
+    }
+    echo '<pre>'.$obj_string.'</pre>';
+    return $obj_string;
+
+}
+
 function _1p21_div_get_data_visualizer($args = array(),$echo = false){
     global $_1p21_dv;
 
@@ -53,10 +77,10 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
         
         
         //json if applicable
-            if($data_visual['src_type'] == 'rows' || $data_visual['src_type'] == 'text'){
+            if($data_visual['src']['type'] == 'rows' || $data_visual['src']['type'] == 'text'){
                 $render .= "<script id='$wrapper_id-data'  type='application/json' >";
                 
-                if($data_visual['src_type'] == 'rows'){
+                if($data_visual['src']['type'] == 'rows'){
                     $render .= json_encode($data_visual['src']);
                 }else{
                     
@@ -65,6 +89,8 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                 
                 $render .= "</script>";
             }
+
+            _1p21_dv_get_js_args($args);
 
         //script
             $render .= "<script>
@@ -206,9 +232,9 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                             }
             
                         //src
-                            if($data_visual['src']){
-                                $parsed_src_path = '\''.$data_visual['src'].'\'';
-                                if($data_visual['src_type'] == 'rows' || $data_visual['src_type'] == 'text'){
+                            if($data_visual['src']['data']){
+                                $parsed_src_path = '\''.$data_visual['src']['data'].'\'';
+                                if($data_visual['src']['type'] == 'rows' || $data_visual['src']['type'] == 'text'){
                                     $parsed_src_path = "window.document.location + '#{$wrapper_id}-data'";
                                 }
             
@@ -217,9 +243,9 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                             }
             
                         //src key
-                            if($data_visual['src_key']) {
-                                $parsed_src_key = _1p21_parse_key($data_visual['src_key']);
-                                // $parsed_src_key  = str_replace(array("'"),'',$data_visual['src_key']); //quotes
+                            if($data_visual['src']['key']) {
+                                $parsed_src_key = _1p21_parse_key($data_visual['src']['key']);
+                                // $parsed_src_key  = str_replace(array("'"),'',$data_visual['src']['key']); //quotes
                                 // $parsed_src_key  = str_replace(array('.','][','[',']'),'.',$parsed_src_key); //separator
                                 $render .= "
                                 srcKey: '{$parsed_src_key}',\n";
@@ -228,7 +254,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
             
                         
                         //srctype and end
-                        $render .= "srcType: '{$data_visual['src_type']}'
+                        $render .= "srcType: '{$data_visual['src']['type']}'
                     });
                 })
             }());

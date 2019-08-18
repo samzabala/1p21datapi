@@ -11,11 +11,11 @@
 function _1p21_dv_load_acf(){
     if(function_exists('acf_add_local_field_group')){
         //register them
-        include _1P21_DV_PLUGIN_PATH . 'fields/acf-cpt.php';
+        require _1P21_DV_PLUGIN_PATH . 'fields/acf-cpt.php';
         acf_add_local_field_group($_1p21_dv_fields_cpt);
 
 
-        include _1P21_DV_PLUGIN_PATH . 'fields/acf-settings.php';
+        require _1P21_DV_PLUGIN_PATH . 'fields/acf-settings.php';
         acf_add_local_field_group($_1p21_dv_fields_settings);
 
 

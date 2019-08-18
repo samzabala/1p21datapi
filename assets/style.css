@@ -1,27 +1,48 @@
-.data-visualizer { background: #EEE; position: relative; text-align: center; padding: 2em 1em 1em; }
-
-.no-data .data-visualizer-wrapper { padding: 4em 0; }
-
-.data-visualizer-wrapper:empty { padding-bottom: 75%; }
-
-.data-visualizer-wrapper:empty:before { content: "Loading..."; position: absolute; margin: auto; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-
-.data-visualizer svg { display: block; width: 100%; max-width: 100%; margin: 0 auto; font-size: 16px; font-family: inherit !important; }
-
-.data-visualizer text { font-family: inherit !important; }
-
-.data-visualizer-axis line, .data-visualizer-axis path { stroke: #888; }
-
-.data-visualizer-axis text { fill: #888; font-size: .625em; }
-
-.data-visualizer-no-palette rect, .data-visualizer-no-palette circle { fill: #222; }
-
-.data-visualizer-item-text { fill: #FFF; line-height: 2; font-size: 1em; }
-
-.data-visualizer-item-text .item-text-dark { fill: #222; }
-
-.data-visualizer-item-data-no-ticks .data-visualizer-item-data-0 { font-weight: 700; font-size: .75em; }
-
-.data-visualizer-item-data-no-ticks .data-visualizer-item-data-1 { font-size: 1.75em; font-weight: 300; }
-
-@media only screen and (max-width: 700px) { .data-visualizer { padding: .5em; } }
+.data-visualizer {
+  background: #EEE;
+  position: relative;
+  text-align: center;
+  padding: 2em 1em 1em; }
+  .no-data .data-visualizer-wrapper {
+    padding: 4em 0; }
+  .data-visualizer-wrapper:empty {
+    padding-bottom: 75%; }
+    .data-visualizer-wrapper:empty:before {
+      content: "Loading...";
+      position: absolute;
+      margin: auto;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); }
+  .data-visualizer svg {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    font-size: 16px;
+    font-family: inherit !important; }
+  .data-visualizer text {
+    font-family: inherit !important; }
+  .data-visualizer-axis line, .data-visualizer-axis path {
+    stroke: #888; }
+  .data-visualizer-axis text {
+    fill: #888;
+    font-size: .625em; }
+  .data-visualizer-no-palette rect, .data-visualizer-no-palette circle {
+    fill: #222; }
+  .data-visualizer-item-text {
+    fill: #FFF;
+    line-height: 2;
+    font-size: 1em; }
+    .data-visualizer-item-text .item-text-dark {
+      fill: #222; }
+  .data-visualizer-item-data-no-ticks .data-visualizer-item-data-0 {
+    font-weight: 700;
+    font-size: .75em; }
+  .data-visualizer-item-data-no-ticks .data-visualizer-item-data-1 {
+    font-size: 1.75em;
+    font-weight: 300; }
+  @media only screen and (max-width: 700px) {
+    .data-visualizer {
+      padding: .5em; } }

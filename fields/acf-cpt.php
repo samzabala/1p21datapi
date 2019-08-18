@@ -1,5 +1,7 @@
 <?php
-
+//only fields that exist here will be passed down to the data visual object or array or whatever that way shits secure
+// also whenever this is updated, when the admin page is viewed after update, the json file of fields is updated as well so if the dev of this plugin needs to fix the fields she can do so by importing the fields on aDIFFERENT TEST WORDPRESS SITE so it doesnt conflict with the site that the plugin is insytalled on
+//thats right bitch im a she
 $_1p21_dv_fields_cpt = array(
 	'key' => 'group_5d4206c985d00',
 	'title' => 'Data Visualizer',
@@ -171,7 +173,7 @@ $_1p21_dv_fields_cpt = array(
 						array(
 							'key' => 'field_5d420962de26e',
 							'label' => 'Label (Data 1)',
-							'name' => 'label',
+							'name' => '0',
 							'type' => 'text',
 							'instructions' => 'data that will represent the labels or a separate axis of the data.',
 							'required' => 0,
@@ -190,7 +192,7 @@ $_1p21_dv_fields_cpt = array(
 						array(
 							'key' => 'field_5d42077fde268',
 							'label' => 'Value (Data 2)',
-							'name' => 'value',
+							'name' => '1',
 							'type' => 'text',
 							'instructions' => 'data that will represent the labels.',
 							'required' => 0,

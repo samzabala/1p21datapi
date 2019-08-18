@@ -628,9 +628,12 @@
                         }
                     }else{
                         offset = _['the_'+coordinate](deepGet(dis,dataKey,dataKeyI));
-                        // if(args.type == 'line' || args.type == 'scatter') {
-                        //     offset += getBlobSize(coordinate,dis,i) / 2;
-                        // }
+                        if(
+                            (args.type == 'line' || args.type == 'scatter')
+                            && !args.nameIsNum 
+                        ) {
+                            offset += getBlobSize(coordinate,dis,i) / 2;
+                        }
                     }
                     
 
@@ -1374,7 +1377,7 @@
             //probably embeded
             default:
                 if(args.srcPath.getHash()){
-                    var jsonSelector = dataContainer.querySelector('script[type="application/json"').innerHTML;
+                    var jsonSelector = dataContainer.querySelector('script[type="application/json"]').innerHTML;
                     if(jsonSelector.isValidJSONString()){
 
                         var dataIsJSON = JSON.parse(jsonSelector);
