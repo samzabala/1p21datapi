@@ -978,23 +978,6 @@
                                     "operator": "==",
                                     "value": "1"
                                 }
-                            ],
-                            [
-                                {
-                                    "field": "field_5d49b51b576ae",
-                                    "operator": "==",
-                                    "value": "1"
-                                },
-                                {
-                                    "field": "field_5d420a45de26f",
-                                    "operator": "!=",
-                                    "value": "bar"
-                                },
-                                {
-                                    "field": "field_5d55d2e48b9a1",
-                                    "operator": "==",
-                                    "value": "1"
-                                }
                             ]
                         ],
                         "parent": "field_5d448fef59823",
@@ -1036,23 +1019,6 @@
                                 },
                                 {
                                     "field": "field_5d42110769b59",
-                                    "operator": "==",
-                                    "value": "1"
-                                }
-                            ],
-                            [
-                                {
-                                    "field": "field_5d49b51b576ae",
-                                    "operator": "==",
-                                    "value": "1"
-                                },
-                                {
-                                    "field": "field_5d420a45de26f",
-                                    "operator": "!=",
-                                    "value": "bar"
-                                },
-                                {
-                                    "field": "field_5d55d2e48b9a1",
                                     "operator": "==",
                                     "value": "1"
                                 }
@@ -1177,7 +1143,7 @@
                         ],
                         "parent": "field_5d448fef59823",
                         "wrapper": {
-                            "width": "",
+                            "width": "50",
                             "class": "",
                             "id": ""
                         },
@@ -1192,13 +1158,56 @@
                     },
                     {
                         "ID": 0,
+                        "key": "field_5d59f32e4c3c4",
+                        "label": "Grid Increment",
+                        "name": "grid_increment",
+                        "prefix": "acf",
+                        "type": "number",
+                        "value": null,
+                        "menu_order": 13,
+                        "instructions": "How many ticks the grid will align to. leaving this blank will equal to 1",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d548a3e2c501",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d44915159827",
+                                    "operator": "!=empty"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d448fef59823",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "grid_increment",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "min": "",
+                        "max": "",
+                        "step": ""
+                    },
+                    {
+                        "ID": 0,
                         "key": "field_5d4af01f2e07c",
                         "label": "Advanced",
                         "name": "",
                         "prefix": "acf",
                         "type": "accordion",
                         "value": false,
-                        "menu_order": 13,
+                        "menu_order": 14,
                         "instructions": "",
                         "required": 0,
                         "id": "",
@@ -1233,7 +1242,7 @@
                         "prefix": "acf",
                         "type": "text",
                         "value": null,
-                        "menu_order": 14,
+                        "menu_order": 15,
                         "instructions": "accepts string format or function<br>Reference: <a href=\"https:\/\/github.com\/d3\/d3-format\">https:\/\/github.com\/d3\/d3-format<\/a><br>Setting this will override Tick Format settings",
                         "required": 0,
                         "id": "",
@@ -1696,23 +1705,6 @@
                                     "operator": "==",
                                     "value": "1"
                                 }
-                            ],
-                            [
-                                {
-                                    "field": "field_5d49b81e8a9b1",
-                                    "operator": "==",
-                                    "value": "1"
-                                },
-                                {
-                                    "field": "field_5d420a45de26f",
-                                    "operator": "!=",
-                                    "value": "bar"
-                                },
-                                {
-                                    "field": "field_5d55d2e48b9a1",
-                                    "operator": "!=",
-                                    "value": "1"
-                                }
                             ]
                         ],
                         "parent": "field_5d4494e1f5294",
@@ -1755,23 +1747,6 @@
                                 {
                                     "field": "field_5d4494e1f5295",
                                     "operator": "==",
-                                    "value": "1"
-                                }
-                            ],
-                            [
-                                {
-                                    "field": "field_5d49b81e8a9b1",
-                                    "operator": "==",
-                                    "value": "1"
-                                },
-                                {
-                                    "field": "field_5d420a45de26f",
-                                    "operator": "!=",
-                                    "value": "bar"
-                                },
-                                {
-                                    "field": "field_5d55d2e48b9a1",
-                                    "operator": "!=",
                                     "value": "1"
                                 }
                             ]
@@ -1832,7 +1807,7 @@
                                 },
                                 {
                                     "field": "field_5d55d2e48b9a1",
-                                    "operator": "!=",
+                                    "operator": "==",
                                     "value": "1"
                                 }
                             ]
@@ -1895,7 +1870,7 @@
                         ],
                         "parent": "field_5d4494e1f5294",
                         "wrapper": {
-                            "width": "",
+                            "width": "50",
                             "class": "",
                             "id": ""
                         },
@@ -1910,13 +1885,56 @@
                     },
                     {
                         "ID": 0,
+                        "key": "field_5d59f39c4c3c5",
+                        "label": "Grid Increment",
+                        "name": "grid_increment",
+                        "prefix": "acf",
+                        "type": "number",
+                        "value": null,
+                        "menu_order": 13,
+                        "instructions": "How many ticks the grid will align to. leaving this blank will equal to 1",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d548a8f2c505",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d4494e1f5298",
+                                    "operator": "!=empty"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d4494e1f5294",
+                        "wrapper": {
+                            "width": "50",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "grid_increment",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "min": "",
+                        "max": "",
+                        "step": ""
+                    },
+                    {
+                        "ID": 0,
                         "key": "field_5d4af0ae2e07f",
                         "label": "Advanced",
                         "name": "",
                         "prefix": "acf",
                         "type": "accordion",
                         "value": false,
-                        "menu_order": 13,
+                        "menu_order": 14,
                         "instructions": "",
                         "required": 0,
                         "id": "",
@@ -1951,7 +1969,7 @@
                         "prefix": "acf",
                         "type": "text",
                         "value": null,
-                        "menu_order": 14,
+                        "menu_order": 15,
                         "instructions": "accepts string format or function<br>Reference: <a href=\"https:\/\/github.com\/d3\/d3-format\">https:\/\/github.com\/d3\/d3-format<\/a><br>Setting this will override Tick Format settings",
                         "required": 0,
                         "id": "",

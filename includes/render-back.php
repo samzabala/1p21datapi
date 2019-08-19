@@ -59,24 +59,41 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
             foreach($coordinates as $coordinate){
                 //validate x
-                if(!$data_visual[$coordinate]['ticks']){
-                    unset($data_visual[$coordinate]['ticks_format']);
-                    unset($data_visual[$coordinate]['ticks_amount']);
-                    unset($data_visual[$coordinate]['label']);
-                    unset($data_visual[$coordinate]['prepend']);
-                    unset($data_visual[$coordinate]['append']);
-                    unset($data_visual[$coordinate]['grid']);
+                switch($data_visual[$coordinate]['ticks']){
+                    case false:
+                        unset($data_visual[$coordinate]['ticks_format']);
+                        unset($data_visual[$coordinate]['ticks_amount']);
+                        unset($data_visual[$coordinate]['label']);
+                        unset($data_visual[$coordinate]['prepend']);
+                        unset($data_visual[$coordinate]['append']);
+                        unset($data_visual[$coordinate]['grid']);
+                        unset($data_visual[$coordinate]['grid_increment']);
+                    case true: //let false casecade to true too
+                        if( $data_visual[$coordinate]['data'] == 0 || $data_visual[$coordinate]['ticks'] == false){
+                            unset($data_visual[$coordinate]['min']);
+                            unset($data_visual[$coordinate]['max']);
+                        }
 
+                        if(!$data_visual[$coordinate]['grid'] || !($data_visual[$coordinate]['ticks_amount'] > 0)){
 
+                            unset($data_visual[$coordinate]['grid_increment']);
+                            
+                        }
 
-                    //validate minimum and maximum
-                    if( !($data_visual['name_is_num'] || $data_visual[$coordinate]['data'] == 1) ) {
-                        unset($data_visual[$coordinate]['min']);
-                        unset($data_visual[$coordinate]['max']);
-                        unset($data_visual[$coordinate]['divider']);
+                        //validate minimum and maximum
+                        if(
+                            !(
+                                $data_visual['name_is_num']
+                                || $data_visual[$coordinate]['data'] == 1
+                            )
+                            || $data_visual[$coordinate]['ticks'] == false
+                        ){
+                            unset($data_visual[$coordinate]['divider']);
+                        }
+                        break;
 
-                    }
                 }
+                
             }
 
             if($data_visual['type'] !== 'line') {
@@ -125,8 +142,11 @@ function _1p21_dv_get_data_visual_object($args = array()) {
         $data_visual['src'] = $data_src_arr;
 
         //get rid based from src
-        if($data_visual['src']['type'] == 'row'){
-            unset($data_src_arr['data_key']);
+        if(
+            $data_visual['src']['type'] == 'row'
+            || (!$data_visual['data_key'][0] && !$data_visual['data_key'][1])
+        ){
+            unset($data_visual['data_key']);
         }
         return $data_visual;
         // return $data_visual;

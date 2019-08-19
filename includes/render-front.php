@@ -14,20 +14,6 @@ function _1p21_dv_validate_arr($value){
     return $value == 0 ? 'false' : 'true';
 }
 
-function _1p21_dv_get_js_args($args = array()){
-    $data_visual = _1p21_dv_get_data_visual_object($args);
-
-    foreach($data_visual as $setting=>$value){
-        // switch($setting){
-        //     case 'src':
-            
-
-        // }
-    }
-    echo '<pre>'.$obj_string.'</pre>';
-    return $obj_string;
-
-}
 
 function _1p21_div_get_data_visualizer($args = array(),$echo = false){
     global $_1p21_dv;
@@ -79,18 +65,16 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
         //json if applicable
             if($data_visual['src']['type'] == 'rows' || $data_visual['src']['type'] == 'text'){
                 $render .= "<script id='$wrapper_id-data'  type='application/json' >";
-                
+
                 if($data_visual['src']['type'] == 'rows'){
-                    $render .= json_encode($data_visual['src']);
+                    $render .= json_encode($data_visual['src']['data'],JSON_FORCE_OBJECT);
                 }else{
                     
-                    $render .= $data_visual['src'];
+                    $render .= $data_visual['src']['data'];
                 }
                 
                 $render .= "</script>";
             }
-
-            _1p21_dv_get_js_args($args);
 
         //script
             $render .= "<script>
@@ -98,163 +82,185 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                 document.addEventListener('DOMContentLoaded', function() {
                     _1p21.dataVisualizer('#{$wrapper_id}',{\n";
 
-                        //type
-                            $render .= "type: '{$data_visual['type']}',\n";
-                        //usual settings
-                            foreach( $data_visual['settings'] as $settings => $value ){
-                                if( $value != null && $settings != 'id') {
-                                    $parsed_settings_key = _1p21_dv_dashes_to_camel_case($settings);
-                                    $render .= "{$parsed_settings_key}: {$value},\n";
-                                }
-                            }
+                        foreach($data_visual as $attribute => $value){
 
-                        // data
-                            if($data_visual['data_key']) {
+                            if($attribute !== 'front'){
+
+                                switch($attribute){
+                                    case 'settings':
 
 
-                                // $parsed_data_keys  = implode('\',\'',$data_visual['data_key']);
-                                // $render .= "
-                                // dataKey: ['{$parsed_data_keys}'],\n";
+                                        foreach( $value as $sub_setting => $sub_value ){
+                                            if( $sub_value != null && $sub_setting != 'id') {
+                                                $render .= _1p21_dv_dashes_to_camel_case($sub_setting).": {$sub_value},\n";
+                                            }
+                                        }
+                                        break;
 
 
+                                    case 'type':
+
+                                        $render .= "type: '{$data_visual['type']}',\n";
+                                        break;
 
 
-                                $parsed_data_keys_arr = [];
+                                    case 'data_key':
 
-                                foreach($data_visual['data_key'] as $coordinate_keys){
-                                    $coordinate = _1p21_parse_key($coordinate_keys);
-                                    $parsed_data_keys_arr[] = $coordinate;
+                                        $parsed_data_keys_arr = [];
+
+                                        foreach($value as $coordinate_keys){
+                                            $coordinate = _1p21_parse_data_key($coordinate_keys);
+                                            $parsed_data_keys_arr[] = $coordinate;
+                                        }
+
+                                        $parsed_data_keys_arr_string = implode('\',\'',$parsed_data_keys_arr);
+                                        $render .= _1p21_dv_dashes_to_camel_case($attribute) .": ['{$parsed_data_keys_arr_string}'],\n";
+
+                                        break;
+
+                                    
+                                    case 'name_is_num':
 
 
-                                }
+                                        $parsed_value = ($value == 1 ) ? 'true' : 'false';
+                                        $render .= _1p21_dv_dashes_to_camel_case($attribute).": {$parsed_value},\n";
 
-                                $parsed_data_keys_arr_string = implode('\',\'',$parsed_data_keys_arr);
+                                        break;
+                                        
+                                    
+                                    case 'src':
 
-                                $render .= "
-                                dataKey: ['{$parsed_data_keys_arr_string}'],\n";
-                            }
 
+                                        foreach($value as $sub_setting => $sub_value){
+                                    
+                                            //they are all strings
+                                            
+                                            if($sub_setting == 'data'){
+                                                $parsed_src_path = '\''.$sub_value.'\'';
+                                                
+                                                if($value['type'] == 'rows' || $value['type'] == 'text'){
+                                                    $parsed_src_path = "window.document.location + '#{$wrapper_id}-data'";
+                                                }
+                            
+                                                $render .= "srcPath: {$parsed_src_path},\n";
+                                            }elseif($sub_setting == 'key'){
+
+                                                $parsed_value = _1p21_parse_data_key($sub_value);
+                                                $render .= _1p21_dv_dashes_to_camel_case($attribute.'_'.$sub_setting). ":'".$parsed_value."',\n";
+
+                                            }else{
+                                                $render .= _1p21_dv_dashes_to_camel_case($attribute.'_'.$sub_setting). ":'".$sub_value."',\n";
+                                            }
+                                        }
+
+                                        break;
+                                    
+                                        
+                                    case 'color':
+                                    case 'x':
+                                    case 'y':
+                                    case 'line':
+                                    case 'pi':
+                                    case 'area':
+
+                                        $string_values = array();
+                                        $data_key_values = array();
+                                        $boolean_values = array();
+                                        $array_values_from_string =  array();
+                                        $array_values_from_array = array();
+                                        $array_items_are_strings = array();
+
+                                        switch($attribute){
+                                            case 'color':
+                                                $array_values_from_array = array('palette');
+                                                $data_key_values = array('data');
+                                                $array_items_are_strings = array('palette');
+
+                                                break;
+                                            case 'x':
+                                            case 'y':
+                                                $string_values = array('align','label','prepend','append');
+                                                $boolean_values = array('ticks','grid');
+                                                break;
+                                            case 'line':
+                                                $string_values = array('style','stroke','color','points_color','fill_color','fill_axis');
+                                                $boolean_values = array('points','fill','invert');
+                                                $array_values_from_string = array('dash');
+                                                break;
+                                            
+                                        }
+                                        
+                                        
+                                        foreach($value as $sub_setting => $sub_value) {
+                                            if(
+                                                (
+                                                    !is_array($sub_value)
+                                                    && $sub_value !== null
+                                                    && $sub_value !== ''
+                                                )
+                                                || (
+                                                    is_array($sub_value)
+                                                    && count($sub_value) > 0
+                                                )
+                                            ){
+                                                
+                                                $parsed_settings_key = _1p21_dv_dashes_to_camel_case($value . '_' . $sub_setting ); 
+                                                // echo $sub_setting.','.$sub_value.'<br>';
+                                                $parsed_value = $sub_value;
+
+                                                $imploder = ',';
+                                                $implode_wrapper = ['[',']'];
+                                                if(in_array($sub_setting,$array_items_are_strings)){
+                                                    $imploder = '\',\'';
+                                                    $implode_wrapper = ['[\'','\']'];
+                                                }
+                                                
+                                                //straight up string
+                                                if(in_array($sub_setting,$string_values)){
+                                                    $parsed_value = '\''.$sub_value. '\'';
+
+                                                //boolean bitch
+                                                }elseif(in_array($sub_setting,$boolean_values)){
+                                                    $parsed_value = ($sub_value == 1) ? 'true' : 'false';
+
+                                                // its a string of comma separated shit that can be a half ass array
+                                                }elseif(
+                                                    in_array($sub_setting,$array_values_from_string)
+                                                    || in_array($sub_setting,$array_values_from_array)
+                                                ){
+
+                                                    if( in_array($sub_setting,$array_values_from_string) ){
+                                                        $array_value = $sub_value;
+                                                    }else{
+                                                        $array_value = implode($imploder,$sub_value);
+                                                    }
+
+                                                    $parsed_value  = $implode_wrapper[0] . $array_value . $implode_wrapper[1];
+
+                                                // its in an array for real and must be translated very much
+                                                }elseif(in_array($sub_setting,$data_key_values)){
+                                                    $parsed_value = _1p21_parse_data_key($sub_value);
+
+                                                }
                         
-                            if( $data_visual['name_is_num'] ){
-                                $parsed_value = ($data_visual['name_is_num'] == 1 )? 'true' : '';
-                                $render .= "
-                                nameIsNum: {$parsed_value},\n";
-                            }
-            
-            
-
-                        if($data_visual['type'] == 'pie'){
-                            foreach($data_visual['pi'] as $settings=> $value) {
-                                if($value !== ''){
-                                    $parsed_settings_key = _1p21_dv_dashes_to_camel_case('pi_' . $settings ); 
-            
-                                    $parsed_value = $value;
-            
-                                    $render .= "{$parsed_settings_key}: '{$value}',\n";
-                                }
-                            }
-                        }else{
-
-                            // X & y settings
-
-                            //hi im a lazy fuck so im shortcutting because my laziness will pay of as optimal code hahahahah
-                            $coordinates = ['x','y'];
-                            $string_values = array('label','align','prepend','append');
-                            $boolean_values = array('ticks');
-
-                            foreach($coordinates as $coordinate){
-
-                                foreach($data_visual[$coordinate] as $settings=> $value) {
-                                    if($value !== ''){
-                                        $parsed_settings_key = _1p21_dv_dashes_to_camel_case($coordinate . '_' . $settings ); 
-                
-                                        if($value !== null){
-                                            $parsed_value = $value;
-
-                                            
-                                            if(in_array($settings,$string_values)){
-                                                $parsed_value = '\''.$value. '\'';
-                                            }elseif(in_array($settings,$boolean_values)){
-                                                $parsed_value = ($value == 1) ? 'true' : 'false';
+                        
+                                                $render .= _1p21_dv_dashes_to_camel_case($attribute.'_'.$sub_setting).": {$parsed_value},\n";
+                                                    
                                             }
-                    
-                                            $render .= "{$parsed_settings_key}: {$parsed_value},\n";
                                         }
-                                    }
+
+                                        break;
+
+                                    
+                                    
                                 }
                             }
 
-                            if($data_visual['type'] == 'line'){
-                                $string_values = array('style','stroke','color','points_color','fill_color','fill_axis');
-                                $boolean_values = array('points','fill','invert');
-                                $array_values = array('dash');
-
-                                foreach($data_visual['line'] as $settings=> $value) {
-                                    if($value !== ''){
-                                        $parsed_settings_key = _1p21_dv_dashes_to_camel_case('line_' . $settings ); 
-                
-                                        if($value !== null){
-                                            $parsed_value = $value;
-
-                                            
-                                            if(in_array($settings,$string_values)){
-
-                                                $parsed_value = '\''.$value. '\'';
-
-                                            }elseif(in_array($settings,$array_values)){
-
-                                                $parsed_value = '['. $value .']';
-
-                                            }elseif(in_array($settings,$boolean_values)){
-
-                                                $parsed_value = ($value == 1) ? 'true' : 'false';
-
-                                            }
-                    
-                                            $render .= "{$parsed_settings_key}: {$parsed_value},\n";
-                                        }
-                                    }
-                                }
-
-                            }
                         }
-                        
-            
-                        // kwan colors
-                            if($data_visual['colors']) {
-                                $data_keys  = implode('\',\'',$data_visual['colors']);
-                                $render .= "
-                                colorPalette: ['{$data_keys}'],\n";
-                            }
-                            if($data_visual['colors_data_key']) {
-                                $render .= "
-                                colorData: '{$data_visual['colors_data_key']}',\n";
-                            }
-            
-                        //src
-                            if($data_visual['src']['data']){
-                                $parsed_src_path = '\''.$data_visual['src']['data'].'\'';
-                                if($data_visual['src']['type'] == 'rows' || $data_visual['src']['type'] == 'text'){
-                                    $parsed_src_path = "window.document.location + '#{$wrapper_id}-data'";
-                                }
-            
-                                $render .= "
-                                srcPath: {$parsed_src_path},\n";
-                            }
-            
-                        //src key
-                            if($data_visual['src']['key']) {
-                                $parsed_src_key = _1p21_parse_key($data_visual['src']['key']);
-                                // $parsed_src_key  = str_replace(array("'"),'',$data_visual['src']['key']); //quotes
-                                // $parsed_src_key  = str_replace(array('.','][','[',']'),'.',$parsed_src_key); //separator
-                                $render .= "
-                                srcKey: '{$parsed_src_key}',\n";
-                                // srcKey: ['{$parsed_src_key}'],\n";
-                            }
-            
-                        
-                        //srctype and end
-                        $render .= "srcType: '{$data_visual['src']['type']}'
+
+
+                        //end
+                            $render .= "
                     });
                 })
             }());

@@ -198,7 +198,7 @@ function _1p21_dv_dashes_to_camel_case($string, $capitalizeFirstCharacter = fals
 
 
 //key selector in a format js understands
-function _1p21_parse_key($key_string) {
+function _1p21_parse_data_key($key_string) {
 
     $parsed_key = $key_string;
     $parsed_key  = str_replace( array("'"),'', $parsed_key); //quotes

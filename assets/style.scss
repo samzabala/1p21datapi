@@ -39,7 +39,8 @@ $prefix: '.data-visualizer';
         font-family: inherit!important;
     }
 
-    &-axis {
+    &-axis,
+    &-grid {
         line,path {
             stroke: #888;
         }
@@ -50,12 +51,28 @@ $prefix: '.data-visualizer';
         }
     }
 
-    &-item {
-        @at-root #{$prefix}-no-palette {
-            rect,circle {
-                fill: #222;
-            }
+    &-grid {
+        line,path {
+            stroke-opacity: .5;
         }
+    }
+    &-no-palette {
+        #{$prefix}-fill,
+        #{$prefix}-item rect,
+        #{$prefix}-item circle {
+            fill: #222;
+        }
+        
+        #{$prefix}-line {
+            stroke: #222;
+        }
+        
+        #{$prefix}-fill {
+            fill-opacity: .25;
+        }
+    }
+
+    &-item {
         
 
         &-text {

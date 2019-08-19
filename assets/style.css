@@ -24,13 +24,21 @@
     font-family: inherit !important; }
   .data-visualizer text {
     font-family: inherit !important; }
-  .data-visualizer-axis line, .data-visualizer-axis path {
+  .data-visualizer-axis line, .data-visualizer-axis path, .data-visualizer-grid line, .data-visualizer-grid path {
     stroke: #888; }
-  .data-visualizer-axis text {
+  .data-visualizer-axis text, .data-visualizer-grid text {
     fill: #888;
     font-size: .625em; }
-  .data-visualizer-no-palette rect, .data-visualizer-no-palette circle {
+  .data-visualizer-grid line, .data-visualizer-grid path {
+    stroke-opacity: .5; }
+  .data-visualizer-no-palette .data-visualizer-fill,
+  .data-visualizer-no-palette .data-visualizer-item rect,
+  .data-visualizer-no-palette .data-visualizer-item circle {
     fill: #222; }
+  .data-visualizer-no-palette .data-visualizer-line {
+    stroke: #222; }
+  .data-visualizer-no-palette .data-visualizer-fill {
+    fill-opacity: .25; }
   .data-visualizer-item-text {
     fill: #FFF;
     line-height: 2;

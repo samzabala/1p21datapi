@@ -15,14 +15,6 @@
         if(opposite){
             return (axisString == 'x') ? 'height' : 'width';
         }else{
-            // switch(axisString){
-            //     case 'x':
-            //         return 'width';
-            //     case 'y':
-            //         return 'height';
-            //     case 'r':
-            //         return 'r';
-            // }
             return (axisString == 'x') ? 'width' : 'height';
         }
     }
@@ -103,19 +95,16 @@
             
             // HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
             hsp = Math.sqrt(
-            0.299 * (r * r) +
-            0.587 * (g * g) +
-            0.114 * (b * b)
+                0.299 * (r * r) +
+                0.587 * (g * g) +
+                0.114 * (b * b)
             );
         
             // Using the HSP value, determine whether the color is light or dark
             
             if (hsp>170) { //127.5
-        
                 return false;
-            } 
-            else {
-        
+            } else {
                 return true;
             }
         }
@@ -132,19 +121,32 @@
 
         //default params for hooman
         var defaults  = {
+            //settings
             width: 600,
             height:400,
             margin: 20, // @TODO option to separate padding
             marginOffset: 2,
             transition: 2000,
             delay: 300,
+
+            
             type: 'bar',
             dataKey: [
                 0, //data 1 / name
                 1 //data 2 / value
             ],
             nameIsNum: false,
+    
+            //src
+            srcType: '',
+            srcPath: '',
+            srcKey: null,
 
+    
+            //kulay
+            colorPalette : [],
+            colorData: null,
+            
             //x settings
             xData: 0,
             xAlign: 'bottom',
@@ -155,6 +157,7 @@
             xMin: null,
             xMax: null,
             xGrid: false,
+            xGridIncrement: 1,
             xPrepend: '',
             xAppend: '',
             xDivider: 1,
@@ -169,6 +172,7 @@
             yMin: null,
             yMax: null,
             yGrid: false,
+            yGridIncrement: 1,
             yPrepend: '',
             yAppend: '',
             yDivider: 1,
@@ -182,21 +186,12 @@
             linePointsColor: null,
             linePointsSize: null,
             lineFillColor: null,
-            lineFillOpacity: 1,
+            lineFillOpacity: .5,
             lineFillInvert: 'x',
             lineDash: [100,0],
     
-            //kulay
-            colorPalette : [],
-            colorData: null,
-    
             //area? in case scatter plot ir pi idk what the fuck i'm doing right now but its here in case. yes i shall need this boi
             areaKey: '',
-    
-            //src
-            srcType: '',
-            srcPath: '',
-            srcKey: null,
         };
 
         //merge defaults with custom
@@ -249,7 +244,7 @@
         // @param - keystring : hooman provided object key string that is hopefully correct 
         // @param - isNum : if the data is a number 
         var deepGet = function (obj,keysString, isNum) { 
-            var splitString = keysString.split('.');
+            var splitString = keysString.toString().split('.');
 
             //remove empty instances because they just mess with the loop
             splitString.forEach(function(key,i){
@@ -267,13 +262,13 @@
                 if(is.length){
                     toReturn = multiIndex(obj[is[0]],is.slice(1))
                 }else{
-                    toReturn = obj;
+                    toReturn = isNum ? parseFloat(obj) : obj;
                 }
 
                 return toReturn;
             }
 
-            var value = isNum ? parseFloat(multiIndex(obj,splitString)) : multiIndex(obj,splitString);
+            var value = multiIndex(obj,splitString);
             return value;
         }
 
@@ -338,7 +333,7 @@
                                     min = args[itemAtt + 'Min'];
                                 }else{
                                     min = d3.min(dat,function(dis){
-                                        return deepGet(dis,args.dataKey[ dataKeyI ],dataKeyI);
+                                        return deepGet(dis,args.dataKey[ dataKeyI ],true);
                                     });
                                 }
                                 
@@ -347,14 +342,14 @@
                                     max = args[itemAtt + 'Max']
                                 }else{
                                     max = d3.max(dat,function(dis){
-                                        return deepGet(dis,args.dataKey[ dataKeyI ],dataKeyI);
+                                        return deepGet(dis,args.dataKey[ dataKeyI ],true);
                                     });
                                 }
 
                                 domain = [min,max];
                         }else{
                             domain =  dat.map(function(dis){
-                                return deepGet(dis,args.dataKey[ dataKeyI ], dataKeyI);
+                                return deepGet(dis,args.dataKey[ dataKeyI ],false);
                             });
                         }
 
@@ -421,9 +416,9 @@
                         }else{
 
                             if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
-                                dimension = args[dimensionAttribute(axisString)] - _['the_'+axisString]( deepGet(dis,dataKey,dataKey) );
+                                dimension = args[dimensionAttribute(axisString)] - _['the_'+axisString]( deepGet(dis,dataKey,dataKey,true) );
                             }else{
-                                dimension = _['the_'+axisString]( deepGet( dis,dataKey,dataKey ) );
+                                dimension = _['the_'+axisString]( deepGet( dis,dataKey,dataKey,true ) );
                             }
 
                         }
@@ -610,24 +605,24 @@
                 case 'pie':
                     break;
                 default:
-                    if( dataKeyI  !== 0){
+                    if( args.nameIsNum || dataKeyI == 1){
                         if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
                             if(initial){
                                 offset = args[dimensionAttribute(coordinate)];
 
                             }else{
-                                offset = args[dimensionAttribute(coordinate)] - (args[dimensionAttribute(coordinate)] - _['the_'+coordinate]( deepGet(dis,dataKey,dataKeyI )));
+                                offset = args[dimensionAttribute(coordinate)] - (args[dimensionAttribute(coordinate)] - _['the_'+coordinate]( deepGet(dis,dataKey,true )));
                             }
                         }else{
                             if(args.type == 'line' || args.type == 'scatter'){
                                 if(!(initial && dataKeyI !== 0)){
-                                    offset = _['the_'+coordinate]( deepGet(dis,dataKey,dataKeyI ));
+                                    offset = _['the_'+coordinate]( deepGet(dis,dataKey,true ));
 
                                 }
                             }
                         }
                     }else{
-                        offset = _['the_'+coordinate](deepGet(dis,dataKey,dataKeyI));
+                        offset = _['the_'+coordinate](deepGet(dis,dataKey,false));
                         if(
                             (args.type == 'line' || args.type == 'scatter')
                             && !args.nameIsNum 
@@ -680,9 +675,8 @@
 
             var pathInitiator = isArea ? 'area' : 'line',
                 axisToFill = (args.xData == 0)  ? 'x' : 'y',
-                path = d3[pathInitiator]()
+                path = d3[pathInitiator]();
 
-                console.log('axisTofill',axisToFill);
 
             if(pathInitiator == 'area') {
                 //name coord, value coord, fill coordinate
@@ -708,9 +702,6 @@
                     aCord.fill = oppositeAxisString(axisToFill)+1
                 }
 
-                    
-
-                console.log(aCord);
                 
                 path
                     [aCord.name](function(dis,i){
@@ -737,9 +728,24 @@
 
         }
 
-        var setRuleContainer = function(axisString,containerObj){
+        var setRuleContainer = function(axisString,containerObj,isGrid){
             var rule = containerObj.append('g')
-                .attr('class', prefix + 'axis-'+axisString+' '+ prefix +'axis-align-'+args[axisString+'Align'])
+                .attr(
+                    'class', function(){
+                        var contClass = null;
+
+                        if(isGrid){
+                            contClass = prefix + 'grid-'+axisString+' ';
+                        }else{
+                            contClass =
+                                prefix +
+                                'axis-'+axisString+' '+
+                                prefix +'axis-align-'+args[axisString+'Align']
+                        }
+
+                        return contClass;
+                    }
+                )
 
             var transformCoord = '';
             
@@ -763,23 +769,43 @@
 
 
 
-        var setAxis = function(axisString) {
+        var setAxis = function(axisString,isGrid) {
             var axis,
                 axisKey = 'Axis '+args[axisString+'Align'];
 
+            isGrid = isGrid || false;
 
-
-
-            
             axis = d3[axisKey.toCamelCase()](_['the_'+axisString]);
 
 
             if(args.hasOwnProperty(axisString +'Ticks')){
-               if( args.hasOwnProperty(axisString +'TicksFormat') ){
-                    axis.tickFormat( _['format_'+axisString] );
+
+                if(args.hasOwnProperty(axisString +'TicksAmount')){
+                    
+                    var ticksAmount = function(){
+                        if( isGrid && args[axisString +'TicksAmount']  ){
+                            return args[axisString +'TicksAmount'] / args[axisString +'GridIncrement'];
+                        } else {
+                            return args[axisString +'TicksAmount']
+                        }
+                    };
+
+                    console.log(selector,axisString,isGrid,axisString +'GridIncrement',ticksAmount() );
+
+                    axis.ticks( ticksAmount() );
                 };
 
-                args.hasOwnProperty(axisString +'TicksAmount') && axis.ticks( args[axisString +'TicksAmount'] );
+                if(isGrid){
+                    axis.
+                        tickSize(-args[dimensionAttribute(axisString)])
+                        .tickFormat("");
+                }else{
+
+                    if( args.hasOwnProperty(axisString +'TicksFormat') ){
+                        axis.tickFormat( _['format_'+axisString] );
+                    };
+
+                }
             }
 
 
@@ -801,8 +827,10 @@
                 case 'x':
                 case 'y':
                     if(args.nameIsNum || dataKeyI == 1 ){
+                        
                         axis = d3.scaleLinear()
                             .range(_['range_'+itemAtt]);
+                        
                     }else{
                         axis = d3.scaleBand() //scales shit to dimensios
                             .range(_['range_'+itemAtt]) // scaled data from available space
@@ -820,8 +848,9 @@
 
         };
 
-        var renderAxis = function(axisString,containerObj) {
+        var renderAxis = function(axisString,containerObj,isGrid) {
             if( args[axisString+'Ticks']) {
+                var gridString = isGrid ? 'grid_' : '';
 
                 // x label
                 if( args[axisString+'Label'] ){
@@ -844,11 +873,12 @@
                 }
 
                 //ruler
-                    _['rule_'+axisString] = setRuleContainer(axisString,containerObj);
+                    _['rule_'+gridString+axisString] = setRuleContainer(axisString,containerObj,isGrid);
+                    
 
                 //axis
-                    _['axis_'+axisString] = setAxis(axisString);
-                
+                    _['axis_'+gridString+axisString] = setAxis(axisString,isGrid);
+
             }
         }
 
@@ -882,9 +912,22 @@
 
             //sort if all number
             if(args.nameIsNum){
-                data.sort(function(a,b){
-                    return deepGet(a,args.dataKey[0],true) - deepGet(b,args.dataKey[0],true)
+                
+                var sortable = [];
+                for (var dis in data) {
+                    sortable.push(data[dis]);
+                }
+                
+                sortable.sort(function(a, b) {
+                    // console.log(deepGet(a,args.dataKey[0]));
+                    // console.log(deepGet(a,args.dataKey[0],true),deepGet(b,args.dataKey[0],true));
+                    return deepGet(a,args.dataKey[0],true) - deepGet(b,args.dataKey[0],true);
                 });
+                // data.sort(function(a,b){
+                //     return deepGet(a,args.dataKey[0],true) - deepGet(b,args.dataKey[0],true)
+                // });
+
+                data = sortable;
             }
 
 
@@ -982,11 +1025,14 @@
     
                 _.rule = _.container.append('g')
                     .attr('class', prefix + 'axis');
+
+                    
+                _.grid = _.container.append('g')
+                    .attr('class', prefix + 'grid');
                     
 
                 itemAtts.forEach(function(itemAtt){
-
-
+                    
                     // scale
                     _['range_'+itemAtt] = getRange(itemAtt),
 
@@ -996,45 +1042,43 @@
                     if (itemAtt == 'x' || itemAtt == 'y'){
                         renderAxis(itemAtt,_.rule)
 
+                        
 
                         //formatter
                         _['format_'+itemAtt] = args[itemAtt+'Parameter'] || function(dis){
                             var dataPossiblyDivided = (args[axisString+'Data'] == 1 ) ? (dis / args[axisString+'Divider']): dis,
                             formatted = args[axisString+'Prepend'] + dataPossiblyDivided + args[axisString+'Append'];
-                            
 
                             return formatted;
+                        }
+
+
+
+                        _['dom_'+itemAtt] = getDomain(
+                            itemAtt,
+                            data
+                        );
+                        _['the_'+itemAtt].domain(_['dom_'+itemAtt]);
+                        if( args[itemAtt+'Ticks'] ){
+                            _['rule_'+itemAtt].transition(args.delay).call( _['axis_'+itemAtt])
+                                .attr('font-family','inherit')
+                                .attr('font-size',null);
+
+                            if(args[itemAtt+'Grid']){
+                                renderAxis(itemAtt,_.grid,true)
+                                _['rule_grid_'+itemAtt].call( _['axis_grid_'+itemAtt]);
+                            }
                         }
                     };
 
 
                 })
 
-                //x axis
-                _.dom_x = getDomain(
-                    'x',
-                    data
-                );
-                _.the_x.domain(_.dom_x);
-                args.xTicks && _.rule_x.transition(args.delay).call( _.axis_x)
-                    .attr('font-family','inherit')
-                    .attr('font-size',null);
-
-
-                // y axis
-                _.dom_y = getDomain(
-                    'y',
-                    data
-                );
-                _.the_y.domain(_.dom_y);
-                args.yTicks && _.rule_y.transition(args.delay).call( _.axis_y)
-                    .attr('font-family','inherit')
-                    .attr('font-size',null);
 
 
                 //select
                 _.graph = _.container.insert('g',':first-child')
-                    .attr('class', prefix + 'graph' + ' ' + prefix + ( (args.colorPalette.length > 0 || args.linePointsColor || args.lineColor) ?  'has-palette' : 'no-palette' ));
+                    .attr('class', prefix + 'graph' + ' ' + prefix + ( (args.colorPalette.length > 0 || args.linePointsColor !== null || args.lineColor !== null) ?  'has-palette' : 'no-palette' ));
                     if(data.length > 9 && args.width == defaults.width && args.height == defaults.height){
 
                         console.log(selector+' Width and height was not adjusted. graph elements may not fit in the canvas');
@@ -1329,7 +1373,7 @@
                             })
                             .attr('font-size',null)
                             .text(function(dis,i){
-                                return deepGet(dis,args.dataKey[ args[coordinate+'Data'] ],args[coordinate+'Data']);
+                                return deepGet(dis,args.dataKey[ args[coordinate+'Data'] ]);
                             })
                             .attr('x',function(dis,i){
                                 return getBlobTextShift('x',coordinate,dis,i,true)
