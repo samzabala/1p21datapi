@@ -66,12 +66,20 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
             if($data_visual['src']['type'] == 'rows' || $data_visual['src']['type'] == 'text'){
                 $render .= "<script id='$wrapper_id-data'  type='application/json' >";
 
+                $parsed_data = $data_visual['src']['data'];
+
                 if($data_visual['src']['type'] == 'rows'){
-                    $render .= json_encode($data_visual['src']['data'],JSON_FORCE_OBJECT);
-                }else{
-                    
-                    $render .= $data_visual['src']['data'];
+
+                    foreach($data_visual['src']['data'] as $data){
+                        $parsed_data_arr[] = json_encode($data,JSON_FORCE_OBJECT);
+                    }
+
+                    $parsed_data = '['.implode(',',$parsed_data_arr).']';
+                    // $parsed_data = json_encode($data_visual['src']['data']);
+
                 }
+
+                $render .= $parsed_data;
                 
                 $render .= "</script>";
             }
@@ -270,13 +278,12 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
         //end wrapper
         $render .= "</div>";
 
-        
-        _1p21_dv_output_arr( $data_visual);
 
-
+        _1p21_dv_output_arr($data_visual);
         
     }else{
         $render =  '<div class="data-visualizer no-data"><div class="data-visualizer-wrapper">Sorry, data visual does not exist</div></div>';
+
     }
 
 

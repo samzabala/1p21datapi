@@ -6,8 +6,10 @@
     // helpful variables
     var coordinates = ['x','y'], //yes
         itemAtts = ['x','y','color','area','r'], //opo //check if the graph item's length is enough for vertical bois idk i'll work on this some more later
-        prefix = 'data-visualizer-'; //yeeee
+        prefix = 'data-visualizer-', //yeeee
     
+
+        textOffset = 15;
     //get the length attribute to associate with the axis bro
     var dimensionAttribute = function(axisString,opposite){
         
@@ -348,6 +350,7 @@
 
                                 domain = [min,max];
                         }else{
+                            // console.log('my',dat);
                             domain =  dat.map(function(dis){
                                 return deepGet(dis,args.dataKey[ dataKeyI ],false);
                             });
@@ -447,22 +450,22 @@
 
         //set baseline and alignment for text labels of graphic items. it works and it is confusion so dont fuck with it anymore
             //oh god i am confusion
-            var getBlobTextBaseline = function (dis,i){
-                var baseline = 'middle';
+            // var getBlobTextBaseline = function (dis,i){
+            //     var baseline = 'middle';
 
-                if(args.xData == 0) {
+            //     if(args.xData == 0) {
                     
-                    if(args.xAlign == 'bottom'){
-                        baseline = 'hanging';
-                    }else{
-                        baseline = 'auto';
-                    }
+            //         if(args.xAlign == 'bottom'){
+            //             baseline = 'hanging';
+            //         }else{
+            //             baseline = 'auto';
+            //         }
 
-                }
+            //     }
 
-                return baseline;
+            //     return baseline;
 
-            }
+            // }
 
             //more confusuin
             var getBlobTextAnchor = function(dis,i){
@@ -476,71 +479,52 @@
                             anchor = 'start';
                     }
 
+                    coordinates.forEach(function(coordinate){
+
+                        // if(
+                        //     (
+                        //         parseFloat(getBlobSize(coordinate,dis,i,false)) < _.mLength
+                        //         && args[oppositeAxisString(coordinate)+'Align'] == 'right'
+                        //     )
+                        // ){
+    
+                        //     anchor = 'end';
+                        // }
+
+
+                        if( args[oppositeAxisString(coordinate)+'Data'] == 0 && args[oppositeAxisString(coordinate)+'Align'] == 'right' ){
+                            anchor = 'end';
+                        } 
+                    });
+
                 }
                 return anchor;
             }
 
 
         //pls do not ask me po this broke my brain i will not likely know what just happened
-        var getBlobTextShift = function(coordinateAttribute,axisString,dis,i,initial){
+        var getBlobTextShift = function(coordinateAttr,axisString){
 
-            var shift = 0;
-            initial = initial || false;
+            var shift = '0em';
             if(args.type == 'pie'){
-
             }else{
-                if((!args.xTicks && args.yTicks) || (args.xTicks && !args.yTicks) ){ //if only one of the ticks is set
-                    if(args[coordinateAttribute+'Data'] == 1 ){ // wait what the fuck wait
-                        if(args['xAlign'] == 'top' ){ //doesnt matter what data is in x i have to set the vertical boi
-                            if(
-                                ( parseFloat( getBlobSize('y',dis,i,false) ) > _.mLength )
-                                || ( initial && parseFloat( getBlobSize('y',dis,i,false) ) < _.mLength )
-                            ) {
-                                shift = '-1em';
-                            }else{
-                                    shift = '2em';
-                            }
-                        }else{
-                            
-                            shift = '1em';
 
-                        }
+                if(coordinateAttr == 'x'){
+
+                    if(!args.xTicks && !args.yTicks || (args['yData'] == 1)){
+                        shift = 0;
+                    }else{
+                        shift =  textOffset;
                     }
-                }else{ //oh boi both are not there
-                    if(coordinateAttribute == 'x'){ // set x coordinate
-                        if(args[coordinateAttribute+'Data'] == 1 ){
-                            shift = '10'
-                        }
-                    }else{ //set y coordinate
-                        if(args[oppositeAxisString(coordinateAttribute) + 'Data'] == 0 ){ //if x axis is labels
-                            if(args[oppositeAxisString(coordinateAttribute) + 'Align'] == 'bottom'){ //aligned to coordinate which is y
-                                if(
-                                    ( parseFloat( getBlobSize('y',dis,i,false) ) > _.mLength )
-                                    || ( initial && parseFloat( getBlobSize('y',dis,i,false) ) < _.mLength )
-                                ) {
-                                    shift = '1.5em';
-                                }else{
-                                        shift = '-2.5em';
-                                }
-                            }else{
-                                if( dis[ args.dataKey[ args[coordinateAttribute + 'Data'] ] ] !== dis[ args.dataKey[ args[axisString + 'Data'] ] ] ){ // if text is the label data
     
-                                    shift = '-2em'
-                                }else{
-                                    shift = '-1.75em'
-    
-                                }
-                            }
-                        }else{
-                            if( dis[ args.dataKey[ args[coordinateAttribute + 'Data'] ] ] !== dis[ args.dataKey[ args[axisString + 'Data'] ] ] ){ // if text is the label data
-                                shift = '-.25em'
-                            }else{
-                                shift = '1.375em'
-                            }
-                        }
+                }else{
+                    if(!args.xTicks && !args.yTicks){
+                        shift = (args[axisString+'Data'] == 1) ? '.5em' : '-1.5em'
                     }
                 }
+
             }
+
 
             
             return shift;
@@ -549,44 +533,137 @@
         var getBlobTextOrigin = function(coordinate,dis,i,initial){
             //coordinate is influenced by the axis right now so this is the only time coordinate and axis is one and the same. i think... do not trust me on this
             var dataKeyI =  args[ coordinate+'Data'],
-                offset = 0;
+                offset = 0,
+                yShifter = (!args.xTicks && !args.yTicks && coordinate == 'y') ? (textOffset * 2.5) : textOffset * 1.25,
+                shifter = function(){
+                    var value = 0,
+                    multiplier = 1;
+
+                    if(dataKeyI == 0){
+
+
+                        if(
+                            args[coordinate+'Align'] == 'bottom'
+                            || args[coordinate+'Align'] == 'right'
+                        ){
+                            multiplier *= -1;
+                        }
+                    }
+
+
+                    if(coordinate == 'x'){
+                        if(args[coordinate+'Data'] !== 0){
+                            value = (textOffset * multiplier);
+                        }
+                    }else{
+                        if(args[oppositeAxisString(coordinate)+'Data'] == 0){
+                            if(!args.xTicks && !args.yTicks){
+                                value = (textOffset * 2.5)
+                            }else{
+                                value = textOffset * 1.25
+                            }
+                        }
+
+                        value *= multiplier
+                    }
+
+
+                    return value;
+
+                },
+                shiftTextToSmallItem = function(){
+                    var multiplier = 1,
+                        value = 0;
+
+                        if(
+                            args[oppositeAxisString(coordinate)+'Align'] == 'top'
+                            || args[oppositeAxisString(coordinate)+'Align'] == 'left'
+                        ){
+                            multiplier *= -1;
+                        }
+
+
+                        if(parseFloat(getBlobSize('y',dis,i,false)) < _.mLength ) {
+                            if(
+                                args[oppositeAxisString(coordinate)+'Align'] == 'bottom'
+                                || args[oppositeAxisString(coordinate)+'Align'] == 'top'
+                            ){
+                                value = shifter() * 2
+                            }else{
+                                value = getBlobSize(coordinate,dis,i);
+                            }
+                            
+                        }
+
+
+
+                        value *= multiplier;
+                        return value;
+
+                };
                 initial = initial || false;
+
+
+
             switch(args.type) {
                 case 'pie':
                     break;
                 default:
                     if(dataKeyI  == 0) {
-                        offset = getBlobOrigin(coordinate,dis,i) + (getBlobSize(coordinate,dis,i) / 2);
-                        if(args.type == 'line' || args.type == 'scatter') {
-                            offset -= getBlobSize(coordinate,dis,i) / 2;
+                        offset = getBlobOrigin(coordinate,dis,i);
+                        if(args.type == 'bar') {
+                            offset += getBlobSize(coordinate,dis,i) / 2;
                         }
                     }else{
+                        switch(args[oppositeAxisString(coordinate)+'Align']){
+                            case 'top':
 
-                        if( args[oppositeAxisString(coordinate)+'Align'] == 'bottom' || args[oppositeAxisString(coordinate)+'Align'] == 'right' ){
-                            
-                            if(initial) {
-                                offset = args[dimensionAttribute(coordinate)] - ((!args.xTicks && !args.yTicks) ? 65 : 30)
-                            }else{
-                                offset = args[dimensionAttribute(coordinate)] - getBlobSize(coordinate,dis,i);
-                            }
-                            
-                        }else if( args[oppositeAxisString(coordinate)+'Align'] == 'top' ){
-                            
-                            if(initial) {
-                                if(args.type !== 'line' && args.type !== 'scatter') {
-                                    if( args[oppositeAxisString(coordinate)+'Data'] !== 0 ){
-                                        offset = args[dimensionAttribute(coordinate)] - getBlobSize(coordinate,dis,i);
+                                    if(initial) {
+
+                                        getBlobOrigin(coordinate,dis,i)
+
                                     }else{
-                                        offset = offset + ((!args.xTicks && !args.yTicks) ? _.mLength : 30) 
-                                    }
-                                }
-                            }else{
-                                offset = getBlobSize(coordinate,dis,i);
-                            }
 
+                                        offset = getBlobSize(coordinate,dis,i);
+
+                                    }
+                                    break;
+
+                            case 'right':
+                            case 'bottom':
+
+                                    if(initial 
+                                        || (
+                                            args[oppositeAxisString(coordinate)+'Align'] == 'right'
+                                            && args.type == 'bar'
+                                        )
+                                    ) {
+                                        offset = args[dimensionAttribute(coordinate)]
+                                    }else{
+                                        offset = args[dimensionAttribute(coordinate)] - getBlobSize(coordinate,dis,i);
+                                        
+                                    }
+                                    break;
+                            case 'left':
+
+                                    if(args.type !== 'bar') {
+                                        offset = getBlobSize(coordinate,dis,i);
+                                    }
                         }
 
                     }
+                    
+                    console.log(dis.name,coordinate,shifter(),shiftTextToSmallItem());
+                    
+                    // offset += shifter() + shiftTextToSmallItem();
+                    offset += shifter();
+
+                        //  horizontal shift
+                    // if(parseFloat(getBlobSize(coordinate,dis,i,false)) < _.mLength ) {
+                    //     if( == 'left' ){
+                    //     }else if( args[oppositeAxisString(coordinate)+'Align'] == 'right' ){
+                    //     }
+                    // }
             }
 
             return offset;
@@ -607,7 +684,7 @@
                 default:
                     if( args.nameIsNum || dataKeyI == 1){
                         if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
-                            if(initial){
+                            if(initial && dataKeyI !== 0){
                                 offset = args[dimensionAttribute(coordinate)];
 
                             }else{
@@ -623,50 +700,21 @@
                         }
                     }else{
                         offset = _['the_'+coordinate](deepGet(dis,dataKey,false));
-                        if(
-                            (args.type == 'line' || args.type == 'scatter')
-                            && !args.nameIsNum 
-                        ) {
-                            offset += getBlobSize(coordinate,dis,i) / 2;
-                        }
+                        // if(
+                        //     (args.type == 'line' || args.type == 'scatter')
+                        //     && !args.nameIsNum 
+                        // ) {
+                        //     offset += getBlobSize(coordinate,dis,i) / 2;
+                        // }
                     }
                     
 
             }
-            
 
             return offset;
+
+
         }
-
-        // var getPathPoints = function(axisString,dis,i,initial){
-        //     var point = 0,
-        //         dataKeyI =  args[ axisString+'Data'],
-        //         dataKey = args.dataKey[dataKeyI],
-        //         oppositeAxisAlignment = args[ oppositeAxisString(axisString)+'Align'];
-        //     if(initial){
-        //         if(axisString == 'x'){
-
-        //             if( dataKeyI == 0 ){
-        //                 point = _['the_'+axisString]( deepGet(dis,dataKey,dataKeyI ));
-        //             }
-        //         }else{
-
-        //             if( oppositeAxisAlignment == 'bottom' ){
-        //                 point = args[dimensionAttribute(axisString)]
-        //             }
-        //         }
-
-        //     }else{
-        //         console.log(deepGet(dis,dataKey,dataKeyI ));
-        //         point = _['the_'+axisString]( deepGet(dis,dataKey,dataKeyI ));
-
-        //         if(dataKeyI  == 0) {
-        //             point += getBlobSize(axisString,dis,i) / 2;
-        //         }
-
-        //     }
-        //     return point;
-        // }
 
         var getLinePath = function(data,isArea,initial){
 
@@ -690,11 +738,11 @@
 
                 if( (
                         !args.lineFillInvert
-                        && (args[axisToFill+'Align'] == 'right' || args[axisToFill+'Align'] == 'bottom')
+                        && (args[oppositeAxisString(axisToFill)+'Align'] == 'right' || args[oppositeAxisString(axisToFill)+'Align'] == 'bottom')
                     )
                     || (
                         args.lineFillInvert
-                        && !(args[axisToFill+'Align'] == 'right' || args[axisToFill+'Align'] == 'bottom')
+                        && !(args[oppositeAxisString(axisToFill)+'Align'] == 'right' || args[oppositeAxisString(axisToFill)+'Align'] == 'bottom')
                     )
                 ){
 
@@ -780,7 +828,7 @@
 
             if(args.hasOwnProperty(axisString +'Ticks')){
 
-                if(args.hasOwnProperty(axisString +'TicksAmount')){
+                if(args[axisString +'TicksAmount']){
                     
                     var ticksAmount = function(){
                         if( isGrid && args[axisString +'TicksAmount']  ){
@@ -790,21 +838,14 @@
                         }
                     };
 
-                    console.log(selector,axisString,isGrid,axisString +'GridIncrement',ticksAmount() );
 
-                    axis.ticks( ticksAmount() );
+                    axis.ticks( ticksAmount(),_['format_'+axisString] );
                 };
 
                 if(isGrid){
                     axis.
-                        tickSize(-args[dimensionAttribute(axisString)])
+                        tickSize(-args[ dimensionAttribute( oppositeAxisString(axisString) ) ])
                         .tickFormat("");
-                }else{
-
-                    if( args.hasOwnProperty(axisString +'TicksFormat') ){
-                        axis.tickFormat( _['format_'+axisString] );
-                    };
-
                 }
             }
 
@@ -901,52 +942,30 @@
                     _.graphItem = 'circle';
                     break;
             }
-
-            
             // heck if src key exists
             if (args.srcKey) {
                 data = deepGet(retrievedData,args.srcKey);
             }else{
                 data = retrievedData;
             }
-
-            //sort if all number
+            
+            //sort data 0 so that it doesnt go forward then backward then forward on the graph which is weird
             if(args.nameIsNum){
                 
                 var sortable = [];
-                for (var dis in data) {
-                    sortable.push(data[dis]);
+                for(var i = 0 ;i < data.length; i++){
+                    if(data[i]){
+
+                        sortable.push(data[i]);
+                    }
                 }
                 
                 sortable.sort(function(a, b) {
-                    // console.log(deepGet(a,args.dataKey[0]));
-                    // console.log(deepGet(a,args.dataKey[0],true),deepGet(b,args.dataKey[0],true));
                     return deepGet(a,args.dataKey[0],true) - deepGet(b,args.dataKey[0],true);
                 });
-                // data.sort(function(a,b){
-                //     return deepGet(a,args.dataKey[0],true) - deepGet(b,args.dataKey[0],true)
-                // });
 
                 data = sortable;
             }
-
-
-
-            //half ass parse dem numeric data bois
-
-            
-
-            //     retrievedData.forEach(function(dis,i){
-            //         coordinates.forEach(function(coordinate){
-            //             var currentDataKey = args.dataKey[ args[ coordinate+'Data' ] ];
-            //             if(  args[coordinate + 'Data'] !== 0 ){
-            //                 dis['parsed_'+currentDataKey] = parseFloat( deepGet(dis,currentDataKey) );
-            //             }
-            //         });
-            //     })
-
-            // console.log(retrievedData);
-
 
 
             //canvas
@@ -1053,7 +1072,6 @@
                         }
 
 
-
                         _['dom_'+itemAtt] = getDomain(
                             itemAtt,
                             data
@@ -1078,7 +1096,12 @@
 
                 //select
                 _.graph = _.container.insert('g',':first-child')
-                    .attr('class', prefix + 'graph' + ' ' + prefix + ( (args.colorPalette.length > 0 || args.linePointsColor !== null || args.lineColor !== null) ?  'has-palette' : 'no-palette' ));
+                    .attr(
+                        'class',
+                        prefix + 'graph' + ' '
+                        + prefix + ( (args.colorPalette.length > 0 || args.linePointsColor !== null || args.lineColor !== null) ?  'has-palette' : 'no-palette' )
+                        + ((!args.xTicks && !args.yTicks) ? ' '+prefix+'item-data-no-ticks' : '')
+                    );
                     if(data.length > 9 && args.width == defaults.width && args.height == defaults.height){
 
                         console.log(selector+' Width and height was not adjusted. graph elements may not fit in the canvas');
@@ -1093,57 +1116,10 @@
                         });
                 }
 
-
-                if(args.type == 'line'){
-
-                    if(args.lineFill){
-                        _.fill = _.graph.append('path')
-                        .attr('class',prefix+'fill')
-                        .attr('fill-opacity',0)
-                        .attr('d',function(){
-                            return getLinePath(data,true,true)
-                        });
-
-                        if( args.lineFillColor || args.lineColor ) {
-                            _.fill
-                                .attr('fill', args.lineFillColor || args.lineColor);
-                        }
-                    }
-                    _.line = _.graph.append('path')
-                        .attr('class',prefix+'line')
-                        .attr('fill','none')
-                        .attr('stroke-width',args.lineWeight)
-                        .attr('stroke-linejoin','round')
-                        .attr('stroke-opacity',0)
-                        .attr('d',function(){
-                            return getLinePath(data,false,true)
-                        })
-                        .attr('stroke-dasharray','0,0');
-
-                        if(args.lineColor) {
-                            _.line
-                                .attr('stroke',args.lineColor)
-                        }
-
-                
-                }
-
                 //colors kung meron
                 if(args.colorPalette.length > 0) {
                     _.dom_color = getDomain('color',data);
                 }
-
-                // // scale
-                // _.range_x = getRange(args.width,'x'),
-                // _.range_y =  getRange(args.height,'y');
-
-                // //vars
-                // _.the_x = setScale('x');
-                // _.the_y = setScale('y');
-
-
-                // renderAxis('x',_.rule);
-                // renderAxis('y',_.rule);
 
 
 
@@ -1174,18 +1150,18 @@
             console.log(selector,'-------------------------------------------------------------------')
             console.log('calculated',_);
             // console.log('data',dat);
-            console.log('args',args);
+            // console.log('args',args);
 
                 
-            console.log('x');
-            console.log('domain',_.dom_x);
-            console.log('range',_.range_x);
+            // console.log('x');
+            // console.log('domain',_.dom_x);
+            // console.log('range',_.range_x);
 
-            console.log('----------------');
+            // console.log('----------------');
 
-            console.log('y');
-            console.log('domain',_.dom_y);
-            console.log('range',_.range_y);
+            // console.log('y');
+            // console.log('domain',_.dom_y);
+            // console.log('range',_.range_y);
 
 
             //generate the graph boi
@@ -1202,11 +1178,14 @@
                         .attr('height',0)
                         .remove();
 
-                        
+                    
                     _.blobWrap = _.blob
                         .enter()
                         .append('g')
-                            .attr('class', prefix + 'item')
+                            .attr('class', function(dis){
+                                return prefix + 'item'+
+                                    ' ' + prefix + deepGet(dis,args.dataKey[0]);
+                            });
 
                     
                             
@@ -1302,37 +1281,99 @@
                 }
 
 
-                if(args.type == 'line') {
+
+
+                if(args.type == 'line'){
 
 
                     if(args.lineFill){
+                        _.fill = _.graph.append('path')
+                        .attr('class',prefix+'fill')
+                        .attr('fill-opacity',0)
+                        .attr('d',function(){
+                            return getLinePath(data,true,true)
+                        });
+
+                        if( args.lineFillColor || args.lineColor ) {
+                            _.fill
+                                .attr('fill', args.lineFillColor || args.lineColor);
+                        }
+
                         _.fill 
-                        .transition(_.duration)
+                            .transition(_.duration)
                             .attr('fill-opacity',args.lineFillOpacity)
                             .attr('d',function(){
                                 return getLinePath(data,true)
                             });
                     }
-                    
-                    _.line
-                        .transition(_.duration)
+
+
+                    _.line = _.graph.append('path')
+                        .attr('class',prefix+'line')
+                        .attr('fill','none')
+                        .attr('stroke-width',args.lineWeight)
+                        .attr('stroke-linejoin','round')
+                        .attr('stroke-opacity',0)
                         .attr('d',function(){
-                            return getLinePath(data,false)
+                            return getLinePath(data,false,true)
                         })
-                        .attr('stroke-dasharray',args.lineDash)
-                        .attr('stroke-opacity',1);
+                        .attr('stroke-dasharray','0,0');
+
+                        if(args.lineColor) {
+                            _.line
+                                .attr('stroke',args.lineColor)
+                        }
+
+
+                    
+                        _.line
+                            .transition(_.duration)
+                            .attr('d',function(){
+                                return getLinePath(data,false)
+                            })
+                            .attr('stroke-dasharray',args.lineDash)
+                            .attr('stroke-opacity',1);
+
+                
                 }
+                
             }
                     
             //graph item label if ticks are not set
             if( !args.xTicks || !args.yTicks ){
 
-                _.blobText = _.blobWrap.append('g')
-                    .attr('class', prefix + 'item-text' + ( (!args.xTicks && !args.yTicks) ? ' '+ prefix +'item-data-no-ticks' : '') )
+                _.blobText =  _.blobWrap.append('text')
+                    .attr('class', function(dis,i){
+                        var classString =  prefix + 'item-text';
+
+                        coordinates.forEach(function(coordinate){
+                            // console.log(selector,dis.name, coordinate,getBlobSize(coordinate,dis,i,false), args[coordinate+'Data']);
+                            if( 
+                                (
+                                    parseFloat(getBlobSize(coordinate,dis,i,false)) < _.mLength
+                                    && args[coordinate+'Data']  == 1
+                                )
+                                || (
+                                    (args.colorPalette.length > 0)
+                                    && (parseFloat(getBlobSize('x',dis,i,false)) > _.mLength)
+                                    && (parseFloat(getBlobSize('y',dis,i,false)) > _.mLength)
+                                    && !isDark( _.the_color(dis[args.colorData]) )
+                                )
+                                || (args.type == 'line')
+                            ){
+                                classString +=  ' dark';
+                            }
+                        });
+                        console.log('shiet',classString);
+
+                        return classString;
+                    })
+
+                    
                     .attr('transform',function(dis,i){
                         return 'translate('+getBlobTextOrigin('x',dis,i,true)+','+getBlobTextOrigin('y',dis,i,true)+')'
                     })
-                    .style('opacity',0);
+                    .style('opacity',1);
 
                 _.blobText
                     .transition(_.duration)
@@ -1343,55 +1384,24 @@
 
 
 
-                ['x','y'].forEach(function(coordinate){
+                    coordinates.forEach(function(coordinate){
 
                     if( !args[coordinate+'Ticks'] ){
 
-                        _['blobText'+coordinate] = _.blobText.append('text')
-                            .attr('class', function(dis,i){
-                                var classString =  prefix + 'item-data-'+args[coordinate+'Data'];
-                                
-                                if( 
-                                    parseFloat(getBlobSize('y',dis,i,false)) < _.mLength
-                                    || (
-                                        (args.colorPalette.length > 0)
-                                        && (parseFloat(getBlobSize('y',dis,i,false)) > _.mLength)
-                                        && !isDark( _.the_color(dis[args.colorData]) )
-                                    )
-                                    || (args.type == 'line')
-                                ){
-                                    classString += ' item-text-dark' + ' color-palette-'+args.colorPalette.length;
-                                }
+                        _['blobText'+coordinate] = _.blobText.append('tspan')
 
-                                return classString;
-                            })
-                            .attr('dominant-baseline',function(dis,i){
-                                return getBlobTextBaseline(dis,i);
-                            })
+                            .attr('class', prefix+'item-data-'+args[coordinate+'Data'] )
+                            .attr('dominant-baseline','middle')
                             .attr('text-anchor',function(dis,i){
                                 return getBlobTextAnchor(dis,i);
                             })
                             .attr('font-size',null)
                             .text(function(dis,i){
-                                return deepGet(dis,args.dataKey[ args[coordinate+'Data'] ]);
+                                var text = deepGet(dis,args.dataKey[ args[coordinate+'Data'] ])
+                                return text;
                             })
-                            .attr('x',function(dis,i){
-                                return getBlobTextShift('x',coordinate,dis,i,true)
-                                // return 0;
-                            })
-                            .attr('y',function(dis,i){
-                                return getBlobTextShift('y',coordinate,dis,i,true)
-                            })
-
-                        _['blobText'+coordinate]
-                            .transition(_.duration)
-                            .attr('x',function(dis,i){
-                                return getBlobTextShift('x',coordinate,dis,i)
-                                // return 0;
-                            })
-                            .attr('y',function(dis,i){
-                                return getBlobTextShift('y',coordinate,dis,i)
-                            })
+                            .attr('x',getBlobTextShift('x',coordinate))
+                            .attr('y',getBlobTextShift('y',coordinate));
                     }
                 });
                 
@@ -1425,6 +1435,8 @@
                     if(jsonSelector.isValidJSONString()){
 
                         var dataIsJSON = JSON.parse(jsonSelector);
+
+                        // console.log('data json',dataIsJSON);
 
                         setData(dataIsJSON,_);
                     }else{

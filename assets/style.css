@@ -43,7 +43,7 @@
     fill: #FFF;
     line-height: 2;
     font-size: 1em; }
-    .data-visualizer-item-text .item-text-dark {
+    .data-visualizer-item-text.dark {
       fill: #222; }
   .data-visualizer-item-data-no-ticks .data-visualizer-item-data-0 {
     font-weight: 700;

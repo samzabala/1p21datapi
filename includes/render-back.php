@@ -61,7 +61,7 @@ function _1p21_dv_get_data_visual_object($args = array()) {
                 //validate x
                 switch($data_visual[$coordinate]['ticks']){
                     case false:
-                        unset($data_visual[$coordinate]['ticks_format']);
+                        unset($data_visual[$coordinate]['ticks_parameter']);
                         unset($data_visual[$coordinate]['ticks_amount']);
                         unset($data_visual[$coordinate]['label']);
                         unset($data_visual[$coordinate]['prepend']);
@@ -74,16 +74,18 @@ function _1p21_dv_get_data_visual_object($args = array()) {
                             unset($data_visual[$coordinate]['max']);
                         }
 
-                        if(!$data_visual[$coordinate]['grid'] || !($data_visual[$coordinate]['ticks_amount'] > 0)){
+                        if(!isset($data_visual[$coordinate]['grid']) || !($data_visual[$coordinate]['ticks_amount'] > 0)){
 
                             unset($data_visual[$coordinate]['grid_increment']);
                             
+                        }else{
+                            echo 'fucker';
                         }
 
                         //validate minimum and maximum
                         if(
                             !(
-                                $data_visual['name_is_num']
+                                isset($data_visual['name_is_num'])
                                 || $data_visual[$coordinate]['data'] == 1
                             )
                             || $data_visual[$coordinate]['ticks'] == false

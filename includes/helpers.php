@@ -54,7 +54,10 @@ function _1p21_dv_deep_sub_fields($array = array()){
     foreach($args['fields'] as $field){
 
 
-        if(isset( $field[ 'name' ] ) && $field[ 'name' ] !== ''){ //if it exists and its not a fucking tab or some layout shit fuck it uP
+        if(
+            $field[ 'name' ] !== null
+            && $field[ 'name' ] !== ''
+        ){ //if it exists and its not a fucking tab or some layout shit fuck it uP
 
 
 
