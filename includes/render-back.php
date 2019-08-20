@@ -69,10 +69,10 @@ function _1p21_dv_get_data_visual_object($args = array()) {
                         unset($data_visual[$coordinate]['grid']);
                         unset($data_visual[$coordinate]['grid_increment']);
                     case true: //let false casecade to true too
-                        if( $data_visual[$coordinate]['data'] == 0 || $data_visual[$coordinate]['ticks'] == false){
-                            unset($data_visual[$coordinate]['min']);
-                            unset($data_visual[$coordinate]['max']);
-                        }
+                        // if( $data_visual[$coordinate]['data'] == 0){
+                        //     unset($data_visual[$coordinate]['min']);
+                        //     unset($data_visual[$coordinate]['max']);
+                        // }
 
                         if(!isset($data_visual[$coordinate]['grid']) || !($data_visual[$coordinate]['ticks_amount'] > 0)){
 

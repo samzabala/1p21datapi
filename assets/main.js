@@ -503,21 +503,13 @@
 
 
         //pls do not ask me po this broke my brain i will not likely know what just happened
-        var getBlobTextShift = function(coordinateAttr,axisString){
+        var getBlobTextBaselineShift = function(coordinateAttr,axisString){
 
             var shift = '0em';
             if(args.type == 'pie'){
             }else{
 
-                if(coordinateAttr == 'x'){
-
-                    if(!args.xTicks && !args.yTicks || (args['yData'] == 1)){
-                        shift = 0;
-                    }else{
-                        shift =  textOffset;
-                    }
-    
-                }else{
+                if(coordinateAttr == 'y'){
                     if(!args.xTicks && !args.yTicks){
                         shift = (args[axisString+'Data'] == 1) ? '.5em' : '-1.5em'
                     }
@@ -539,22 +531,25 @@
                     var value = 0,
                     multiplier = 1;
 
-                    if(dataKeyI == 0){
+                    
 
 
-                        if(
-                            args[coordinate+'Align'] == 'bottom'
-                            || args[coordinate+'Align'] == 'right'
-                        ){
-                            multiplier *= -1;
-                        }
+                    if(
+                        args[oppositeAxisString(coordinate)+'Align'] == 'top'
+                        || args[oppositeAxisString(coordinate)+'Align'] == 'right'
+                    ){
+                        multiplier *= -1;
                     }
+                    
 
 
                     if(coordinate == 'x'){
-                        if(args[coordinate+'Data'] !== 0){
-                            value = (textOffset * multiplier);
+                        // only when y data is set to name
+                        if(args[oppositeAxisString(coordinate)+'Data'] == 0){
+                            value = textOffset;
                         }
+
+                        // !initial && console.log(dis.name,coordinate,args[coordinate+'Align'],multiplier,value);
                     }else{
                         if(args[oppositeAxisString(coordinate)+'Data'] == 0){
                             if(!args.xTicks && !args.yTicks){
@@ -564,41 +559,48 @@
                             }
                         }
 
-                        value *= multiplier
                     }
+
+                    value *= multiplier;
+
 
 
                     return value;
 
                 },
-                shiftTextToSmallItem = function(){
+                shifterOut = function(){
                     var multiplier = 1,
                         value = 0;
+                        
 
-                        if(
-                            args[oppositeAxisString(coordinate)+'Align'] == 'top'
-                            || args[oppositeAxisString(coordinate)+'Align'] == 'left'
-                        ){
-                            multiplier *= -1;
+                    if(
+                        (
+                            args[oppositeAxisString(coordinate)+'Align'] == 'bottom'
+                            || args[oppositeAxisString(coordinate)+'Align'] == 'right'
+                        )
+                    ){
+                        multiplier = -1;
+                    }
+
+                    if(args.type == 'line'){
+                        multiplier
+                    }
+
+                    if(parseFloat(getBlobSize(coordinate,dis,i)) < _.mLength && dataKeyI !== 0 ) {
+                        if(coordinate == 'x'){
+                            !initial && console.log(dis.name,coordinate,'uuugh',multiplier);
+                            value = getBlobSize(coordinate,dis,i);
+                        }else{
+                            value = shifter() * 2
                         }
-
-
-                        if(parseFloat(getBlobSize('y',dis,i,false)) < _.mLength ) {
-                            if(
-                                args[oppositeAxisString(coordinate)+'Align'] == 'bottom'
-                                || args[oppositeAxisString(coordinate)+'Align'] == 'top'
-                            ){
-                                value = shifter() * 2
-                            }else{
-                                value = getBlobSize(coordinate,dis,i);
-                            }
-                            
-                        }
+                        
+                    }
 
 
 
-                        value *= multiplier;
-                        return value;
+                    value *= multiplier;
+                    
+                    return value;
 
                 };
                 initial = initial || false;
@@ -653,18 +655,12 @@
 
                     }
                     
-                    console.log(dis.name,coordinate,shifter(),shiftTextToSmallItem());
-                    
-                    // offset += shifter() + shiftTextToSmallItem();
-                    offset += shifter();
+                
 
-                        //  horizontal shift
-                    // if(parseFloat(getBlobSize(coordinate,dis,i,false)) < _.mLength ) {
-                    //     if( == 'left' ){
-                    //     }else if( args[oppositeAxisString(coordinate)+'Align'] == 'right' ){
-                    //     }
-                    // }
+                    !initial && (offset += shifter() + shifterOut());
+
             }
+
 
             return offset;
         }
@@ -1400,8 +1396,8 @@
                                 var text = deepGet(dis,args.dataKey[ args[coordinate+'Data'] ])
                                 return text;
                             })
-                            .attr('x',getBlobTextShift('x',coordinate))
-                            .attr('y',getBlobTextShift('y',coordinate));
+                            .attr('x',getBlobTextBaselineShift('x',coordinate))
+                            .attr('y',getBlobTextBaselineShift('y',coordinate));
                     }
                 });
                 
