@@ -53,23 +53,24 @@ $prefix: '.data-visualizer';
 
     &-grid {
         line,path {
-            stroke-opacity: .5;
+            &:not(.tick-aligned){
+                stroke-opacity: .5;
+            }
         }
     }
-    &-no-palette {
-        #{$prefix}-fill,
-        #{$prefix}-item rect,
-        #{$prefix}-item circle {
-            fill: #222;
-        }
-        
-        #{$prefix}-line {
-            stroke: #222;
-        }
-        
-        #{$prefix}-fill {
-            fill-opacity: .25;
-        }
+    
+    &-fill.no-color,
+    &-no-palette #{$prefix}-item rect,
+    &-no-palette #{$prefix}-item circle {
+        fill: #444;
+    }
+    
+    #{$prefix}-line.no-color {
+        stroke: #444;
+    }
+    
+    #{$prefix}-fill.no-color {
+        fill-opacity: .25;
     }
 
     &-item {
@@ -79,6 +80,7 @@ $prefix: '.data-visualizer';
             fill: #FFF;
             line-height: 2;
             font-size: 1em;
+            font-weight: 700;
 
             &.dark {
                 fill: #222;

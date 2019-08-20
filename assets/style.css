@@ -29,20 +29,21 @@
   .data-visualizer-axis text, .data-visualizer-grid text {
     fill: #888;
     font-size: .625em; }
-  .data-visualizer-grid line, .data-visualizer-grid path {
+  .data-visualizer-grid line:not(.tick-aligned), .data-visualizer-grid path:not(.tick-aligned) {
     stroke-opacity: .5; }
-  .data-visualizer-no-palette .data-visualizer-fill,
+  .data-visualizer-fill.no-color,
   .data-visualizer-no-palette .data-visualizer-item rect,
   .data-visualizer-no-palette .data-visualizer-item circle {
-    fill: #222; }
-  .data-visualizer-no-palette .data-visualizer-line {
-    stroke: #222; }
-  .data-visualizer-no-palette .data-visualizer-fill {
+    fill: #444; }
+  .data-visualizer .data-visualizer-line.no-color {
+    stroke: #444; }
+  .data-visualizer .data-visualizer-fill.no-color {
     fill-opacity: .25; }
   .data-visualizer-item-text {
     fill: #FFF;
     line-height: 2;
-    font-size: 1em; }
+    font-size: 1em;
+    font-weight: 700; }
     .data-visualizer-item-text.dark {
       fill: #222; }
   .data-visualizer-item-data-no-ticks .data-visualizer-item-data-0 {
