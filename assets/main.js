@@ -161,7 +161,7 @@
                     xTicks: false,
                     xLabel: null,
                     xTicksAmount: null,
-                    xTicksParameter: null,
+                    xParameter: null,
                     xMin: null,
                     xMax: null,
                     xGrid: false,
@@ -176,7 +176,7 @@
                     yTicks: false,
                     yLabel: null,
                     yTicksAmount: null,
-                    yTicksParameter: null,
+                    yParameter: null,
                     yMin: null,
                     yMax: null,
                     yGrid: false,
@@ -196,6 +196,8 @@
                     lineFillColor: null,
                     lineFillOpacity: .5,
                     lineDash: [100,0],
+                
+                //pi
         
                 //area? in case scatter plot ir pi idk what the fuck i'm doing right now but its here in case. yes i shall need this boi
                     areaKey: '',
@@ -210,9 +212,6 @@
             }
         }
 
-        //set a minimum length for graph items to offset its text bois
-        _.mLength = (!args.xTicks && !args.yTicks) ? 80 : 70;
-
         // set up padding around the graph
         // @param axisString : duh 
         var getCanvasPadding = function(axisString){
@@ -225,7 +224,7 @@
                 // @TODO option to separate padding
                 // if this axis has a label give it more space
                 if( args[axisString+'Label'] ){
-                    padding = args.margin * args.marginOffset;
+                    padding = args.margin * (args.marginOffset * 1.5);
                 }
         
                 // x axis with name keys need more space because text is long
@@ -257,9 +256,7 @@
             //remove empty instances because they just mess with the loop
             splitString.forEach(function(key,i){
 
-                if(key == ''){
-                    splitString.splice(i, 1);
-                }
+                (key == '') && splitString.splice(i, 1);
 
             })
 
@@ -537,7 +534,7 @@
                 if(coordinateAttr == 'y'){
 
                     if(!args.xTicks && !args.yTicks){
-                        shift = (args[axisString+'Data'] == 1) ? '.5em' : '-1.5em'
+                        shift = (args[axisString+'Data'] == 1) ? '.375em' : '-1.625em'
                     }
                     
                 }
@@ -553,7 +550,6 @@
             //coordinate is influenced by the axis right now so this is the only time coordinate and axis is one and the same. i think... do not trust me on this
             var dataKeyI =  args[ coordinate+'Data'],
                 offset = 0,
-                calcTextYOff =  textOffset * 2.5,
 
                 // offset by where the coordinates of the ends of the blob and axis alignment is at
                 shifter = function(){
@@ -581,7 +577,8 @@
                     
 
                     if(args[oppositeAxisString(coordinate)+'Data'] == 0){
-                        (coordinate == 'x') ? value = textOffset : value = calcTextYOff;
+                        (coordinate == 'x') ? value = textOffset : value = ( ( _.mLength(coordinate,i) / 2 ) );
+                        _.mLength(coordinate,i);
                     }
 
                     value *= multiplier;
@@ -590,7 +587,7 @@
 
                 },
 
-                // offset by where the anchor of the blob text is at
+                // offset if text is outside of boundaries
                 shifterOut = function(){
                     
                     var multiplier = 1,
@@ -619,11 +616,11 @@
                         (
                             (
                                 args.type !== 'line'
-                                && parseFloat(getBlobSize(coordinate,dis,i)) < _.mLength
+                                && parseFloat(getBlobSize(coordinate,dis,i)) < _.mLength(coordinate,i)
                             )
                             || (
                                 args.type == 'line'
-                                && parseFloat(getBlobSize(coordinate,dis,i)) >= (args[dimensionAttribute(oppositeAxisString(coordinate))] - _.mLength)
+                                && parseFloat(getBlobSize(coordinate,i)) >= (args[dimensionAttribute(oppositeAxisString(coordinate))] - _.mLength(coordinate,i))
                             )
                         )
                         && dataKeyI !== 0
@@ -634,8 +631,7 @@
                             value = getBlobSize(coordinate,dis,i);
 
                         }else{
-
-                            value = calcTextYOff * 2;
+                            value = _.mLength(coordinate,i);
 
                         }
                         
@@ -861,14 +857,19 @@
 
                         if(isGrid){
 
-                            contClass = prefix + 'grid-'+axisString+' ';
+                            contClass =
+                                prefix
+                                + 'grid-'+axisString
+                                + ' grid-increment-' + args[axisString+'GridIncrement']
+                                + ' tick-amount-' + args[axisString+'TickAmount'];
                             
                         }else{
 
                             contClass =
-                                prefix +
-                                'axis-'+axisString+' '+
-                                prefix +'axis-align-'+args[axisString+'Align']
+                                prefix
+                                + 'axis-'+axisString+' '
+                                + prefix +'axis-align-'+args[axisString+'Align']
+                                + ' tick-amount' + args[axisString+'TickAmount'];
 
                         }
 
@@ -925,7 +926,7 @@
 
                     };
                     
-                    axis.ticks( ticksAmount(),_['format_'+axisString] );
+                    axis.ticks( ticksAmount() );
                 };
 
                 if(isGrid){
@@ -934,6 +935,11 @@
                         tickSize(-args[ dimensionAttribute( oppositeAxisString(axisString) ) ])
                         .tickFormat("");
 
+                }else {
+                    axis
+                        .tickFormat(function(dis,i){
+                            return _['format_'+axisString](dis)
+                        })
                 }
             }
 
@@ -1093,7 +1099,7 @@
                 transformY = _.off_y;
 
                 //x COORDINATE value @TODO fucking loop na lang
-                switch ( args.yAlign+' '+ ((args.xLabel == '') ? 'empty' : 'has') ){
+                switch ( args.yAlign+' '+ ((!args.xLabel) ? 'empty' : 'has') ){
                     
                     case 'left has':
                         _.transformX = (_.off_x * shift.more);
@@ -1110,7 +1116,7 @@
 
 
                 //y COORDINATE value
-                switch ( args.xAlign+' '+ ((args.yLabel == '') ? 'empty' : 'has') ){
+                switch ( args.xAlign+' '+ ((!args.yLabel) ? 'empty' : 'has') ){
                     
                     case 'top has':
                         _.transformX = (_.off_y * shift.more);
@@ -1139,6 +1145,7 @@
                 _.cont_rule = _.container.append('g')
                     .attr('class', prefix + 'axis');
                     
+                //kung may grid gibo kang grid
                 (args.xGrid || args.yGrid) && (_.cont_grid = _.container.append('g')
                     .attr('class', prefix + 'grid'));
 
@@ -1146,10 +1153,7 @@
 
                     // scales and shit
                     _['range_'+itemAtt] = getRange(itemAtt),
-                    _['dom_'+itemAtt] = getDomain(
-                        itemAtt,
-                        data
-                    );
+                    _['dom_'+itemAtt] = getDomain(itemAtt,data);
                     _['the_'+itemAtt] = setScale(itemAtt);
 
                     //set that fucker
@@ -1163,34 +1167,55 @@
                             renderAxis(itemAtt,_.cont_rule)
 
                             //formatter
-                            _['format_'+itemAtt] = args[itemAtt+'Parameter'] || function(dis){
-                                var dataPossiblyDivided = (args[axisString+'Data'] == 1 ) ? (dis / args[axisString+'Divider']): dis,
-                                formatted = args[axisString+'Prepend'] + dataPossiblyDivided + args[axisString+'Append'];
-    
-                                return formatted;
-                            }
+                            _['format_'+itemAtt] = (function(){
+
+                                if (typeof args[itemAtt+'Parameter'] === 'function' ) {
+                                    return args[itemAtt+'Parameter']
+
+                                }else if( typeof args[itemAtt+'Parameter'] === 'string'  ) {
+                                    
+                                    return function(value){
+                                        return d3.format(args[itemAtt+'Parameter'])(value)
+                                    }
+
+                                }else{
+                                    
+                                    return function(value){
+                                        
+                                        var dataPossiblyDivided = (args[itemAtt+'Data'] == 1 || args.nameIsNum ) ? (value / args[itemAtt+'Divider']): value,
+                                        
+                                        formatted = args[itemAtt+'Prepend'] + dataPossiblyDivided + args[itemAtt+'Append'];
+            
+                                        return formatted;
+                                    }
+                                }
+                            }());
 
                             if( args[itemAtt+'Ticks'] ){
+                                
                                 _['rule_'+itemAtt].transition(args.delay).call( _['axis_'+itemAtt])
                                     .attr('font-family','inherit')
                                     .attr('font-size',null);
     
                                 if(args[itemAtt+'Grid']){
+                                    
                                     renderAxis(itemAtt,_.cont_grid,true)
                                     _['rule_grid_'+itemAtt].call( _['axis_grid_'+itemAtt]);
 
                                     _['rule_grid_'+itemAtt].selectAll('.tick')
                                         .attr('class',function(dis,i){
-                                            var classString = 'tick';
-
+                                            var classString = 'grid';
+                                            
                                             //IM HERE FUCKER
-                                            if( i % ( args[itemAtt+'GridIncrement'] + 1 )== 0) {
-                                                classString += ' tick-aligned'
-                                            }
+                                            _['rule_'+itemAtt].selectAll('.tick').each(function(tik){
+                                                //if current looped tik matches dis grid data, add the class boi
+                                                (tik == dis) && (classString += ' tick-aligned');
+                                            })
 
                                             return classString;
 
                                         })
+
                                 }
 
                             }
@@ -1225,14 +1250,14 @@
                         && data.length > 10
                     ){
                         
-                        console.warn(selector+' Width and height was not adjusted. graph elements may not fit in the canvas');
+                        // console.warn(selector+' Width and height was not adjusted. graph elements may not fit in the canvas');
                     
                     }else if(
                         args.width < defaults.width
                         && args.height < defaults.height
                     ){
 
-                        console.warn(selector+' set canvas width and or height may be too small.\n Tip: The given height and width are not absolute and act more like aspect ratios. svgs are responsive and will shrink along with content.');
+                        // console.warn(selector+' set canvas width and or height may be too small.\n Tip: The given height and width are not absolute and act more like aspect ratios. svgs are responsive and will shrink along with content.');
 
                     }
 
@@ -1463,22 +1488,69 @@
             //graph item label if ticks are not set
             if( !args.xTicks || !args.yTicks ){
 
-                _.blobText =  _.blobWrap.append('text')
+                _.blobText =  _.blobWrap.append('text');
+
+                //append content right away so we can calculate where shit offset
+                coordinates.forEach(function(coordinate){
+
+                    if( !args[coordinate+'Ticks'] ){
+
+                        _['blobText_'+coordinate] = _.blobText.append('tspan')
+
+                            .attr('class', prefix+'item-data-'+args[coordinate+'Data'] )
+                            .attr('dominant-baseline','middle')
+                            .attr('text-anchor',function(dis,i){
+                                return getBlobTextAnchor(dis,i);
+                            })
+                            .attr('font-size',null)
+                            .text(function(dis,i){
+                                return _['format_'+coordinate](
+                                    deepGet(dis,args.dataKey[ args[coordinate+'Data'] ]),
+                                );
+                            })
+                            .attr('x',getBlobTextBaselineShift('x',coordinate))
+                            .attr('y',getBlobTextBaselineShift('y',coordinate));
+
+                        
+
+                            //set a minimum length for graph items to offset its text bois
+                            _.mLength = function(axisString,i){
+                                // mLength(coordinate,dis)
+                                // console.log(dis);
+                                var value = 0;
+
+                                    length = _.blobText ? _.blobText.nodes()[i].getBoundingClientRect()[dimensionAttribute(axisString)] : 0
+                                    
+                                    value = length + textOffset;
+
+                                return value;
+                            };
+                    }
+                    
+                });
+
+                //continue fucking with text blob
+                _.blobText
                     .attr('class', function(dis,i){
                         var classString =  prefix + 'item-text';
 
                         coordinates.forEach(function(coordinate){
                             // console.log(selector,dis.name, coordinate,getBlobSize(coordinate,dis,i,false), args[coordinate+'Data']);
-                            
+                            console.log(coordinate,parseFloat(getBlobSize(coordinate,dis,i,false)),_.mLength(coordinate,i))
                             if( 
                                 (
-                                    parseFloat(getBlobSize(coordinate,dis,i,false)) < _.mLength
-                                    && args[coordinate+'Data']  == 1
-                                )
-                                || (
-                                    (args.colorPalette.length > 0)
-                                    && (parseFloat(getBlobSize(coordinate,dis,i,false)) > _.mLength)
-                                    && !isDark( _.the_color(dis[args.colorData]) )
+
+                                    (args[coordinate+'Data']  == 1)
+                                    && (
+                                        
+                                        (parseFloat(getBlobSize(coordinate,dis,i,false)) < _.mLength(coordinate,i))
+                                        
+                                        || (
+                                            (args.colorPalette.length > 0)
+                                            && (parseFloat(getBlobSize(coordinate,dis,i,false)) >= _.mLength(coordinate,i))
+                                            && !isDark( _.the_color(dis[args.colorData]) )
+                                        )
+                                    )
                                 )
                                 || (args.type == 'line')
                             ){
@@ -1501,30 +1573,6 @@
                         return 'translate('+getBlobTextOrigin('x',dis,i)+','+getBlobTextOrigin('y',dis,i)+')'
                     })
                     .style('opacity',1);
-
-
-
-                    coordinates.forEach(function(coordinate){
-
-                    if( !args[coordinate+'Ticks'] ){
-
-                        _['blobText'+coordinate] = _.blobText.append('tspan')
-
-                            .attr('class', prefix+'item-data-'+args[coordinate+'Data'] )
-                            .attr('dominant-baseline','middle')
-                            .attr('text-anchor',function(dis,i){
-                                return getBlobTextAnchor(dis,i);
-                            })
-                            .attr('font-size',null)
-                            .text(function(dis,i){
-                                var text = deepGet(dis,args.dataKey[ args[coordinate+'Data'] ])
-                                return text;
-                            })
-                            .attr('x',getBlobTextBaselineShift('x',coordinate))
-                            .attr('y',getBlobTextBaselineShift('y',coordinate));
-                    }
-                });
-                
             }
 
 

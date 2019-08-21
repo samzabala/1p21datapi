@@ -2,7 +2,10 @@
   background: #EEE;
   position: relative;
   text-align: center;
-  padding: 2em 1em 1em; }
+  padding: 2.5em 1em 1em; }
+  .data-visualizer-title {
+    font-size: 1.25em;
+    font-weight: 700; }
   .no-data .data-visualizer-wrapper {
     padding: 4em 0; }
   .data-visualizer-wrapper:empty {
@@ -29,8 +32,10 @@
   .data-visualizer-axis text, .data-visualizer-grid text {
     fill: #888;
     font-size: .625em; }
-  .data-visualizer-grid line:not(.tick-aligned), .data-visualizer-grid path:not(.tick-aligned) {
-    stroke-opacity: .5; }
+  .data-visualizer-grid line, .data-visualizer-grid path {
+    stroke-opacity: .25; }
+  .data-visualizer-grid .tick-aligned line, .data-visualizer-grid .tick-aligned path {
+    stroke-opacity: .625; }
   .data-visualizer-fill.no-color,
   .data-visualizer-no-palette .data-visualizer-item rect,
   .data-visualizer-no-palette .data-visualizer-item circle {

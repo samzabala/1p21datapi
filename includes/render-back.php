@@ -54,6 +54,8 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
         if ($data_visual['type'] !== 'pie') {
             unset($data_visual['pi']);
+            unset($data_visual['name']);
+            unset($data_visual['value']);
 
             $coordinates = ['x','y'];
 
@@ -61,37 +63,27 @@ function _1p21_dv_get_data_visual_object($args = array()) {
                 //validate x
                 switch($data_visual[$coordinate]['ticks']){
                     case false:
-                        unset($data_visual[$coordinate]['ticks_parameter']);
                         unset($data_visual[$coordinate]['ticks_amount']);
                         unset($data_visual[$coordinate]['label']);
-                        unset($data_visual[$coordinate]['prepend']);
-                        unset($data_visual[$coordinate]['append']);
                         unset($data_visual[$coordinate]['grid']);
                         unset($data_visual[$coordinate]['grid_increment']);
                     case true: //let false casecade to true too
-                        if( $data_visual[$coordinate]['data'] == 0){
+                        
+                        if( !isset($data_visual['name_is_num'])
+                            && $data_visual[$coordinate]['data'] == 0
+                        ){
                             unset($data_visual[$coordinate]['min']);
                             unset($data_visual[$coordinate]['max']);
+                            unset($data_visual[$coordinate]['ticks_amount']);
+                            unset($data_visual[$coordinate]['divider']);
                         }
 
-                        if(!isset($data_visual[$coordinate]['grid']) || !($data_visual[$coordinate]['ticks_amount'] > 0)){
+                        if(!isset($data_visual[$coordinate]['grid']) && !($data_visual[$coordinate]['ticks_amount'] > 0)){
 
                             unset($data_visual[$coordinate]['grid_increment']);
                             
-                        }else{
-                            echo 'fucker';
                         }
 
-                        //validate minimum and maximum
-                        if(
-                            !(
-                                isset($data_visual['name_is_num'])
-                                || $data_visual[$coordinate]['data'] == 1
-                            )
-                            || $data_visual[$coordinate]['ticks'] == false
-                        ){
-                            unset($data_visual[$coordinate]['divider']);
-                        }
                         break;
 
                 }

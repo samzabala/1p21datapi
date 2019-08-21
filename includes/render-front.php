@@ -169,7 +169,9 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                                     case 'y':
                                     case 'line':
                                     case 'pi':
-                                    case 'area':
+                                    case 'name':
+                                    case 'value':
+                                    case 'scatter':
 
                                         $string_values = array();
                                         $data_key_values = array();
@@ -179,21 +181,33 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                                         $array_items_are_strings = array();
 
                                         switch($attribute){
+
                                             case 'color':
                                                 $array_values_from_array = array('palette');
                                                 $data_key_values = array('data');
                                                 $array_items_are_strings = array('palette');
-
                                                 break;
+
                                             case 'x':
                                             case 'y':
                                                 $string_values = array('align','label','prepend','append');
                                                 $boolean_values = array('ticks','grid');
                                                 break;
+
                                             case 'line':
                                                 $string_values = array('style','stroke','color','points_color','fill_color','fill_axis');
                                                 $boolean_values = array('points','fill','invert');
                                                 $array_values_from_string = array('dash');
+                                                break;
+
+                                            case 'pi':
+                                                $string_values = array('label_style');
+                                                break;
+                                            
+                                            
+                                            case 'name':
+                                            case 'value':
+                                                $string_values = array('prepend','append');
                                                 break;
                                             
                                         }
@@ -218,11 +232,12 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
                                                 $imploder = ',';
                                                 $implode_wrapper = ['[',']'];
+                                                
                                                 if(in_array($sub_setting,$array_items_are_strings)){
                                                     $imploder = '\',\'';
                                                     $implode_wrapper = ['[\'','\']'];
                                                 }
-                                                
+
                                                 //straight up string
                                                 if(in_array($sub_setting,$string_values)){
                                                     $parsed_value = '\''.$sub_value. '\'';

@@ -4,7 +4,12 @@ $prefix: '.data-visualizer';
     background: #EEE;
     position:relative;
     text-align: center;
-    padding: 2em 1em 1em;
+    padding: 2.5em 1em 1em;
+
+    &-title {
+        font-size: 1.25em;
+        font-weight: 700;
+    }
 
     &-wrapper {
         .no-data & {
@@ -52,9 +57,14 @@ $prefix: '.data-visualizer';
     }
 
     &-grid {
+        
         line,path {
-            &:not(.tick-aligned){
-                stroke-opacity: .5;
+            stroke-opacity: .25;
+        }
+
+        .tick-aligned {
+            line,path {
+                stroke-opacity: .625;
             }
         }
     }

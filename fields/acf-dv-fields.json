@@ -812,7 +812,7 @@
                     {
                         "ID": 0,
                         "key": "field_5d54328233142",
-                        "label": "Ticks Format Settings",
+                        "label": "Data Format Settings",
                         "name": "",
                         "prefix": "acf",
                         "type": "accordion",
@@ -822,15 +822,7 @@
                         "required": 0,
                         "id": "",
                         "class": "",
-                        "conditional_logic": [
-                            [
-                                {
-                                    "field": "field_5d49b51b576ae",
-                                    "operator": "==",
-                                    "value": "1"
-                                }
-                            ]
-                        ],
+                        "conditional_logic": 0,
                         "parent": "field_5d448fef59823",
                         "wrapper": {
                             "width": "",
@@ -857,15 +849,7 @@
                         "required": 0,
                         "id": "",
                         "class": "",
-                        "conditional_logic": [
-                            [
-                                {
-                                    "field": "field_5d49b51b576ae",
-                                    "operator": "==",
-                                    "value": "1"
-                                }
-                            ]
-                        ],
+                        "conditional_logic": 0,
                         "parent": "field_5d448fef59823",
                         "wrapper": {
                             "width": "50",
@@ -894,15 +878,7 @@
                         "required": 0,
                         "id": "",
                         "class": "",
-                        "conditional_logic": [
-                            [
-                                {
-                                    "field": "field_5d49b51b576ae",
-                                    "operator": "==",
-                                    "value": "1"
-                                }
-                            ]
-                        ],
+                        "conditional_logic": 0,
                         "parent": "field_5d448fef59823",
                         "wrapper": {
                             "width": "50",
@@ -934,22 +910,12 @@
                         "conditional_logic": [
                             [
                                 {
-                                    "field": "field_5d49b51b576ae",
-                                    "operator": "==",
-                                    "value": "1"
-                                },
-                                {
                                     "field": "field_5d42110769b59",
                                     "operator": "==",
                                     "value": "1"
                                 }
                             ],
                             [
-                                {
-                                    "field": "field_5d49b51b576ae",
-                                    "operator": "==",
-                                    "value": "1"
-                                },
                                 {
                                     "field": "field_5d420a45de26f",
                                     "operator": "!=",
@@ -1207,15 +1173,7 @@
                         "required": 0,
                         "id": "",
                         "class": "",
-                        "conditional_logic": [
-                            [
-                                {
-                                    "field": "field_5d49b51b576ae",
-                                    "operator": "==",
-                                    "value": "1"
-                                }
-                            ]
-                        ],
+                        "conditional_logic": 0,
                         "parent": "field_5d448fef59823",
                         "wrapper": {
                             "width": "",
@@ -1232,39 +1190,31 @@
                     {
                         "ID": 0,
                         "key": "field_5d44948ed8de9",
-                        "label": "Ticks Parameter",
-                        "name": "ticks_parameter",
+                        "label": "Format Parameter",
+                        "name": "parameter",
                         "prefix": "acf",
-                        "type": "text",
+                        "type": "textarea",
                         "value": null,
                         "menu_order": 15,
                         "instructions": "accepts string format or function<br>Reference: <a href=\"https:\/\/github.com\/d3\/d3-format\">https:\/\/github.com\/d3\/d3-format<\/a><br>Setting this will override Tick Format settings",
                         "required": 0,
                         "id": "",
                         "class": "",
-                        "conditional_logic": [
-                            [
-                                {
-                                    "field": "field_5d49b51b576ae",
-                                    "operator": "==",
-                                    "value": "1"
-                                }
-                            ]
-                        ],
+                        "conditional_logic": 0,
                         "parent": "field_5d448fef59823",
                         "wrapper": {
                             "width": "",
                             "class": "dv-code",
                             "id": ""
                         },
-                        "_name": "ticks_parameter",
+                        "_name": "parameter",
                         "_prepare": 0,
                         "_valid": 1,
                         "default_value": "",
                         "placeholder": "\"~s\" | function(data){ return +data; }",
-                        "prepend": "",
-                        "append": "",
-                        "maxlength": ""
+                        "maxlength": "",
+                        "rows": 3,
+                        "new_lines": ""
                     }
                 ]
             },
@@ -1529,7 +1479,7 @@
                     {
                         "ID": 0,
                         "key": "field_5d542d28927b4",
-                        "label": "Ticks Format Settings",
+                        "label": "Data Format Settings",
                         "name": "",
                         "prefix": "acf",
                         "type": "accordion",
@@ -1539,15 +1489,7 @@
                         "required": 0,
                         "id": "",
                         "class": "",
-                        "conditional_logic": [
-                            [
-                                {
-                                    "field": "field_5d49b81e8a9b1",
-                                    "operator": "==",
-                                    "value": "1"
-                                }
-                            ]
-                        ],
+                        "conditional_logic": 0,
                         "parent": "field_5d4494e1f5294",
                         "wrapper": {
                             "width": "",
@@ -1574,15 +1516,7 @@
                         "required": 0,
                         "id": "",
                         "class": "",
-                        "conditional_logic": [
-                            [
-                                {
-                                    "field": "field_5d49b81e8a9b1",
-                                    "operator": "==",
-                                    "value": "1"
-                                }
-                            ]
-                        ],
+                        "conditional_logic": 0,
                         "parent": "field_5d4494e1f5294",
                         "wrapper": {
                             "width": "50",
@@ -1611,15 +1545,7 @@
                         "required": 0,
                         "id": "",
                         "class": "",
-                        "conditional_logic": [
-                            [
-                                {
-                                    "field": "field_5d49b81e8a9b1",
-                                    "operator": "==",
-                                    "value": "1"
-                                }
-                            ]
-                        ],
+                        "conditional_logic": 0,
                         "parent": "field_5d4494e1f5294",
                         "wrapper": {
                             "width": "50",
@@ -1651,22 +1577,12 @@
                         "conditional_logic": [
                             [
                                 {
-                                    "field": "field_5d49b81e8a9b1",
-                                    "operator": "==",
-                                    "value": "1"
-                                },
-                                {
                                     "field": "field_5d4494e1f5295",
                                     "operator": "==",
                                     "value": "1"
                                 }
                             ],
                             [
-                                {
-                                    "field": "field_5d49b81e8a9b1",
-                                    "operator": "==",
-                                    "value": "1"
-                                },
                                 {
                                     "field": "field_5d420a45de26f",
                                     "operator": "!=",
@@ -1924,15 +1840,7 @@
                         "required": 0,
                         "id": "",
                         "class": "",
-                        "conditional_logic": [
-                            [
-                                {
-                                    "field": "field_5d49b81e8a9b1",
-                                    "operator": "==",
-                                    "value": "1"
-                                }
-                            ]
-                        ],
+                        "conditional_logic": 0,
                         "parent": "field_5d4494e1f5294",
                         "wrapper": {
                             "width": "",
@@ -1949,39 +1857,31 @@
                     {
                         "ID": 0,
                         "key": "field_5d4494e1f5299",
-                        "label": "Ticks Parameter",
-                        "name": "ticks_parameter",
+                        "label": "Format Parameter",
+                        "name": "parameter",
                         "prefix": "acf",
-                        "type": "text",
+                        "type": "textarea",
                         "value": null,
                         "menu_order": 15,
                         "instructions": "accepts string format or function<br>Reference: <a href=\"https:\/\/github.com\/d3\/d3-format\">https:\/\/github.com\/d3\/d3-format<\/a><br>Setting this will override Tick Format settings",
                         "required": 0,
                         "id": "",
                         "class": "",
-                        "conditional_logic": [
-                            [
-                                {
-                                    "field": "field_5d49b81e8a9b1",
-                                    "operator": "==",
-                                    "value": "1"
-                                }
-                            ]
-                        ],
+                        "conditional_logic": 0,
                         "parent": "field_5d4494e1f5294",
                         "wrapper": {
                             "width": "",
                             "class": "dv-code",
                             "id": ""
                         },
-                        "_name": "ticks_parameter",
+                        "_name": "parameter",
                         "_prepare": 0,
                         "_valid": 1,
                         "default_value": "",
                         "placeholder": "\"~s\" | function(data){ return +data; }",
-                        "prepend": "",
-                        "append": "",
-                        "maxlength": ""
+                        "maxlength": "",
+                        "rows": 3,
+                        "new_lines": ""
                     }
                 ]
             },
@@ -2566,335 +2466,343 @@
                         "ui": 0,
                         "ui_on_text": "",
                         "ui_off_text": ""
+                    }
+                ]
+            },
+            {
+                "ID": 0,
+                "key": "field_5d5c5b3134de0",
+                "label": "Name Settings",
+                "name": "name",
+                "prefix": "acf",
+                "type": "group",
+                "value": null,
+                "menu_order": 10,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420a45de26f",
+                            "operator": "==",
+                            "value": "pie"
+                        }
+                    ]
+                ],
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "name",
+                "_prepare": 0,
+                "_valid": 1,
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "ID": 0,
+                        "key": "field_5d5c5b3134de8",
+                        "label": "Prepend",
+                        "name": "prepend",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 0,
+                        "instructions": "Character to prepend tick label",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d5c5b3134de0",
+                        "wrapper": {
+                            "width": "50",
+                            "class": "dv-code",
+                            "id": ""
+                        },
+                        "_name": "prepend",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "$",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
                     },
                     {
                         "ID": 0,
-                        "key": "field_5d5c5b3134de0",
-                        "label": "Name Settings",
-                        "name": "0",
+                        "key": "field_5d5c5b3134de9",
+                        "label": "Append",
+                        "name": "append",
                         "prefix": "acf",
-                        "type": "group",
+                        "type": "text",
                         "value": null,
+                        "menu_order": 1,
+                        "instructions": "Character to append tick label",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d5c5b3134de0",
+                        "wrapper": {
+                            "width": "50",
+                            "class": "dv-code",
+                            "id": ""
+                        },
+                        "_name": "append",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "k",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d5c5b3134def",
+                        "label": "Advanced",
+                        "name": "",
+                        "prefix": "acf",
+                        "type": "accordion",
+                        "value": false,
                         "menu_order": 2,
                         "instructions": "",
                         "required": 0,
                         "id": "",
                         "class": "",
-                        "conditional_logic": 0,
-                        "parent": "field_5d499f4b8f7aa",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d5c5b3134de3",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d5c5b3134de0",
                         "wrapper": {
-                            "width": "50",
+                            "width": "",
                             "class": "",
                             "id": ""
                         },
-                        "_name": "0",
+                        "_name": "",
                         "_prepare": 0,
                         "_valid": 1,
-                        "layout": "block",
-                        "sub_fields": [
-                            {
-                                "ID": 0,
-                                "key": "field_5d5c5b3134de8",
-                                "label": "Prepend",
-                                "name": "prepend",
-                                "prefix": "acf",
-                                "type": "text",
-                                "value": null,
-                                "menu_order": 0,
-                                "instructions": "Character to prepend tick label",
-                                "required": 0,
-                                "id": "",
-                                "class": "",
-                                "conditional_logic": 0,
-                                "parent": "field_5d5c5b3134de0",
-                                "wrapper": {
-                                    "width": "50",
-                                    "class": "dv-code",
-                                    "id": ""
-                                },
-                                "_name": "prepend",
-                                "_prepare": 0,
-                                "_valid": 1,
-                                "default_value": "",
-                                "placeholder": "$",
-                                "prepend": "",
-                                "append": "",
-                                "maxlength": ""
-                            },
-                            {
-                                "ID": 0,
-                                "key": "field_5d5c5b3134de9",
-                                "label": "Append",
-                                "name": "append",
-                                "prefix": "acf",
-                                "type": "text",
-                                "value": null,
-                                "menu_order": 1,
-                                "instructions": "Character to append tick label",
-                                "required": 0,
-                                "id": "",
-                                "class": "",
-                                "conditional_logic": 0,
-                                "parent": "field_5d5c5b3134de0",
-                                "wrapper": {
-                                    "width": "50",
-                                    "class": "dv-code",
-                                    "id": ""
-                                },
-                                "_name": "append",
-                                "_prepare": 0,
-                                "_valid": 1,
-                                "default_value": "",
-                                "placeholder": "k",
-                                "prepend": "",
-                                "append": "",
-                                "maxlength": ""
-                            },
-                            {
-                                "ID": 0,
-                                "key": "field_5d5c5b3134def",
-                                "label": "Advanced",
-                                "name": "",
-                                "prefix": "acf",
-                                "type": "accordion",
-                                "value": false,
-                                "menu_order": 2,
-                                "instructions": "",
-                                "required": 0,
-                                "id": "",
-                                "class": "",
-                                "conditional_logic": [
-                                    [
-                                        {
-                                            "field": "field_5d5c5b3134de3",
-                                            "operator": "==",
-                                            "value": "1"
-                                        }
-                                    ]
-                                ],
-                                "parent": "field_5d5c5b3134de0",
-                                "wrapper": {
-                                    "width": "",
-                                    "class": "",
-                                    "id": ""
-                                },
-                                "_name": "",
-                                "_prepare": 0,
-                                "_valid": 1,
-                                "open": 0,
-                                "multi_expand": 0,
-                                "endpoint": 0
-                            },
-                            {
-                                "ID": 0,
-                                "key": "field_5d5c5b3134df0",
-                                "label": "Format Parameter",
-                                "name": "format_parameter",
-                                "prefix": "acf",
-                                "type": "text",
-                                "value": null,
-                                "menu_order": 3,
-                                "instructions": "accepts string format or function<br>Reference: <a href=\"https:\/\/github.com\/d3\/d3-format\">https:\/\/github.com\/d3\/d3-format<\/a><br>Setting this will override Tick Format settings",
-                                "required": 0,
-                                "id": "",
-                                "class": "",
-                                "conditional_logic": [
-                                    [
-                                        {
-                                            "field": "field_5d420de06b6c9",
-                                            "operator": "==",
-                                            "value": ""
-                                        }
-                                    ]
-                                ],
-                                "parent": "field_5d5c5b3134de0",
-                                "wrapper": {
-                                    "width": "",
-                                    "class": "dv-code",
-                                    "id": ""
-                                },
-                                "_name": "format_parameter",
-                                "_prepare": 0,
-                                "_valid": 1,
-                                "default_value": "",
-                                "placeholder": "\"~s\" | function(data){ return +data; }",
-                                "prepend": "",
-                                "append": "",
-                                "maxlength": ""
-                            }
-                        ]
+                        "open": 0,
+                        "multi_expand": 0,
+                        "endpoint": 0
                     },
                     {
                         "ID": 0,
-                        "key": "field_5d5c5c0734df1",
-                        "label": "Value Settings",
-                        "name": "1",
+                        "key": "field_5d5c5b3134df0",
+                        "label": "Format Parameter",
+                        "name": "format_parameter",
                         "prefix": "acf",
-                        "type": "group",
+                        "type": "textarea",
                         "value": null,
+                        "menu_order": 3,
+                        "instructions": "accepts string format or function<br>Reference: <a href=\"https:\/\/github.com\/d3\/d3-format\">https:\/\/github.com\/d3\/d3-format<\/a><br>Setting this will override Tick Format settings",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d5c5b3134de0",
+                        "wrapper": {
+                            "width": "",
+                            "class": "dv-code",
+                            "id": ""
+                        },
+                        "_name": "format_parameter",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "maxlength": "",
+                        "rows": 3,
+                        "new_lines": ""
+                    }
+                ]
+            },
+            {
+                "ID": 0,
+                "key": "field_5d5c5c0734df1",
+                "label": "Value Settings",
+                "name": "value",
+                "prefix": "acf",
+                "type": "group",
+                "value": null,
+                "menu_order": 11,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420a45de26f",
+                            "operator": "==",
+                            "value": "pie"
+                        }
+                    ]
+                ],
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "value",
+                "_prepare": 0,
+                "_valid": 1,
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "ID": 0,
+                        "key": "field_5d5c5c0734df3",
+                        "label": "Prepend",
+                        "name": "prepend",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 0,
+                        "instructions": "Character to prepend tick label",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d5c5c0734df1",
+                        "wrapper": {
+                            "width": "50",
+                            "class": "dv-code",
+                            "id": ""
+                        },
+                        "_name": "prepend",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "$",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d5c5c0734df4",
+                        "label": "Append",
+                        "name": "append",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 1,
+                        "instructions": "Character to append tick label",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d5c5c0734df1",
+                        "wrapper": {
+                            "width": "50",
+                            "class": "dv-code",
+                            "id": ""
+                        },
+                        "_name": "append",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "k",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d5c5c0734df5",
+                        "label": "Divider",
+                        "name": "divider",
+                        "prefix": "acf",
+                        "type": "number",
+                        "value": null,
+                        "menu_order": 2,
+                        "instructions": "Divide numeric data to shorten tick label",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d5c5c0734df1",
+                        "wrapper": {
+                            "width": "",
+                            "class": "dv-code",
+                            "id": ""
+                        },
+                        "_name": "divider",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": 1000,
+                        "prepend": "",
+                        "append": "",
+                        "min": "",
+                        "max": "",
+                        "step": ".01"
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d5c5c0734df6",
+                        "label": "Advanced",
+                        "name": "",
+                        "prefix": "acf",
+                        "type": "accordion",
+                        "value": false,
                         "menu_order": 3,
                         "instructions": "",
                         "required": 0,
                         "id": "",
                         "class": "",
                         "conditional_logic": 0,
-                        "parent": "field_5d499f4b8f7aa",
+                        "parent": "field_5d5c5c0734df1",
                         "wrapper": {
-                            "width": "50",
+                            "width": "",
                             "class": "",
                             "id": ""
                         },
-                        "_name": "1",
+                        "_name": "",
                         "_prepare": 0,
                         "_valid": 1,
-                        "layout": "block",
-                        "sub_fields": [
-                            {
-                                "ID": 0,
-                                "key": "field_5d5c5c0734df3",
-                                "label": "Prepend",
-                                "name": "prepend",
-                                "prefix": "acf",
-                                "type": "text",
-                                "value": null,
-                                "menu_order": 0,
-                                "instructions": "Character to prepend tick label",
-                                "required": 0,
-                                "id": "",
-                                "class": "",
-                                "conditional_logic": 0,
-                                "parent": "field_5d5c5c0734df1",
-                                "wrapper": {
-                                    "width": "50",
-                                    "class": "dv-code",
-                                    "id": ""
-                                },
-                                "_name": "prepend",
-                                "_prepare": 0,
-                                "_valid": 1,
-                                "default_value": "",
-                                "placeholder": "$",
-                                "prepend": "",
-                                "append": "",
-                                "maxlength": ""
-                            },
-                            {
-                                "ID": 0,
-                                "key": "field_5d5c5c0734df4",
-                                "label": "Append",
-                                "name": "append",
-                                "prefix": "acf",
-                                "type": "text",
-                                "value": null,
-                                "menu_order": 1,
-                                "instructions": "Character to append tick label",
-                                "required": 0,
-                                "id": "",
-                                "class": "",
-                                "conditional_logic": 0,
-                                "parent": "field_5d5c5c0734df1",
-                                "wrapper": {
-                                    "width": "50",
-                                    "class": "dv-code",
-                                    "id": ""
-                                },
-                                "_name": "append",
-                                "_prepare": 0,
-                                "_valid": 1,
-                                "default_value": "",
-                                "placeholder": "k",
-                                "prepend": "",
-                                "append": "",
-                                "maxlength": ""
-                            },
-                            {
-                                "ID": 0,
-                                "key": "field_5d5c5c0734df5",
-                                "label": "Divider",
-                                "name": "divider",
-                                "prefix": "acf",
-                                "type": "number",
-                                "value": null,
-                                "menu_order": 2,
-                                "instructions": "Divide numeric data to shorten tick label",
-                                "required": 0,
-                                "id": "",
-                                "class": "",
-                                "conditional_logic": 0,
-                                "parent": "field_5d5c5c0734df1",
-                                "wrapper": {
-                                    "width": "",
-                                    "class": "dv-code",
-                                    "id": ""
-                                },
-                                "_name": "divider",
-                                "_prepare": 0,
-                                "_valid": 1,
-                                "default_value": "",
-                                "placeholder": 1000,
-                                "prepend": "",
-                                "append": "",
-                                "min": "",
-                                "max": "",
-                                "step": ".01"
-                            },
-                            {
-                                "ID": 0,
-                                "key": "field_5d5c5c0734df6",
-                                "label": "Advanced",
-                                "name": "",
-                                "prefix": "acf",
-                                "type": "accordion",
-                                "value": false,
-                                "menu_order": 3,
-                                "instructions": "",
-                                "required": 0,
-                                "id": "",
-                                "class": "",
-                                "conditional_logic": 0,
-                                "parent": "field_5d5c5c0734df1",
-                                "wrapper": {
-                                    "width": "",
-                                    "class": "",
-                                    "id": ""
-                                },
-                                "_name": "",
-                                "_prepare": 0,
-                                "_valid": 1,
-                                "open": 0,
-                                "multi_expand": 0,
-                                "endpoint": 0
-                            },
-                            {
-                                "ID": 0,
-                                "key": "field_5d5c5c0734df7",
-                                "label": "Format Parameter",
-                                "name": "format_parameter",
-                                "prefix": "acf",
-                                "type": "text",
-                                "value": null,
-                                "menu_order": 4,
-                                "instructions": "accepts string format or function<br>Reference: <a href=\"https:\/\/github.com\/d3\/d3-format\">https:\/\/github.com\/d3\/d3-format<\/a><br>Setting this will override Tick Format settings",
-                                "required": 0,
-                                "id": "",
-                                "class": "",
-                                "conditional_logic": 0,
-                                "parent": "field_5d5c5c0734df1",
-                                "wrapper": {
-                                    "width": "",
-                                    "class": "dv-code",
-                                    "id": ""
-                                },
-                                "_name": "format_parameter",
-                                "_prepare": 0,
-                                "_valid": 1,
-                                "default_value": "",
-                                "placeholder": "\"~s\" | function(data){ return +data; }",
-                                "prepend": "",
-                                "append": "",
-                                "maxlength": ""
-                            }
-                        ]
+                        "open": 0,
+                        "multi_expand": 0,
+                        "endpoint": 0
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d5c5c0734df7",
+                        "label": "Format Parameter",
+                        "name": "format_parameter",
+                        "prefix": "acf",
+                        "type": "textarea",
+                        "value": null,
+                        "menu_order": 4,
+                        "instructions": "accepts string format or function<br>Reference: <a href=\"https:\/\/github.com\/d3\/d3-format\">https:\/\/github.com\/d3\/d3-format<\/a><br>Setting this will override Tick Format settings",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d5c5c0734df1",
+                        "wrapper": {
+                            "width": "",
+                            "class": "dv-code",
+                            "id": ""
+                        },
+                        "_name": "format_parameter",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "maxlength": "",
+                        "rows": 3,
+                        "new_lines": ""
                     }
                 ]
             },
@@ -2906,7 +2814,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 10,
+                "menu_order": 12,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -3026,7 +2934,7 @@
                 "prefix": "acf",
                 "type": "tab",
                 "value": false,
-                "menu_order": 11,
+                "menu_order": 13,
                 "instructions": "",
                 "required": 0,
                 "id": "",
