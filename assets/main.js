@@ -260,7 +260,6 @@
 
             })
 
-
             function multiIndex(obj,is) {
 
                 var toReturn = null;
@@ -269,6 +268,12 @@
                     toReturn = multiIndex(obj[is[0]],is.slice(1))
                 }else{
                     toReturn = isNum ? parseFloat(obj) : obj;
+
+
+
+                    if (isNum && isNaN(toReturn)){
+                        console.error(selector+' data with the key source of '+keysString+ 'was passed as numeric but is not.' )
+                    }
                 }
 
                 return toReturn;
@@ -982,7 +987,7 @@
             return axis;
 
         };
-
+        //generates rule_coord and axis_coord
         var renderAxis = function(axisString,containerObj,isGrid) {
 
             if( args[axisString+'Ticks']) {
@@ -1021,7 +1026,7 @@
 
 
         //render a good boi
-        var setData = function(retrievedData,_){
+        var setData = function(retrievedData){
             
             var data = null;
 
@@ -1181,7 +1186,7 @@
                                 }else{
                                     
                                     return function(value){
-                                        
+
                                         var dataPossiblyDivided = (args[itemAtt+'Data'] == 1 || args.nameIsNum ) ? (value / args[itemAtt+'Divider']): value,
                                         
                                         formatted = args[itemAtt+'Prepend'] + dataPossiblyDivided + args[itemAtt+'Append'];
@@ -1582,28 +1587,30 @@
         switch(args.srcPath.getFileExtension()) {
             case 'csv':
                 d3.csv(args.srcPath).then(function(data){
-                    setData(data,_);
+                    setData(data);
                 });
                 break;
             case 'tsv':
                 d3.tsv(args.srcPath).then(function(data){
-                    setData(data,_);
+                    setData(data);
                 });
                 break;
             
             case 'json':
                 d3.json(args.srcPath).then(function(data){
-                    setData(data,_);
+                    setData(data);
                 });
                 break;
             //probably embeded
             default:
                 if(args.srcPath.getHash()){
                     var jsonSelector = dataContainer.querySelector('script[type="application/json"]').innerHTML;
+                    
                     if(jsonSelector.isValidJSONString()){
 
                         var dataIsJSON = JSON.parse(jsonSelector);
-                        setData(dataIsJSON,_);
+                        setData(dataIsJSON);
+
                     }else{
                         if(args.srcType == 'text'){
 
