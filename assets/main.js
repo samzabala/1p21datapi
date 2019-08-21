@@ -1,6 +1,8 @@
-"use strict";
+
+
 /* DO NOT TOUCH I DEV ON THIS BOI I ENQUEUE THE MINIFIED ONE ANYWAY  :< */
 (function(window,d3){
+    "use strict";
     var _1p21 = _1p21 || {};
 
     // helpful variables
@@ -252,6 +254,7 @@
         var deepGet = function (obj,keysString, isNum) { 
             
             var splitString = keysString.toString().split('.');
+            isNum = isNum || false;
 
             //remove empty instances because they just mess with the loop
             splitString.forEach(function(key,i){
@@ -270,16 +273,21 @@
                     toReturn = isNum ? parseFloat(obj) : obj;
 
 
-
-                    if (isNum && isNaN(toReturn)){
-                        console.error(selector+' data with the key source of '+keysString+ 'was passed as numeric but is not.' )
-                    }
                 }
 
                 return toReturn;
             }
+
+            var value = multiIndex(obj,splitString);
             
-            return multiIndex(obj,splitString);
+
+            if (isNum == true && isNaN(value)){
+
+                console.log( selector,'oh god',value );
+                console.log(selector+' data with the key source of '+keysString+ ' was passed as numeric but is not.\n value is:',
+                value )
+            }
+            return value;
 
         }
 
@@ -1520,8 +1528,7 @@
 
                             //set a minimum length for graph items to offset its text bois
                             _.mLength = function(axisString,i){
-                                // mLength(coordinate,dis)
-                                // console.log(dis);
+                                
                                 var value = 0;
 
                                     length = _.blobText ? _.blobText.nodes()[i].getBoundingClientRect()[dimensionAttribute(axisString)] : 0
@@ -1540,8 +1547,7 @@
                         var classString =  prefix + 'item-text';
 
                         coordinates.forEach(function(coordinate){
-                            // console.log(selector,dis.name, coordinate,getBlobSize(coordinate,dis,i,false), args[coordinate+'Data']);
-                            console.log(coordinate,parseFloat(getBlobSize(coordinate,dis,i,false)),_.mLength(coordinate,i))
+                            
                             if( 
                                 (
 
