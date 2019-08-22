@@ -64,7 +64,7 @@
                         "value": null,
                         "menu_order": 0,
                         "instructions": "Choose how file should be imported",
-                        "required": 0,
+                        "required": 1,
                         "id": "",
                         "class": "",
                         "conditional_logic": 0,
@@ -101,7 +101,7 @@
                         "value": null,
                         "menu_order": 1,
                         "instructions": "Must be tsv, csv",
-                        "required": 0,
+                        "required": 1,
                         "id": "",
                         "class": "",
                         "conditional_logic": [
@@ -138,7 +138,7 @@
                         "value": null,
                         "menu_order": 2,
                         "instructions": "Url must link directly to data file in either .csv,.json, or .tsv format",
-                        "required": 0,
+                        "required": 1,
                         "id": "",
                         "class": "",
                         "conditional_logic": [
@@ -172,7 +172,7 @@
                         "value": null,
                         "menu_order": 3,
                         "instructions": "input json code",
-                        "required": 0,
+                        "required": 1,
                         "id": "",
                         "class": "",
                         "conditional_logic": [
@@ -246,7 +246,7 @@
                                 "value": null,
                                 "menu_order": 0,
                                 "instructions": "data that will represent the labels or a separate axis of the data.",
-                                "required": 0,
+                                "required": 1,
                                 "id": "",
                                 "class": "",
                                 "conditional_logic": 0,
@@ -275,7 +275,7 @@
                                 "value": null,
                                 "menu_order": 1,
                                 "instructions": "data that will represent the labels.",
-                                "required": 0,
+                                "required": 1,
                                 "id": "",
                                 "class": "",
                                 "conditional_logic": 0,
@@ -286,6 +286,80 @@
                                     "id": ""
                                 },
                                 "_name": "1",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "ID": 0,
+                                "key": "field_5d5ef5079216e",
+                                "label": "Category (Data 3)",
+                                "name": "2",
+                                "prefix": "acf",
+                                "type": "text",
+                                "value": null,
+                                "menu_order": 2,
+                                "instructions": "data that will represent a color in the color palette. (Only available if data visual is not in a pie chart layout)",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": [
+                                    [
+                                        {
+                                            "field": "field_5d420a45de26f",
+                                            "operator": "!=",
+                                            "value": "pie"
+                                        }
+                                    ]
+                                ],
+                                "parent": "field_5d420719de267",
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "_name": "2",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "ID": 0,
+                                "key": "field_5d5ef6f792170",
+                                "label": "Plot Point Area (Data 4)",
+                                "name": "3",
+                                "prefix": "acf",
+                                "type": "text",
+                                "value": null,
+                                "menu_order": 3,
+                                "instructions": "data that will represent the size of the scatter plot data. leaving blank will make all scatter plots the same size",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": [
+                                    [
+                                        {
+                                            "field": "field_5d420a45de26f",
+                                            "operator": "==",
+                                            "value": "scatter"
+                                        }
+                                    ]
+                                ],
+                                "parent": "field_5d420719de267",
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "_name": "3",
                                 "_prepare": 0,
                                 "_valid": 1,
                                 "default_value": "",
@@ -315,6 +389,10 @@
                                     "field": "field_5d420de06b6c9",
                                     "operator": "!=",
                                     "value": "rows"
+                                },
+                                {
+                                    "field": "field_5d420de06b6c9",
+                                    "operator": "!=empty"
                                 }
                             ]
                         ],
@@ -354,6 +432,10 @@
                             "field": "field_5d420de06b6c9",
                             "operator": "!=",
                             "value": "rows"
+                        },
+                        {
+                            "field": "field_5d420de06b6c9",
+                            "operator": "!=empty"
                         }
                     ]
                 ],
@@ -378,7 +460,7 @@
                         "value": null,
                         "menu_order": 0,
                         "instructions": "Type in the key relative to the data instance<br>\nKey or column name to represent or name the data",
-                        "required": 0,
+                        "required": 1,
                         "id": "",
                         "class": "",
                         "conditional_logic": [
@@ -415,7 +497,7 @@
                         "value": null,
                         "menu_order": 1,
                         "instructions": "Type in the key relative to the data instance<br>\nKey or column name of the data that will represent data based on the name key",
-                        "required": 0,
+                        "required": 1,
                         "id": "",
                         "class": "",
                         "conditional_logic": [
@@ -2437,32 +2519,164 @@
                         "return_format": "value",
                         "ajax": 0,
                         "placeholder": ""
-                    },
+                    }
+                ]
+            },
+            {
+                "ID": 0,
+                "key": "field_5d570e0a7d32b",
+                "label": "Colors Settings",
+                "name": "dv_color",
+                "prefix": "acf",
+                "type": "group",
+                "value": null,
+                "menu_order": 10,
+                "instructions": "If the graph type is set to pie or the color data key is left blank, the name data will be linked to the palette",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_color",
+                "_prepare": 0,
+                "_valid": 1,
+                "layout": "block",
+                "sub_fields": [
                     {
                         "ID": 0,
-                        "key": "field_5d5c592a34ddf",
-                        "label": "Add Legends?",
-                        "name": "legends",
+                        "key": "field_5d42ff755f462",
+                        "label": "Color Palette",
+                        "name": "palette",
                         "prefix": "acf",
-                        "type": "true_false",
+                        "type": "repeater",
                         "value": null,
-                        "menu_order": 1,
+                        "menu_order": 0,
                         "instructions": "",
                         "required": 0,
                         "id": "",
                         "class": "",
                         "conditional_logic": 0,
-                        "parent": "field_5d499f4b8f7aa",
+                        "parent": "field_5d570e0a7d32b",
                         "wrapper": {
                             "width": "",
                             "class": "",
                             "id": ""
                         },
-                        "_name": "legends",
+                        "_name": "palette",
                         "_prepare": 0,
                         "_valid": 1,
-                        "message": "List legends on a corner",
-                        "default_value": 0,
+                        "collapsed": "",
+                        "min": 0,
+                        "max": 0,
+                        "layout": "row",
+                        "button_label": "",
+                        "sub_fields": [
+                            {
+                                "ID": 0,
+                                "key": "field_5d42ff995f463",
+                                "label": "Color",
+                                "name": "color",
+                                "prefix": "acf",
+                                "type": "color_picker",
+                                "value": null,
+                                "menu_order": 0,
+                                "instructions": "",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": 0,
+                                "parent": "field_5d42ff755f462",
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "_name": "color",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "default_value": ""
+                            }
+                        ]
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d42ffcf5f464",
+                        "label": "Colors Data Key",
+                        "name": "data",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 1,
+                        "instructions": "Data key to link color scheme to. if layout is set to line, this will be applied to plot points and will override set points color",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "pie"
+                                },
+                                {
+                                    "field": "field_5d420de06b6c9",
+                                    "operator": "!=",
+                                    "value": "rows"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d570e0a7d32b",
+                        "wrapper": {
+                            "width": "",
+                            "class": "dv-code",
+                            "id": ""
+                        },
+                        "_name": "data",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "data[0].",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d5ebcf2961ec",
+                        "label": "Legend",
+                        "name": "legend",
+                        "prefix": "acf",
+                        "type": "true_false",
+                        "value": null,
+                        "menu_order": 2,
+                        "instructions": "",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d42ffcf5f464",
+                                    "operator": "!=empty"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d570e0a7d32b",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "legend",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "message": "Add list of colors and what data they represent",
+                        "default_value": 1,
                         "ui": 0,
                         "ui_on_text": "",
                         "ui_off_text": ""
@@ -2477,7 +2691,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 10,
+                "menu_order": 11,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -2634,7 +2848,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 11,
+                "menu_order": 12,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -2803,126 +3017,6 @@
                         "maxlength": "",
                         "rows": 3,
                         "new_lines": ""
-                    }
-                ]
-            },
-            {
-                "ID": 0,
-                "key": "field_5d570e0a7d32b",
-                "label": "Colors Settings",
-                "name": "dv_color",
-                "prefix": "acf",
-                "type": "group",
-                "value": null,
-                "menu_order": 12,
-                "instructions": "",
-                "required": 0,
-                "id": "",
-                "class": "",
-                "conditional_logic": 0,
-                "parent": "group_5d4206c985d00",
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "_name": "dv_color",
-                "_prepare": 0,
-                "_valid": 1,
-                "layout": "block",
-                "sub_fields": [
-                    {
-                        "ID": 0,
-                        "key": "field_5d42ff755f462",
-                        "label": "Color Palette",
-                        "name": "palette",
-                        "prefix": "acf",
-                        "type": "repeater",
-                        "value": null,
-                        "menu_order": 0,
-                        "instructions": "Pie charts will use the name key as the color palette reference",
-                        "required": 0,
-                        "id": "",
-                        "class": "",
-                        "conditional_logic": 0,
-                        "parent": "field_5d570e0a7d32b",
-                        "wrapper": {
-                            "width": "",
-                            "class": "",
-                            "id": ""
-                        },
-                        "_name": "palette",
-                        "_prepare": 0,
-                        "_valid": 1,
-                        "collapsed": "",
-                        "min": 0,
-                        "max": 0,
-                        "layout": "row",
-                        "button_label": "",
-                        "sub_fields": [
-                            {
-                                "ID": 0,
-                                "key": "field_5d42ff995f463",
-                                "label": "Color",
-                                "name": "color",
-                                "prefix": "acf",
-                                "type": "color_picker",
-                                "value": null,
-                                "menu_order": 0,
-                                "instructions": "",
-                                "required": 0,
-                                "id": "",
-                                "class": "",
-                                "conditional_logic": 0,
-                                "parent": "field_5d42ff755f462",
-                                "wrapper": {
-                                    "width": "",
-                                    "class": "",
-                                    "id": ""
-                                },
-                                "_name": "color",
-                                "_prepare": 0,
-                                "_valid": 1,
-                                "default_value": ""
-                            }
-                        ]
-                    },
-                    {
-                        "ID": 0,
-                        "key": "field_5d42ffcf5f464",
-                        "label": "Colors Data Key",
-                        "name": "data_key",
-                        "prefix": "acf",
-                        "type": "text",
-                        "value": null,
-                        "menu_order": 1,
-                        "instructions": "Data key to link color scheme to. if layout is set to line, this will be applied to plot points and will override set points color",
-                        "required": 0,
-                        "id": "",
-                        "class": "",
-                        "conditional_logic": [
-                            [
-                                {
-                                    "field": "field_5d420a45de26f",
-                                    "operator": "!=",
-                                    "value": "pie"
-                                }
-                            ]
-                        ],
-                        "parent": "field_5d570e0a7d32b",
-                        "wrapper": {
-                            "width": "",
-                            "class": "dv-code",
-                            "id": ""
-                        },
-                        "_name": "data_key",
-                        "_prepare": 0,
-                        "_valid": 1,
-                        "default_value": "",
-                        "placeholder": "",
-                        "prepend": "data[0].",
-                        "append": "",
-                        "maxlength": ""
                     }
                 ]
             },

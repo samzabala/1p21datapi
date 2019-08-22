@@ -42,7 +42,7 @@ $_1p21_dv_fields_cpt = array(
 					'name' => 'type',
 					'type' => 'select',
 					'instructions' => 'Choose how file should be imported',
-					'required' => 0,
+					'required' => 1,
 					'conditional_logic' => 0,
 					'wrapper' => array(
 						'width' => '',
@@ -70,7 +70,7 @@ $_1p21_dv_fields_cpt = array(
 					'name' => 'file',
 					'type' => 'file',
 					'instructions' => 'Must be tsv, csv',
-					'required' => 0,
+					'required' => 1,
 					'conditional_logic' => array(
 						array(
 							array(
@@ -97,7 +97,7 @@ $_1p21_dv_fields_cpt = array(
 					'name' => 'url',
 					'type' => 'url',
 					'instructions' => 'Url must link directly to data file in either .csv,.json, or .tsv format',
-					'required' => 0,
+					'required' => 1,
 					'conditional_logic' => array(
 						array(
 							array(
@@ -121,7 +121,7 @@ $_1p21_dv_fields_cpt = array(
 					'name' => 'text',
 					'type' => 'textarea',
 					'instructions' => 'input json code',
-					'required' => 0,
+					'required' => 1,
 					'conditional_logic' => array(
 						array(
 							array(
@@ -175,7 +175,7 @@ $_1p21_dv_fields_cpt = array(
 							'name' => '0',
 							'type' => 'text',
 							'instructions' => 'data that will represent the labels or a separate axis of the data.',
-							'required' => 0,
+							'required' => 1,
 							'conditional_logic' => 0,
 							'wrapper' => array(
 								'width' => '',
@@ -194,8 +194,62 @@ $_1p21_dv_fields_cpt = array(
 							'name' => '1',
 							'type' => 'text',
 							'instructions' => 'data that will represent the labels.',
-							'required' => 0,
+							'required' => 1,
 							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'maxlength' => '',
+						),
+						array(
+							'key' => 'field_5d5ef5079216e',
+							'label' => 'Category (Data 3)',
+							'name' => '2',
+							'type' => 'text',
+							'instructions' => 'data that will represent a color in the color palette. (Only available if data visual is not in a pie chart layout)',
+							'required' => 0,
+							'conditional_logic' => array(
+								array(
+									array(
+										'field' => 'field_5d420a45de26f',
+										'operator' => '!=',
+										'value' => 'pie',
+									),
+								),
+							),
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'maxlength' => '',
+						),
+						array(
+							'key' => 'field_5d5ef6f792170',
+							'label' => 'Plot Point Area (Data 4)',
+							'name' => '3',
+							'type' => 'text',
+							'instructions' => 'data that will represent the size of the scatter plot data. leaving blank will make all scatter plots the same size',
+							'required' => 0,
+							'conditional_logic' => array(
+								array(
+									array(
+										'field' => 'field_5d420a45de26f',
+										'operator' => '==',
+										'value' => 'scatter',
+									),
+								),
+							),
 							'wrapper' => array(
 								'width' => '',
 								'class' => '',
@@ -222,6 +276,10 @@ $_1p21_dv_fields_cpt = array(
 								'field' => 'field_5d420de06b6c9',
 								'operator' => '!=',
 								'value' => 'rows',
+							),
+							array(
+								'field' => 'field_5d420de06b6c9',
+								'operator' => '!=empty',
 							),
 						),
 					),
@@ -252,6 +310,10 @@ $_1p21_dv_fields_cpt = array(
 						'operator' => '!=',
 						'value' => 'rows',
 					),
+					array(
+						'field' => 'field_5d420de06b6c9',
+						'operator' => '!=empty',
+					),
 				),
 			),
 			'wrapper' => array(
@@ -268,7 +330,7 @@ $_1p21_dv_fields_cpt = array(
 					'type' => 'text',
 					'instructions' => 'Type in the key relative to the data instance<br>
 Key or column name to represent or name the data',
-					'required' => 0,
+					'required' => 1,
 					'conditional_logic' => array(
 						array(
 							array(
@@ -296,7 +358,7 @@ Key or column name to represent or name the data',
 					'type' => 'text',
 					'instructions' => 'Type in the key relative to the data instance<br>
 Key or column name of the data that will represent data based on the name key',
-					'required' => 0,
+					'required' => 1,
 					'conditional_logic' => array(
 						array(
 							array(
@@ -1776,11 +1838,28 @@ Key or column name of the data that will represent data based on the name key',
 					'ajax' => 0,
 					'placeholder' => '',
 				),
+			),
+		),
+		array(
+			'key' => 'field_5d570e0a7d32b',
+			'label' => 'Colors Settings',
+			'name' => 'dv_color',
+			'type' => 'group',
+			'instructions' => 'If the graph type is set to pie or the color data key is left blank, the name data will be linked to the palette',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'layout' => 'block',
+			'sub_fields' => array(
 				array(
-					'key' => 'field_5d5c592a34ddf',
-					'label' => 'Add Legends?',
-					'name' => 'legends',
-					'type' => 'true_false',
+					'key' => 'field_5d42ff755f462',
+					'label' => 'Color Palette',
+					'name' => 'palette',
+					'type' => 'repeater',
 					'instructions' => '',
 					'required' => 0,
 					'conditional_logic' => 0,
@@ -1789,8 +1868,83 @@ Key or column name of the data that will represent data based on the name key',
 						'class' => '',
 						'id' => '',
 					),
-					'message' => 'List legends on a corner',
-					'default_value' => 0,
+					'collapsed' => '',
+					'min' => 0,
+					'max' => 0,
+					'layout' => 'row',
+					'button_label' => '',
+					'sub_fields' => array(
+						array(
+							'key' => 'field_5d42ff995f463',
+							'label' => 'Color',
+							'name' => 'color',
+							'type' => 'color_picker',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+						),
+					),
+				),
+				array(
+					'key' => 'field_5d42ffcf5f464',
+					'label' => 'Colors Data Key',
+					'name' => 'data',
+					'type' => 'text',
+					'instructions' => 'Data key to link color scheme to. if layout is set to line, this will be applied to plot points and will override set points color',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'pie',
+							),
+							array(
+								'field' => 'field_5d420de06b6c9',
+								'operator' => '!=',
+								'value' => 'rows',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => 'dv-code',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => 'data[0].',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5d5ebcf2961ec',
+					'label' => 'Legend',
+					'name' => 'legend',
+					'type' => 'true_false',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5d42ffcf5f464',
+								'operator' => '!=empty',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'message' => 'Add list of colors and what data they represent',
+					'default_value' => 1,
 					'ui' => 0,
 					'ui_on_text' => '',
 					'ui_off_text' => '',
@@ -2021,86 +2175,6 @@ Key or column name of the data that will represent data based on the name key',
 					'maxlength' => '',
 					'rows' => 3,
 					'new_lines' => '',
-				),
-			),
-		),
-		array(
-			'key' => 'field_5d570e0a7d32b',
-			'label' => 'Colors Settings',
-			'name' => 'dv_color',
-			'type' => 'group',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'layout' => 'block',
-			'sub_fields' => array(
-				array(
-					'key' => 'field_5d42ff755f462',
-					'label' => 'Color Palette',
-					'name' => 'palette',
-					'type' => 'repeater',
-					'instructions' => 'Pie charts will use the name key as the color palette reference',
-					'required' => 0,
-					'conditional_logic' => 0,
-					'wrapper' => array(
-						'width' => '',
-						'class' => '',
-						'id' => '',
-					),
-					'collapsed' => '',
-					'min' => 0,
-					'max' => 0,
-					'layout' => 'row',
-					'button_label' => '',
-					'sub_fields' => array(
-						array(
-							'key' => 'field_5d42ff995f463',
-							'label' => 'Color',
-							'name' => 'color',
-							'type' => 'color_picker',
-							'instructions' => '',
-							'required' => 0,
-							'conditional_logic' => 0,
-							'wrapper' => array(
-								'width' => '',
-								'class' => '',
-								'id' => '',
-							),
-							'default_value' => '',
-						),
-					),
-				),
-				array(
-					'key' => 'field_5d42ffcf5f464',
-					'label' => 'Colors Data Key',
-					'name' => 'data_key',
-					'type' => 'text',
-					'instructions' => 'Data key to link color scheme to. if layout is set to line, this will be applied to plot points and will override set points color',
-					'required' => 0,
-					'conditional_logic' => array(
-						array(
-							array(
-								'field' => 'field_5d420a45de26f',
-								'operator' => '!=',
-								'value' => 'pie',
-							),
-						),
-					),
-					'wrapper' => array(
-						'width' => '',
-						'class' => 'dv-code',
-						'id' => '',
-					),
-					'default_value' => '',
-					'placeholder' => '',
-					'prepend' => 'data[0].',
-					'append' => '',
-					'maxlength' => '',
 				),
 			),
 		),

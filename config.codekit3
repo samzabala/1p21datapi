@@ -25,7 +25,7 @@
 		"oA": 1,
 		"oAP": "/assets/d3.v5.min-min.js",
 		"oF": 0,
-		"sC": 3,
+		"sC": 0,
 		"tS": 0
 		},
 	"/assets/main-min.js": {
@@ -36,7 +36,7 @@
 		"oA": 1,
 		"oAP": "/assets/main-min-min.js",
 		"oF": 0,
-		"sC": 3,
+		"sC": 0,
 		"tS": 0
 		},
 	"/assets/main.js": {
@@ -47,7 +47,7 @@
 		"oA": 0,
 		"oAP": "/assets/main.min.js",
 		"oF": 3,
-		"sC": 3,
+		"sC": 0,
 		"tS": 0
 		},
 	"/assets/main.min.js": {
@@ -58,7 +58,7 @@
 		"oA": 1,
 		"oAP": "/assets/main.min-min.js",
 		"oF": 0,
-		"sC": 3,
+		"sC": 0,
 		"tS": 0
 		},
 	"/assets/style.css": {
@@ -2103,7 +2103,7 @@
 		"bundleFormat": 0,
 		"createSourceMap": 0,
 		"minifyOutput": 1,
-		"syntaxCheckerStyle": 3,
+		"syntaxCheckerStyle": 0,
 		"transpilerStyle": 0
 		},
 	"languageDefaultsJSON": {

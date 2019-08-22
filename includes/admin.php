@@ -19,7 +19,6 @@
 
 //alow json,csv, and tsv files
     function _1p21_dv_allow_file_types($mimes) {
-        $mimes['json'] = 'application/json';
         $mimes['csv'] = 'text/csv';
         $mimes['tsv'] = 'text/tsv';
         return $mimes;
@@ -31,11 +30,11 @@
     function _1p21_dv_enqueue_scripts() {
         wp_register_script( 'd3','https://d3js.org/d3.v5.min.js',array(),false,true);
         
-        if(current_user_can('administrator')) {
+        // if(current_user_can('administrator')) {
             wp_register_script( '1p21-dv-d3', _1P21_DV_PLUGIN_URL . 'assets/main.js',array('d3'),null,true);
-        }else{
-            wp_register_script( '1p21-dv-d3', _1P21_DV_PLUGIN_URL . 'assets/main.min.js',array('d3'),null,true);
-        }
+        // }else{
+        //     wp_register_script( '1p21-dv-d3', _1P21_DV_PLUGIN_URL . 'assets/main.min.js',array('d3'),null,true);
+        // }
 
         wp_enqueue_script( 'd3' );
         wp_enqueue_script( '1p21-dv-d3' );

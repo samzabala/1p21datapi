@@ -174,11 +174,14 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                                     case 'scatter':
 
                                         $string_values = array();
+                                        
                                         $data_key_values = array();
+                                        
                                         $boolean_values = array();
+                                        
                                         $array_values_from_string =  array();
                                         $array_values_from_array = array();
-                                        $array_items_are_strings = array();
+                                            $array_items_are_strings = array();
 
                                         switch($attribute){
 
@@ -186,6 +189,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                                                 $array_values_from_array = array('palette');
                                                 $data_key_values = array('data');
                                                 $array_items_are_strings = array('palette');
+                                                $boolean_values = array('legend');
                                                 break;
 
                                             case 'x':
@@ -262,9 +266,10 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
                                                 // its in an array for real and must be translated very much
                                                 }elseif(in_array($sub_setting,$data_key_values)){
-                                                    $parsed_value = _1p21_parse_data_key($sub_value);
-
+                                                    $parsed_value = '\''._1p21_parse_data_key($sub_value).'\'';
                                                 }
+
+                                                // echo $sub_setting.'<br>';
                         
                         
                                                 $render .= _1p21_dv_dashes_to_camel_case($attribute.'_'.$sub_setting).": {$parsed_value},\n";
@@ -297,7 +302,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
         _1p21_dv_output_arr($data_visual);
         
     }else{
-        $render =  '<div class="data-visualizer no-data"><div class="data-visualizer-wrapper">Sorry, data visual does not exist</div></div>';
+        $render =  '<div class="data-visualizer no-data"><div class="data-visualizer-wrapper fatality">Sorry, the data visual does not exist</div></div>';
 
     }
 

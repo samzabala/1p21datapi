@@ -6,8 +6,11 @@
   .data-visualizer-title {
     font-size: 1.25em;
     font-weight: 700; }
-  .no-data .data-visualizer-wrapper {
-    padding: 4em 0; }
+  .data-visualizer-wrapper.fatality {
+    padding: 4em 0;
+    max-width: 28em;
+    font-size: .875em;
+    margin: 0 auto; }
   .data-visualizer-wrapper:empty {
     padding-bottom: 75%; }
     .data-visualizer-wrapper:empty:before {
@@ -27,10 +30,11 @@
     font-family: inherit !important; }
   .data-visualizer text {
     font-family: inherit !important; }
-  .data-visualizer-axis line, .data-visualizer-axis path, .data-visualizer-grid line, .data-visualizer-grid path {
+  .data-visualizer-axis line, .data-visualizer-axis path, .data-visualizer-grid line, .data-visualizer-grid path, .data-visualizer-label line, .data-visualizer-label path {
     stroke: #888; }
-  .data-visualizer-axis text, .data-visualizer-grid text {
-    fill: #888;
+  .data-visualizer-axis text, .data-visualizer-grid text, .data-visualizer-label text {
+    fill: #888; }
+  .data-visualizer-axis text, .data-visualizer-grid text, .data-visualizer-legend text {
     font-size: .625em; }
   .data-visualizer-grid line, .data-visualizer-grid path {
     stroke-opacity: .25; }
@@ -39,9 +43,9 @@
   .data-visualizer-fill.no-color,
   .data-visualizer-no-palette .data-visualizer-item rect,
   .data-visualizer-no-palette .data-visualizer-item circle {
-    fill: #444; }
+    fill: #222; }
   .data-visualizer .data-visualizer-line.no-color {
-    stroke: #444; }
+    stroke: #222; }
   .data-visualizer .data-visualizer-fill.no-color {
     fill-opacity: .25; }
   .data-visualizer-item-text {
@@ -51,6 +55,11 @@
     font-weight: 700; }
     .data-visualizer-item-text.dark {
       fill: #222; }
+    .data-visualizer-type-line .data-visualizer-item-text {
+      stroke: #EEE;
+      paint-order: stroke;
+      stroke-width: 4;
+      stroke-linejoin: round; }
   .data-visualizer-item-data-no-ticks .data-visualizer-item-data-0 {
     font-weight: 700;
     font-size: .75em; }

@@ -3,6 +3,8 @@
 /* DO NOT TOUCH I DEV ON THIS BOI I ENQUEUE THE MINIFIED ONE ANYWAY  :< */
 (function(window,d3){
     "use strict";
+
+
     var _1p21 = _1p21 || {};
 
     // helpful variables
@@ -27,96 +29,102 @@
         // get the opposite boi for alignmeny purposes
         oppositeAxisString = function(axisString) { return (axisString == 'x') ? 'y' : 'x'; };
 
+        //d3 does not support ie 11. kill it
+        function isIE(){
+            var ua = navigator.userAgent;
+            return ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1
+        }
+
+
         //string helpers
-        
-        // duh
-        String.prototype.getFileExtension = function() {
+            // duh
+            String.prototype.getFileExtension = function() {
 
-            return this.split('.').pop();
+                return this.split('.').pop();
 
-        }
-        
-        // duh
-        String.prototype.getHash = function() {
-
-            var hash = 0, i, chr;
-
-            if (this.length === 0) return hash;
-
-            for (i = 0; i < this.length; i++) {
-                chr   = this.charCodeAt(i);
-                hash  = ((hash << 5) - hash) + chr;
-                hash |= 0; // Convert to 32bit integer
-            }
-
-            return hash;
-
-        };
-
-        String.prototype.isValidJSONString = function() {
-
-            try {
-                JSON.parse(this);
-            } catch (e) {
-                return false;
-            }
-
-            return true;
-
-        }
-
-        String.prototype.toCamelCase = function(){
-
-            var str = this;
-
-            return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
-                return index == 0 ? word.toLowerCase() : word.toUpperCase();
-            }).replace(/\s+/g, '');
-
-        }
-
-        //is that bitch boi dark? thank u internet
-        var isDark = function(color) {
-
-            // Variables for red, green, blue values
-            var r, g, b, hsp;
-            
-            // Check the format of the color, HEX or RGB?
-            if (color.match(/^rgb/)) {
-        
-                // If HEX --> store the red, green, blue values in separate variables
-                color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
-                
-                r = color[1];
-                g = color[2];
-                b = color[3];
-            } 
-            else {
-                
-                // If RGB --> Convert it to HEX: http://gist.github.com/983661
-                color = +("0x" + color.slice(1).replace( 
-                color.length < 5 && /./g, '$&$&'));
-        
-                r = color >> 16;
-                g = color >> 8 & 255;
-                b = color & 255;
             }
             
-            // HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
-            hsp = Math.sqrt(
-                0.299 * (r * r) +
-                0.587 * (g * g) +
-                0.114 * (b * b)
-            );
-        
-            // Using the HSP value, determine whether the color is light or dark
-            
-            if (hsp>170) { //127.5
-                return false;
-            } else {
+            // duh
+            String.prototype.getHash = function() {
+
+                var hash = 0, i, chr;
+
+                if(this.length === 0) return hash;
+
+                for (i = 0; i < this.length; i++) {
+                    chr   = this.charCodeAt(i);
+                    hash  = ((hash << 5) - hash) + chr;
+                    hash |= 0; // Convert to 32bit integer
+                }
+
+                return hash;
+
+            };
+
+            String.prototype.isValidJSONString = function() {
+
+                try {
+                    JSON.parse(this);
+                } catch (e) {
+                    return false;
+                }
+
                 return true;
+
             }
-        }
+
+            String.prototype.toCamelCase = function(){
+
+                var str = this;
+
+                return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
+                    return index == 0 ? word.toLowerCase() : word.toUpperCase();
+                }).replace(/\s+/g, '');
+
+            }
+
+            //is that bitch boi dark? thank u internet
+            var isDark = function(color) {
+
+                // Variables for red, green, blue values
+                var r, g, b, hsp;
+                
+                // Check the format of the color, HEX or RGB?
+                if(color.match(/^rgb/)) {
+            
+                    // If HEX --> store the red, green, blue values in separate variables
+                    color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
+                    
+                    r = color[1];
+                    g = color[2];
+                    b = color[3];
+                } 
+                else {
+                    
+                    // If RGB --> Convert it to HEX: http://gist.github.com/983661
+                    color = +("0x" + color.slice(1).replace( 
+                    color.length < 5 && /./g, '$&$&'));
+            
+                    r = color >> 16;
+                    g = color >> 8 & 255;
+                    b = color & 255;
+                }
+                
+                // HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
+                hsp = Math.sqrt(
+                    0.299 * (r * r) +
+                    0.587 * (g * g) +
+                    0.114 * (b * b)
+                );
+            
+                // Using the HSP value, determine whether the color is light or dark
+                
+                if(hsp>170) { //127.5
+                    return false;
+                } else {
+                    return true;
+                }
+            }
     
 
     // function that is open to the pooblic. this initiates the speshal boi
@@ -124,6 +132,18 @@
         
         // this is where the bitches at
         var dataContainer = document.querySelector(selector);
+        
+        if(isIE()){
+            var error =  document.createElement('div')
+            error.className = prefix+'wrapper fatality';
+            error.innerHTML = 'Sorry, this graphic needs D3 to render the data but your browser does not support it.<br><br> Newer versions of Chrome, Edge, Firefox and Safari are recommended. <br><br>See <em><a target="_blank" rel="nofollow" href="https://d3-wiki.readthedocs.io/zh_CN/master/Home/#browser-platform-support">the official wiki</a></em> for more information';
+
+            dataContainer.appendChild(error);
+            
+
+            // break;
+            throw new Error('D3 not supported');
+        }
 
         //stor variables initiated after sucessful data call + parameter declaration set as something_`axis` so its easier to tell apart which shit is set by hooman and which one javascript sets up for hooman
         var _ = {};
@@ -138,24 +158,26 @@
                 marginOffset: 2,
                 transition: 2000,
                 delay: 300,
-            
+            //src
+                srcType: '',
+                srcPath: '',
+                srcKey: null,
+                
             // fields
-                type: 'bar',
                 dataKey: [
                     0, //data 1 / name
                     1 //data 2 / value
                 ],
+                type: 'bar',
                 nameIsNum: false,
     
-                //src
-                    srcType: '',
-                    srcPath: '',
-                    srcKey: null,
+                
 
     
                 //kulay
                     colorPalette : [],
                     colorData: null,
+                    colorLegend: false,
                 
                 //x settings
                     xData: 0,
@@ -208,7 +230,7 @@
         //merge defaults with custom
         var args = defaults;
         for (var prop in arr) {
-            if (arr.hasOwnProperty(prop)) {
+            if(arr.hasOwnProperty(prop)) {
                 // Push each value from `obj` into `extended`
                 args[prop] = arr[prop];
             }
@@ -281,11 +303,9 @@
             var value = multiIndex(obj,splitString);
             
 
-            if (isNum == true && isNaN(value)){
+            if(isNum == true && isNaN(value)){
 
-                console.log( selector,'oh god',value );
-                console.log(selector+' data with the key source of '+keysString+ ' was passed as numeric but is not.\n value is:',
-                value )
+                console.warn(selector+' data with the key source of '+keysString+ ' was passed as numeric but is not.' )
             }
             return value;
 
@@ -331,15 +351,12 @@
             switch(itemAtt){
                 
                 case 'color':
-
-                    if(args[ itemAtt+'Data'] == null){ 
-                        args[ itemAtt+'Data'] = args.dataKey[0];
-                    };
                     
                     var instances = dat.reduce(function(acc,dis){
                         if(!acc.includes(deepGet(dis,args[ itemAtt+'Data']))){
                             acc.push(deepGet(dis,args[ itemAtt+'Data']));
                         }
+                        
                         return acc;
                     },[]);
 
@@ -615,7 +632,7 @@
                             )
                         )
                         || (
-                            args.type !== 'bar' 
+                            args.type == 'line' 
                             && (
                                 args[oppositeAxisString(coordinate)+'Align'] == 'top'
                                 || args[oppositeAxisString(coordinate)+'Align'] == 'left'
@@ -633,12 +650,11 @@
                             )
                             || (
                                 args.type == 'line'
-                                && parseFloat(getBlobSize(coordinate,i)) >= (args[dimensionAttribute(oppositeAxisString(coordinate))] - _.mLength(coordinate,i))
+                                && parseFloat(getBlobSize(coordinate,dis,i)) >= (args[dimensionAttribute(oppositeAxisString(coordinate))] - _.mLength(coordinate,i))
                             )
                         )
                         && dataKeyI !== 0
                     ){
-
                         if( coordinate == 'x'  && args.type !== 'line'){
                             
                             value = getBlobSize(coordinate,dis,i);
@@ -649,6 +665,7 @@
                         }
                         
                     }
+                    
 
                     value *= multiplier;
                     
@@ -788,6 +805,40 @@
 
         }
 
+        var getLegendPosition = function(axisString){
+            if( _.container_legend ){
+                var offset = 0,
+                shifter = function(){
+                    var value = 0,
+                        multiplier = 1;
+
+                        if (
+                            args[oppositeAxisString(axisString)+'Align'] == 'left'
+                            || args[oppositeAxisString(axisString)+'Align'] == 'top'
+                        ){
+                            multiplier = -1;
+                            value = _.container_legend.nodes()[0].getBoundingClientRect()[dimensionAttribute(axisString)] * .75;
+                        }
+                        
+                    return value * multiplier;
+                };
+
+
+                if (
+                    args[oppositeAxisString(axisString)+'Align'] == 'left'
+                    || args[oppositeAxisString(axisString)+'Align'] == 'top'
+                ){
+                    offset = args[dimensionAttribute(axisString)];
+                }
+
+
+                return offset + shifter();
+
+            }
+            
+
+        }
+
         var getLinePath = function(data,isArea,initial){
 
             initial = initial || false;
@@ -861,105 +912,6 @@
 
         }
 
-        var setRuleContainer = function(axisString,containerObj,isGrid){
-            
-            var rule = containerObj.append('g')
-                .attr('class', function(){
-
-                        var contClass = null;
-
-                        if(isGrid){
-
-                            contClass =
-                                prefix
-                                + 'grid-'+axisString
-                                + ' grid-increment-' + args[axisString+'GridIncrement']
-                                + ' tick-amount-' + args[axisString+'TickAmount'];
-                            
-                        }else{
-
-                            contClass =
-                                prefix
-                                + 'axis-'+axisString+' '
-                                + prefix +'axis-align-'+args[axisString+'Align']
-                                + ' tick-amount' + args[axisString+'TickAmount'];
-
-                        }
-
-                        return contClass;
-
-                    }
-
-                );
-
-            var transformCoord = '';
-            
-            switch( axisString+' '+args[axisString+'Align'] ) {
-
-                case 'x bottom':
-                    transformCoord = '0,'+ args.height;
-                    break;
-
-                case 'y right':
-                    transformCoord = args.width+',0';
-                    break;
-
-                default: 
-                    transformCoord = '0,0'
-            }
-
-            rule.attr('transform','translate('+transformCoord+')');
-
-            return rule;
-        }
-
-
-
-
-        var setAxis = function(axisString,isGrid) {
-
-            var axis,
-                axisKey = 'Axis '+args[axisString+'Align'];
-
-            isGrid = isGrid || false;
-
-            axis = d3[axisKey.toCamelCase()](_['the_'+axisString]);
-
-            if(args[axisString +'Ticks']){
-
-                if(args[axisString +'TicksAmount']){
-                    
-                    var ticksAmount = function(){
-
-                        if( isGrid && args[axisString +'TicksAmount']  ){
-                            return args[axisString +'TicksAmount'] * args[axisString +'GridIncrement'];
-                        } else {
-                            return args[axisString +'TicksAmount']
-                        }
-
-                    };
-                    
-                    axis.ticks( ticksAmount() );
-                };
-
-                if(isGrid){
-
-                    axis.
-                        tickSize(-args[ dimensionAttribute( oppositeAxisString(axisString) ) ])
-                        .tickFormat("");
-
-                }else {
-                    axis
-                        .tickFormat(function(dis,i){
-                            return _['format_'+axisString](dis)
-                        })
-                }
-            }
-
-            return axis;
-            
-        }
-
         //set the scale function thingy for the axis shit
         var setScale = function(itemAtt){
             
@@ -995,46 +947,144 @@
             return axis;
 
         };
-        //generates rule_coord and axis_coord
+        //generates lab_coord, rule_coord and axis_coord
         var renderAxis = function(axisString,containerObj,isGrid) {
 
             if( args[axisString+'Ticks']) {
-                
-                var gridString = isGrid ? 'grid_' : '';
+                var gridString = isGrid ? 'grid_' : '',
+                    alignString = args[axisString+'Align'];
+                isGrid = isGrid || false;
 
                 // label
-                if( args[axisString+'Label'] ){
-                    
-                    _['lab_'+axisString] = _.cont_labels.append('text')
-                        .attr('class', prefix + 'label-'+axisString)
-                        .attr('y', function(){
-                            return getLabelPosition('y',axisString);
-                        })
-                        .attr('x', function(){
-                            return getLabelPosition('x',axisString);
-                        })
-                        .attr('font-size', '1em')
-                        .attr('text-anchor', 'middle')
-                        .text(args[axisString+'Label']);
+                    if( args[axisString+'Label'] ){
+                        
+                        _['lab_'+axisString] = _.container_lab.append('text')
+                            .attr('class', prefix + 'label-'+axisString)
+                            .attr('y', function(){
+                                return getLabelPosition('y',axisString);
+                            })
+                            .attr('x', function(){
+                                return getLabelPosition('x',axisString);
+                            })
+                            .attr('font-size', '1em')
+                            .attr('text-anchor', 'middle')
+                            .attr('opacity',0)
+                            .text(args[axisString+'Label']);
 
 
-                    if(axisString == 'y') {
-                        _['lab_'+axisString].attr('transform', 'rotate(-90)');
+                        if(axisString == 'y') {
+                            _['lab_'+axisString].attr('transform', 'rotate(-90)');
+                        }
+
+                        _['lab_'+axisString]
+                            .transition(_.duration)
+                            .attr('opacity',1);
+
                     }
-                }
 
                 //ruler
-                    _['rule_'+gridString+axisString] = setRuleContainer(axisString,containerObj,isGrid);
+                    _['rule_'+gridString+axisString] = containerObj.append('g')
+                        .attr('class', function(){
+        
+                                var contClass = null;
+        
+                                if(isGrid){
+        
+                                    contClass =
+                                        prefix
+                                        + 'grid-'+axisString
+                                        + ' grid-increment-' + args[axisString+'GridIncrement']
+                                        + ' tick-amount-' + args[axisString+'TickAmount'];
+                                    
+                                }else{
+        
+                                    contClass =
+                                        prefix
+                                        + 'axis-'+axisString+' '
+                                        + prefix +'axis-align-'+alignString
+                                        + ' tick-amount' + args[axisString+'TickAmount'];
+        
+                                }
+        
+                                return contClass;
+        
+                            }
+        
+                        );
+        
+                        var transformCoord = '';
+                    
+                        switch( axisString+' '+alignString ) {
+            
+                            case 'x bottom':
+                                transformCoord = '0,'+ args.height;
+                                break;
+            
+                            case 'y right':
+                                transformCoord = args.width+',0';
+                                break;
+            
+                            default: 
+                                transformCoord = '0,0'
+                        }
+        
+                    _['rule_'+gridString+axisString].attr('transform','translate('+transformCoord+')');
+    
 
                 //axis
-                    _['axis_'+gridString+axisString] = setAxis(axisString,isGrid);
+
+                    var axisKey = 'Axis '+ alignString;
+
+                    _['axis_'+gridString+axisString] = d3[axisKey.toCamelCase()](_['the_'+axisString]);
+
+                    if(args[axisString +'Ticks']){
+
+                        if(args[axisString +'TicksAmount']){
+                            
+                            var ticksAmount = function(){
+
+                                if( isGrid && args[axisString +'TicksAmount']  ){
+                                    return args[axisString +'TicksAmount'] * args[axisString +'GridIncrement'];
+                                } else {
+                                    return args[axisString +'TicksAmount']
+                                }
+
+                            };
+                            
+                            _['axis_'+gridString+axisString].ticks( ticksAmount() );
+                        };
+
+                        if(isGrid){
+
+                            _['axis_'+gridString+axisString].
+                                tickSize(-args[ dimensionAttribute( oppositeAxisString(axisString) ) ])
+                                .tickFormat("");
+
+                        }else {
+                            _['axis_'+gridString+axisString]
+                                .tickFormat(function(dis,i){
+                                    return _['format_'+axisString](dis)
+                                })
+                        }
+                    }
 
             }
         }
 
+        var setPiData = function(data){
+
+            var pie =  d3.pie()
+                .sort(null)
+                .value(function(dis,i){
+                    return deepGet(dis,args.dataKey[0])
+                });
+
+                return pie(data);
+        }
+
 
         //render a good boi
-        var setData = function(retrievedData){
+        var init = function(retrievedData){
             
             var data = null;
 
@@ -1047,7 +1097,8 @@
                 case 'bar':
                     _.graphItem = 'rect';
                     break;
-
+                case 'pie':
+                    _.graphItem = 'path';
                 case 'line':
                 case 'scatter':
 
@@ -1057,6 +1108,7 @@
             }
             // heck if src key exists
             data = args.srcKey ? deepGet(retrievedData,args.srcKey) : retrievedData;
+            //validation
             
             //sort data 0 so that it doesnt go forward then backward then forward on the graph which is weird
             if(args.nameIsNum){
@@ -1076,6 +1128,17 @@
                 data = sortable;
             }
 
+            //validate color args
+            //if color data key aint set put in name
+            if(!(arr.colorData)){ 
+                args.colorData = args.dataKey[0];
+
+                //if legend was not fucked with we take the authority to kill legend
+                if(!arr.colorLegend){
+                    args.colorLegend = false;
+                }
+            };
+
 
             //canvas
                 _.off_x = getCanvasPadding('x'),
@@ -1089,12 +1152,17 @@
                     .attr('class', prefix + 'wrapper');
 
                 _.dimensionString = '0 0 '+ _.outerWidth +' ' + _.outerHeight;
+                
 
                 _.svg = _.canvas.append('svg')
                     .attr('id',selector+'-svg')
+                    .attr('version','1.1')
+                    .attr('x','0px')
+                    .attr('y','0px')
                     .attr('class', prefix + 'svg')
                     .attr('viewBox',_.dimensionString)
-                    .attr("preserveAspectRatio", "xMinYMin meet")
+                    .attr("preserveAspectRatio", "xMaxYMax meet")
+                    .attr('xml:space','preserve')
                     .style('style','enable-background','new '+_.dimensionString)
                     .attr('width',_.outerWidth)
                     .attr('height',_.outerHeight);
@@ -1147,19 +1215,23 @@
                 _.container.attr('transform','translate('+ transformX +','+ transformY +')');
                 
             if(args.type == 'pie'){
+                //setup data to be used by pi
+                data = setPiData(data);
+
+                console.log(data);
 
             }else{
                 
-                // legends and shit
-                _.cont_labels = _.container.append('g')
-                    .attr('class', prefix + 'labels');
+                // labels and shit
+                _.container_lab = _.container.append('g')
+                    .attr('class', prefix + 'label');
     
                 //axis
-                _.cont_rule = _.container.append('g')
+                _.container_rule = _.container.append('g')
                     .attr('class', prefix + 'axis');
                     
                 //kung may grid gibo kang grid
-                (args.xGrid || args.yGrid) && (_.cont_grid = _.container.append('g')
+                (args.xGrid || args.yGrid) && (_.container_grid = _.container.append('g')
                     .attr('class', prefix + 'grid'));
 
                 itemAtts.forEach(function(itemAtt){
@@ -1177,12 +1249,12 @@
                         case 'x':
                         case 'y':
 
-                            renderAxis(itemAtt,_.cont_rule)
+                            renderAxis(itemAtt,_.container_rule)
 
                             //formatter
                             _['format_'+itemAtt] = (function(){
 
-                                if (typeof args[itemAtt+'Parameter'] === 'function' ) {
+                                if(typeof args[itemAtt+'Parameter'] === 'function' ) {
                                     return args[itemAtt+'Parameter']
 
                                 }else if( typeof args[itemAtt+'Parameter'] === 'string'  ) {
@@ -1204,40 +1276,18 @@
                                 }
                             }());
 
-                            if( args[itemAtt+'Ticks'] ){
-                                
-                                _['rule_'+itemAtt].transition(args.delay).call( _['axis_'+itemAtt])
-                                    .attr('font-family','inherit')
-                                    .attr('font-size',null);
-    
-                                if(args[itemAtt+'Grid']){
-                                    
-                                    renderAxis(itemAtt,_.cont_grid,true)
-                                    _['rule_grid_'+itemAtt].call( _['axis_grid_'+itemAtt]);
-
-                                    _['rule_grid_'+itemAtt].selectAll('.tick')
-                                        .attr('class',function(dis,i){
-                                            var classString = 'grid';
-                                            
-                                            //IM HERE FUCKER
-                                            _['rule_'+itemAtt].selectAll('.tick').each(function(tik){
-                                                //if current looped tik matches dis grid data, add the class boi
-                                                (tik == dis) && (classString += ' tick-aligned');
-                                            })
-
-                                            return classString;
-
-                                        })
-
-                                }
-
+                            if(args[itemAtt+'Grid']) {
+                                renderAxis(itemAtt,_.container_grid,true)
                             }
 
-                        case 'color':
-                            //colors kung meron
-                            if(!(args.colorPalette.length > 0)) {
-                                break;
-                            }
+                            
+
+                        // case 'color':
+                        //     //colors kung meron
+                        //     if(args.colorPalette.length) {
+                         
+                        //         break;
+                        //     }
                             
                         default:
                         
@@ -1249,10 +1299,10 @@
 
 
                 //select
-                _.graph = _.container.insert('g')
-                    .attr(
-                        'class',
+                _.container_graph = _.container.insert('g')
+                    .attr('class',
                         prefix + 'graph' + ' '
+                        + prefix + 'type-' + args.type + ' '
                         + prefix + ( (args.colorPalette.length > 0 || args.linePointsColor !== null || args.lineColor !== null) ?  'has-palette' : 'no-palette' )
                         + ((!args.xTicks && !args.yTicks) ? ' '+prefix+'item-data-no-ticks' : '')
                     );
@@ -1260,24 +1310,24 @@
                     if(
                         args.width == defaults.width
                         && args.height == defaults.height
-                        && data.length > 10
+                        && data.length > 9
                     ){
                         
-                        // console.warn(selector+' Width and height was not adjusted. graph elements may not fit in the canvas');
+                        console.warn(selector+' Width and height was not adjusted. graph elements may not fit in the canvas');
                     
                     }else if(
                         args.width < defaults.width
                         && args.height < defaults.height
                     ){
 
-                        // console.warn(selector+' set canvas width and or height may be too small.\n Tip: The given height and width are not absolute and act more like aspect ratios. svgs are responsive and will shrink along with content.');
+                        console.warn(selector+' set canvas width and or height may be too small.\n Tip: The given height and width are not absolute and act more like aspect ratios. svgs are responsive and will shrink along with content.');
 
                     }
 
                 if(!(args.type == 'line' && !args.linePoints)){
 
 
-                    _.blob = _.graph.selectAll(_.graphItem)
+                    _.blob = _.container_graph.selectAll(_.graphItem)
                         .data(data,function(dis){
                             return dis[args.dataKey[args.xData]]
                         });
@@ -1296,7 +1346,7 @@
                 if(graphPosition < (window.innerHeight * .5) && !_.dv_init) {
                     _.dv_init = true;
                     setTimeout(function(){
-                        renderGraph(_,data);
+                        renderGraph(data);
                     },args.delay);
                 }
             },true);
@@ -1307,12 +1357,12 @@
 
 
         // tick inits
-        var renderGraph = function(_,data) {
+        var renderGraph = function(data) {
             // ok do the thing now
             console.log(selector,'-------------------------------------------------------------------')
-            console.log('calculated',_);
-            // console.log('data',dat);
-            console.log('args',args);
+            // console.log('calculated',_);
+            // // console.log('data',dat);
+            // console.log('args',args);
 
                 
             // console.log('x');
@@ -1325,17 +1375,50 @@
             // console.log('domain',_.dom_y);
             // console.log('range',_.range_y);
 
+            // console.log('\n');
 
             //generate the graph boi
 
             if(args.type == 'pie'){
                 
             }else{
+                // axis 
+                coordinates.forEach(function(coordinate){
+
+                    if( args[coordinate+'Ticks'] ){
+                                
+                        _['rule_'+coordinate].transition(args.delay).call( _['axis_'+coordinate])
+                            .attr('font-family','inherit')
+                            .attr('font-size',null);
+    
+                        if(args[coordinate+'Grid']){
+                            
+                            _['rule_grid_'+coordinate].call( _['axis_grid_'+coordinate]);
+    
+                            _['rule_grid_'+coordinate].selectAll('.tick')
+                                .attr('class',function(dis,i){
+                                    var classString = 'grid';
+                                    
+                                    //IM HERE FUCKER
+                                    _['rule_'+coordinate].selectAll('.tick').each(function(tik){
+                                        //if current looped tik matches dis grid data, add the class boi
+                                        (tik == dis) && (classString += ' tick-aligned');
+                                    })
+    
+                                    return classString;
+    
+                                })
+    
+                        }
+    
+                    }
+                });
+                
                 if(args.type == 'line'){
 
 
                     if(args.lineFill){
-                        _.fill = _.graph.append('path')
+                        _.fill = _.container_graph.append('path')
                         .attr('class',prefix+'fill'+ ((args.lineFillColor !== null) ? ' has-color' : ' no-color' ))
                         .attr('fill-opacity',0)
                         .attr('d',function(){
@@ -1356,7 +1439,7 @@
                     }
 
 
-                    _.line = _.graph.append('path')
+                    _.line = _.container_graph.append('path')
                         .attr('class',prefix+'line' + ((args.lineColor !== null) ? ' has-color' : ' no-color' ))
                         .attr('fill','none')
                         .attr('stroke-width',args.lineWeight)
@@ -1455,7 +1538,7 @@
                         }else{
                             _.blobItem
                                 .attr('fill',function(dis,i){
-                                    return _.the_color(dis[args.colorData]);
+                                    return _.the_color(deepGet(dis,args.colorData));
                                 });
                         }
 
@@ -1518,7 +1601,7 @@
                             .attr('font-size',null)
                             .text(function(dis,i){
                                 return _['format_'+coordinate](
-                                    deepGet(dis,args.dataKey[ args[coordinate+'Data'] ]),
+                                    deepGet(dis,args.dataKey[ args[coordinate+'Data'] ])
                                 );
                             })
                             .attr('x',getBlobTextBaselineShift('x',coordinate))
@@ -1559,7 +1642,7 @@
                                         || (
                                             (args.colorPalette.length > 0)
                                             && (parseFloat(getBlobSize(coordinate,dis,i,false)) >= _.mLength(coordinate,i))
-                                            && !isDark( _.the_color(dis[args.colorData]) )
+                                            && !isDark( _.the_color(deepGet(dis,args.colorData)) )
                                         )
                                     )
                                 )
@@ -1586,48 +1669,73 @@
                     .style('opacity',1);
             }
 
+            //legends boi
+            if(args.colorLegend){
 
-        }
-
-
-        switch(args.srcPath.getFileExtension()) {
-            case 'csv':
-                d3.csv(args.srcPath).then(function(data){
-                    setData(data);
-                });
-                break;
-            case 'tsv':
-                d3.tsv(args.srcPath).then(function(data){
-                    setData(data);
-                });
-                break;
-            
-            case 'json':
-                d3.json(args.srcPath).then(function(data){
-                    setData(data);
-                });
-                break;
-            //probably embeded
-            default:
-                if(args.srcPath.getHash()){
-                    var jsonSelector = dataContainer.querySelector('script[type="application/json"]').innerHTML;
+                _.container_legend = _.container.append('g')
+                    .attr('class',prefix+'legend');
                     
-                    if(jsonSelector.isValidJSONString()){
+                    
+                _.dom_color.forEach(function(key,i){
+                    _.legend = _.container_legend.append('g')
+                        .attr('class',prefix+'legend-item')
 
-                        var dataIsJSON = JSON.parse(jsonSelector);
-                        setData(dataIsJSON);
 
-                    }else{
-                        if(args.srcType == 'text'){
+                    _.legend.append('rect')
+                        .attr('width','1em')
+                        .attr('height','1em')
+                        .attr('fill',_.the_color(key) );
 
-                            console.error('Data input may not be valid. Please check and update the syntax')
-                        }else{
+                    _.legend.append("text")
+                        .text(key)
+                        .attr('x','2em')
+                        .attr('y','1.25em')
 
-                            console.error('The data source is not a supported format. Please make sure data is linked either as a json,csv, tsv or direct input in the fields')
-                        }
-                    }
-                }
+                        
+                    _.legend
+                        .attr("transform", "translate(0, " + (i * _.legend.nodes()[0].getBoundingClientRect().height ) + ")");
+                });
+
+
+                _.container_legend
+                    .attr('opacity','0')
+                    .attr('transform','translate('+getLegendPosition('x')+','+getLegendPosition('y')+')');
+
+                _.container_legend
+                    .transition(_.duration)
+                    .attr('opacity','1')
+            }
+
+
         }
+
+        if(args.srcType == 'text' || args.srcType == 'rows'){
+            var jsonSelector = dataContainer.querySelector('script[type="application/json"]').innerHTML;
+            
+            if(jsonSelector.isValidJSONString()){
+
+                var dataIsJSON = JSON.parse(jsonSelector);
+                init(dataIsJSON);
+            }else{
+                console.error('Data input may not be valid. Please check and update the syntax')
+            }
+
+
+        }else{
+            switch(args.srcPath.getFileExtension()) {
+                case 'csv':
+                    d3.csv(args.srcPath,function(d){ return d; }).then(init);
+                    break;
+                case 'tsv':
+                    d3.tsv(args.srcPath,function(d){ return d; }).then(init);
+                    break;
+                
+                default:
+                    d3.json(args.srcPath,function(d){ return d; }).then(init);
+                    break;
+            }
+        }
+
         
         
         

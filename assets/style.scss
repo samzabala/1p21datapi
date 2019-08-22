@@ -1,10 +1,21 @@
+
 $prefix: '.data-visualizer';
+$color-bg: #EEE;
+$color-base: #222;
+$color-neutral: #888;
+$color-white: #FFF;
+
+// $color-base: #444;
+
+
 
 #{$prefix} {
-    background: #EEE;
+    background: $color-bg;
     position:relative;
     text-align: center;
     padding: 2.5em 1em 1em;
+
+    // * { outline: 1px solid red!important}
 
     &-title {
         font-size: 1.25em;
@@ -12,8 +23,11 @@ $prefix: '.data-visualizer';
     }
 
     &-wrapper {
-        .no-data & {
+        &.fatality {
             padding: 4em 0;
+            max-width: 28em;
+            font-size: .875em;
+            margin: 0 auto;
         }
 
         &:empty {
@@ -45,13 +59,21 @@ $prefix: '.data-visualizer';
     }
 
     &-axis,
-    &-grid {
+    &-grid,
+    &-label {
         line,path {
-            stroke: #888;
+            stroke: $color-neutral;
         }
 
         text {
-            fill: #888;
+            fill: $color-neutral;
+        }
+    }
+
+    &-axis,
+    &-grid,
+    &-legend {
+        text{
             font-size: .625em;
         }
     }
@@ -72,11 +94,11 @@ $prefix: '.data-visualizer';
     &-fill.no-color,
     &-no-palette #{$prefix}-item rect,
     &-no-palette #{$prefix}-item circle {
-        fill: #444;
+        fill: $color-base;
     }
     
     #{$prefix}-line.no-color {
-        stroke: #444;
+        stroke: $color-base;
     }
     
     #{$prefix}-fill.no-color {
@@ -87,13 +109,20 @@ $prefix: '.data-visualizer';
         
 
         &-text {
-            fill: #FFF;
+            fill: $color-white;
             line-height: 2;
             font-size: 1em;
             font-weight: 700;
 
             &.dark {
-                fill: #222;
+                fill: $color-base;
+            }
+
+            #{$prefix}-type-line & {
+                stroke: $color-bg;
+                paint-order: stroke;
+                stroke-width: 4;
+                stroke-linejoin: round;
             }
             
         }
