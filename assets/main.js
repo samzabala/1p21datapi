@@ -1154,14 +1154,15 @@
             switch(args.type){
 
                 case 'bar':
-                    _.graphItem = 'rect';
+                    _.graph_item_element = 'rect';
                     break;
                 case 'pie':
-                    _.graphItem = 'path';
+                    _.graph_item_element = 'path';
+                    break;
                 case 'line':
                 case 'scatter':
 
-                    _.graphItem = 'circle';
+                    _.graph_item_element = 'circle';
                     break;
 
             }
@@ -1393,7 +1394,7 @@
                 if(!(args.type == 'line' && !args.linePoints)){
 
 
-                    _.blob = _.container_graph.selectAll(_.graphItem)
+                    _.blob = _.container_graph.selectAll(_.graph_item_element)
                         .data(data,function(dis){
                             return deepGet(dis,args.key[0])
                         });
@@ -1555,7 +1556,7 @@
                         
 
                 _.blobItem = _.blobWrap
-                    .append(_.graphItem)
+                    .append(_.graph_item_element)
                     .attr(
                         (args.type == 'line' || args.type == 'scatter') ? 'cx' : 'x',
                         function(dis,i){
