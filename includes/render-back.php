@@ -22,6 +22,8 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
         //validation booleans and shit
         $validation_src_color_row_exists = false;
+        //validation booleans and shit
+        $validation_src_scatter_row_exists = false;
 
         require _1P21_DV_PLUGIN_PATH . 'fields/acf-cpt.php';
     
@@ -72,17 +74,20 @@ function _1p21_dv_get_data_visual_object($args = array()) {
                     $parsed_src_rows[$i][1] = $row[1];
 
 
-                    if( !empty($data_visual['color']['palette']) && $data_visual['type'] !== 'pie' && $parsed_src_rows[$i][2] ) {
+                    if( !empty($data_visual['color']['palette']) && $data_visual['type'] !== 'pie' && $parsed_src_rows[$i]['color'] ) {
 
                         if($validation_src_color_row_exists == false){
                             $validation_src_color_row_exists = true;
                         }
 
-                        $parsed_src_rows[$i][2] = $row[2];
+                        $parsed_src_rows[$i]['color'] = $row['color'];
                     }
 
-                    if(  $data_visual['src']['type'] == 'scatter' && $parsed_src_rows[$i][3] ) {
-                        $parsed_src_rows[$i][3] = $row[3];
+                    if(  $data_visual['src']['type'] == 'scatter' && $parsed_src_rows[$i]['area'] ) {
+                        if($validation_src_scatter_row_exists == false){
+                            $validation_src_scatter_row_exists = true;
+                        }
+                        $parsed_src_rows[$i]['area'] = $row['area'];
                     }
                 }
 
@@ -92,18 +97,46 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
         $data_visual['src'] = $data_src_arr;
 
-        //get rid based from src
-        if(
-            $data_visual['src']['type'] == 'row'
-            || (!$data_visual['data_key'][0] && !$data_visual['data_key'][1])
-        ){
-            $data_visual['data_key'] = [0,1]; //default in js is [0,1]
+        //validate data lkeys
+        if( $data_visual['src']['type'] == 'rows' ){
+            $data_visual['key'] = array(
+                0=>0,
+                1=>1
+            );
+
+            if($validation_src_color_row_exists == true){
+                $data_visual['key']['color'] = 'color';
+            }
+
+            if($validation_src_scatter_row_exists == true){
+                $data_visual['key']['scatter'] = 'scatter';
+            }
         }
+        
+
+            
+        if( $data_visual['type'] !== 'scatter' ){
+            unset($data_visual['key']['area']);
+        }
+        
+        if( $data_visual['type'] == 'pie' ){
+            unset($data_visual['key']['color']);
+        }
+
+
+
 
         // parse and remove itemz we dont need
         //remove based on type
         if($data_visual['type'] !== 'line' && $data_visual['type'] !== 'scatter'){
             unset($data_visual['name_is_num']);
+        }
+
+
+        //validate format 
+
+        if( !$data_visual['name_is_num'] ){
+            unset($data_visual['format'][0]['divider']);
         }
 
         if ($data_visual['type'] !== 'pie') {
@@ -129,7 +162,7 @@ function _1p21_dv_get_data_visual_object($args = array()) {
                             unset($data_visual[$coordinate]['min']);
                             unset($data_visual[$coordinate]['max']);
                             unset($data_visual[$coordinate]['ticks_amount']);
-                            unset($data_visual[$coordinate]['divider']);
+                            // unset($data_visual[$coordinate]['divider']);
                         }
 
                         if(!isset($data_visual[$coordinate]['grid']) && !($data_visual[$coordinate]['ticks_amount'] > 0)){
@@ -161,7 +194,7 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
         }else{
             unset($data_visual['x'],$data_visual['y'],$data_visual['line'],$data_visual['color']['data']);
-            $data_visual['color']['legend'] = true;
+            // $data_visual['color']['legend'] = true;
         }
 
         //parse olors array is ugly lets make it pretty
@@ -172,13 +205,6 @@ function _1p21_dv_get_data_visual_object($args = array()) {
         }
         
         $data_visual['color']['palette'] = $data_palette_arr;
-        
-    
-        //colordata key oh god
-        if( $data_visual['src']['type'] == 'rows' && $validation_src_color_row_exists == true ){
-            $data_visual['color']['data'] = 2;
-
-        }
 
 
         return $data_visual;

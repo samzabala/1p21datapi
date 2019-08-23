@@ -112,17 +112,17 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                                         break;
 
 
-                                    case 'data_key':
+                                    case 'key':
 
-                                        $parsed_data_keys_arr = [];
-
-                                        foreach($value as $coordinate_keys){
-                                            $coordinate = _1p21_parse_data_key($coordinate_keys);
-                                            $parsed_data_keys_arr[] = $coordinate;
-                                        }
-
-                                        $parsed_data_keys_arr_string = implode('\',\'',$parsed_data_keys_arr);
-                                        $render .= _1p21_dv_dashes_to_camel_case($attribute) .": ['{$parsed_data_keys_arr_string}'],\n";
+                                        $parsed_keys_arr_string = implode(',',array_map(
+                                            function($value,$key){
+                                                
+                                                return $key.' :\'' . _1p21_parse_data_key($value) . '\'';
+                                            },
+                                            $value,
+                                            array_keys($value)
+                                        ));
+                                        $render .= _1p21_dv_dashes_to_camel_case($attribute) .": {{$parsed_keys_arr_string}},\n";
 
                                         break;
 
@@ -162,11 +162,32 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                                         }
 
                                         break;
+
+                                    
+                                    case 'format':
+                                        foreach($value as $key_string=>$sub_fields){
+
+                                            $attribute_string_prepend = $attribute.'_'.$key_string;
+
+                                            foreach($sub_fields as $sub_key=>$sub_value){
+                                                $attribute_string_prepend.'_'.$sub_key.'<br>';
+
+                                                $parsed_value = $sub_value;
+
+                                                if($sub_key == 'prepend' || $sub_key == 'append' ){
+                                                    $parsed_value = '\''.$sub_value.'\'';
+                                                }
+                                                if($sub_value){
+                                                    $render .= _1p21_dv_dashes_to_camel_case($attribute_string_prepend.'_'.$sub_key). ":".$parsed_value.",\n";
+                                                }
+                                            }
+                                        }
+                                        break;
                                     
                                         
-                                    case 'color':
                                     case 'x':
                                     case 'y':
+                                    case 'color':
                                     case 'line':
                                     case 'pi':
                                     case 'name':
@@ -175,7 +196,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
                                         $string_values = array();
                                         
-                                        $data_key_values = array();
+                                        // $data_key_values = array();
                                         
                                         $boolean_values = array();
                                         
@@ -187,14 +208,13 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
                                             case 'color':
                                                 $array_values_from_array = array('palette');
-                                                $data_key_values = array('data');
                                                 $array_items_are_strings = array('palette');
                                                 $boolean_values = array('legend');
                                                 break;
 
                                             case 'x':
                                             case 'y':
-                                                $string_values = array('align','label','prepend','append');
+                                                $string_values = array('align','label');
                                                 $boolean_values = array('ticks','grid');
                                                 break;
 
@@ -207,12 +227,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                                             case 'pi':
                                                 $string_values = array('label_style');
                                                 break;
-                                            
-                                            
-                                            case 'name':
-                                            case 'value':
-                                                $string_values = array('prepend','append');
-                                                break;
+                                                    
                                             
                                         }
                                         
@@ -265,8 +280,6 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                                                     $parsed_value  = $implode_wrapper[0] . $array_value . $implode_wrapper[1];
 
                                                 // its in an array for real and must be translated very much
-                                                }elseif(in_array($sub_setting,$data_key_values)){
-                                                    $parsed_value = '\''._1p21_parse_data_key($sub_value).'\'';
                                                 }
 
                                                 // echo $sub_setting.'<br>';
@@ -299,7 +312,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
         $render .= "</div>";
 
 
-        _1p21_dv_output_arr($data_visual);
+        // _1p21_dv_output_arr($data_visual);
         
     }else{
         $render =  '<div class="data-visualizer no-data"><div class="data-visualizer-wrapper fatality">Sorry, the data visual does not exist</div></div>';

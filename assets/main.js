@@ -11,7 +11,8 @@
     var coordinates = ['x','y'],
 
         //check if the graph item's length is enough for vertical bois idk i'll work on this some more later
-        itemAtts = ['x','y','color','area','r'], 
+        itemAtts = ['x','y','color','r'],
+        datumKeys = [0,1,'color','area'], 
 
         //yeeee
         prefix = 'data-visualizer-', 
@@ -20,14 +21,14 @@
         textOffset = 15,
 
         //get the length attribute to associate with the axis bro
-        dimensionAttribute = function(axisString,opposite){
+        getDimension = function(axisString,opposite){
 
             return opposite ?  ((axisString == 'x') ? 'height' : 'width') : ((axisString == 'x') ? 'width' : 'height');
 
         },
 
         // get the opposite boi for alignmeny purposes
-        oppositeAxisString = function(axisString) { return (axisString == 'x') ? 'y' : 'x'; };
+        getAxisStringOppo = function(axisString) { return (axisString == 'x') ? 'y' : 'x'; };
 
         //d3 does not support ie 11. kill it
         function isIE(){
@@ -164,12 +165,34 @@
                 srcKey: null,
                 
             // fields
-                dataKey: [
-                    0, //data 1 / name
-                    1 //data 2 / value
-                ],
                 type: 'bar',
                 nameIsNum: false,
+
+                //keys
+                    key: {
+                        0:0,
+                    1: 1,
+                    color: null,
+                    area: null
+                },
+                
+                //format
+                    // name
+                        format0Prepend: '',
+                        format0Append: '',
+                        format0Parameter: null,
+
+                    
+                    // value
+                        format1Prepend: '',
+                        format1Append: '',
+                        format1Parameter: null,
+                        format1Divider: 1,
+                    
+                    // color
+                        format1Prepend: '',
+                        format1Append: '',
+                        format1Parameter: null,
     
                 
 
@@ -222,9 +245,8 @@
                     lineDash: [100,0],
                 
                 //pi
-        
-                //area? in case scatter plot ir pi idk what the fuck i'm doing right now but its here in case. yes i shall need this boi
-                    areaKey: '',
+                piLabelStyle: null,
+                piInRadius: 0
         };
 
         //merge defaults with custom
@@ -235,6 +257,16 @@
                 args[prop] = arr[prop];
             }
         }
+
+
+
+        var getAxisString = function(key){
+            if (key == 0 || key == 1){
+                return (args.xData == key) ? 'x' : 'y'
+            }else{
+                return key;
+            }
+        };
 
         // set up padding around the graph
         // @param axisString : duh 
@@ -252,12 +284,12 @@
                 }
         
                 // x axis with name keys need more space because text is long
-                if(axisString == 'x' && args[oppositeAxisString(axisString)+'Data'] == 0 ){
+                if(axisString == 'x' && args[getAxisStringOppo(axisString)+'Data'] == 0 ){
                     
                     padding = (args.margin * (args.marginOffset * 1.75));
 
                     //link @ line 123 boi
-                    if( args[oppositeAxisString(axisString)+'Label'] ){
+                    if( args[getAxisStringOppo(axisString)+'Label'] ){
                         padding = padding + (args.marginOffset * .5);
                     }
 
@@ -273,9 +305,9 @@
         // @param obj : duh 
         // @param keystring : hooman provided object key string that is hopefully correct 
         // @param isNum : if the data is a number 
-        var deepGet = function (obj,keysString, isNum) { 
+        var deepGet = function (obj,keyString, isNum) {
             
-            var splitString = keysString.toString().split('.');
+            var splitString = keyString.toString().split('.');
             isNum = isNum || false;
 
             //remove empty instances because they just mess with the loop
@@ -292,7 +324,7 @@
                 if(is.length){
                     toReturn = multiIndex(obj[is[0]],is.slice(1))
                 }else{
-                    toReturn = isNum ? parseFloat(obj) : obj;
+                    toReturn = ( isNum == true ) ? parseFloat(obj) : obj;
 
 
                 }
@@ -305,7 +337,7 @@
 
             if(isNum == true && isNaN(value)){
 
-                console.warn(selector+' data with the key source of '+keysString+ ' was passed as numeric but is not.' )
+                console.warn(selector+' data with the key source of `'+keyString+ '` was passed as numeric but is not.' )
             }
             return value;
 
@@ -313,48 +345,52 @@
 
         //set range of the bois
         // @param itemAtt : duh
-        var getRange = function(itemAtt){
+        var getRange = function(key){
 
             var range = [];
 
-            switch(itemAtt){
+            switch(key){
 
                 case 'color':
 
-                    range = args[itemAtt+'Palette'];
+                    range = args[key+'Palette'];
                     break;
 
-                    case 'x':
-                    case 'y':
-                        
-                        if(args[oppositeAxisString(itemAtt)+'Align'] == 'top' || args[oppositeAxisString(itemAtt)+'Align'] == 'left') {
-                            range = [ 0, args[ dimensionAttribute(itemAtt) ] ];
-                        }else{
-                            range = [ args[ dimensionAttribute(itemAtt) ] , 0 ];
-                        }
+                case 0:
+                case 1:
+                    
+                    if(
+                        args[ getAxisStringOppo( getAxisString(key)) + 'Align'] == 'top'
+                        || args[getAxisStringOppo( getAxisString(key))+'Align'] == 'left'
+                    ) {
+                        range = [ 0, args[ getDimension(getAxisString(key)) ] ];
+                    }else{
+                        range = [ args[ getDimension(getAxisString(key)) ] , 0 ];
+                    }
 
-                        break;
+                    break;
 
             }
-
+            
             return range;
         }
 
         //set domain of the bois
         // @param itemAtt : duh
         // @param dat : ooh boi
-        var getDomain = function(itemAtt,dat){
+        var getDomain = function(keyKey,dat){
 
-            var dataKeyOrI =  args[ itemAtt+'Data'],
-                domain = [];
-
-            switch(itemAtt){
+            var domain = [],
+            keyString = args.key[ keyKey ];
+            if(keyString){
+            switch(keyKey){
                 
                 case 'color':
+                case 'area':
                     
                     var instances = dat.reduce(function(acc,dis){
-                        if(!acc.includes(deepGet(dis,args[ itemAtt+'Data']))){
-                            acc.push(deepGet(dis,args[ itemAtt+'Data']));
+                        if(!acc.includes(deepGet(dis, keyString ))){
+                            acc.push(deepGet(dis, keyString ));
                         }
                         
                         return acc;
@@ -364,28 +400,28 @@
 
                     break;
 
-                case 'x':
-                case 'y':
+                case 0:
+                case 1:
 
-                    if(args.nameIsNum || dataKeyOrI == 1){
+                    if(args.nameIsNum || keyKey == 1){
 
                         var min,max;
 
                         //min
-                        if(args[itemAtt + 'Min'] !== null){
-                            min = args[itemAtt + 'Min'];
+                        if(args[getAxisString(keyKey) + 'Min'] !== null){
+                            min = args[getAxisString(keyKey) + 'Min'];
                         }else{
                             min = d3.min(dat,function(dis){
-                                return deepGet(dis,args.dataKey[ dataKeyOrI ],true);
+                                return deepGet(dis, keyString, true);
                             });
                         }
                         
                         //max
-                        if(args[itemAtt + 'Max'] !== null){
-                            max = args[itemAtt + 'Max']
+                        if(args[getAxisString(keyKey) + 'Max'] !== null){
+                            max = args[getAxisString(keyKey) + 'Max']
                         }else{
                             max = d3.max(dat,function(dis){
-                                return deepGet(dis,args.dataKey[ dataKeyOrI ],true);
+                                return deepGet(dis,keyString,true);
                             });
                         }
 
@@ -394,7 +430,7 @@
                     }else{
                         
                         domain =  dat.map(function(dis){
-                            return deepGet(dis,args.dataKey[ dataKeyOrI ],false);
+                            return deepGet(dis, keyString, false);
                         });
 
                     }
@@ -402,7 +438,8 @@
                     break;
 
                 }
-
+            }
+                
             return domain;
         };
 
@@ -414,11 +451,11 @@
 
                 if(axisString == 'x'){
 
-                    offset = args[dimensionAttribute(axisString)] / 2;
+                    offset = args[getDimension(axisString)] / 2;
 
                 }else if(axisString == 'y'){
 
-                    offset = -(args[dimensionAttribute(axisString)] / 2)
+                    offset = -(args[getDimension(axisString)] / 2)
                     
                 };
                 
@@ -428,7 +465,7 @@
 
                     if(args[axisString+'Align'] == 'bottom'){
 
-                        offset = args[dimensionAttribute(axisString,true)] + (_.off_y - (args.margin * .125)); 
+                        offset = args[getDimension(axisString,true)] + (_.off_y - (args.margin * .125)); 
                         
                     }else{
 
@@ -440,7 +477,7 @@
 
                     if(args[axisString+'Align'] == 'right'){
 
-                        offset = args[dimensionAttribute(axisString,true)] + (_.off_x);
+                        offset = args[getDimension(axisString,true)] + (_.off_x);
 
                     }else{
 
@@ -458,13 +495,10 @@
         //width,height or radius boi
         var getBlobSize = function(axisString,dis,i,initial) {
 
-            var dataKeyI =  args[ axisString+'Data'],
-                dataKey = args.dataKey[dataKeyI],
-                oppositeAxisAlignment = args[ oppositeAxisString(axisString)+'Align'],
+            var keyKey  =  args[ axisString+'Data'],
+                oppositeAxisAlignment = args[ getAxisStringOppo(axisString)+'Align'],
                 dimension = 20;
                 initial = initial || false;
-
-
 
             switch(args.type) {
 
@@ -473,7 +507,7 @@
 
                 default:
 
-                    if(args.nameIsNum || dataKeyI == 1){
+                    if(args.nameIsNum ||  keyKey  == 1){
                         if(initial) {
                             
                             dimension = 0;
@@ -482,19 +516,17 @@
 
                             if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
                                 
-                                dimension = args[dimensionAttribute(axisString)] - _['the_'+axisString]( deepGet(dis,dataKey,dataKey,true) );
+                                dimension = args[getDimension(axisString)] - _['the_'+ keyKey]( deepGet(dis, args.key[ keyKey ] ,true) );
                             
                             }else{
                                 
-                                dimension = _['the_'+axisString]( deepGet( dis,dataKey,dataKey,true ) );
+                                dimension = _['the_'+ keyKey ]( deepGet( dis, args.key[ keyKey ] ,true ) );
                             
                             }
 
                         }
                     }else{
-
-                        dimension = _['the_'+axisString].bandwidth()
-
+                        dimension = _[ 'the_'+ keyKey ].bandwidth()
                     }
 
             }
@@ -505,16 +537,23 @@
         //duh 
         var getBlobRadius = function(dis,i,initial){
             var radius = 2;
-            
-            if(!initial){
 
-                if(args.type == 'line' && args.linePointsSize){
-                    radius = args.linePointsSize
+            if(args.type == 'line'){
+            
+                if(!initial){
+    
+                    if(args.type == 'line' && args.linePointsSize){
+                        radius = args.linePointsSize
+                    }
+    
+                }else{
+    
+                    radius = 0;
+    
                 }
 
-            }else{
+            }else if(args.type == 'scatter'){
 
-                radius = 0;
 
             }
 
@@ -538,8 +577,8 @@
                 coordinates.forEach(function(coordinate){
 
                     if(
-                        args[oppositeAxisString(coordinate)+'Data'] == 0
-                        && args[oppositeAxisString(coordinate)+'Align'] == 'right'
+                        args[ getAxisStringOppo(coordinate)+'Data'] == 0
+                        && args[ getAxisStringOppo(coordinate)+'Align'] == 'right'
                     ){
                         anchor = 'end';
                     }
@@ -578,7 +617,7 @@
         var getBlobTextOrigin = function(coordinate,dis,i,initial){
             
             //coordinate is influenced by the axis right now so this is the only time coordinate and axis is one and the same. i think... do not trust me on this
-            var dataKeyI =  args[ coordinate+'Data'],
+            var keyKey =  args[ coordinate+'Data'],
                 offset = 0,
 
                 // offset by where the coordinates of the ends of the blob and axis alignment is at
@@ -590,15 +629,15 @@
                         (
                             args.type == 'bar' 
                             && (
-                                args[oppositeAxisString(coordinate)+'Align'] == 'top'
-                                || args[oppositeAxisString(coordinate)+'Align'] == 'right'
+                                args[getAxisStringOppo(coordinate)+'Align'] == 'top'
+                                || args[getAxisStringOppo(coordinate)+'Align'] == 'right'
                             )
                         )
                         || (
                             args.type !== 'bar' 
                             && (
-                                args[oppositeAxisString(coordinate)+'Align'] == 'bottom'
-                                || args[oppositeAxisString(coordinate)+'Align'] == 'right'
+                                args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
+                                || args[getAxisStringOppo(coordinate)+'Align'] == 'right'
                             )
                         )
                     ){
@@ -606,7 +645,7 @@
                     }
                     
 
-                    if(args[oppositeAxisString(coordinate)+'Data'] == 0){
+                    if(args[getAxisStringOppo(coordinate)+'Data'] == 0){
                         (coordinate == 'x') ? value = textOffset : value = ( ( _.mLength(coordinate,i) / 2 ) );
                         _.mLength(coordinate,i);
                     }
@@ -627,15 +666,15 @@
                         (
                             args.type == 'bar'
                             && (
-                                args[oppositeAxisString(coordinate)+'Align'] == 'bottom'
-                                || args[oppositeAxisString(coordinate)+'Align'] == 'right'
+                                args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
+                                || args[getAxisStringOppo(coordinate)+'Align'] == 'right'
                             )
                         )
                         || (
                             args.type == 'line' 
                             && (
-                                args[oppositeAxisString(coordinate)+'Align'] == 'top'
-                                || args[oppositeAxisString(coordinate)+'Align'] == 'left'
+                                args[getAxisStringOppo(coordinate)+'Align'] == 'top'
+                                || args[getAxisStringOppo(coordinate)+'Align'] == 'left'
                             )
                         )
                     ){
@@ -650,10 +689,10 @@
                             )
                             || (
                                 args.type == 'line'
-                                && parseFloat(getBlobSize(coordinate,dis,i)) >= (args[dimensionAttribute(oppositeAxisString(coordinate))] - _.mLength(coordinate,i))
+                                && parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(getAxisStringOppo(coordinate))] - _.mLength(coordinate,i))
                             )
                         )
-                        && dataKeyI !== 0
+                        &&  keyKey !== 0
                     ){
                         if( coordinate == 'x'  && args.type !== 'line'){
                             
@@ -683,7 +722,7 @@
 
                 default:
 
-                    if(dataKeyI  == 0) {
+                    if( keyKey  == 0) {
 
                         offset = getBlobOrigin(coordinate,dis,i);
 
@@ -693,7 +732,7 @@
 
                     }else{
                         
-                        switch(args[oppositeAxisString(coordinate)+'Align']){
+                        switch(args[getAxisStringOppo(coordinate)+'Align']){
 
                             case 'top':
 
@@ -706,16 +745,16 @@
                                     if(
                                         initial 
                                         || (
-                                            args[oppositeAxisString(coordinate)+'Align'] == 'right'
+                                            args[getAxisStringOppo(coordinate)+'Align'] == 'right'
                                             && args.type == 'bar'
                                         )
                                     ) {
 
-                                        offset = args[dimensionAttribute(coordinate)];
+                                        offset = args[getDimension(coordinate)];
 
                                     }else{
 
-                                        offset = args[dimensionAttribute(coordinate)] - getBlobSize(coordinate,dis,i);
+                                        offset = args[getDimension(coordinate)] - getBlobSize(coordinate,dis,i);
                                         
                                     }
 
@@ -741,9 +780,8 @@
 
         var getBlobOrigin = function(coordinate,dis,i,initial){
             // same here.. could be the same probably
-            var dataKeyI =  args[ coordinate+'Data'],
-                dataKey = args.dataKey[dataKeyI],
-                oppositeAxisAlignment = args[ oppositeAxisString(coordinate)+'Align'],
+            var keyKey =  args[ coordinate+'Data'],
+                oppositeAxisAlignment = args[ getAxisStringOppo(coordinate)+'Align'],
                 offset = 0;
 
                 initial = initial || false;
@@ -757,17 +795,17 @@
 
                     default:
 
-                        if( args.nameIsNum || dataKeyI == 1){
+                        if( args.nameIsNum || keyKey == 1){
                             
                             if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
                                 
-                                if(initial && dataKeyI !== 0){
+                                if(initial && keyKey !== 0){
 
-                                    offset = args[dimensionAttribute(coordinate)];
+                                    offset = args[getDimension(coordinate)];
 
                                 }else{
 
-                                    offset = args[dimensionAttribute(coordinate)] - (args[dimensionAttribute(coordinate)] - _['the_'+coordinate]( deepGet(dis,dataKey,true )));
+                                    offset = args[getDimension(coordinate)] - (args[getDimension(coordinate)] - _['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true )));
 
                                 }
 
@@ -775,9 +813,9 @@
 
                                 if(args.type == 'line' || args.type == 'scatter'){
 
-                                    if(!(initial && dataKeyI !== 0)){
+                                    if(!(initial && keyKey !== 0)){
 
-                                        offset = _['the_'+coordinate]( deepGet(dis,dataKey,true ));
+                                        offset = _['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true ));
 
                                     }
 
@@ -787,13 +825,13 @@
 
                         }else{
 
-                            offset = _['the_'+coordinate](deepGet(dis,dataKey,false));
+                            offset = _['the_'+ args[coordinate+'Data'] ](deepGet(dis, args.key[ keyKey ], false));
 
                             if(
                                 (args.type == 'line' || args.type == 'scatter')
                                 && !args.nameIsNum 
                             ) {
-                                offset += getBlobSize(coordinate,dis,i) / 2;
+                                offset += getBlobSize( coordinate ,dis,i) / 2;
                             }
                         }
                     
@@ -808,16 +846,17 @@
         var getLegendPosition = function(axisString){
             if( _.container_legend ){
                 var offset = 0,
+                
                 shifter = function(){
                     var value = 0,
                         multiplier = 1;
 
                         if (
-                            args[oppositeAxisString(axisString)+'Align'] == 'left'
-                            || args[oppositeAxisString(axisString)+'Align'] == 'top'
+                            args[getAxisStringOppo(axisString)+'Align'] == 'left'
+                            || args[getAxisStringOppo(axisString)+'Align'] == 'top'
                         ){
                             multiplier = -1;
-                            value = _.container_legend.nodes()[0].getBoundingClientRect()[dimensionAttribute(axisString)] * .75;
+                            value = _.container_legend.nodes()[0].getBoundingClientRect()[getDimension(axisString)] * .75;
                         }
                         
                     return value * multiplier;
@@ -825,10 +864,10 @@
 
 
                 if (
-                    args[oppositeAxisString(axisString)+'Align'] == 'left'
-                    || args[oppositeAxisString(axisString)+'Align'] == 'top'
+                    args[getAxisStringOppo(axisString)+'Align'] == 'left'
+                    || args[getAxisStringOppo(axisString)+'Align'] == 'top'
                 ){
-                    offset = args[dimensionAttribute(axisString)];
+                    offset = args[getDimension(axisString)];
                 }
 
 
@@ -845,7 +884,7 @@
 
 
             var pathInitiator = isArea ? 'area' : 'line',
-                axisToFill = (args.xData == 0)  ? 'x' : 'y',
+                axisToFill = ( args.xData == 0 )  ? 'x' : 'y',
                 
                 pathStyle = (function(){
                     var theString = 'curveLinear';
@@ -867,29 +906,29 @@
                 //name coord, value coord, fill coordinate
                 var aCord = { //default is top
                     name: axisToFill,
-                    value: oppositeAxisString(axisToFill)+1,
-                    fill: oppositeAxisString(axisToFill)+0 //initial of data name is the bottom of the fill
+                    value: getAxisStringOppo(axisToFill)+1,
+                    fill: getAxisStringOppo(axisToFill)+0 //initial of data name is the bottom of the fill
                 };
                 
                 if( 
-                    args[oppositeAxisString(axisToFill)+'Align'] == 'right'
-                    || args[oppositeAxisString(axisToFill)+'Align'] == 'bottom'
+                    args[getAxisStringOppo(axisToFill)+'Align'] == 'right'
+                    || args[getAxisStringOppo(axisToFill)+'Align'] == 'bottom'
                 ){
 
-                    aCord.value = oppositeAxisString(axisToFill)+0,
-                    aCord.fill = oppositeAxisString(axisToFill)+1
+                    aCord.value = getAxisStringOppo(axisToFill)+0,
+                    aCord.fill = getAxisStringOppo(axisToFill)+1
 
                 }
-                
+                console.log(selector,axisToFill);
                 path
                     [aCord.name](function(dis,i){
-                        return getBlobOrigin(axisToFill,dis,i,initial);
+                        return getBlobOrigin(axisToFill,dis,i,initial); 
                     })
                     [aCord.value](function(dis,i){
-                        return getBlobOrigin(oppositeAxisString(axisToFill),dis,i,initial);
+                        return getBlobOrigin(getAxisStringOppo(axisToFill),dis,i,initial);
                     })
                     [aCord.fill](function(dis,i){
-                        return getBlobOrigin( oppositeAxisString(axisToFill) ,dis,i,true);
+                        return getBlobOrigin( getAxisStringOppo(axisToFill) ,dis,i,true);
                     });
 
             }else{
@@ -912,43 +951,74 @@
 
         }
 
-        //set the scale function thingy for the axis shit
-        var setScale = function(itemAtt){
-            
-            var axis;
-            var dataKeyI = args[ itemAtt+'Data'];
+        var getArcPath = function(dis){
+            var path = d3.arc()
+                .outerRadius( Math.min(args.width,args.height) )
+                .innerRadius(args.pieRadius);
 
-            switch(itemAtt){
+            //interpolation by time or t
+            return function(t) {
+                d.startAngle = i(t);
+       
+                return path(dis);
+            }
+        }
+
+        var setPiData = function(data){
+
+            var pie =  d3.pie()
+                .sort(null)
+                .value(function(dis,i){
+                    return deepGet(dis,args.key[0])
+                });
+
+                return pie(data);
+        }
+
+        //set the scale function thingy for the axis shit
+        var setScale = function(keyKey){
+            
+            var scale;
+
+            switch(keyKey){
 
                 case 'color':
-                        axis = d3.scaleOrdinal()
-                            .range(_['range_'+itemAtt]) 
+                        scale = d3.scaleOrdinal()
+                            .range(_['range_'+keyKey]) 
                     break;
 
-                case 'x':
-                case 'y':
+                case 0:
+                case 1:
 
-                    if(args.nameIsNum || dataKeyI == 1 ){
+                    if(args.nameIsNum || keyKey == 1 ){
                         
-                        axis = d3.scaleLinear()
-                            .range(_['range_'+itemAtt]);
+                        scale = d3.scaleLinear()
+                            .range(_['range_'+keyKey]);
                         
                     }else{
-                        axis = d3.scaleBand() //scales shit to dimensios
-                            .range(_['range_'+itemAtt]) // scaled data from available space
-                            .paddingInner(.1) //spacing between
-                            .paddingOuter(.1);
+                        if(args.type == 'line'){
+
+                            scale = d3.scalePoint() //scales shit to dimensios
+                                .range(_['range_'+keyKey]) // scaled data from available space
+                        }else{
+
+                            scale = d3.scaleBand() //scales shit to dimensios
+                                .range(_['range_'+keyKey]) // scaled data from available space
+                                .paddingInner(.1) //spacing between
+                                .paddingOuter(.1);
+                        }
                     }
 
                     break;
                     
             }
             
-            return axis;
+            return scale;
 
         };
         //generates lab_coord, rule_coord and axis_coord
-        var renderAxis = function(axisString,containerObj,isGrid) {
+        var setAxis = function(axisString,containerObj,isGrid) {
+
 
             if( args[axisString+'Ticks']) {
                 var gridString = isGrid ? 'grid_' : '',
@@ -1035,7 +1105,7 @@
 
                     var axisKey = 'Axis '+ alignString;
 
-                    _['axis_'+gridString+axisString] = d3[axisKey.toCamelCase()](_['the_'+axisString]);
+                    _['axis_'+gridString+axisString] = d3[axisKey.toCamelCase()](_['the_'+ args[axisString+'Data']]);
 
                     if(args[axisString +'Ticks']){
 
@@ -1057,29 +1127,18 @@
                         if(isGrid){
 
                             _['axis_'+gridString+axisString].
-                                tickSize(-args[ dimensionAttribute( oppositeAxisString(axisString) ) ])
+                                tickSize(-args[ getDimension( getAxisStringOppo(axisString) ) ])
                                 .tickFormat("");
 
                         }else {
                             _['axis_'+gridString+axisString]
                                 .tickFormat(function(dis,i){
-                                    return _['format_'+axisString](dis)
+                                    return _['format_'+ args[axisString+'Data'] ](dis)
                                 })
                         }
                     }
 
             }
-        }
-
-        var setPiData = function(data){
-
-            var pie =  d3.pie()
-                .sort(null)
-                .value(function(dis,i){
-                    return deepGet(dis,args.dataKey[0])
-                });
-
-                return pie(data);
         }
 
 
@@ -1122,16 +1181,16 @@
                 }
                 
                 sortable.sort(function(a, b) {
-                    return deepGet(a,args.dataKey[0],true) - deepGet(b,args.dataKey[0],true);
+                    return deepGet(a,args.key[0],true) - deepGet(b,args.key[0],true);
                 });
 
                 data = sortable;
             }
 
-            //validate color args
-            //if color data key aint set put in name
-            if(!(arr.colorData)){ 
-                args.colorData = args.dataKey[0];
+            // fallback color data
+            // if color data key aint set put in name
+            if(!(arr.key.color)){ 
+                arr.key.color = args.key[0];
 
                 //if legend was not fucked with we take the authority to kill legend
                 if(!arr.colorLegend){
@@ -1169,7 +1228,6 @@
 
                     
                 _.container = _.svg.append('g');
-                _.containerTransform = null;
 
                 var shift = {
                     more: 1.25,
@@ -1214,83 +1272,91 @@
                     
                 _.container.attr('transform','translate('+ transformX +','+ transformY +')');
                 
-            if(args.type == 'pie'){
-                //setup data to be used by pi
-                data = setPiData(data);
+                if(args.type == 'pie'){
+                    //setup data to be used by pi
+                    _.dataPi = setPiData(data);
 
-                console.log(data);
+                    console.log(_.dataPi);
 
-            }else{
-                
-                // labels and shit
-                _.container_lab = _.container.append('g')
-                    .attr('class', prefix + 'label');
-    
-                //axis
-                _.container_rule = _.container.append('g')
-                    .attr('class', prefix + 'axis');
-                    
-                //kung may grid gibo kang grid
-                (args.xGrid || args.yGrid) && (_.container_grid = _.container.append('g')
-                    .attr('class', prefix + 'grid'));
+                }else{
 
-                itemAtts.forEach(function(itemAtt){
-
-                    // scales and shit
-                    _['range_'+itemAtt] = getRange(itemAtt),
-                    _['dom_'+itemAtt] = getDomain(itemAtt,data);
-                    _['the_'+itemAtt] = setScale(itemAtt);
-
-                    //set that fucker
-                    (_['the_'+itemAtt] && _['dom_'+itemAtt]) && _['the_'+itemAtt].domain(_['dom_'+itemAtt]);
-
-                    switch(itemAtt){
-
-                        case 'x':
-                        case 'y':
-
-                            renderAxis(itemAtt,_.container_rule)
-
-                            //formatter
-                            _['format_'+itemAtt] = (function(){
-
-                                if(typeof args[itemAtt+'Parameter'] === 'function' ) {
-                                    return args[itemAtt+'Parameter']
-
-                                }else if( typeof args[itemAtt+'Parameter'] === 'string'  ) {
-                                    
-                                    return function(value){
-                                        return d3.format(args[itemAtt+'Parameter'])(value)
-                                    }
-
-                                }else{
-                                    
-                                    return function(value){
-
-                                        var dataPossiblyDivided = (args[itemAtt+'Data'] == 1 || args.nameIsNum ) ? (value / args[itemAtt+'Divider']): value,
-                                        
-                                        formatted = args[itemAtt+'Prepend'] + dataPossiblyDivided + args[itemAtt+'Append'];
-            
-                                        return formatted;
-                                    }
-                                }
-                            }());
-
-                            if(args[itemAtt+'Grid']) {
-                                renderAxis(itemAtt,_.container_grid,true)
-                            }
-
-                            
-
-                        // case 'color':
-                        //     //colors kung meron
-                        //     if(args.colorPalette.length) {
-                         
-                        //         break;
-                        //     }
-                            
-                        default:
+                    // labels and shit
+                    _.container_lab = _.container.append('g')
+                        .attr('class', prefix + 'label');
+        
+                    //axis
+                    _.container_rule = _.container.append('g')
+                        .attr('class', prefix + 'axis');
                         
+                    //kung may grid gibo kang grid
+                    (args.xGrid || args.yGrid) && (_.container_grid = _.container.append('g')
+                        .attr('class', prefix + 'grid'));
+                }
+                
+
+                datumKeys.forEach(function(keyKey){
+
+                    if(
+                        !(args.type == 'pie' && keyKey !== 'color') //dont need other keyKeys for pi
+                    ){
+                        // scales and shit
+                        _['range_'+keyKey] = getRange(keyKey),
+                        _['dom_'+keyKey] = getDomain(keyKey,data);
+                        _['the_'+keyKey] = setScale(keyKey);
+
+                        //set that fucker
+                        (_['the_'+keyKey] && _['dom_'+keyKey]) && _['the_'+keyKey].domain(_['dom_'+keyKey]);
+
+                        _['format_'+keyKey] = (function(){
+
+                            if(typeof args[keyKey+'Parameter'] === 'function' ) {
+                                return args[keyKey+'Parameter']
+
+                            }else if( typeof args[keyKey+'Parameter'] === 'string'  ) {
+                                
+                                return function(value){
+                                    return d3.format(args[keyKey+'Parameter'])(value)
+                                }
+
+                            }else{
+                                
+                                return function(value){
+
+                                    var dataPossiblyDivided = (args[keyKey+'Data'] == 1 || args.nameIsNum ) ? (value / args[ 'format' + keyKey.toString().toUpperCase() + 'Divider']): value,
+                                    
+                                    formatted = args[ 'format' + keyKey.toString().toUpperCase() + 'Prepend'] + dataPossiblyDivided + args[ 'format' + keyKey.toString().toUpperCase() + 'Append'];
+        
+                                    return formatted;
+                                }
+                            }
+                        }());
+
+                        switch(keyKey){
+
+                            case 0:
+                            case 1:
+
+                                setAxis(getAxisString(keyKey),_.container_rule)
+
+                                //formatter
+                                
+
+                                if(args[getAxisString(keyKey)+'Grid']) {
+                                    setAxis(getAxisString(keyKey),_.container_grid,true)
+                                }
+
+                                
+
+                            case 'color':
+                                //colors kung meron
+                                if(args.colorPalette.length) {
+                                    break;
+                                }
+                                
+                            default:
+                                
+                            
+                        }
                     }
 
 
@@ -1329,20 +1395,19 @@
 
                     _.blob = _.container_graph.selectAll(_.graphItem)
                         .data(data,function(dis){
-                            return dis[args.dataKey[args.xData]]
+                            return deepGet(dis,args.key[0])
                         });
                 }
 
 
 
-            } 
 
             //check if it's loaded boi
             _.dv_init = false;
 
             document.addEventListener('scroll',function(e) {
-                var graphPosition = dataContainer.getBoundingClientRect().y;
-
+                var graphPosition = dataContainer.getBoundingClientRect().top;
+                
                 if(graphPosition < (window.innerHeight * .5) && !_.dv_init) {
                     _.dv_init = true;
                     setTimeout(function(){
@@ -1359,23 +1424,21 @@
         // tick inits
         var renderGraph = function(data) {
             // ok do the thing now
-            console.log(selector,'-------------------------------------------------------------------')
-            // console.log('calculated',_);
-            // // console.log('data',dat);
-            // console.log('args',args);
+            console.log(
+                selector,'-------------------------------------------------------------------',"\n",
+                'calculated',_,"\n",
+                'data',data,"\n",
+                'args',args,"\n",
 
-                
-            // console.log('x');
-            // console.log('domain',_.dom_x);
-            // console.log('range',_.range_x);
+                "\n",'x',"\n",
+                'domain',_['dom_'+ args.xData],"\n",
+                'range',_['range_'+ args.xData],"\n",
 
-            // console.log('----------------');
-
-            // console.log('y');
-            // console.log('domain',_.dom_y);
-            // console.log('range',_.range_y);
-
-            // console.log('\n');
+                "\n",'y',"\n",
+                'domain',_['dom_'+ args.yData],"\n",
+                'range',_['range_'+ args.yData],"\n",
+                "\n",
+            );
 
             //generate the graph boi
 
@@ -1383,8 +1446,8 @@
                 
             }else{
                 // axis 
-                coordinates.forEach(function(coordinate){
 
+                coordinates.forEach(function(coordinate){
                     if( args[coordinate+'Ticks'] ){
                                 
                         _['rule_'+coordinate].transition(args.delay).call( _['axis_'+coordinate])
@@ -1467,122 +1530,124 @@
 
                 
                 }
+            
+            }
 
-                if(
-                    !(args.type == 'line' && !args.linePoints)
-                ){
+            if(
+                !(args.type == 'line' && !args.linePoints)
+            ){
+            
+                _.blob.exit()
+                    .transition(_.duration)
+                    .attr('height',0)
+                    .remove();
+
                 
-                    _.blob.exit()
-                        .transition(_.duration)
-                        .attr('height',0)
-                        .remove();
+                _.blobWrap = _.blob
+                    .enter()
+                    .append('g')
+                        .attr('class', function(dis){
+                            return prefix + 'item'+
+                                ' ' + prefix + deepGet(dis,args.key[0]);
+                        });
 
+                
+                        
+
+                _.blobItem = _.blobWrap
+                    .append(_.graphItem)
+                    .attr(
+                        (args.type == 'line' || args.type == 'scatter') ? 'cx' : 'x',
+                        function(dis,i){
+                            return getBlobOrigin('x',dis,i,true)
+                        }
+                    )
+
+                    .attr(
+                        (args.type == 'line' || args.type == 'scatter') ? 'cy' : 'y',
+                        function(dis,i){
+                            return getBlobOrigin('y',dis,i,true)
+                        })
+                    ;
+
+                    if(args.type == 'line' || args.type == 'scatter'){
+                        _.blobItem
+                            .attr('r',function(dis,i){
+                                return getBlobRadius(dis,i,true)
+                            })
+
+                    }else{
+                        _.blobItem
+                            .attr('width',function(dis,i){
+                                return getBlobSize('x',dis,i,true);
+                            }) // calculated width
+                            .attr('height',function(dis,i){
+                                return getBlobSize('y',dis,i,true);
+                            })
+                    }
                     
-                    _.blobWrap = _.blob
-                        .enter()
-                        .append('g')
-                            .attr('class', function(dis){
-                                return prefix + 'item'+
-                                    ' ' + prefix + deepGet(dis,args.dataKey[0]);
+                    if(!args.colorPalette.length){
+                        if(
+                            args.type == 'line'
+                            && (
+                                args.linePointsColor
+                                || args.lineColor
+                            )
+                        ) {
+                            _.blobItem
+                                .attr('fill',function(){
+                                    return args.linePointsColor || args.lineColor;
+                                });
+
+                        }
+                    }else{
+                        _.blobItem
+                            .attr('fill',function(dis,i){
+                                return _.the_color(deepGet(dis,args.key.color));
                             });
+                    }
 
-                    
-                            
-
-                    _.blobItem = _.blobWrap
-                        .append(_.graphItem)
+                    _.blobItem 
+                    // .merge(_.blob)
+                        .transition(_.duration)
                         .attr(
-                            (args.type == 'line' || args.type == 'scatter') ? 'cx' : 'x',
+                            (args.type == 'line' || args.type == 'scatter' ) ? 'cx' : 'x',
                             function(dis,i){
-                                return getBlobOrigin('x',dis,i,true)
+                                return getBlobOrigin('x',dis,i)
                             }
                         )
 
                         .attr(
-                            (args.type == 'line' || args.type == 'scatter') ? 'cy' : 'y',
+                            (args.type == 'line' || args.type == 'scatter' ) ? 'cy' : 'y',
                             function(dis,i){
-                                return getBlobOrigin('y',dis,i,true)
+                                return getBlobOrigin('y',dis,i)
                             })
                         ;
 
                         if(args.type == 'line' || args.type == 'scatter'){
                             _.blobItem
+                                .transition(_.duration)
                                 .attr('r',function(dis,i){
-                                    return getBlobRadius(dis,i,true)
+                                    return getBlobRadius(dis,i);
                                 })
 
                         }else{
                             _.blobItem
+                                .transition(_.duration)
                                 .attr('width',function(dis,i){
-                                    return getBlobSize('x',dis,i,true);
+                                    return getBlobSize('x',dis,i);
                                 }) // calculated width
                                 .attr('height',function(dis,i){
-                                    return getBlobSize('y',dis,i,true);
+                                    return getBlobSize('y',dis,i);
                                 })
                         }
 
-                        if(!args.colorPalette.length){
-                            if(
-                                args.type == 'line'
-                                && (
-                                    args.linePointsColor
-                                    || args.lineColor
-                                )
-                            ) {
-                                _.blobItem
-                                    .attr('fill',function(){
-                                        return args.linePointsColor || args.lineColor;
-                                    });
-
-                            }
-                        }else{
-                            _.blobItem
-                                .attr('fill',function(dis,i){
-                                    return _.the_color(deepGet(dis,args.colorData));
-                                });
-                        }
-
-                        _.blobItem 
-                        // .merge(_.blob)
-                            .transition(_.duration)
-                            .attr(
-                                (args.type == 'line' || args.type == 'scatter' ) ? 'cx' : 'x',
-                                function(dis,i){
-                                    return getBlobOrigin('x',dis,i)
-                                }
-                            )
-    
-                            .attr(
-                                (args.type == 'line' || args.type == 'scatter' ) ? 'cy' : 'y',
-                                function(dis,i){
-                                    return getBlobOrigin('y',dis,i)
-                                })
-                            ;
-    
-                            if(args.type == 'line' || args.type == 'scatter'){
-                                _.blobItem
-                                    .transition(_.duration)
-                                    .attr('r',function(dis,i){
-                                        return getBlobRadius(dis,i);
-                                    })
-    
-                            }else{
-                                _.blobItem
-                                    .transition(_.duration)
-                                    .attr('width',function(dis,i){
-                                        return getBlobSize('x',dis,i);
-                                    }) // calculated width
-                                    .attr('height',function(dis,i){
-                                        return getBlobSize('y',dis,i);
-                                    })
-                            }
-
-                }
-                
             }
                     
             //graph item label if ticks are not set
-            if( !args.xTicks || !args.yTicks ){
+            if( (
+                !args.xTicks || !args.yTicks
+                ) ){
 
                 _.blobText =  _.blobWrap.append('text');
 
@@ -1600,8 +1665,9 @@
                             })
                             .attr('font-size',null)
                             .text(function(dis,i){
-                                return _['format_'+coordinate](
-                                    deepGet(dis,args.dataKey[ args[coordinate+'Data'] ])
+                                console.log(args[coordinate+'Data']);
+                                return _['format_'+ args[coordinate+'Data'] ](
+                                    deepGet(dis,args.key[ args[coordinate+'Data'] ])
                                 );
                             })
                             .attr('x',getBlobTextBaselineShift('x',coordinate))
@@ -1614,7 +1680,7 @@
                                 
                                 var value = 0;
 
-                                    length = _.blobText ? _.blobText.nodes()[i].getBoundingClientRect()[dimensionAttribute(axisString)] : 0
+                                    length = _.blobText ? _.blobText.nodes()[i].getBoundingClientRect()[getDimension(axisString)] : 0
                                     
                                     value = length + textOffset;
 
@@ -1642,7 +1708,7 @@
                                         || (
                                             (args.colorPalette.length > 0)
                                             && (parseFloat(getBlobSize(coordinate,dis,i,false)) >= _.mLength(coordinate,i))
-                                            && !isDark( _.the_color(deepGet(dis,args.colorData)) )
+                                            && !isDark( _.the_color(deepGet(dis,args.key.color)) )
                                         )
                                     )
                                 )
@@ -1705,6 +1771,9 @@
                     .transition(_.duration)
                     .attr('opacity','1')
             }
+
+            // _1p21.graphs = [];
+            // _1p21.graphs.push({data:data,calculated:_,})
 
 
         }
