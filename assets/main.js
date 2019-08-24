@@ -1,4 +1,6 @@
-
+/*!
+1point21 Data Vizualiser Version 1.0.0
+*/
 
 /* DO NOT TOUCH I DEV ON THIS BOI I ENQUEUE THE MINIFIED ONE ANYWAY  :< */
 (function(window,d3){
@@ -157,7 +159,7 @@
                 height:600,
                 margin: 20, // @TODO option to separate this thing
                 marginOffset: 2,
-                transition: 2000,
+                transition: 1500,
                 delay: 300,
             //src
                 srcType: '',
@@ -181,6 +183,7 @@
                         format0Prepend: '',
                         format0Append: '',
                         format0Parameter: null,
+                        format0Divider: 1,
 
                     
                     // value
@@ -495,7 +498,7 @@
         //width,height or radius boi
         var getBlobSize = function(axisString,dis,i,initial) {
 
-            var keyKey  =  args[ axisString+'Data'],
+            var keyKey  =  args[axisString+'Data'],
                 oppositeAxisAlignment = args[ getAxisStringOppo(axisString)+'Align'],
                 dimension = 20;
                 initial = initial || false;
@@ -592,7 +595,7 @@
         }
 
         //pls do not ask me po this broke my brain i will not likely know what just happened
-        var getBlobTextBaselineShift = function(coordinateAttr,axisString){
+        var getBlobTextBaselineShift = function(coordinateAttr,keyKey){
 
             var shift = '0em';
 
@@ -603,7 +606,7 @@
                 if(coordinateAttr == 'y'){
 
                     if(!args.xTicks && !args.yTicks){
-                        shift = (args[axisString+'Data'] == 1) ? '.375em' : '-1.625em'
+                        shift = (keyKey == 1) ? '.375em' : '-1.5em'
                     }
                     
                 }
@@ -812,7 +815,6 @@
                             }else{
 
                                 if(args.type == 'line' || args.type == 'scatter'){
-
                                     if(!(initial && keyKey !== 0)){
 
                                         offset = _['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true ));
@@ -826,7 +828,7 @@
                         }else{
 
                             offset = _['the_'+ args[coordinate+'Data'] ](deepGet(dis, args.key[ keyKey ], false));
-
+                            
                             if(
                                 (args.type == 'line' || args.type == 'scatter')
                                 && !args.nameIsNum 
@@ -843,7 +845,7 @@
 
         }
 
-        var getLegendPosition = function(axisString){
+        var getLegendOrigin = function(axisString){
             if( _.container_legend ){
                 var offset = 0,
                 
@@ -856,7 +858,7 @@
                             || args[getAxisStringOppo(axisString)+'Align'] == 'top'
                         ){
                             multiplier = -1;
-                            value = _.container_legend.nodes()[0].getBoundingClientRect()[getDimension(axisString)] * .75;
+                            value = _.container_legend.nodes()[0].getBoundingClientRect()[getDimension(axisString)] + textOffset;
                         }
                         
                     return value * multiplier;
@@ -878,14 +880,11 @@
 
         }
 
-        var getLinePath = function(data,isArea,initial){
-
-            initial = initial || false;
+        var getLinePath = function(data,isArea){
 
 
             var pathInitiator = isArea ? 'area' : 'line',
                 axisToFill = ( args.xData == 0 )  ? 'x' : 'y',
-                
                 pathStyle = (function(){
                     var theString = 'curveLinear';
                     switch(args.lineStyle){
@@ -899,7 +898,12 @@
                     return theString
                 }()),
                 
-                path = d3[pathInitiator]();
+                path = {};
+                
+                //start / initial
+                path.start = d3[pathInitiator]();
+                //end
+                path.end = d3[pathInitiator]();
 
             if(pathInitiator == 'area') {
 
@@ -919,13 +923,25 @@
                     aCord.fill = getAxisStringOppo(axisToFill)+1
 
                 }
-                console.log(selector,axisToFill);
-                path
+                
+                path.start
                     [aCord.name](function(dis,i){
-                        return getBlobOrigin(axisToFill,dis,i,initial); 
+                        return getBlobOrigin(axisToFill,dis,i,true); 
                     })
                     [aCord.value](function(dis,i){
-                        return getBlobOrigin(getAxisStringOppo(axisToFill),dis,i,initial);
+                        return getBlobOrigin(getAxisStringOppo(axisToFill),dis,i,true);
+                    })
+                    [aCord.fill](function(dis,i){
+                        return getBlobOrigin( getAxisStringOppo(axisToFill) ,dis,i,true);
+                    });
+
+                
+                path.end
+                    [aCord.name](function(dis,i){
+                        return getBlobOrigin(axisToFill,dis,i,false); 
+                    })
+                    [aCord.value](function(dis,i){
+                        return getBlobOrigin(getAxisStringOppo(axisToFill),dis,i,false);
                     })
                     [aCord.fill](function(dis,i){
                         return getBlobOrigin( getAxisStringOppo(axisToFill) ,dis,i,true);
@@ -933,43 +949,63 @@
 
             }else{
 
-                path
+                path.start
                     .x(function(dis,i){
-                        return getBlobOrigin('x',dis,i,initial);
+                        return getBlobOrigin('x',dis,i,true);
                     })
                     .y(function(dis,i){
-                        return getBlobOrigin('y',dis,i,initial);
+                        return getBlobOrigin('y',dis,i,true);
+                    });
+
+                path.end
+                    .x(function(dis,i){
+                        return getBlobOrigin('x',dis,i,false);
+                    })
+                    .y(function(dis,i){
+                        return getBlobOrigin('y',dis,i,false);
                     });
 
             }
 
             if(pathStyle){
-                path.curve(d3[pathStyle]);
+                path.start.curve(d3[pathStyle])
+                path.end.curve(d3[pathStyle]);
             }
+            
+            var i = d3.interpolate(path.start(data),path.end(data))
 
-            return path(data);
-
-        }
-
-        var getArcPath = function(dis){
-            var path = d3.arc()
-                .outerRadius( Math.min(args.width,args.height) )
-                .innerRadius(args.pieRadius);
-
-            //interpolation by time or t
             return function(t) {
-                d.startAngle = i(t);
+                return i(t);
+            }
+
+            // return path(data);
+
+        }
+
+        var getArcPath = function(disPi,isForLabels,initial){
+            isForLabels = isForLabels || false;
+
+            var optimalDimension = Math.min((args.width * .375),(args.height * .375)),
+                i = d3.interpolate(disPi.endAngle,disPi.startAngle),
+                path = d3.arc()
+                    .outerRadius( isForLabels == true ? optimalDimension : (optimalDimension * .875) )
+                    .innerRadius( isForLabels == true ? (optimalDimension * .75) : optimalDimension * args.piInRadius );
+            
+            // interpolation by time or t
+            return function(t) {
+                // console.log(t);
+                disPi.startAngle = i(t);
        
-                return path(dis);
+                return path(disPi);
             }
         }
 
-        var setPiData = function(data){
+        var getPiData = function(data){
 
             var pie =  d3.pie()
                 .sort(null)
                 .value(function(dis,i){
-                    return deepGet(dis,args.key[0])
+                    return deepGet(dis,args.key[1],true)
                 });
 
                 return pie(data);
@@ -997,7 +1033,6 @@
                         
                     }else{
                         if(args.type == 'line'){
-
                             scale = d3.scalePoint() //scales shit to dimensios
                                 .range(_['range_'+keyKey]) // scaled data from available space
                         }else{
@@ -1147,9 +1182,6 @@
             
             var data = null;
 
-            //duration
-            _.duration = d3.transition().duration(args.transition);
-
             //element
             switch(args.type){
 
@@ -1211,7 +1243,7 @@
                     .append('div')
                     .attr('class', prefix + 'wrapper');
 
-                _.dimensionString = '0 0 '+ _.outerWidth +' ' + _.outerHeight;
+                var dimensionString = '0 0 '+ _.outerWidth +' ' + _.outerHeight;
                 
 
                 _.svg = _.canvas.append('svg')
@@ -1219,14 +1251,21 @@
                     .attr('version','1.1')
                     .attr('x','0px')
                     .attr('y','0px')
-                    .attr('class', prefix + 'svg')
-                    .attr('viewBox',_.dimensionString)
+                    .attr('class',
+                        prefix + 'svg '
+                        + prefix + 'type-' + args.type + ' '
+                        + prefix + ( (args.colorPalette.length > 0 || args.linePointsColor !== null || args.lineColor !== null) ?  'has-palette' : 'no-palette' )
+                        + ((!args.xTicks && !args.yTicks) ? ' '+prefix+'no-ticks' : ''))
+                    .attr('viewBox', dimensionString)
                     .attr("preserveAspectRatio", "xMaxYMax meet")
                     .attr('xml:space','preserve')
-                    .style('style','enable-background','new '+_.dimensionString)
+                    .style('style','enable-background','new '+ dimensionString)
                     .attr('width',_.outerWidth)
                     .attr('height',_.outerHeight);
 
+
+                //duration
+                _.duration = _.svg.transition().duration( args.transition ).ease(d3.easeLinear);
                     
                 _.container = _.svg.append('g');
 
@@ -1275,9 +1314,8 @@
                 
                 if(args.type == 'pie'){
                     //setup data to be used by pi
-                    _.dataPi = setPiData(data);
 
-                    console.log(_.dataPi);
+                    console.log(getPiData(data));
 
                 }else{
 
@@ -1323,9 +1361,12 @@
                                 
                                 return function(value){
 
-                                    var dataPossiblyDivided = (args[keyKey+'Data'] == 1 || args.nameIsNum ) ? (value / args[ 'format' + keyKey.toString().toUpperCase() + 'Divider']): value,
+                                    var divider = args[ 'format' + keyKey.toString().toUpperCase() + 'Divider'],
+                                        prepend = args[ 'format' + keyKey.toString().toUpperCase() + 'Prepend'],
+                                        append = args[ 'format' + keyKey.toString().toUpperCase() + 'Append'],
+                                        dataPossiblyDivided = (args[keyKey+'Data'] == 1 || args.nameIsNum ) ? (value / divider): value,
                                     
-                                    formatted = args[ 'format' + keyKey.toString().toUpperCase() + 'Prepend'] + dataPossiblyDivided + args[ 'format' + keyKey.toString().toUpperCase() + 'Append'];
+                                    formatted = prepend + dataPossiblyDivided + append;
         
                                     return formatted;
                                 }
@@ -1368,11 +1409,13 @@
                 //select
                 _.container_graph = _.container.insert('g')
                     .attr('class',
-                        prefix + 'graph' + ' '
-                        + prefix + 'type-' + args.type + ' '
-                        + prefix + ( (args.colorPalette.length > 0 || args.linePointsColor !== null || args.lineColor !== null) ?  'has-palette' : 'no-palette' )
-                        + ((!args.xTicks && !args.yTicks) ? ' '+prefix+'item-data-no-ticks' : '')
+                        prefix + 'graph'
                     );
+
+                    if(args.type == 'pie'){
+                        _.container_graph
+                            .attr('transform','translate('+ (args.width / 2) +','+ (args.height / 2) +')');
+                    }
                     
                     if(
                         args.width == defaults.width
@@ -1439,6 +1482,11 @@
                 'domain',_['dom_'+ args.yData],"\n",
                 'range',_['range_'+ args.yData],"\n",
                 "\n",
+
+                "\n",'color',"\n",
+                'domain',_['dom_color'],"\n",
+                'range',_['range_color'],"\n",
+                "\n",
             );
 
             //generate the graph boi
@@ -1451,7 +1499,7 @@
                 coordinates.forEach(function(coordinate){
                     if( args[coordinate+'Ticks'] ){
                                 
-                        _['rule_'+coordinate].transition(args.delay).call( _['axis_'+coordinate])
+                        _['rule_'+coordinate].transition(_.duration).call( _['axis_'+coordinate])
                             .attr('font-family','inherit')
                             .attr('font-size',null);
     
@@ -1483,23 +1531,29 @@
 
                     if(args.lineFill){
                         _.fill = _.container_graph.append('path')
-                        .attr('class',prefix+'fill'+ ((args.lineFillColor !== null) ? ' has-color' : ' no-color' ))
-                        .attr('fill-opacity',0)
-                        .attr('d',function(){
-                            return getLinePath(data,true,true)
-                        });
+                        .attr('class',prefix+'fill'+ ((args.lineFillColor !== null || args.lineColor !== null) ? ' has-color' : ' no-color' ))
+                        .attr('fill-opacity',args.lineFillOpacity)
+
+                        _.fill
+                            .transition(_.duration)
+                                .attrTween('d',function(){
+                                    return getLinePath(data,true)
+                                });
+                            
+                        // .attr('d',function(dis,i){
+                        //     return getLinePath(data,true,true);
+                        // });
 
                         if( args.lineFillColor || args.lineColor ) {
                             _.fill
                                 .attr('fill', args.lineFillColor || args.lineColor);
                         }
 
-                        _.fill 
-                            .transition(_.duration)
-                            .attr('fill-opacity',args.lineFillOpacity)
-                            .attr('d',function(){
-                                return getLinePath(data,true)
-                            });
+                        // _.fill 
+                        //     .transition(_.duration)
+                        //     .attr('d',function(){
+                        //         return getLinePath(data,true)
+                        //     });
                     }
 
 
@@ -1508,26 +1562,21 @@
                         .attr('fill','none')
                         .attr('stroke-width',args.lineWeight)
                         .attr('stroke-linejoin','round')
-                        .attr('stroke-opacity',0)
-                        .attr('d',function(){
-                            return getLinePath(data,false,true)
-                        })
-                        .attr('stroke-dasharray','0,0');
+                        .attr('stroke-dasharray',args.lineDash)
+                        .attr('stroke-opacity',1)
+                        // .attr('d',function(){
+                        //     return getLinePath(data,false)
+                        // })
+                        .attr('stroke-dasharray','0,0')
+                        .transition(_.duration)
+                            .attrTween('d',function(){
+                                return getLinePath(data,false)
+                            });
 
                         if(args.lineColor) {
                             _.line
                                 .attr('stroke',args.lineColor)
                         }
-
-
-                    
-                        _.line
-                            .transition(_.duration)
-                            .attr('d',function(){
-                                return getLinePath(data,false)
-                            })
-                            .attr('stroke-dasharray',args.lineDash)
-                            .attr('stroke-opacity',1);
 
                 
                 }
@@ -1538,55 +1587,103 @@
                 !(args.type == 'line' && !args.linePoints)
             ){
             
-                _.blob.exit()
-                    .transition(_.duration)
-                    .attr('height',0)
-                    .remove();
+                // _.blob.exit()
+                //     .transition(_.duration)
+                //     .remove();
 
                 
                 _.blobWrap = _.blob
                     .enter()
                     .append('g')
                         .attr('class', function(dis){
-                            return prefix + 'item'+
+                            return prefix + 'graph-item'+
                                 ' ' + prefix + deepGet(dis,args.key[0]);
                         });
 
                 
                         
 
-                _.blobItem = _.blobWrap
-                    .append(_.graph_item_element)
-                    .attr(
-                        (args.type == 'line' || args.type == 'scatter') ? 'cx' : 'x',
-                        function(dis,i){
-                            return getBlobOrigin('x',dis,i,true)
-                        }
-                    )
+                _.blobItem = _.blobWrap.append(_.graph_item_element);
 
-                    .attr(
-                        (args.type == 'line' || args.type == 'scatter') ? 'cy' : 'y',
-                        function(dis,i){
-                            return getBlobOrigin('y',dis,i,true)
-                        })
-                    ;
 
-                    if(args.type == 'line' || args.type == 'scatter'){
+                    //coordinates
+                    if(args.type !== 'pie'){
+                        
                         _.blobItem
+
+                            .attr(
+                                ((args.type == 'line' || args.type == 'scatter') ? 'cx' : 'x'),
+                                function(dis,i){
+                                    return getBlobOrigin('x',dis,i,true)
+                                }
+                            )
+                            .attr(
+                                ((args.type == 'line' || args.type == 'scatter') ? 'cy' : 'y'),
+                                function(dis,i){
+                                    return getBlobOrigin('y',dis,i,true)
+                                }
+                            )
+
+                        _.blobWrap.select(_.graph_item_element)
+                            .transition(_.duration)
+                                .attr(
+                                    ((args.type == 'line' || args.type == 'scatter' ) ? 'cx' : 'x'),
+                                    function(dis,i){
+                                        return getBlobOrigin('x',dis,i,false)
+                                    }
+                                )
+        
+                                .attr(
+                                    ((args.type == 'line' || args.type == 'scatter' ) ? 'cy' : 'y'),
+                                    function(dis,i){
+                                        return getBlobOrigin('y',dis,i,false)
+                                    }
+                                );
+                    }
+
+                    //areas and what not
+
+                    if(args.type == 'pie'){
+                        _.blobItem
+                            // .merge(_.blob)
+                            .transition(_.duration)
+                                .attrTween('d',function(dis,i){
+                                    return getArcPath( getPiData(data)[i] )
+                                })
+                    }else if(args.type == 'line' || args.type == 'scatter'){
+                        _.blobItem
+                            // .merge(_.blob)
                             .attr('r',function(dis,i){
-                                return getBlobRadius(dis,i,true)
+                                return getBlobRadius(dis,i,true);
                             })
+                        // _.blobItem
+                            .transition(_.duration)
+                                .attr('r',function(dis,i){
+                                    return getBlobRadius(dis,i,false);
+                                })
+
 
                     }else{
                         _.blobItem
+                            // .merge(_.blob)
+
                             .attr('width',function(dis,i){
                                 return getBlobSize('x',dis,i,true);
                             }) // calculated width
                             .attr('height',function(dis,i){
                                 return getBlobSize('y',dis,i,true);
                             })
+                        // _.blobItem
+                            .transition(_.duration)
+                                .attr('width',function(dis,i){
+                                    return getBlobSize('x',dis,i,false);
+                                }) // calculated width
+                                .attr('height',function(dis,i){
+                                    return getBlobSize('y',dis,i,false);
+                                })
                     }
                     
+                    //line graph line and fill and shit
                     if(!args.colorPalette.length){
                         if(
                             args.type == 'line'
@@ -1608,107 +1705,87 @@
                             });
                     }
 
-                    _.blobItem 
-                    // .merge(_.blob)
-                        .transition(_.duration)
-                        .attr(
-                            (args.type == 'line' || args.type == 'scatter' ) ? 'cx' : 'x',
-                            function(dis,i){
-                                return getBlobOrigin('x',dis,i)
-                            }
-                        )
-
-                        .attr(
-                            (args.type == 'line' || args.type == 'scatter' ) ? 'cy' : 'y',
-                            function(dis,i){
-                                return getBlobOrigin('y',dis,i)
-                            })
-                        ;
-
-                        if(args.type == 'line' || args.type == 'scatter'){
-                            _.blobItem
-                                .transition(_.duration)
-                                .attr('r',function(dis,i){
-                                    return getBlobRadius(dis,i);
-                                })
-
-                        }else{
-                            _.blobItem
-                                .transition(_.duration)
-                                .attr('width',function(dis,i){
-                                    return getBlobSize('x',dis,i);
-                                }) // calculated width
-                                .attr('height',function(dis,i){
-                                    return getBlobSize('y',dis,i);
-                                })
-                        }
-
             }
                     
             //graph item label if ticks are not set
-            if( (
-                !args.xTicks || !args.yTicks
-                ) ){
+            if(
+                ( !args.xTicks || !args.yTicks )
+                || (
+                    args.type == 'pie'
+                    && ( !args.piLabelStyle || !args.colorLegend )
+                )
+            ){
 
                 _.blobText =  _.blobWrap.append('text');
 
                 //append content right away so we can calculate where shit offset
-                coordinates.forEach(function(coordinate){
+                [0,1].forEach(function(keyKey){
 
-                    if( !args[coordinate+'Ticks'] ){
+                    if(
+                        (
+                            args.type !== 'pie'
+                            && !args[getAxisString(keyKey)+'Ticks']
+                        )
+                        || (
+                            args.type == 'pie'
+                            && (
+                                ( keyKey == 0 && !args.colorLegend )
+                                || ( keyKey == 1 && !args.piLabelStyle )
+                            )
+                        )
+                    ){
 
-                        _['blobText_'+coordinate] = _.blobText.append('tspan')
+                        _['blobText_'+keyKey] = _.blobText.append('tspan')
 
-                            .attr('class', prefix+'item-data-'+args[coordinate+'Data'] )
+                            .attr('class', prefix+'graph-item-data-'+keyKey )
                             .attr('dominant-baseline','middle')
                             .attr('text-anchor',function(dis,i){
                                 return getBlobTextAnchor(dis,i);
                             })
                             .attr('font-size',null)
                             .text(function(dis,i){
-                                console.log(args[coordinate+'Data']);
-                                return _['format_'+ args[coordinate+'Data'] ](
-                                    deepGet(dis,args.key[ args[coordinate+'Data'] ])
+                                
+                                return _['format_'+ keyKey ](
+                                    deepGet(dis,args.key[ keyKey ])
                                 );
                             })
-                            .attr('x',getBlobTextBaselineShift('x',coordinate))
-                            .attr('y',getBlobTextBaselineShift('y',coordinate));
-
-                        
-
-                            //set a minimum length for graph items to offset its text bois
-                            _.mLength = function(axisString,i){
-                                
-                                var value = 0;
-
-                                    length = _.blobText ? _.blobText.nodes()[i].getBoundingClientRect()[getDimension(axisString)] : 0
-                                    
-                                    value = length + textOffset;
-
-                                return value;
-                            };
+                            .attr('x',getBlobTextBaselineShift('x',keyKey))
+                            .attr('y',getBlobTextBaselineShift('y',keyKey));
                     }
                     
                 });
 
+
+                //set a minimum length for graph items to offset its text bois. doesnt matter which data key is on the axis we just want the width or height of the graph item on the given axis
+                _.mLength = function(axisString,i){
+                    
+                    var value = 0;
+
+                        length = _.blobText ? _.blobText.nodes()[i].getBoundingClientRect()[ getDimension( axisString ) ] : 0
+                        
+                        value = length + textOffset;
+
+                    return value;
+                };
+
                 //continue fucking with text blob
                 _.blobText
                     .attr('class', function(dis,i){
-                        var classString =  prefix + 'item-text';
+                        var classString =  prefix + 'graph-item-text';
 
-                        coordinates.forEach(function(coordinate){
+                        [0,1].forEach(function(keyKey){
                             
                             if( 
                                 (
 
-                                    (args[coordinate+'Data']  == 1)
+                                    (keyKey  == 1)
                                     && (
                                         
-                                        (parseFloat(getBlobSize(coordinate,dis,i,false)) < _.mLength(coordinate,i))
+                                        (parseFloat(getBlobSize(getAxisString(keyKey),dis,i,false)) < _.mLength(getAxisString(keyKey),i))
                                         
                                         || (
                                             (args.colorPalette.length > 0)
-                                            && (parseFloat(getBlobSize(coordinate,dis,i,false)) >= _.mLength(coordinate,i))
+                                            && (parseFloat(getBlobSize(getAxisString(keyKey),dis,i,false)) >= _.mLength(getAxisString(keyKey),i))
                                             && !isDark( _.the_color(deepGet(dis,args.key.color)) )
                                         )
                                     )
@@ -1727,8 +1804,8 @@
                         return 'translate('+getBlobTextOrigin('x',dis,i,true)+','+getBlobTextOrigin('y',dis,i,true)+')'
                     })
                     .style('opacity',0);
-
-                _.blobText
+                    
+                _.blobWrap.select('text')
                     .transition(_.duration)
                     .attr('transform',function(dis,i){
                         return 'translate('+getBlobTextOrigin('x',dis,i)+','+getBlobTextOrigin('y',dis,i)+')'
@@ -1755,8 +1832,9 @@
 
                     _.legend.append("text")
                         .text(key)
+                        .attr('dominant-baseline','middle')
                         .attr('x','2em')
-                        .attr('y','1.25em')
+                        .attr('y','.625em')
 
                         
                     _.legend
@@ -1766,7 +1844,7 @@
 
                 _.container_legend
                     .attr('opacity','0')
-                    .attr('transform','translate('+getLegendPosition('x')+','+getLegendPosition('y')+')');
+                    .attr('transform','translate('+getLegendOrigin('x')+','+getLegendOrigin('y')+')');
 
                 _.container_legend
                     .transition(_.duration)

@@ -35,35 +35,56 @@
   .data-visualizer-axis text, .data-visualizer-grid text, .data-visualizer-label text {
     fill: #888; }
   .data-visualizer-axis text, .data-visualizer-grid text, .data-visualizer-legend text {
-    font-size: .625em; }
+    font-size: .875em; }
   .data-visualizer-grid line, .data-visualizer-grid path {
     stroke-opacity: .25; }
   .data-visualizer-grid .tick-aligned line, .data-visualizer-grid .tick-aligned path {
     stroke-opacity: .625; }
   .data-visualizer-fill.no-color,
-  .data-visualizer-no-palette .data-visualizer-item rect,
-  .data-visualizer-no-palette .data-visualizer-item circle {
+  .data-visualizer-no-palette .data-visualizer-graph-item rect,
+  .data-visualizer-no-palette .data-visualizer-graph-item circle,
+  .data-visualizer-no-palette .data-visualizer-graph-item path {
     fill: #222; }
-  .data-visualizer .data-visualizer-line.no-color {
+  .data-visualizer-line.no-color {
     stroke: #222; }
-  .data-visualizer .data-visualizer-fill.no-color {
+  .data-visualizer-fill.no-color {
     fill-opacity: .25; }
-  .data-visualizer-item-text {
+  .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-graph-item path {
+    stroke: 2; }
+  .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-graph-item:nth-child(2n) path, .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-graph-item:nth-child(2n) rect,
+  .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-legend-item:nth-child(2n) path,
+  .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-legend-item:nth-child(2n) rect {
+    fill: #444; }
+  .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-graph-item:nth-child(3n) path, .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-graph-item:nth-child(3n) rect,
+  .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-legend-item:nth-child(3n) path,
+  .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-legend-item:nth-child(3n) rect {
+    fill: #666; }
+  .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-graph-item:nth-child(4n) path, .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-graph-item:nth-child(4n) rect,
+  .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-legend-item:nth-child(4n) path,
+  .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-legend-item:nth-child(4n) rect {
+    fill: #888; }
+  .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-graph-item:nth-child(5n) path, .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-graph-item:nth-child(5n) rect,
+  .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-legend-item:nth-child(5n) path,
+  .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-legend-item:nth-child(5n) rect {
+    fill: #BBB; }
+  .data-visualizer-type-line .data-visualizer-graph-item-text,
+  .data-visualizer-legend-item text,
+  .data-visualizer-legend-item rect {
+    stroke: #EEE;
+    paint-order: stroke;
+    stroke-linejoin: round;
+    stroke-width: 4; }
+  .data-visualizer-graph-item-text {
     fill: #FFF;
     line-height: 2;
     font-size: 1em;
     font-weight: 700; }
-    .data-visualizer-item-text.dark {
+    .data-visualizer-graph-item-text.dark {
       fill: #222; }
-    .data-visualizer-type-line .data-visualizer-item-text {
-      stroke: #EEE;
-      paint-order: stroke;
-      stroke-width: 4;
-      stroke-linejoin: round; }
-  .data-visualizer-item-data-no-ticks .data-visualizer-item-data-0 {
+  .data-visualizer-no-ticks .data-visualizer-graph-item-data-0 {
     font-weight: 700;
     font-size: .75em; }
-  .data-visualizer-item-data-no-ticks .data-visualizer-item-data-1 {
+  .data-visualizer-no-ticks .data-visualizer-graph-item-data-1 {
     font-size: 1.75em;
     font-weight: 300; }
   @media only screen and (max-width: 700px) {

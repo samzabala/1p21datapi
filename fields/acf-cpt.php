@@ -70,7 +70,7 @@ $_1p21_dv_fields_cpt = array(
 					'label' => 'Source Type',
 					'name' => 'type',
 					'type' => 'select',
-					'instructions' => 'Choose how file should be imported',
+					'instructions' => 'Choose how the data should be imported',
 					'required' => 1,
 					'conditional_logic' => 0,
 					'wrapper' => array(
@@ -2116,6 +2116,12 @@ if layout is set to line, this will be applied to plot points and will override 
 								'field' => 'field_5d420a45de26f',
 								'operator' => '==',
 								'value' => 'pie',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d5ef5079216e',
+								'operator' => '!=empty',
 							),
 						),
 					),

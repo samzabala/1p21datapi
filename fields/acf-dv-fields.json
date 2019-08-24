@@ -102,7 +102,7 @@
                         "type": "select",
                         "value": null,
                         "menu_order": 0,
-                        "instructions": "Choose how file should be imported",
+                        "instructions": "Choose how the data should be imported",
                         "required": 1,
                         "id": "",
                         "class": "",
@@ -2923,6 +2923,12 @@
                                     "field": "field_5d420a45de26f",
                                     "operator": "==",
                                     "value": "pie"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d5ef5079216e",
+                                    "operator": "!=empty"
                                 }
                             ]
                         ],
