@@ -21,12 +21,11 @@
       left: 50%;
       transform: translate(-50%, -50%); }
   .data-visualizer svg {
-    display: block;
+    display: inline-block;
     width: 100%;
-    max-width: 100%;
     height: auto;
     margin: 0 auto;
-    font-size: 16px;
+    font-size: 16px !important;
     font-family: inherit !important; }
   .data-visualizer text {
     font-family: inherit !important; }
@@ -34,8 +33,8 @@
     stroke: #888; }
   .data-visualizer-axis text, .data-visualizer-grid text, .data-visualizer-label text {
     fill: #888; }
-  .data-visualizer-axis text, .data-visualizer-grid text, .data-visualizer-legend text {
-    font-size: .875em; }
+  .data-visualizer-axis, .data-visualizer-grid, .data-visualizer-legend {
+    font-size: .75em; }
   .data-visualizer-grid line, .data-visualizer-grid path {
     stroke-opacity: .25; }
   .data-visualizer-grid .tick-aligned line, .data-visualizer-grid .tick-aligned path {
@@ -68,12 +67,17 @@
   .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-legend-item:nth-child(5n) rect {
     fill: #BBB; }
   .data-visualizer-type-line .data-visualizer-graph-item-text,
+  .data-visualizer-type-pie .data-visualizer-graph-item-text,
   .data-visualizer-legend-item text,
   .data-visualizer-legend-item rect {
-    stroke: #EEE;
     paint-order: stroke;
     stroke-linejoin: round;
     stroke-width: 4; }
+  .data-visualizer-type-line .data-visualizer-graph-item-text,
+  .data-visualizer-type-pie.data-visualizer-label-style-linked .data-visualizer-graph-item-text,
+  .data-visualizer-legend-item text,
+  .data-visualizer-legend-item rect {
+    stroke: #EEE; }
   .data-visualizer-graph-item-text {
     fill: #FFF;
     line-height: 2;
@@ -81,10 +85,12 @@
     font-weight: 700; }
     .data-visualizer-graph-item-text.dark {
       fill: #222; }
-  .data-visualizer-no-ticks .data-visualizer-graph-item-data-0 {
+  .data-visualizer-no-ticks .data-visualizer-graph-item-data-0,
+  .data-visualizer-type-pie.data-visualizer-no-legend .data-visualizer-graph-item-data-0 {
     font-weight: 700;
     font-size: .75em; }
-  .data-visualizer-no-ticks .data-visualizer-graph-item-data-1 {
+  .data-visualizer-no-ticks .data-visualizer-graph-item-data-1,
+  .data-visualizer-type-pie.data-visualizer-no-legend .data-visualizer-graph-item-data-1 {
     font-size: 1.75em;
     font-weight: 300; }
   @media only screen and (max-width: 700px) {

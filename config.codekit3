@@ -44,9 +44,9 @@
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
-		"oA": 0,
-		"oAP": "/assets/main.min.js",
-		"oF": 3,
+		"oA": 1,
+		"oAP": "/assets/main-min.js",
+		"oF": 0,
 		"sC": 0,
 		"tS": 0
 		},
@@ -83,6 +83,16 @@
 		"oF": 0,
 		"oS": 0,
 		"uL": 1
+		},
+	"/assets/svgtest.svg": {
+		"ft": 2097152,
+		"miP": 0,
+		"oA": 2,
+		"oAP": "/assets/svgtest.svg",
+		"oF": 0,
+		"opt": 0,
+		"plM": 3758088159,
+		"prP": 0
 		},
 	"/fields/acf-cpt.php": {
 		"cB": 0,

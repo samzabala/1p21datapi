@@ -26,6 +26,7 @@ $color-neutral-darker: #444;
     }
 
     &-wrapper {
+        
         &.fatality {
             padding: 4em 0;
             max-width: 28em;
@@ -47,14 +48,17 @@ $color-neutral-darker: #444;
     }
 
     svg {
-        display: block;
-        width: 100%;
-        max-width:100%;
+        display: inline-block;
+        width:100%;
         height:auto;
         margin: 0 auto;
-        font-size: 16px;
+        font-size: 16px!important;
+        // line-height:1!important;
         font-family: inherit!important;
-        // outline: 1px solid red;
+        // position:absolute;
+        // top:0;
+        // left:0;
+        // // outline: 1px solid red;
     }
 
     text {
@@ -76,9 +80,8 @@ $color-neutral-darker: #444;
     &-axis,
     &-grid,
     &-legend {
-        text{
-            font-size: .875em;
-        }
+        
+        font-size: .75em;
     }
 
     &-grid {
@@ -144,20 +147,26 @@ $color-neutral-darker: #444;
         }
     }
 
-
-
     &-type-line #{$prefix}-graph-item-text,
+    &-type-pie #{$prefix}-graph-item-text,
     &-legend-item text,
     &-legend-item rect {
-        stroke: $color-bg;
+
         paint-order: stroke;
         stroke-linejoin: round;
         stroke-width: 4;
     }
 
+
+    &-type-line #{$prefix}-graph-item-text,
+    &-type-pie#{$prefix}-label-style-linked #{$prefix}-graph-item-text,
+    &-legend-item text,
+    &-legend-item rect {
+        stroke: $color-bg;
+    }
+
     &-graph-item {
         
-
         &-text {
             fill: $color-white;
             line-height: 2;
@@ -167,16 +176,21 @@ $color-neutral-darker: #444;
             &.dark {
                 fill: $color-base;
             }
+        }
             
-        }
 
-        #{$prefix}-no-ticks &-data-0 {
-            font-weight: 700;
-            font-size: .75em;
-        }
-        #{$prefix}-no-ticks &-data-1 {
-            font-size: 1.75em;
-            font-weight: 300;
+        #{$prefix}-no-ticks &,
+        #{$prefix}-type-pie#{$prefix}-no-legend & {
+
+            &-data-0 {
+                font-weight: 700;
+                font-size: .75em;
+            }
+            &-data-1 {
+                font-size: 1.75em;
+                font-weight: 300;
+            }
+
         }
 
         

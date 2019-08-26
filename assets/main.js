@@ -157,9 +157,9 @@
             //settings
                 width: 600,
                 height:600,
-                margin: 20, // @TODO option to separate this thing
+                margin: 10, // @TODO option to separate this thing
                 marginOffset: 2,
-                transition: 1500,
+                transition: 500,
                 delay: 300,
             //src
                 srcType: '',
@@ -275,25 +275,22 @@
         // @param axisString : duh 
         var getCanvasPadding = function(axisString){
 
-            var padding = 0;
+            var padding = args.margin * args.marginOffset * 2;
 
-            if(args.type !== 'pie'){
-                padding = args.margin * (args.marginOffset * .75);
+            if( args.type !== 'pie' ){
                 
                 // @TODO option to separate padding
                 // if this axis has a label give it more space
-                if( args[axisString+'Label'] ){
-                    padding = args.margin * (args.marginOffset * 1.5);
-                }
-        
-                // x axis with name keys need more space because text is long
-                if(axisString == 'x' && args[getAxisStringOppo(axisString)+'Data'] == 0 ){
-                    
-                    padding = (args.margin * (args.marginOffset * 1.75));
+                if( args[getAxisStringOppo(axisString)+'Ticks'] !== false ){
+                    padding += args.margin * (args.marginOffset * .25);
 
-                    //link @ line 123 boi
-                    if( args[getAxisStringOppo(axisString)+'Label'] ){
-                        padding = padding + (args.marginOffset * .5);
+                    if( args[getAxisStringOppo(axisString)+'Labels'] !== false ){
+                        padding += args.margin * (args.marginOffset * .5);
+                    }
+        
+                    // x axis with name keys need more space because text is long
+                    if( axisString == 'x' && args[getAxisStringOppo(axisString)+'Data'] == 0 ){
+                        padding += args.margin * (args.marginOffset * 1.5);
                     }
 
                 }
@@ -599,18 +596,23 @@
 
             var shift = '0em';
 
-            if(args.type == 'pie'){
+            if(coordinateAttr == 'y'){
 
-            }else{
-
-                if(coordinateAttr == 'y'){
-
-                    if(!args.xTicks && !args.yTicks){
-                        shift = (keyKey == 1) ? '.375em' : '-1.5em'
-                    }
-                    
+                if(
+                    (
+                        args.type !== 'pie'
+                        && (!args.xTicks && !args.yTicks)
+                    )
+                    || (
+                        args.type == 'pie'
+                        && (
+                            !args.colorLegend
+                        )
+                    )
+                ){
+                    shift = (keyKey == 1) ? '.375em' : '-1.5em'
                 }
-
+                
             }
             
             return shift;
@@ -628,32 +630,35 @@
                     var value = 0,
                     multiplier = 1;
 
-                    if(
-                        (
-                            args.type == 'bar' 
-                            && (
-                                args[getAxisStringOppo(coordinate)+'Align'] == 'top'
-                                || args[getAxisStringOppo(coordinate)+'Align'] == 'right'
-                            )
-                        )
-                        || (
-                            args.type !== 'bar' 
-                            && (
-                                args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
-                                || args[getAxisStringOppo(coordinate)+'Align'] == 'right'
-                            )
-                        )
-                    ){
-                        multiplier *= -1;
-                    }
-                    
+                    if(!initial){
 
-                    if(args[getAxisStringOppo(coordinate)+'Data'] == 0){
-                        (coordinate == 'x') ? value = textOffset : value = ( ( _.mLength(coordinate,i) / 2 ) );
-                        _.mLength(coordinate,i);
-                    }
+                        if(
+                            (
+                                args.type == 'bar' 
+                                && (
+                                    args[getAxisStringOppo(coordinate)+'Align'] == 'top'
+                                    || args[getAxisStringOppo(coordinate)+'Align'] == 'right'
+                                )
+                            )
+                            || (
+                                args.type !== 'bar' 
+                                && (
+                                    args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
+                                    || args[getAxisStringOppo(coordinate)+'Align'] == 'right'
+                                )
+                            )
+                        ){
+                            multiplier *= -1;
+                        }
+                        
 
-                    value *= multiplier;
+                        if(args[getAxisStringOppo(coordinate)+'Data'] == 0){
+                            (coordinate == 'x') ? value = textOffset : value = ( ( _.mLength(coordinate,i) / 2 ) );
+                            _.mLength(coordinate,i);
+                        }
+
+                        value *= multiplier;
+                    }
                     
                     return value;
 
@@ -665,51 +670,55 @@
                     var multiplier = 1,
                         value = 0;
 
-                    if(
-                        (
-                            args.type == 'bar'
-                            && (
-                                args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
-                                || args[getAxisStringOppo(coordinate)+'Align'] == 'right'
-                            )
-                        )
-                        || (
-                            args.type == 'line' 
-                            && (
-                                args[getAxisStringOppo(coordinate)+'Align'] == 'top'
-                                || args[getAxisStringOppo(coordinate)+'Align'] == 'left'
-                            )
-                        )
-                    ){
-                        multiplier = -1;
-                    }
+                    if(!initial) {
 
-                    if(
-                        (
+                        if(
                             (
-                                args.type !== 'line'
-                                && parseFloat(getBlobSize(coordinate,dis,i)) < _.mLength(coordinate,i)
+                                args.type == 'bar'
+                                && (
+                                    args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
+                                    || args[getAxisStringOppo(coordinate)+'Align'] == 'right'
+                                )
                             )
                             || (
-                                args.type == 'line'
-                                && parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(getAxisStringOppo(coordinate))] - _.mLength(coordinate,i))
+                                args.type == 'line' 
+                                && (
+                                    args[getAxisStringOppo(coordinate)+'Align'] == 'top'
+                                    || args[getAxisStringOppo(coordinate)+'Align'] == 'left'
+                                )
                             )
-                        )
-                        &&  keyKey !== 0
-                    ){
-                        if( coordinate == 'x'  && args.type !== 'line'){
+                        ){
+                            multiplier = -1;
+                        }
+
+                        if(
+                            (
+                                (
+                                    args.type !== 'line'
+                                    && parseFloat(getBlobSize(coordinate,dis,i)) < _.mLength(coordinate,i)
+                                )
+                                || (
+                                    args.type == 'line'
+                                    && parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.mLength(coordinate,i))
+                                )
+                            )
+                            &&  keyKey !== 0
+                        ){
+                            if( coordinate == 'x'  && args.type !== 'line'){
+                                
+                                value = getBlobSize(coordinate,dis,i);
+
+                            }else{
+                                value = _.mLength(coordinate,i);
+
+                            }
                             
-                            value = getBlobSize(coordinate,dis,i);
-
-                        }else{
-                            value = _.mLength(coordinate,i);
-
                         }
                         
-                    }
-                    
 
-                    value *= multiplier;
+                        value *= multiplier;
+                    
+                    }
                     
                     return value;
 
@@ -717,65 +726,55 @@
 
                 initial = initial || false;
 
-            //fuck it up    
-            switch(args.type) {
+                if( keyKey  == 0) {
 
-                case 'pie':
-                    break;
+                    offset = getBlobOrigin(coordinate,dis,i);
 
-                default:
+                    if(args.type == 'bar') {
+                        offset += getBlobSize(coordinate,dis,i) / 2;
+                    }
 
-                    if( keyKey  == 0) {
+                }else{
+                    
+                    switch(args[getAxisStringOppo(coordinate)+'Align']){
 
-                        offset = getBlobOrigin(coordinate,dis,i);
+                        case 'top':
 
-                        if(args.type == 'bar') {
-                            offset += getBlobSize(coordinate,dis,i) / 2;
-                        }
+                            initial ? offset = getBlobOrigin(coordinate,dis,i) : offset = getBlobSize(coordinate,dis,i);
+                            break;
 
-                    }else{
-                        
-                        switch(args[getAxisStringOppo(coordinate)+'Align']){
+                        case 'right':
+                        case 'bottom':
 
-                            case 'top':
+                                if(
+                                    initial 
+                                    || (
+                                        args[getAxisStringOppo(coordinate)+'Align'] == 'right'
+                                        && args.type == 'bar'
+                                    )
+                                ) {
 
-                                initial ? offset = getBlobOrigin(coordinate,dis,i) : offset = getBlobSize(coordinate,dis,i);
-                                break;
+                                    offset = args[getDimension(coordinate)];
 
-                            case 'right':
-                            case 'bottom':
+                                }else{
 
-                                    if(
-                                        initial 
-                                        || (
-                                            args[getAxisStringOppo(coordinate)+'Align'] == 'right'
-                                            && args.type == 'bar'
-                                        )
-                                    ) {
-
-                                        offset = args[getDimension(coordinate)];
-
-                                    }else{
-
-                                        offset = args[getDimension(coordinate)] - getBlobSize(coordinate,dis,i);
-                                        
-                                    }
-
-                                    break;
-
-                            case 'left':
-
-                                if(args.type !== 'bar') {
-                                    offset = getBlobSize(coordinate,dis,i);
+                                    offset = args[getDimension(coordinate)] - getBlobSize(coordinate,dis,i);
+                                    
                                 }
 
-                        }
+                                break;
+
+                        case 'left':
+
+                            if(args.type !== 'bar') {
+                                offset = getBlobSize(coordinate,dis,i);
+                            }
 
                     }
-                    
-                    offset += shifter() + shifterOut();
 
-            }
+                }
+                
+                offset += shifter() + shifterOut();
             
             return offset;
 
@@ -845,34 +844,65 @@
 
         }
 
+        
         var getLegendOrigin = function(axisString){
             if( _.container_legend ){
+
                 var offset = 0,
+                    length = axisString == 'x' ? _.container_legend.nodes()[0].getBoundingClientRect()[getDimension(axisString)] : _.legend_height, // .8
                 
                 shifter = function(){
                     var value = 0,
                         multiplier = 1;
 
-                        if (
-                            args[getAxisStringOppo(axisString)+'Align'] == 'left'
+                    //multiplier
+                    if (
+                        args.type == 'pie'
+                        || 
+                        (
+                            args.type !== 'pie'
+                            && args[getAxisStringOppo(axisString)+'Align'] == 'left'
                             || args[getAxisStringOppo(axisString)+'Align'] == 'top'
-                        ){
-                            multiplier = -1;
-                            value = _.container_legend.nodes()[0].getBoundingClientRect()[getDimension(axisString)] + textOffset;
-                        }
+                        )
+                    ){
+                        multiplier = -1;
+                    }
+
+                    //how much of length to shift
+                    if (
+                        (args.type == 'pie' && axisString == 'x')
+                        || 
+                        (
+                            args.type !== 'pie'
+                            && args[getAxisStringOppo(axisString)+'Align'] == 'left'
+                            || args[getAxisStringOppo(axisString)+'Align'] == 'top'
+                        )
+                    ){
+
+                        value = length;
+
+                    } else if(  (args.type == 'pie' && axisString == 'y') ){
+                            value = length * .5;
+
+                    }
                         
                     return value * multiplier;
                 };
 
-
                 if (
-                    args[getAxisStringOppo(axisString)+'Align'] == 'left'
-                    || args[getAxisStringOppo(axisString)+'Align'] == 'top'
+                    (args.type == 'pie' && axisString == 'x')
+                    || 
+                    (
+                        args.type !== 'pie'
+                        && args[getAxisStringOppo(axisString)+'Align'] == 'left'
+                        || args[getAxisStringOppo(axisString)+'Align'] == 'top'
+                    )
                 ){
                     offset = args[getDimension(axisString)];
+                }else if( (args.type == 'pie' && axisString == 'y') ){
+                    offset = args[getDimension(axisString)] * .5;
                 }
-
-
+                
                 return offset + shifter();
 
             }
@@ -932,7 +962,7 @@
                         return getBlobOrigin(getAxisStringOppo(axisToFill),dis,i,true);
                     })
                     [aCord.fill](function(dis,i){
-                        return getBlobOrigin( getAxisStringOppo(axisToFill) ,dis,i,true);
+                        return getBlobOrigin( getAxisStringOppo(axisToFill),dis,i,true);
                     });
 
                 
@@ -944,7 +974,7 @@
                         return getBlobOrigin(getAxisStringOppo(axisToFill),dis,i,false);
                     })
                     [aCord.fill](function(dis,i){
-                        return getBlobOrigin( getAxisStringOppo(axisToFill) ,dis,i,true);
+                        return getBlobOrigin( getAxisStringOppo(axisToFill),dis,i,true);
                     });
 
             }else{
@@ -985,11 +1015,25 @@
         var getArcPath = function(disPi,isForLabels,initial){
             isForLabels = isForLabels || false;
 
-            var optimalDimension = Math.min((args.width * .375),(args.height * .375)),
+            var maxRadius = (function(){
+                var fullRadius = Math.min((args.width * .5),(args.height * .5));
+
+                if(args.colorLegend){
+                    fullRadius *= .75
+                }
+
+                if(args.piLabelStyle == 'linked'){
+                    fullRadius *= .75
+                }
+
+                return fullRadius;
+            }()),
                 i = d3.interpolate(disPi.endAngle,disPi.startAngle),
                 path = d3.arc()
-                    .outerRadius( isForLabels == true ? optimalDimension : (optimalDimension * .875) )
-                    .innerRadius( isForLabels == true ? (optimalDimension * .75) : optimalDimension * args.piInRadius );
+                    .outerRadius( isForLabels ? maxRadius : maxRadius * .875 )
+                    .innerRadius(  maxRadius * args.piInRadius );
+
+                    console.log(selector,'radius',maxRadius, args.piInRadius);
             
             // interpolation by time or t
             return function(t) {
@@ -1009,6 +1053,41 @@
                 });
 
                 return pie(data);
+        }
+
+        var getPiOrigin = function(axisString){
+            var offset = 0;
+
+            if(args.colorLegend && axisString =='x'){
+
+                if(args.piLabelStyle == 'linked') {
+                    offset = args[getDimension(axisString)] * .35;
+                }else{
+
+                    offset = args[getDimension(axisString)] * .3;
+                }
+            }else{
+                offset  = (args[getDimension(axisString)] * .5);
+            }
+
+            return offset;
+        }
+
+
+
+        var getInterpolation = function(start,end,d3fn,fn){
+            fn = fn || function(value){ return value; };
+            d3fn = d3fn || 'interpolate';
+
+            var i = d3[d3fn](start,end);
+
+
+            return function(t) {
+                var interVal = i(t);
+                // fn(interVal);
+
+                return fn(interVal);
+            }
         }
 
         //set the scale function thingy for the axis shit
@@ -1162,7 +1241,7 @@
                         if(isGrid){
 
                             _['axis_'+gridString+axisString].
-                                tickSize(-args[ getDimension( getAxisStringOppo(axisString) ) ])
+                                tickSize(-args[ getDimension( axisString,true ) ])
                                 .tickFormat("");
 
                         }else {
@@ -1233,6 +1312,7 @@
 
 
             //canvas
+                _.legend_size = 30;
                 _.off_x = getCanvasPadding('x'),
                 _.off_y = getCanvasPadding('y'),
                 
@@ -1244,6 +1324,8 @@
                     .attr('class', prefix + 'wrapper');
 
                 var dimensionString = '0 0 '+ _.outerWidth +' ' + _.outerHeight;
+
+                // _.canvas.style('padding-bottom', Math.floor(_.outerHeight/_.outerWidth * 100 )  + '%');
                 
 
                 _.svg = _.canvas.append('svg')
@@ -1255,66 +1337,77 @@
                         prefix + 'svg '
                         + prefix + 'type-' + args.type + ' '
                         + prefix + ( (args.colorPalette.length > 0 || args.linePointsColor !== null || args.lineColor !== null) ?  'has-palette' : 'no-palette' )
-                        + ((!args.xTicks && !args.yTicks) ? ' '+prefix+'no-ticks' : ''))
+                        + ((args.type !== 'pie' && !args.xTicks && !args.yTicks) ? ' '+prefix+'no-ticks' : '')
+                        + ((!args.colorLegend) ? ' '+prefix+'no-legend' : '')
+                        + ((args.type == 'pie' && args.piLabelStyle !== null) ? ' '+prefix+'label-style'+args.piLabelStyle : ' '+prefix+'no-label')
+                    )
                     .attr('viewBox', dimensionString)
-                    .attr("preserveAspectRatio", "xMaxYMax meet")
+                    .attr("preserveAspectRatio", "xMidYMid meet")
                     .attr('xml:space','preserve')
                     .style('style','enable-background','new '+ dimensionString)
                     .attr('width',_.outerWidth)
-                    .attr('height',_.outerHeight);
+                    .attr('height',_.outerHeight)
+                    ;
 
-
+                    
                 //duration
                 _.duration = _.svg.transition().duration( args.transition ).ease(d3.easeLinear);
                     
-                _.container = _.svg.append('g');
+                _.container = _.svg.append('g')
+                    .attr('class',prefix+'svg-wrapper')
 
                 var shift = {
-                    more: 1.25,
-                    less: .75
+                    more: 1.5,
+                    less: .5
                 },
 
                 transformX = _.off_x,
                 transformY = _.off_y;
 
-                //x COORDINATE value @TODO fucking loop na lang
-                switch ( args.yAlign+' '+ ((!args.xLabel) ? 'empty' : 'has') ){
-                    
-                    case 'left has':
-                        _.transformX = (_.off_x * shift.more);
-                        break;
+                if(args.type !== 'pie'){
+                    // console.log(selector,'x',args.yAlign+' '+ ((args.xLabel !== null) ? 'has' : 'empty'));
+                    //x COORDINATE value @TODO fucking loop na lang
+                    switch ( args.yAlign+' '+ ((args.xLabel == null) ? 'empty' : 'has') ){
+                        
+                        case 'left has':
+                            transformX = (_.off_x * shift.more);
+                            break;
 
-                    case 'right has':
-                        _.transformX = (_.off_x * shift.less);
-                        break;
+                        case 'right has':
+                            transformX = (_.off_x * shift.less);
+                            break;
 
-                    default:
-                        _.transformX = (_.off_x);
+                        default:
+                            transformX = (_.off_x);
+
+                    }
+
+
+                    //y COORDINATE value
+                    console.log(selector,'y', args.yLabel == null,args.xAlign+' '+ ((args.yLabel == null) ? 'empty' : 'has') );
+                    switch ( args.xAlign+' '+ ((args.yLabel == null) ? 'empty' : 'has') ){
+                        
+                        case 'top has':
+                            transformY = (_.off_y * shift.more);
+                            break;
+                        
+                        case 'bottom has':
+                            transformY = (_.off_y * shift.less);
+                            break;
+
+                        default:
+                            transformY = (_.off_y);
+
+                    }
 
                 }
 
-
-                //y COORDINATE value
-                switch ( args.xAlign+' '+ ((!args.yLabel) ? 'empty' : 'has') ){
-                    
-                    case 'top has':
-                        _.transformX = (_.off_y * shift.more);
-                        break;
-                    
-                    case 'bottom has':
-                        _.transformX = (_.off_y * shift.less);
-                        break;
-
-                    default:
-                        _.transformX = (_.off_y);
-
-                }
+                
                     
                 _.container.attr('transform','translate('+ transformX +','+ transformY +')');
                 
                 if(args.type == 'pie'){
                     //setup data to be used by pi
-
                     console.log(getPiData(data));
 
                 }else{
@@ -1334,75 +1427,71 @@
                 
 
                 datumKeys.forEach(function(keyKey){
+                    
+                    // scales and shit
+                    _['range_'+keyKey] = getRange(keyKey),
+                    _['dom_'+keyKey] = getDomain(keyKey,data);
+                    _['the_'+keyKey] = setScale(keyKey);
 
-                    if(
-                        !(args.type == 'pie' && keyKey !== 'color') //dont need other keyKeys for pi
-                    ){
-                        // scales and shit
-                        _['range_'+keyKey] = getRange(keyKey),
-                        _['dom_'+keyKey] = getDomain(keyKey,data);
-                        _['the_'+keyKey] = setScale(keyKey);
+                    //set that fucker
+                    (_['the_'+keyKey] && _['dom_'+keyKey]) && _['the_'+keyKey].domain(_['dom_'+keyKey]);
 
-                        //set that fucker
-                        (_['the_'+keyKey] && _['dom_'+keyKey]) && _['the_'+keyKey].domain(_['dom_'+keyKey]);
+                    _['format_'+keyKey] = (function(){
 
-                        _['format_'+keyKey] = (function(){
+                        if(typeof args[keyKey+'Parameter'] === 'function' ) {
+                            return args[keyKey+'Parameter']
 
-                            if(typeof args[keyKey+'Parameter'] === 'function' ) {
-                                return args[keyKey+'Parameter']
-
-                            }else if( typeof args[keyKey+'Parameter'] === 'string'  ) {
-                                
-                                return function(value){
-                                    return d3.format(args[keyKey+'Parameter'])(value)
-                                }
-
-                            }else{
-                                
-                                return function(value){
-
-                                    var divider = args[ 'format' + keyKey.toString().toUpperCase() + 'Divider'],
-                                        prepend = args[ 'format' + keyKey.toString().toUpperCase() + 'Prepend'],
-                                        append = args[ 'format' + keyKey.toString().toUpperCase() + 'Append'],
-                                        dataPossiblyDivided = (args[keyKey+'Data'] == 1 || args.nameIsNum ) ? (value / divider): value,
-                                    
-                                    formatted = prepend + dataPossiblyDivided + append;
-        
-                                    return formatted;
-                                }
-                            }
-                        }());
-
-                        switch(keyKey){
-
-                            case 0:
-                            case 1:
-
-                                setAxis(getAxisString(keyKey),_.container_rule)
-
-                                //formatter
-                                
-
-                                if(args[getAxisString(keyKey)+'Grid']) {
-                                    setAxis(getAxisString(keyKey),_.container_grid,true)
-                                }
-
-                                
-
-                            case 'color':
-                                //colors kung meron
-                                if(args.colorPalette.length) {
-                                    break;
-                                }
-                                
-                            default:
-                                
+                        }else if( typeof args[keyKey+'Parameter'] === 'string'  ) {
                             
+                            return function(value){
+                                return d3.format(args[keyKey+'Parameter'])(value)
+                            }
+
+                        }else{
+                            
+                            return function(value){
+
+                                var divider = args[ 'format' + keyKey.toString().toUpperCase() + 'Divider'],
+                                    prepend = args[ 'format' + keyKey.toString().toUpperCase() + 'Prepend'],
+                                    append = args[ 'format' + keyKey.toString().toUpperCase() + 'Append'],
+                                    dataPossiblyDivided = (args[keyKey+'Data'] == 1 || args.nameIsNum ) ? (value / divider): value,
+                                
+                                formatted = prepend + dataPossiblyDivided + append;
+    
+                                return formatted;
+                            }
                         }
+                    }());
+
+                    switch(keyKey){
+
+                        case 0:
+                        case 1:
+
+                            setAxis(getAxisString(keyKey),_.container_rule)
+
+                            //formatter
+                            
+
+                            if(args[getAxisString(keyKey)+'Grid']) {
+                                setAxis(getAxisString(keyKey),_.container_grid,true)
+                            }
+
+                            
+
+                        case 'color':
+                            //colors kung meron
+                            if(args.colorPalette.length) {
+                                break;
+                            }
+                            
+                        default:
+                            
+                        
                     }
 
 
-                })
+                });
 
 
 
@@ -1414,7 +1503,7 @@
 
                     if(args.type == 'pie'){
                         _.container_graph
-                            .attr('transform','translate('+ (args.width / 2) +','+ (args.height / 2) +')');
+                            .attr('transform','translate('+ getPiOrigin('x') +','+ getPiOrigin('y') +')');
                     }
                     
                     if(
@@ -1474,18 +1563,18 @@
                 'data',data,"\n",
                 'args',args,"\n",
 
-                "\n",'x',"\n",
-                'domain',_['dom_'+ args.xData],"\n",
-                'range',_['range_'+ args.xData],"\n",
+                // "\n",'x',"\n",
+                // 'domain',_['dom_'+ args.xData],"\n",
+                // 'range',_['range_'+ args.xData],"\n",
 
-                "\n",'y',"\n",
-                'domain',_['dom_'+ args.yData],"\n",
-                'range',_['range_'+ args.yData],"\n",
-                "\n",
+                // "\n",'y',"\n",
+                // 'domain',_['dom_'+ args.yData],"\n",
+                // 'range',_['range_'+ args.yData],"\n",
+                // "\n",
 
-                "\n",'color',"\n",
-                'domain',_['dom_color'],"\n",
-                'range',_['range_color'],"\n",
+                // "\n",'color',"\n",
+                // 'domain',_['dom_color'],"\n",
+                // 'range',_['range_color'],"\n",
                 "\n",
             );
 
@@ -1494,8 +1583,8 @@
             if(args.type == 'pie'){
                 
             }else{
-                // axis 
-
+                
+                // axis + grid
                 coordinates.forEach(function(coordinate){
                     if( args[coordinate+'Ticks'] ){
                                 
@@ -1505,7 +1594,7 @@
     
                         if(args[coordinate+'Grid']){
                             
-                            _['rule_grid_'+coordinate].call( _['axis_grid_'+coordinate]);
+                            _['rule_grid_'+coordinate].transition(_.duration).call( _['axis_grid_'+coordinate]);
     
                             _['rule_grid_'+coordinate].selectAll('.tick')
                                 .attr('class',function(dis,i){
@@ -1525,10 +1614,10 @@
     
                     }
                 });
-                
+
+
+                // line graph + fill
                 if(args.type == 'line'){
-
-
                     if(args.lineFill){
                         _.fill = _.container_graph.append('path')
                         .attr('class',prefix+'fill'+ ((args.lineFillColor !== null || args.lineColor !== null) ? ' has-color' : ' no-color' ))
@@ -1539,21 +1628,12 @@
                                 .attrTween('d',function(){
                                     return getLinePath(data,true)
                                 });
-                            
-                        // .attr('d',function(dis,i){
-                        //     return getLinePath(data,true,true);
-                        // });
 
                         if( args.lineFillColor || args.lineColor ) {
                             _.fill
                                 .attr('fill', args.lineFillColor || args.lineColor);
                         }
 
-                        // _.fill 
-                        //     .transition(_.duration)
-                        //     .attr('d',function(){
-                        //         return getLinePath(data,true)
-                        //     });
                     }
 
 
@@ -1564,9 +1644,6 @@
                         .attr('stroke-linejoin','round')
                         .attr('stroke-dasharray',args.lineDash)
                         .attr('stroke-opacity',1)
-                        // .attr('d',function(){
-                        //     return getLinePath(data,false)
-                        // })
                         .attr('stroke-dasharray','0,0')
                         .transition(_.duration)
                             .attrTween('d',function(){
@@ -1577,19 +1654,19 @@
                             _.line
                                 .attr('stroke',args.lineColor)
                         }
-
-                
+                        
                 }
             
             }
 
+            // bars, scatter plots, pizza, points
             if(
                 !(args.type == 'line' && !args.linePoints)
             ){
             
-                // _.blob.exit()
-                //     .transition(_.duration)
-                //     .remove();
+                _.blob.exit()
+                    .transition(_.duration)
+                    .remove();
 
                 
                 _.blobWrap = _.blob
@@ -1600,86 +1677,56 @@
                                 ' ' + prefix + deepGet(dis,args.key[0]);
                         });
 
-                
-                        
-
                 _.blobItem = _.blobWrap.append(_.graph_item_element);
-
-
                     //coordinates
                     if(args.type !== 'pie'){
-                        
+
                         _.blobItem
-
-                            .attr(
-                                ((args.type == 'line' || args.type == 'scatter') ? 'cx' : 'x'),
-                                function(dis,i){
-                                    return getBlobOrigin('x',dis,i,true)
-                                }
-                            )
-                            .attr(
-                                ((args.type == 'line' || args.type == 'scatter') ? 'cy' : 'y'),
-                                function(dis,i){
-                                    return getBlobOrigin('y',dis,i,true)
-                                }
-                            )
-
-                        _.blobWrap.select(_.graph_item_element)
+                            .merge(_.blob)
                             .transition(_.duration)
-                                .attr(
-                                    ((args.type == 'line' || args.type == 'scatter' ) ? 'cx' : 'x'),
+                                .attrTween(
+                                    ((args.type == 'line' || args.type == 'scatter') ? 'cx' : 'x'),
                                     function(dis,i){
-                                        return getBlobOrigin('x',dis,i,false)
+                                        // console.log(dis,i)
+                                        return getInterpolation(getBlobOrigin('x',dis,i,true),getBlobOrigin('x',dis,i,false))
                                     }
                                 )
-        
-                                .attr(
-                                    ((args.type == 'line' || args.type == 'scatter' ) ? 'cy' : 'y'),
+                                .attrTween(
+                                    ((args.type == 'line' || args.type == 'scatter') ? 'cy' : 'y'),
                                     function(dis,i){
-                                        return getBlobOrigin('y',dis,i,false)
+                                        // console.log(dis,i)
+                                        return getInterpolation(getBlobOrigin('y',dis,i,true),getBlobOrigin('y',dis,i,false))
                                     }
-                                );
+                                )
+                                ;
+
                     }
 
                     //areas and what not
-
                     if(args.type == 'pie'){
                         _.blobItem
-                            // .merge(_.blob)
+                            .merge(_.blob)
                             .transition(_.duration)
                                 .attrTween('d',function(dis,i){
                                     return getArcPath( getPiData(data)[i] )
                                 })
                     }else if(args.type == 'line' || args.type == 'scatter'){
                         _.blobItem
-                            // .merge(_.blob)
-                            .attr('r',function(dis,i){
-                                return getBlobRadius(dis,i,true);
-                            })
-                        // _.blobItem
+                        .merge(_.blob)
                             .transition(_.duration)
-                                .attr('r',function(dis,i){
-                                    return getBlobRadius(dis,i,false);
+                                .attrTween('r',function(dis,i){
+                                    return getInterpolation(getBlobRadius(dis,i,true),getBlobRadius(dis,i,false));
                                 })
 
 
                     }else{
                         _.blobItem
-                            // .merge(_.blob)
-
-                            .attr('width',function(dis,i){
-                                return getBlobSize('x',dis,i,true);
-                            }) // calculated width
-                            .attr('height',function(dis,i){
-                                return getBlobSize('y',dis,i,true);
-                            })
-                        // _.blobItem
                             .transition(_.duration)
-                                .attr('width',function(dis,i){
-                                    return getBlobSize('x',dis,i,false);
+                                .attrTween('width',function(dis,i){
+                                    return getInterpolation(getBlobSize('x',dis,i,true),getBlobSize('x',dis,i,false));
                                 }) // calculated width
-                                .attr('height',function(dis,i){
-                                    return getBlobSize('y',dis,i,false);
+                                .attrTween('height',function(dis,i){
+                                    return getInterpolation(getBlobSize('y',dis,i,true),getBlobSize('y',dis,i,false));
                                 })
                     }
                     
@@ -1730,7 +1777,7 @@
                             args.type == 'pie'
                             && (
                                 ( keyKey == 0 && !args.colorLegend )
-                                || ( keyKey == 1 && !args.piLabelStyle )
+                                || ( keyKey == 1 && args.piLabelStyle !== null )
                             )
                         )
                     ){
@@ -1749,8 +1796,13 @@
                                     deepGet(dis,args.key[ keyKey ])
                                 );
                             })
-                            .attr('x',getBlobTextBaselineShift('x',keyKey))
-                            .attr('y',getBlobTextBaselineShift('y',keyKey));
+
+                            
+
+                            _['blobText_'+keyKey]
+                                .attr('x',getBlobTextBaselineShift('x',keyKey))
+                                .attr('y',getBlobTextBaselineShift('y',keyKey));
+
                     }
                     
                 });
@@ -1799,22 +1851,23 @@
                         return classString;
                     })
 
-                    
-                    .attr('transform',function(dis,i){
-                        return 'translate('+getBlobTextOrigin('x',dis,i,true)+','+getBlobTextOrigin('y',dis,i,true)+')'
-                    })
-                    .style('opacity',0);
-                    
-                _.blobWrap.select('text')
-                    .transition(_.duration)
-                    .attr('transform',function(dis,i){
-                        return 'translate('+getBlobTextOrigin('x',dis,i)+','+getBlobTextOrigin('y',dis,i)+')'
-                    })
-                    .style('opacity',1);
+                    _.blobText
+                        .transition(_.duration)
+                            .attrTween('transform',function(dis,i){
+                                return getInterpolation(
+                                    'translate('+getBlobTextOrigin('x',dis,i,true)+','+getBlobTextOrigin('y',dis,i,true)+')',
+                                    'translate('+getBlobTextOrigin('x',dis,i,false)+','+getBlobTextOrigin('y',dis,i,false)+')',
+                                    // 'interpolateTransformCss'
+                                )
+                            })
+                            .styleTween('opacity',function(){
+                                return getInterpolation(0,1);
+                            });
             }
 
             //legends boi
             if(args.colorLegend){
+                _.legend_height = 0;
 
                 _.container_legend = _.container.append('g')
                     .attr('class',prefix+'legend');
@@ -1826,33 +1879,35 @@
 
 
                     _.legend.append('rect')
-                        .attr('width','1em')
-                        .attr('height','1em')
+                        .attr('width',_.legend_size * .66)
+                        .attr('height',_.legend_size * .66)
                         .attr('fill',_.the_color(key) );
 
                     _.legend.append("text")
                         .text(key)
                         .attr('dominant-baseline','middle')
-                        .attr('x','2em')
-                        .attr('y','.625em')
-
+                        .attr('x',_.legend_size)
+                        .attr('y',_.legend_size * .375)
                         
                     _.legend
-                        .attr("transform", "translate(0, " + (i * _.legend.nodes()[0].getBoundingClientRect().height ) + ")");
+                        .attr("transform", "translate(0, " + (i *  _.legend_size) + ")");
+
+                    _.legend_height += _.legend_size;
+
+                        
                 });
 
-
                 _.container_legend
-                    .attr('opacity','0')
-                    .attr('transform','translate('+getLegendOrigin('x')+','+getLegendOrigin('y')+')');
-
-                _.container_legend
+                    .attr('transform','translate('+getLegendOrigin('x')+','+getLegendOrigin('y')+')')
                     .transition(_.duration)
-                    .attr('opacity','1')
+                        .styleTween('opacity',function(){
+                            return getInterpolation(0,1);
+                        });
             }
 
             // _1p21.graphs = [];
             // _1p21.graphs.push({data:data,calculated:_,})
+
 
 
         }
