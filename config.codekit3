@@ -28,25 +28,14 @@
 		"sC": 0,
 		"tS": 0
 		},
-	"/assets/main-min.js": {
-		"bF": 0,
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "/assets/main-min-min.js",
-		"oF": 0,
-		"sC": 0,
-		"tS": 0
-		},
 	"/assets/main.js": {
 		"bF": 0,
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
-		"oA": 1,
-		"oAP": "/assets/main-min.js",
-		"oF": 0,
+		"oA": 0,
+		"oAP": "/assets/main.min.js",
+		"oF": 3,
 		"sC": 0,
 		"tS": 0
 		},
@@ -93,6 +82,14 @@
 		"opt": 0,
 		"plM": 3758088159,
 		"prP": 0
+		},
+	"/assets/testpage.html": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/assets/testpage.html",
+		"oF": 0
 		},
 	"/fields/acf-cpt.php": {
 		"cB": 0,

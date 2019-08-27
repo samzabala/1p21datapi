@@ -14,13 +14,13 @@
 
         //check if the graph item's length is enough for vertical bois idk i'll work on this some more later
         itemAtts = ['x','y','color','r'],
-        datumKeys = [0,1,'color','area'], 
+        datum_keys = [0,1,'color','area'], 
 
         //yeeee
         prefix = 'data-visualizer-', 
     
         // relative to 1em supposedly idk
-        textOffset = 15,
+        text_offset = 15,
 
         //get the length attribute to associate with the axis bro
         getDimension = function(axisString,opposite){
@@ -159,7 +159,7 @@
                 height:600,
                 margin: 10, // @TODO option to separate this thing
                 marginOffset: 2,
-                transition: 500,
+                transition: 1500,
                 delay: 300,
             //src
                 srcType: '',
@@ -619,12 +619,20 @@
 
         }
 
-        var getBlobTextAxisOrigin = function(coordinate,dis,i,initial){
+        var getBlobTextOrigin = function(coordinate,dis,i,initial){
             
             //coordinate is influenced by the axis right now so this is the only time coordinate and axis is one and the same. i think... do not trust me on this
             var keyKey =  args[ coordinate+'Data'],
                 offset = 0;
+
+            if(args.type == 'pie'){
+                if(!initial) {
+                    var orArr =  getArcPath( dis ,'text','centroid');
+                    offset = ( coordinate =='x') ? orArr[0] : orArr[1];
+                }
                 
+            }else{
+
                 // offset by where the coordinates of the ends of the blob and axis alignment is at
                 var shifter = function(){
                     var value = 0,
@@ -653,7 +661,7 @@
                         
 
                         if(args[getAxisStringOppo(coordinate)+'Data'] == 0){
-                            (coordinate == 'x') ? value = textOffset : value = ( ( _.mLength(coordinate,i) / 2 ) );
+                            (coordinate == 'x') ? value = text_offset : value = ( ( _.mLength(coordinate,i) / 2 ) );
                             _.mLength(coordinate,i);
                         }
 
@@ -776,6 +784,7 @@
 
                 offset += shifter() + shifterOut();
                 
+            }
             
             return offset;
 
@@ -880,7 +889,7 @@
                         )
                     ){
 
-                        value = length;
+                        value = length + text_offset;
 
                     } else if(  (args.type == 'pie' && axisString == 'y') ){
                             value = length * .5;
@@ -911,7 +920,7 @@
 
         }
 
-        var getLinePath = function(data,isArea){
+        var getLinePath = function(isArea,initial){
 
 
             var pathInitiator = isArea ? 'area' : 'line',
@@ -929,13 +938,7 @@
                     return theString
                 }()),
                 
-                path = {};
-                
-                //start / initial
-                path.start = d3[pathInitiator]();
-                //end
-                path.end = d3[pathInitiator]();
-
+                path = d3[pathInitiator]();
             if(pathInitiator == 'area') {
 
                 //name coord, value coord, fill coordinate
@@ -955,24 +958,12 @@
 
                 }
                 
-                path.start
+                path
                     [aCord.name](function(dis,i){
-                        return getBlobOrigin(axisToFill,dis,i,true); 
+                        return getBlobOrigin(axisToFill,dis,i,initial); 
                     })
                     [aCord.value](function(dis,i){
-                        return getBlobOrigin(getAxisStringOppo(axisToFill),dis,i,true);
-                    })
-                    [aCord.fill](function(dis,i){
-                        return getBlobOrigin( getAxisStringOppo(axisToFill),dis,i,true);
-                    });
-
-                
-                path.end
-                    [aCord.name](function(dis,i){
-                        return getBlobOrigin(axisToFill,dis,i,false); 
-                    })
-                    [aCord.value](function(dis,i){
-                        return getBlobOrigin(getAxisStringOppo(axisToFill),dis,i,false);
+                        return getBlobOrigin(getAxisStringOppo(axisToFill),dis,i,initial);
                     })
                     [aCord.fill](function(dis,i){
                         return getBlobOrigin( getAxisStringOppo(axisToFill),dis,i,true);
@@ -980,57 +971,85 @@
 
             }else{
 
-                path.start
+                path
                     .x(function(dis,i){
-                        return getBlobOrigin('x',dis,i,true);
+                        return getBlobOrigin('x',dis,i,initial);
                     })
                     .y(function(dis,i){
-                        return getBlobOrigin('y',dis,i,true);
-                    });
-
-                path.end
-                    .x(function(dis,i){
-                        return getBlobOrigin('x',dis,i,false);
-                    })
-                    .y(function(dis,i){
-                        return getBlobOrigin('y',dis,i,false);
+                        return getBlobOrigin('y',dis,i,initial);
                     });
 
             }
 
             if(pathStyle){
-                path.start.curve(d3[pathStyle])
-                path.end.curve(d3[pathStyle]);
+                path.curve(d3[pathStyle]);
             }
             
-            var i = d3.interpolate(path.start(data),path.end(data))
+            // var i = d3.interpolate(path.start(_.data),path.end(_.data))
 
-            return function(t) {
-                return i(t);
-            }
+            // return function(t) {
+            //     return i(t);
+            // }
 
-            // return path(data);
+            return path(_.data);
 
         }
 
-        var getArcPath = function(disPi,isForLabels,subMethod){
-            isForLabels = isForLabels || false;
+        var getArcPath = function(disPi,forElem,subMethod,initial){
+            forElem = forElem || 'blob';
             subMethod = subMethod || '';
 
-            var chartRadius = (isForLabels || args.piLabelStyle !== 'linked') ? _.pi_radius : _.pi_radius * .75,
+            var chartRadius = (function(){
+                var toReturn = 0;
+
+                if(!initial){
+
+                
+                    if( forElem !== 'blob'){
+                        console.log('ha bitch');
+    
+                        if(forElem == 'link'){
+                            toReturn = _.pi_radius * 1.25;
+                        }else if(forElem == 'text'){
+                            if( args.piLabelStyle == 'linked'){
+                                toReturn = _.pi_radius * 1.5;
+                            }else{
+        
+                                toReturn = _.pi_radius * .75;
+                            }
+                        }
+    
+                    }else{
+                        toReturn = _.pi_radius
+                    }
+    
+                    if(forElem == 'text' || forElem == 'linked'){
+                        toReturn -= (_.pi_radius * args.piInRadius);
+                    }
+                }
+
+                return toReturn;
+            }()),
                 path = d3.arc()
                     .outerRadius( chartRadius )
-                    .innerRadius(  chartRadius * args.piInRadius );
+                    .innerRadius(  (_.pi_radius * args.piInRadius) );
+
+
+            !initial && console.warn(
+                disPi.data.name,
+                forElem,"\n",
+                'outer',chartRadius,
+                "\n",'inner',
+                (chartRadius * args.piInRadius));
             
-            if(subMethod !== ''){
-                console.log(path[subMethod])
+            if(subMethod){
                 return path[subMethod](disPi);
             }else{
                 return path(disPi)
             }
         }
 
-        var getPiData = function(data){
+        var getPiData = function(i){
 
             var pie =  d3.pie()
                 .sort(null)
@@ -1038,7 +1057,7 @@
                     return deepGet(dis,args.key[1],true)
                 });
 
-                return pie(data);
+                return pie(_.data)[i];
         }
 
         var getPiOrigin = function(axisString){
@@ -1070,7 +1089,7 @@
                 var interVal = i(t);
                 // fn(interVal);
 
-                return fn(interVal);
+                return fn(interVal,start,end);
             }
         }
 
@@ -1161,16 +1180,14 @@
                                     contClass =
                                         prefix
                                         + 'grid-'+axisString
-                                        + ' grid-increment-' + args[axisString+'GridIncrement']
-                                        + ' tick-amount-' + args[axisString+'TickAmount'];
+                                        + ' grid-increment-' + args[axisString+'GridIncrement'];
                                     
                                 }else{
         
                                     contClass =
                                         prefix
                                         + 'axis-'+axisString+' '
-                                        + prefix +'axis-align-'+alignString
-                                        + ' tick-amount' + args[axisString+'TickAmount'];
+                                        + prefix +'axis-align-'+alignString;
         
                                 }
         
@@ -1243,7 +1260,7 @@
         //render a good boi
         var init = function(retrievedData){
             
-            var data = null;
+            _.data = null;
 
             //element
             switch(args.type){
@@ -1262,7 +1279,7 @@
 
             }
             // heck if src key exists
-            data = args.srcKey ? deepGet(retrievedData,args.srcKey) : retrievedData;
+            _.data = args.srcKey ? deepGet(retrievedData,args.srcKey) : retrievedData;
             //validation
             
             //sort data 0 so that it doesnt go forward then backward then forward on the graph which is weird
@@ -1280,7 +1297,7 @@
                     return deepGet(a,args.key[0],true) - deepGet(b,args.key[0],true);
                 });
 
-                data = sortable;
+                _.data = sortable;
             }
 
             // fallback color data
@@ -1349,7 +1366,6 @@
                 transformY = _.off_y;
 
                 if(args.type !== 'pie'){
-                    // console.log(selector,'x',args.yAlign+' '+ ((args.xLabel !== null) ? 'has' : 'empty'));
                     //x COORDINATE value @TODO fucking loop na lang
                     switch ( args.yAlign+' '+ ((args.xLabel == null) ? 'empty' : 'has') ){
                         
@@ -1368,7 +1384,6 @@
 
 
                     //y COORDINATE value
-                    console.log(selector,'y', args.yLabel == null,args.xAlign+' '+ ((args.yLabel == null) ? 'empty' : 'has') );
                     switch ( args.xAlign+' '+ ((args.yLabel == null) ? 'empty' : 'has') ){
                         
                         case 'top has':
@@ -1391,17 +1406,24 @@
                 _.container.attr('transform','translate('+ transformX +','+ transformY +')');
                 
                 if(args.type == 'pie'){
-                    
+                    //radius boi
                     _.pi_radius = (function(){
                         var value = Math.min((args.width * .5),(args.height * .5));
     
                         if(args.colorLegend){
                             value -= (value * .25)
-                        }
+
+                            if(args.piLabelStyle == 'linked'){
+                                value -= (value * .125)
+                            }
+
+                        }else{
     
-                        // if(args.piLabelStyle == 'linked'){
-                        //     value -= (value * .1)
-                        // }
+                            if(args.piLabelStyle == 'linked'){
+                                value -= (value * .25)
+                            }
+
+                        }
     
                         return value;
                     }());
@@ -1422,11 +1444,11 @@
                 }
                 
 
-                datumKeys.forEach(function(keyKey){
+                datum_keys.forEach(function(keyKey){
                     
                     // scales and shit
                     _['range_'+keyKey] = getRange(keyKey),
-                    _['dom_'+keyKey] = getDomain(keyKey,data);
+                    _['dom_'+keyKey] = getDomain(keyKey,_.data);
                     _['the_'+keyKey] = setScale(keyKey);
 
                     //set that fucker
@@ -1505,7 +1527,7 @@
                     if(
                         args.width == defaults.width
                         && args.height == defaults.height
-                        && data.length > 9
+                        && _.data.length > 9
                     ){
                         
                         console.warn(selector+' Width and height was not adjusted. graph elements may not fit in the canvas');
@@ -1522,14 +1544,34 @@
                 if(!(args.type == 'line' && !args.linePoints)){
 
 
-                    _.blob = _.container_graph.selectAll(_.graph_item_element)
-                        .data(data,function(dis){
+                    _.blob = _.container_graph.selectAll(_.graph_item_element +'.'+prefix + 'graph-item graph-item-blob')
+                        .data(_.data,function(dis){
                             return deepGet(dis,args.key[0])
                         });
+
+                    if(
+                        ( !args.xTicks || !args.yTicks )
+                        || (
+                            args.type == 'pie'
+                            && ( !args.piLabelStyle || !args.colorLegend )
+                        )
+                    ){
+
+                        _.blob_text = _.container_graph.selectAll('text.'+prefix + 'graph-item graph-item-text')
+                            .data(_.data,function(dis){
+                                return deepGet(dis,args.key[0])
+                            });
+                        
+                        if(args.type == 'pie' && args.piLabelStyle == 'linked'){
+
+                            _.blob_text_link = _.container_graph.selectAll('polyline.'+prefix + 'graph-item graph-item-link')
+                                .data(_.data,function(dis){
+                                    return deepGet(dis,args.key[0])
+                                });
+
+                        }
+                    }
                 }
-
-
-
 
             //check if it's loaded boi
             _.dv_init = false;
@@ -1540,10 +1582,11 @@
                 if(graphPosition < (window.innerHeight * .5) && !_.dv_init) {
                     _.dv_init = true;
                     setTimeout(function(){
-                        renderGraph(data);
+                        renderGraph();
                     },args.delay);
                 }
             },true);
+
 
         }
                 
@@ -1551,12 +1594,12 @@
 
 
         // tick inits
-        var renderGraph = function(data) {
+        var renderGraph = function() {
             // ok do the thing now
             console.log(
                 selector,'-------------------------------------------------------------------',"\n",
                 'calculated',_,"\n",
-                'data',data,"\n",
+                'data',_.data,"\n",
                 'args',args,"\n",
 
                 // "\n",'x',"\n",
@@ -1622,7 +1665,10 @@
                         _.fill
                             .transition(_.duration)
                                 .attrTween('d',function(){
-                                    return getLinePath(data,true)
+                                    return getInterpolation(
+                                        getLinePath(true,true),
+                                        getLinePath(true,false)
+                                    )
                                 });
 
                         if( args.lineFillColor || args.lineColor ) {
@@ -1643,7 +1689,10 @@
                         .attr('stroke-dasharray','0,0')
                         .transition(_.duration)
                             .attrTween('d',function(){
-                                return getLinePath(data,false)
+                                return getInterpolation(
+                                    getLinePath(false,true),
+                                    getLinePath(false,false)
+                                )
                             });
 
                         if(args.lineColor) {
@@ -1661,37 +1710,37 @@
             ){
             
                 _.blob.exit()
-                    .transition(_.duration)
+                    // .transition(_.duration)
                     .remove();
-
                 
-                _.blobWrap = _.blob
-                    .enter()
-                    .append('g')
+                
+                _.enter_blob = _.blob.enter()
+                    .append(_.graph_item_element)
                         .attr('class', function(dis){
-                            return prefix + 'graph-item'+
-                                ' ' + prefix + deepGet(dis,args.key[0]);
+                            return prefix + 'graph-item graph-item-blob';
                         });
-
-                _.blobItem = _.blobWrap.append(_.graph_item_element);
+                        
                     //coordinates
                     if(args.type !== 'pie'){
 
-                        _.blobItem
-                            .merge(_.blob)
+                        _.blob.merge(_.enter_blob)
                             .transition(_.duration)
                                 .attrTween(
                                     ((args.type == 'line' || args.type == 'scatter') ? 'cx' : 'x'),
                                     function(dis,i){
-                                        // console.log(dis,i)
-                                        return getInterpolation(getBlobOrigin('x',dis,i,true),getBlobOrigin('x',dis,i,false))
+                                        return getInterpolation(
+                                            getBlobOrigin('x',dis,i,true),
+                                            getBlobOrigin('x',dis,i,false)
+                                        )
                                     }
                                 )
                                 .attrTween(
                                     ((args.type == 'line' || args.type == 'scatter') ? 'cy' : 'y'),
                                     function(dis,i){
-                                        // console.log(dis,i)
-                                        return getInterpolation(getBlobOrigin('y',dis,i,true),getBlobOrigin('y',dis,i,false))
+                                        return getInterpolation(
+                                            getBlobOrigin('y',dis,i,true),
+                                            getBlobOrigin('y',dis,i,false)
+                                        )
                                     }
                                 )
                                 ;
@@ -1700,39 +1749,49 @@
 
                     //areas and what not
                     if(args.type == 'pie'){
-                        _.blobItem
-                            .merge(_.blob)
+                        
+                        _.blob.merge(_.enter_blob)
                             .transition(_.duration)
                                 .attrTween('d',function(dis,i){
-                                    var current = getPiData(data)[i];
-                                    console.log(current);
+                                    
+                                    var current = getPiData(i);
+                                    
                                     return getInterpolation(
                                         current.endAngle,
                                         current.startAngle,
                                         function(value){
 
                                             current.startAngle = value;
-                                            return getArcPath(current);
+                                            return getArcPath(current,'blob');
                                         }
                                     )
-                                })
+                                });
+
                     }else if(args.type == 'line' || args.type == 'scatter'){
-                        _.blobItem
-                        .merge(_.blob)
+                        _.blob.merge(_.enter_blob)
                             .transition(_.duration)
                                 .attrTween('r',function(dis,i){
-                                    return getInterpolation(getBlobRadius(dis,i,true),getBlobRadius(dis,i,false));
+                                    return getInterpolation(
+                                        getBlobRadius(dis,i,true),
+                                        getBlobRadius(dis,i,false)
+                                    );
                                 })
 
 
                     }else{
-                        _.blobItem
+                        _.blob.merge(_.enter_blob)
                             .transition(_.duration)
                                 .attrTween('width',function(dis,i){
-                                    return getInterpolation(getBlobSize('x',dis,i,true),getBlobSize('x',dis,i,false));
+                                    return getInterpolation(
+                                        getBlobSize('x',dis,i,true),
+                                        getBlobSize('x',dis,i,false)
+                                    );
                                 }) // calculated width
                                 .attrTween('height',function(dis,i){
-                                    return getInterpolation(getBlobSize('y',dis,i,true),getBlobSize('y',dis,i,false));
+                                    return getInterpolation(
+                                        getBlobSize('y',dis,i,true),
+                                        getBlobSize('y',dis,i,false)
+                                    );
                                 })
                     }
                     
@@ -1745,31 +1804,72 @@
                                 || args.lineColor
                             )
                         ) {
-                            _.blobItem
+                            _.blob.merge(_.enter_blob)
                                 .attr('fill',function(){
                                     return args.linePointsColor || args.lineColor;
                                 });
 
                         }
                     }else{
-                        _.blobItem
+                        _.blob.merge(_.enter_blob)
                             .attr('fill',function(dis,i){
                                 return _.the_color(deepGet(dis,args.key.color));
                             });
                     }
 
             }
-                    
+                  
             //graph item label if ticks are not set
             if(
-                ( !args.xTicks || !args.yTicks )
-                || (
-                    args.type == 'pie'
-                    && ( !args.piLabelStyle || !args.colorLegend )
-                )
+                _.blob_text
             ){
 
-                _.blobText = _.blobWrap.append('text');
+                // pie polyline
+                if(_.blob_text_link ){
+                    _.enter_blob_text_link = _.blob_text_link
+                        .enter()
+                        .append('polyline')
+                        .attr('class',prefix+'graph-item graph-item-link')
+
+                    
+                    _.blob_text_link.merge(_.enter_blob_text_link)
+                        .transition(_.duration)
+                        .attrTween('stroke-opacity',function(dis,i){
+                            getInterpolation(0,1,function(value,start,end){
+                                console.error('shit',value);
+                            });
+                            return getInterpolation(0,1);
+                        })
+                        .attrTween('points',function(dis,i){
+                            
+                            var start = [
+                                    getArcPath(getPiData(i),'blob','centroid',true),
+                                    getArcPath(getPiData(i),'link',null,true),
+                                    // [getBlobTextOrigin('x',getPiData(i),i,true),getBlobTextOrigin('y',getPiData(i),i,true)]
+                                ],
+                                end = [
+
+                                    getArcPath(getPiData(i),'blob','centroid',false),
+                                    getArcPath(getPiData(i),'link',null,false),
+                                    // [getBlobTextOrigin('x',getPiData(i),i,false),getBlobTextOrigin('y',getPiData(i),i,false)]
+                                ];
+
+                            return getInterpolation(
+                                start,
+                                end
+                            )
+                        });
+                }
+
+                _.enter_blob_text = _.blob_text
+                    .enter()
+                    .append('text');
+
+                if(args.type == 'pie' && args.piLabelStyle == 'within' && args.colorPalette.length > 0){
+                    _.enter_blob_text.attr('stroke',function(dis){
+                        return _.the_color(deepGet(dis,args.key.color))
+                    })
+                }
 
                 //append content right away so we can calculate where shit offset
                 [0,1].forEach(function(keyKey){
@@ -1788,24 +1888,21 @@
                         )
                     ){
 
-                        _['blobText_'+keyKey] = _.blobText.append('tspan')
+                        _['blob_text_'+keyKey] = _.enter_blob_text.append('tspan')
 
-                            .attr('class', prefix+'graph-item-data-'+keyKey )
+                            .attr('class', 'graph-item-text-data-'+keyKey )
                             .attr('dominant-baseline','middle')
                             .attr('text-anchor',function(dis,i){
                                 return getBlobTextAnchor(dis,i);
                             })
                             .attr('font-size',null)
                             .text(function(dis,i){
-                                
-                                return _['format_'+ keyKey ](
-                                    deepGet(dis,args.key[ keyKey ])
-                                );
+                                return _['format_'+ keyKey ]( deepGet(dis,args.key[ keyKey ]) );
                             })
 
                             
 
-                            _['blobText_'+keyKey]
+                            _['blob_text_'+keyKey]
                                 .attr('x',getBlobTextBaselineShift('x',keyKey))
                                 .attr('y',getBlobTextBaselineShift('y',keyKey));
 
@@ -1819,97 +1916,80 @@
                     
                     var value = 0;
 
-                        length = _.blobText ? _.blobText.nodes()[i].getBoundingClientRect()[ getDimension( axisString ) ] : 0
+                        length = _.enter_blob_text ? _.enter_blob_text.nodes()[i].getBoundingClientRect()[ getDimension( axisString ) ] : 0
                         
-                        value = length + textOffset;
+                        value = length + text_offset;
 
                     return value;
                 };
 
                 //continue fucking with text blob
-                _.blobText
+                _.blob_text.merge(_.enter_blob_text)
                     .attr('class', function(dis,i){
-                        var classString =  prefix + 'graph-item-text';
+                        var classString =  prefix + 'graph-item graph-item-text';
                         
-                        if(args.type !== 'pie'){
-                            [0,1].forEach(function(keyKey){
+                        [0,1].forEach(function(keyKey){
                             
-                                if( 
-                                    (
-                                        (args.type == 'bar')
-                                        (keyKey  == 1)
-                                        && (
-                                            
-                                            (parseFloat(getBlobSize(getAxisString(keyKey),dis,i,false)) < _.mLength(getAxisString(keyKey),i))
-                                            
-                                            || (
-                                                (args.colorPalette.length > 0)
-                                                && (parseFloat(getBlobSize(getAxisString(keyKey),dis,i,false)) >= _.mLength(getAxisString(keyKey),i))
-                                                && !isDark( _.the_color(deepGet(dis,args.key.color)) )
-                                            )
+                            if( 
+                                (
+                                    (args.type == 'bar')
+                                    && (keyKey  == 1)
+                                    && (
+                                        
+                                        (parseFloat(getBlobSize(getAxisString(keyKey),dis,i,false)) < _.mLength(getAxisString(keyKey),i))
+                                        
+                                        || (
+                                            (args.colorPalette.length > 0)
+                                            && (parseFloat(getBlobSize(getAxisString(keyKey),dis,i,false)) >= _.mLength(getAxisString(keyKey),i))
+                                            && !isDark( _.the_color(deepGet(dis,args.key.color)) )
                                         )
                                     )
-                                    || (args.type == 'line' || args.type == 'scatter')
-                                ){
-                                    classString +=  ' dark';
-                                }
-                            });
-    
-                        }else if(
-                            args.type == 'pie'
-                            && (
-                                (
-                                    args.piLabelStyle == 'within'
-                                    && !isDark( _.the_color(deepGet(dis,args.key.color)) )
                                 )
+                                || (args.type == 'line' || args.type == 'scatter')
                                 || (
-                                    args.piLabelStyle == 'linked'
+                                    args.type == 'pie'
+                                    && (
+                                        (
+                                            args.piLabelStyle == 'within'
+                                            && (args.colorPalette.length > 0)
+                                            && !isDark( _.the_color(deepGet(dis,args.key.color)) )
+                                        )
+                                        || (
+                                            args.piLabelStyle == 'linked'
+                                        )
+                                    )
                                 )
-                            )
-                        ){
-                            classString +=  ' dark';
-                        }
+                            ){
+                                classString +=  ' dark';
+                            }
+                        });
                         
                         return classString;
                     })
+                    .transition(_.duration)
+                        .attrTween('transform',function(dis,i){
 
-                    _.blobText
-                        .transition(_.duration)
-                            .attrTween('transform',function(dis,i){
+                            var dataToUse = args.type == 'pie' ? getPiData(i) : dis;
+                                
+                            return getInterpolation(
+                                'translate('
+                                    +getBlobTextOrigin('x',dataToUse,i,true)
+                                    +','
+                                    +getBlobTextOrigin('y',dataToUse,i,true)
+                                +')',
+                                'translate('
+                                    +getBlobTextOrigin('x',dataToUse,i,false)
+                                    +','
+                                    +getBlobTextOrigin('y',dataToUse,i,false)
+                                +')'
+                            )
 
+                        })
+                        .styleTween('opacity',function(){
+                            return getInterpolation(0,1);
+                        });
 
-                                if(args.type == 'pie'){
-                                    
-
-                                    this._current = this._current || getPiData(data)[i];
-                                    var interpolate = d3.interpolate(this._current, getPiData(data)[i]);
-                                    this._current = interpolate(0);
-
-                                    console.log(this._current);
-                                    
-
-                                    return getInterpolation(
-                                        this._current,
-                                        getPiData(data)[i],
-                                        function(value){
-                                            console.log('fuck',value);
-                                            var pos = getArcPath( value ,true,'centroid');
-                                            pos[0] = _.pi_radius * (getMidAngle(value) < Math.PI ? 1 : -1);
-                                            return "translate("+ pos +")";
-                                        }
-                                    )
-
-                                }else{
-                                    return getInterpolation(
-                                        'translate('+getBlobTextAxisOrigin('x',dis,i,true)+','+getBlobTextAxisOrigin('y',dis,i,true)+')',
-                                        'translate('+getBlobTextAxisOrigin('x',dis,i,false)+','+getBlobTextAxisOrigin('y',dis,i,false)+')',
-                                        // 'interpolateTransformCss'
-                                    )
-                                }
-                            })
-                            .styleTween('opacity',function(){
-                                return getInterpolation(0,1);
-                            });
+                
             }
 
             //legends boi
@@ -1926,11 +2006,13 @@
 
 
                     _.legend.append('rect')
+                    .attr('class','legend-item-blob')
                         .attr('width',_.legend_size * .66)
                         .attr('height',_.legend_size * .66)
                         .attr('fill',_.the_color(key) );
 
                     _.legend.append("text")
+                        .attr('class','legend-item-text')
                         .text(key)
                         .attr('dominant-baseline','middle')
                         .attr('x',_.legend_size)
@@ -1994,6 +2076,6 @@
     
 
     _1p21.dataVisualizer = dataVisualizer;
-
     window._1p21 = _1p21;
+    
 }(window,d3));

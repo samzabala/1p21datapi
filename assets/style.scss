@@ -67,11 +67,12 @@ $color-neutral-darker: #444;
 
     &-axis,
     &-grid,
-    &-label {
-        line,path {
+    &-label{
+        line,
+        path {
             stroke: $color-neutral;
         }
-
+        
         text {
             fill: $color-neutral;
         }
@@ -98,9 +99,7 @@ $color-neutral-darker: #444;
     }
     
     &-fill.no-color,
-    &-no-palette #{$prefix}-graph-item rect,
-    &-no-palette #{$prefix}-graph-item circle,
-    &-no-palette #{$prefix}-graph-item path {
+    &-no-palette #{$prefix}-graph-item-blob {
         fill: $color-base;
     }
     
@@ -113,59 +112,81 @@ $color-neutral-darker: #444;
     }
 
     &-no-palette#{$prefix}-type-pie {
-        #{$prefix}-graph-item path {
-            stroke: 2;
+        
+        .graph-item-blob,
+        .legend-item-blob {
+
+            &:nth-of-type(2n){
+                fill: $color-neutral-darker;
+            }
+            &:nth-of-type(3n){
+                fill: $color-neutral-dark;
+            }
+
+            &:nth-of-type(4n){
+                fill: $color-neutral;
+            }
+
+            &:nth-of-type(5n){
+                fill: $color-neutral-light;
+            }
+
         }
-        #{$prefix}-graph-item,
-        #{$prefix}-legend-item {
-           
+
+        .graph-item-text {
+
+            &:nth-of-type(2n){
+                stroke: $color-neutral-darker;
+            }
+            &:nth-of-type(3n){
+                stroke: $color-neutral-dark;
+            }
+
+            &:nth-of-type(4n){
+                stroke: $color-neutral;
+            }
+
+            &:nth-of-type(5n){
+                stroke: $color-neutral-light;
+            }
             
-
-            &:nth-child(2n){
-                path,rect {
-                    fill: $color-neutral-darker;
-                }
-            }
-            &:nth-child(3n){
-                path,rect {
-                    fill: $color-neutral-dark;
-                }
-            }
-
-            &:nth-child(4n){
-                path,rect {
-                    fill: $color-neutral;
-                }
-            }
-
-            &:nth-child(5n){
-                path,rect {
-                    fill: $color-neutral-light;
-                }
-            }
-
         }
     }
 
-    &-type-line #{$prefix}-graph-item-text,
-    &-type-pie #{$prefix}-graph-item-text,
-    &-legend-item text,
-    &-legend-item rect {
-
+    &-type-line .graph-item-text,
+    &-type-pie .graph-item-text,
+    &-legend-item-text,
+    &-legend-item-blob {
         paint-order: stroke;
         stroke-linejoin: round;
+    }
+
+    &-type-line .graph-item-text,
+    &-type-pie#{$prefix}-label-style-within .graph-item-text,
+    &-legend-item-text,
+    &-legend-item-blob {
         stroke-width: 4;
     }
 
+    &-type-pie#{$prefix}-label-style-linked .graph-item-text {
 
-    &-type-line #{$prefix}-graph-item-text,
-    &-type-pie#{$prefix}-label-style-linked #{$prefix}-graph-item-text,
-    &-legend-item text,
-    &-legend-item rect {
+        stroke-width: 10;
+    }
+
+
+    &-type-line .graph-item-text,
+    &-type-pie#{$prefix}-label-style-linked .graph-item-text,
+    &-legend-item-text,
+    &-legend-item-blob {
         stroke: $color-bg;
     }
 
-    &-graph-item {
+    &-graph .graph-item {
+
+        &-link {
+            stroke: $color-base;
+            stroke-opacity: .75;
+        }
         
         &-text {
             fill: $color-white;
@@ -179,8 +200,8 @@ $color-neutral-darker: #444;
         }
             
 
-        #{$prefix}-no-ticks &,
-        #{$prefix}-type-pie#{$prefix}-no-legend & {
+        #{$prefix}-no-ticks &-text,
+        #{$prefix}-type-pie#{$prefix}-no-legend &-text {
 
             &-data-0 {
                 font-weight: 700;

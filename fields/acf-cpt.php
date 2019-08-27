@@ -544,7 +544,7 @@ if layout is set to line, this will be applied to plot points and will override 
 							'label' => 'Prepend',
 							'name' => 'prepend',
 							'type' => 'text',
-							'instructions' => 'Character/s to prepend tick label',
+							'instructions' => 'String of character/s to prepend to values',
 							'required' => 0,
 							'conditional_logic' => 0,
 							'wrapper' => array(
@@ -554,8 +554,8 @@ if layout is set to line, this will be applied to plot points and will override 
 							),
 							'default_value' => '',
 							'placeholder' => '$',
-							'prepend' => '',
-							'append' => '',
+							'prepend' => '\'',
+							'append' => '\'',
 							'maxlength' => '',
 						),
 						array(
@@ -563,7 +563,7 @@ if layout is set to line, this will be applied to plot points and will override 
 							'label' => 'Append',
 							'name' => 'append',
 							'type' => 'text',
-							'instructions' => 'Character/s to append tick label',
+							'instructions' => 'String of character/s to append to values',
 							'required' => 0,
 							'conditional_logic' => 0,
 							'wrapper' => array(
@@ -573,8 +573,8 @@ if layout is set to line, this will be applied to plot points and will override 
 							),
 							'default_value' => '',
 							'placeholder' => 'k',
-							'prepend' => '',
-							'append' => '',
+							'prepend' => '\'',
+							'append' => '\'',
 							'maxlength' => '',
 						),
 						array(
@@ -582,7 +582,7 @@ if layout is set to line, this will be applied to plot points and will override 
 							'label' => 'Divider',
 							'name' => 'divider',
 							'type' => 'number',
-							'instructions' => 'Divide numeric data to shorten tick label',
+							'instructions' => 'Divide numeric data to shorten the value.',
 							'required' => 0,
 							'conditional_logic' => array(
 								array(
@@ -672,7 +672,7 @@ if layout is set to line, this will be applied to plot points and will override 
 							'label' => 'Prepend',
 							'name' => 'prepend',
 							'type' => 'text',
-							'instructions' => 'Character/s to prepend tick label',
+							'instructions' => 'String of character/s to prepend to values',
 							'required' => 0,
 							'conditional_logic' => 0,
 							'wrapper' => array(
@@ -682,8 +682,8 @@ if layout is set to line, this will be applied to plot points and will override 
 							),
 							'default_value' => '',
 							'placeholder' => '$',
-							'prepend' => '',
-							'append' => '',
+							'prepend' => '\'',
+							'append' => '\'',
 							'maxlength' => '',
 						),
 						array(
@@ -691,7 +691,7 @@ if layout is set to line, this will be applied to plot points and will override 
 							'label' => 'Append',
 							'name' => 'append',
 							'type' => 'text',
-							'instructions' => 'Character/s to append tick label',
+							'instructions' => 'String of character/s to append to values',
 							'required' => 0,
 							'conditional_logic' => 0,
 							'wrapper' => array(
@@ -701,8 +701,8 @@ if layout is set to line, this will be applied to plot points and will override 
 							),
 							'default_value' => '',
 							'placeholder' => 'k',
-							'prepend' => '',
-							'append' => '',
+							'prepend' => '\'',
+							'append' => '\'',
 							'maxlength' => '',
 						),
 						array(
@@ -710,7 +710,7 @@ if layout is set to line, this will be applied to plot points and will override 
 							'label' => 'Divider',
 							'name' => 'divider',
 							'type' => 'number',
-							'instructions' => 'Divide numeric data to shorten tick label',
+							'instructions' => 'Divide numeric data to shorten the value.',
 							'required' => 0,
 							'conditional_logic' => 0,
 							'wrapper' => array(
@@ -796,7 +796,7 @@ if layout is set to line, this will be applied to plot points and will override 
 							'label' => 'Prepend',
 							'name' => 'prepend',
 							'type' => 'text',
-							'instructions' => 'Character to prepend tick label',
+							'instructions' => 'String of character/s to prepend to values',
 							'required' => 0,
 							'conditional_logic' => 0,
 							'wrapper' => array(
@@ -806,8 +806,8 @@ if layout is set to line, this will be applied to plot points and will override 
 							),
 							'default_value' => '',
 							'placeholder' => '$',
-							'prepend' => '',
-							'append' => '',
+							'prepend' => '\'',
+							'append' => '\'',
 							'maxlength' => '',
 						),
 						array(
@@ -815,7 +815,7 @@ if layout is set to line, this will be applied to plot points and will override 
 							'label' => 'Append',
 							'name' => 'append',
 							'type' => 'text',
-							'instructions' => 'Character to append tick label',
+							'instructions' => 'String of character/s to append to values',
 							'required' => 0,
 							'conditional_logic' => 0,
 							'wrapper' => array(
@@ -825,8 +825,8 @@ if layout is set to line, this will be applied to plot points and will override 
 							),
 							'default_value' => '',
 							'placeholder' => 'k',
-							'prepend' => '',
-							'append' => '',
+							'prepend' => '\'',
+							'append' => '\'',
 							'maxlength' => '',
 						),
 						array(

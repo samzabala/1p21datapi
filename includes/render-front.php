@@ -175,7 +175,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                                                 $parsed_value = $sub_value;
 
                                                 if($sub_key == 'prepend' || $sub_key == 'append' ){
-                                                    $parsed_value = '\''.$sub_value.'\'';
+                                                    $parsed_value = '\''.addslashes($sub_value).'\'';
                                                 }
                                                 if($sub_value){
                                                     $render .= _1p21_dv_dashes_to_camel_case($attribute_string_prepend.'_'.$sub_key). ":".$parsed_value.",\n";
@@ -259,7 +259,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
                                                 //straight up string
                                                 if(in_array($sub_setting,$string_values)){
-                                                    $parsed_value = '\''.$sub_value. '\'';
+                                                    $parsed_value = '\''.addslashes($sub_value). '\'';
 
                                                 //boolean bitch
                                                 }elseif(in_array($sub_setting,$boolean_values)){
