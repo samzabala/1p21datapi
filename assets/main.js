@@ -277,7 +277,7 @@
 
             var padding = args.margin * args.marginOffset * 2;
 
-            if( args.type !== 'pie' ){
+            if(args.type !== 'pie'){
                 
                 // @TODO option to separate padding
                 // if this axis has a label give it more space
@@ -619,14 +619,14 @@
 
         }
 
-        var getBlobTextOrigin = function(coordinate,dis,i,initial){
+        var getBlobTextAxisOrigin = function(coordinate,dis,i,initial){
             
             //coordinate is influenced by the axis right now so this is the only time coordinate and axis is one and the same. i think... do not trust me on this
             var keyKey =  args[ coordinate+'Data'],
-                offset = 0,
-
+                offset = 0;
+                
                 // offset by where the coordinates of the ends of the blob and axis alignment is at
-                shifter = function(){
+                var shifter = function(){
                     var value = 0,
                     multiplier = 1;
 
@@ -773,8 +773,9 @@
                     }
 
                 }
-                
+
                 offset += shifter() + shifterOut();
+                
             
             return offset;
 
@@ -1012,35 +1013,20 @@
 
         }
 
-        var getArcPath = function(disPi,isForLabels,initial){
+        var getArcPath = function(disPi,isForLabels,subMethod){
             isForLabels = isForLabels || false;
+            subMethod = subMethod || '';
 
-            var maxRadius = (function(){
-                var fullRadius = Math.min((args.width * .5),(args.height * .5));
-
-                if(args.colorLegend){
-                    fullRadius *= .75
-                }
-
-                if(args.piLabelStyle == 'linked'){
-                    fullRadius *= .75
-                }
-
-                return fullRadius;
-            }()),
-                i = d3.interpolate(disPi.endAngle,disPi.startAngle),
+            var chartRadius = (isForLabels || args.piLabelStyle !== 'linked') ? _.pi_radius : _.pi_radius * .75,
                 path = d3.arc()
-                    .outerRadius( isForLabels ? maxRadius : maxRadius * .875 )
-                    .innerRadius(  maxRadius * args.piInRadius );
-
-                    console.log(selector,'radius',maxRadius, args.piInRadius);
+                    .outerRadius( chartRadius )
+                    .innerRadius(  chartRadius * args.piInRadius );
             
-            // interpolation by time or t
-            return function(t) {
-                // console.log(t);
-                disPi.startAngle = i(t);
-       
-                return path(disPi);
+            if(subMethod !== ''){
+                console.log(path[subMethod])
+                return path[subMethod](disPi);
+            }else{
+                return path(disPi)
             }
         }
 
@@ -1059,13 +1045,7 @@
             var offset = 0;
 
             if(args.colorLegend && axisString =='x'){
-
-                if(args.piLabelStyle == 'linked') {
-                    offset = args[getDimension(axisString)] * .35;
-                }else{
-
-                    offset = args[getDimension(axisString)] * .3;
-                }
+                offset = args[getDimension(axisString)] * .375;
             }else{
                 offset  = (args[getDimension(axisString)] * .5);
             }
@@ -1073,10 +1053,14 @@
             return offset;
         }
 
+        var getMidAngle = function(disPi){
+           return disPi.startAngle + (disPi.endAngle - disPi.startAngle)/2;
+        }
 
 
-        var getInterpolation = function(start,end,d3fn,fn){
-            fn = fn || function(value){ return value; };
+
+        var getInterpolation = function(start,end,fn,d3fn){
+            fn = fn || function(value,start,end){ return value; };
             d3fn = d3fn || 'interpolate';
 
             var i = d3[d3fn](start,end);
@@ -1339,7 +1323,7 @@
                         + prefix + ( (args.colorPalette.length > 0 || args.linePointsColor !== null || args.lineColor !== null) ?  'has-palette' : 'no-palette' )
                         + ((args.type !== 'pie' && !args.xTicks && !args.yTicks) ? ' '+prefix+'no-ticks' : '')
                         + ((!args.colorLegend) ? ' '+prefix+'no-legend' : '')
-                        + ((args.type == 'pie' && args.piLabelStyle !== null) ? ' '+prefix+'label-style'+args.piLabelStyle : ' '+prefix+'no-label')
+                        + ((args.type == 'pie' && args.piLabelStyle !== null) ? ' '+prefix+'label-style-'+args.piLabelStyle : ' '+prefix+'no-label')
                     )
                     .attr('viewBox', dimensionString)
                     .attr("preserveAspectRatio", "xMidYMid meet")
@@ -1407,8 +1391,20 @@
                 _.container.attr('transform','translate('+ transformX +','+ transformY +')');
                 
                 if(args.type == 'pie'){
-                    //setup data to be used by pi
-                    console.log(getPiData(data));
+                    
+                    _.pi_radius = (function(){
+                        var value = Math.min((args.width * .5),(args.height * .5));
+    
+                        if(args.colorLegend){
+                            value -= (value * .25)
+                        }
+    
+                        // if(args.piLabelStyle == 'linked'){
+                        //     value -= (value * .1)
+                        // }
+    
+                        return value;
+                    }());
 
                 }else{
 
@@ -1708,7 +1704,17 @@
                             .merge(_.blob)
                             .transition(_.duration)
                                 .attrTween('d',function(dis,i){
-                                    return getArcPath( getPiData(data)[i] )
+                                    var current = getPiData(data)[i];
+                                    console.log(current);
+                                    return getInterpolation(
+                                        current.endAngle,
+                                        current.startAngle,
+                                        function(value){
+
+                                            current.startAngle = value;
+                                            return getArcPath(current);
+                                        }
+                                    )
                                 })
                     }else if(args.type == 'line' || args.type == 'scatter'){
                         _.blobItem
@@ -1763,7 +1769,7 @@
                 )
             ){
 
-                _.blobText =  _.blobWrap.append('text');
+                _.blobText = _.blobWrap.append('text');
 
                 //append content right away so we can calculate where shit offset
                 [0,1].forEach(function(keyKey){
@@ -1824,41 +1830,82 @@
                 _.blobText
                     .attr('class', function(dis,i){
                         var classString =  prefix + 'graph-item-text';
-
-                        [0,1].forEach(function(keyKey){
+                        
+                        if(args.type !== 'pie'){
+                            [0,1].forEach(function(keyKey){
                             
-                            if( 
-                                (
-
-                                    (keyKey  == 1)
-                                    && (
-                                        
-                                        (parseFloat(getBlobSize(getAxisString(keyKey),dis,i,false)) < _.mLength(getAxisString(keyKey),i))
-                                        
-                                        || (
-                                            (args.colorPalette.length > 0)
-                                            && (parseFloat(getBlobSize(getAxisString(keyKey),dis,i,false)) >= _.mLength(getAxisString(keyKey),i))
-                                            && !isDark( _.the_color(deepGet(dis,args.key.color)) )
+                                if( 
+                                    (
+                                        (args.type == 'bar')
+                                        (keyKey  == 1)
+                                        && (
+                                            
+                                            (parseFloat(getBlobSize(getAxisString(keyKey),dis,i,false)) < _.mLength(getAxisString(keyKey),i))
+                                            
+                                            || (
+                                                (args.colorPalette.length > 0)
+                                                && (parseFloat(getBlobSize(getAxisString(keyKey),dis,i,false)) >= _.mLength(getAxisString(keyKey),i))
+                                                && !isDark( _.the_color(deepGet(dis,args.key.color)) )
+                                            )
                                         )
                                     )
+                                    || (args.type == 'line' || args.type == 'scatter')
+                                ){
+                                    classString +=  ' dark';
+                                }
+                            });
+    
+                        }else if(
+                            args.type == 'pie'
+                            && (
+                                (
+                                    args.piLabelStyle == 'within'
+                                    && !isDark( _.the_color(deepGet(dis,args.key.color)) )
                                 )
-                                || (args.type == 'line')
-                            ){
-                                classString +=  ' dark';
-                            }
-                        });
-
+                                || (
+                                    args.piLabelStyle == 'linked'
+                                )
+                            )
+                        ){
+                            classString +=  ' dark';
+                        }
+                        
                         return classString;
                     })
 
                     _.blobText
                         .transition(_.duration)
                             .attrTween('transform',function(dis,i){
-                                return getInterpolation(
-                                    'translate('+getBlobTextOrigin('x',dis,i,true)+','+getBlobTextOrigin('y',dis,i,true)+')',
-                                    'translate('+getBlobTextOrigin('x',dis,i,false)+','+getBlobTextOrigin('y',dis,i,false)+')',
-                                    // 'interpolateTransformCss'
-                                )
+
+
+                                if(args.type == 'pie'){
+                                    
+
+                                    this._current = this._current || getPiData(data)[i];
+                                    var interpolate = d3.interpolate(this._current, getPiData(data)[i]);
+                                    this._current = interpolate(0);
+
+                                    console.log(this._current);
+                                    
+
+                                    return getInterpolation(
+                                        this._current,
+                                        getPiData(data)[i],
+                                        function(value){
+                                            console.log('fuck',value);
+                                            var pos = getArcPath( value ,true,'centroid');
+                                            pos[0] = _.pi_radius * (getMidAngle(value) < Math.PI ? 1 : -1);
+                                            return "translate("+ pos +")";
+                                        }
+                                    )
+
+                                }else{
+                                    return getInterpolation(
+                                        'translate('+getBlobTextAxisOrigin('x',dis,i,true)+','+getBlobTextAxisOrigin('y',dis,i,true)+')',
+                                        'translate('+getBlobTextAxisOrigin('x',dis,i,false)+','+getBlobTextAxisOrigin('y',dis,i,false)+')',
+                                        // 'interpolateTransformCss'
+                                    )
+                                }
                             })
                             .styleTween('opacity',function(){
                                 return getInterpolation(0,1);
