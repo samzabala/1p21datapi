@@ -74,7 +74,11 @@ function _1p21_dv_get_data_visual_object($args = array()) {
                     $parsed_src_rows[$i][1] = $row[1];
 
 
-                    if( !empty($data_visual['color']['palette']) && $data_visual['type'] !== 'pie' && $parsed_src_rows[$i]['color'] ) {
+                    if( 
+                        !empty($data_visual['color']['palette'])
+                        && $data_visual['type'] !== 'pie'
+                        && isset($parsed_src_rows[$i]['color'])
+                    ) {
 
                         if($validation_src_color_row_exists == false){
                             $validation_src_color_row_exists = true;
@@ -135,7 +139,7 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
         //validate format 
 
-        if( !$data_visual['name_is_num'] ){
+        if( !isset($data_visual['name_is_num']) ){
             unset($data_visual['format'][0]['divider']);
         }
 
@@ -165,7 +169,11 @@ function _1p21_dv_get_data_visual_object($args = array()) {
                             // unset($data_visual[$coordinate]['divider']);
                         }
 
-                        if(!isset($data_visual[$coordinate]['grid']) && !($data_visual[$coordinate]['ticks_amount'] > 0)){
+                        if(
+                            !isset($data_visual[$coordinate]['grid'])
+                            && (
+                                !isset($data_visual[$coordinate]['ticks_amount'])
+                            )){
 
                             unset($data_visual[$coordinate]['grid_increment']);
                             
@@ -179,7 +187,7 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
 
             //no data means it fucks with the name. no need for legegends
-            if( !$data_visual['color']['data'] ){
+            if( !isset($data_visual['color']['data'] )){
                 $data_visual['color']['legend'] == null;
             }
 

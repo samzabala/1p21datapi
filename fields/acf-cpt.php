@@ -118,7 +118,7 @@ $_1p21_dv_fields_cpt = array(
 					'library' => 'all',
 					'min_size' => '',
 					'max_size' => '',
-					'mime_types' => '',
+					'mime_types' => 'csv,tsv',
 				),
 				array(
 					'key' => 'field_5d447ad169ee3',

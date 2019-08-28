@@ -48,11 +48,9 @@
 function _1p21_dv_display_id_to_edit_page() {
     global $post;
     $scr = get_current_screen();
-    // _1p21_dv_output_arr($scr);
-    // _1p21_dv_output_arr($post);
 
 
-    if ( $scr->base !== 'data-visual' && $scr->parent_base === 'edit' ){
+    if ( $scr->post_type == 'data-visual' && $scr->parent_base === 'edit' ){
 
         echo '<h2 style="font-size: 1.25em;margin-top:.75em;display:inline-block;border: 1px solid #ccc;">Data Visual ID: <span class="wp-ui-highlight" style="position:relative; bottom: .0625em; left: .125em; padding: .25em .5em; font-family: monospace;">'.$post->ID.'</span></h2>';
     }

@@ -1,5 +1,3 @@
-
-
 <?php
 /********************************************************************************************
 * Render markup
@@ -144,10 +142,12 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                                             //they are all strings
                                             
                                             if($sub_setting == 'data'){
-                                                $parsed_src_path = '\''.$sub_value.'\'';
                                                 
                                                 if($value['type'] == 'rows' || $value['type'] == 'text'){
                                                     $parsed_src_path = "window.document.location + '#{$wrapper_id}-data'";
+                                                }else{
+                                                    $parsed_src_path = '\''.$sub_value.'\'';
+
                                                 }
                             
                                                 $render .= "srcPath: {$parsed_src_path},\n";
@@ -245,7 +245,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                                                 )
                                             ){
                                                 
-                                                $parsed_settings_key = _1p21_dv_dashes_to_camel_case($value . '_' . $sub_setting ); 
+                                                $parsed_settings_key = _1p21_dv_dashes_to_camel_case($attribute . '_' . $sub_setting ); 
                                                 // echo $sub_setting.','.$sub_value.'<br>';
                                                 $parsed_value = $sub_value;
 
@@ -329,13 +329,23 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
 function _1p21_div_data_visualizer_render_by_short($atts = array()){
     global $_1p21_dv;
+    $args = shortcode_atts($_1p21_dv['defaults'],$atts,'dv');
+
+    extract( $args );
+
+    $render = _1p21_div_get_data_visualizer($args);
+    return $render;
+    
+} 
+//shortlived legacy
+function _1p21_div_data_visualizer_render_by_short_longer($atts = array()){
+    global $_1p21_dv;
     $args = shortcode_atts($_1p21_dv['defaults'],$atts,'data_visualizer');
 
     extract( $args );
 
     $render = _1p21_div_get_data_visualizer($args);
     return $render;
-
     
 } 
 
@@ -343,5 +353,7 @@ function _1p21_div_data_visualizer_render_by_short($atts = array()){
 /********************************************************************************************
 * Shortcodes
 *********************************************************************************************/
-add_shortcode('data_visualizer', '_1p21_div_data_visualizer_render_by_short');
+add_shortcode('dv', '_1p21_div_data_visualizer_render_by_short');
+//shortlived legacy
+add_shortcode('data_visualizer', '_1p21_div_data_visualizer_render_by_short_longer');
 

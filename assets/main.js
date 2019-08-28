@@ -160,7 +160,7 @@
                 margin: 10, // @TODO option to separate this thing
                 marginOffset: 2,
                 transition: 1500,
-                delay: 300,
+                delay: 250,
             //src
                 srcType: '',
                 srcPath: '',

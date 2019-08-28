@@ -3,49 +3,49 @@
 Plugin URI: https://github.com/samzabala
 
 Description: Data visualizer using d3 and svgs
+
 Version: 1.0.0
+
 Author: 1Point21 Interactive
+
 Author URI: https://www.1point21interactive.com/
 
-Hi. If you like graphs use this :)
+
+
 
 ## Shortcode Parameters
 
 #### id (REQUIRED | default: null | type: number)
 
-post id of the graph to display
-
+post id of the graph to display.
 
 #### margin (default: 10 | type: number)
 
-gutter to set on graph canvas to compensate spaces for ticks and labels
-
+gutter to set on graph canvas to compensate spaces for ticks and labels.
 
 #### margin_offset (default: 2 | type: number)
 
-multiplier of the gutter
-
+multiplier of the gutter.
 
 #### width (default: 600 | type: number)
 
-width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired
+width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
 
+#### height (default: 600 | type: number)
 
-#### height (default: 600 | type: number),
+height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
 
-height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired
+#### transition (default: 1500 | type: number)
 
-
-#### transition (default: 1500 | type: number),
 how long should all animations or transitions take
 
-#### delay (default: 250 | type: number),
-delay of rendering the boi. useful in case there is a script that needs to load before the graph rendering
+#### delay (default: 250 | type: number)
 
+delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering
 
 ## Backend Settings
 
-### Source Tab
+### Data Settings
 
 #### Source Type (REQUIRED)
 Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)
