@@ -665,8 +665,6 @@
                             if(initial == false) {
 
                                 toReturn = 1;
-
-                                console.log('di pa');
                             }
                         }
 
@@ -678,7 +676,6 @@
                     calcWithInnerRadius = args.piLabelStyle == 'linked' ? false : true,
                     
                     orArr =  getArcPath( getPiData(i) ,calcWithInnerRadius,'centroid',multiplier,customInitial);
-                    console.log(selector,dis.data.name,multiplier,customInitial,orArr);
 
                     offset = ( coordinate =='x') ? orArr[0] : orArr[1];
                 
@@ -1647,26 +1644,26 @@
         // tick inits
         var renderGraph = function() {
             // ok do the thing now
-            console.log(
-                selector,'-------------------------------------------------------------------',"\n",
-                'calculated',_,"\n",
-                'data',_.data,"\n",
-                'args',args,"\n",
+            // console.log(
+            //     selector,'-------------------------------------------------------------------',"\n",
+            //     'calculated',_,"\n",
+            //     'data',_.data,"\n",
+            //     'args',args,"\n",
 
-                "\n",'x',"\n",
-                'domain',_['dom_'+ args.xData],"\n",
-                'range',_['range_'+ args.xData],"\n",
+            //     "\n",'x',"\n",
+            //     'domain',_['dom_'+ args.xData],"\n",
+            //     'range',_['range_'+ args.xData],"\n",
 
-                "\n",'y',"\n",
-                'domain',_['dom_'+ args.yData],"\n",
-                'range',_['range_'+ args.yData],"\n",
-                "\n",
+            //     "\n",'y',"\n",
+            //     'domain',_['dom_'+ args.yData],"\n",
+            //     'range',_['range_'+ args.yData],"\n",
+            //     "\n",
 
-                "\n",'color',"\n",
-                'domain',_['dom_color'],"\n",
-                'range',_['range_color'],"\n",
-                "\n",
-            );
+            //     "\n",'color',"\n",
+            //     'domain',_['dom_color'],"\n",
+            //     'range',_['range_color'],"\n",
+            //     "\n",
+            // );
 
             //generate the graph boi
 
