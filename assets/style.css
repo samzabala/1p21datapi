@@ -86,8 +86,7 @@
   .data-visualizer-type-pie.data-visualizer-label-style-linked .graph-item-text, .data-visualizer-legend-item-text, .data-visualizer-legend-item-blob {
     stroke: #EEE; }
   .data-visualizer-graph .graph-item-link {
-    stroke: #222;
-    stroke-opacity: .75; }
+    stroke: #222; }
   .data-visualizer-graph .graph-item-text {
     fill: #FFF;
     line-height: 2;

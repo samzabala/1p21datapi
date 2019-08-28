@@ -646,6 +646,7 @@
 
         var getBlobTextOrigin = function(coordinate,dis,i,initial){
             
+            initial = initial || false;
             //coordinate is influenced by the axis right now so this is the only time coordinate and axis is one and the same. i think... do not trust me on this
             var keyKey =  args[ coordinate+'Data'],
                 offset = 0;
@@ -657,11 +658,17 @@
                     }()),
                     
                     multiplier = (function(){
+                        var toReturn = 0;
                         if(args.piLabelStyle == 'linked'){
-                            return  initial ? 1 : 2.5;
+                            toReturn =  initial ? 1 : 2.5;
                         }else{
-                            return 1.5;
+                            if(!initial) {
+
+                                toReturn = 1;
+                            }
                         }
+
+                        return toReturn;
 
                     }()),
 
@@ -1887,10 +1894,8 @@
                     _.blob_text_link.merge(_.enter_blob_text_link)
                         .transition(_.duration)
                         .attrTween('stroke-opacity',function(dis,i){
-                            getInterpolation(0,1,function(value,start,end){
-                                console.error('shit',value);
-                            });
-                            return getInterpolation(0,1);
+                            
+                            return getInterpolation(0,.75);
                         })
                         .attrTween('points',function(dis,i){
                             
@@ -1901,7 +1906,7 @@
                                 ],
                                 end = [
 
-                                    getArcPath(getPiData(i),true,'centroid',1.5,false),
+                                    getArcPath(getPiData(i),true,'centroid',1,false),
                                     getArcPath(getPiData(i),false,'centroid',2.25,false),
                                 ];
 
