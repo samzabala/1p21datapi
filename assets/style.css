@@ -36,8 +36,6 @@
     stroke: #888; }
   .data-visualizer-axis text, .data-visualizer-grid text, .data-visualizer-label text {
     fill: #888; }
-  .data-visualizer-axis, .data-visualizer-grid, .data-visualizer-legend {
-    font-size: .75em; }
   .data-visualizer-grid line, .data-visualizer-grid path {
     stroke-opacity: .25; }
   .data-visualizer-grid .tick-aligned line, .data-visualizer-grid .tick-aligned path {
@@ -90,7 +88,6 @@
   .data-visualizer-graph .graph-item-text {
     fill: #FFF;
     line-height: 2;
-    font-size: 1em;
     font-weight: 700; }
     .data-visualizer-graph .graph-item-text.dark {
       fill: #222; }
@@ -98,11 +95,9 @@
     stroke-width: 1; }
   .data-visualizer-no-ticks .data-visualizer-graph .graph-item-text-data-0,
   .data-visualizer-type-pie.data-visualizer-no-legend .data-visualizer-graph .graph-item-text-data-0 {
-    font-weight: 700;
-    font-size: .75em; }
+    font-weight: 700; }
   .data-visualizer-no-ticks .data-visualizer-graph .graph-item-text-data-1,
   .data-visualizer-type-pie.data-visualizer-no-legend .data-visualizer-graph .graph-item-text-data-1 {
-    font-size: 1.75em;
     font-weight: 300; }
   @media only screen and (max-width: 700px) {
     .data-visualizer {

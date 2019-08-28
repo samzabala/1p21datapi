@@ -21,6 +21,7 @@
     
         // relative to 1em supposedly idk
         text_offset = 15,
+        label_size = '.75em',
 
         //get the length attribute to associate with the axis bro
         getDimension = function(axisString,opposite){
@@ -1087,7 +1088,7 @@
             var offset = 0;
 
             if(args.colorLegend && axisString =='x'){
-                offset = args[getDimension(axisString)] * .35;
+                offset = args[getDimension(axisString)] * .375;
             }else{
                 offset  = (args[getDimension(axisString)] * .5);
             }
@@ -1484,11 +1485,13 @@
         
                     //axis
                     _.container_rule = _.container.append('g')
-                        .attr('class', prefix + 'axis');
+                        .attr('class', prefix + 'axis')
+                        .attr('font-size',label_size);
                         
                     //kung may grid gibo kang grid
                     (args.xGrid || args.yGrid) && (_.container_grid = _.container.append('g')
-                        .attr('class', prefix + 'grid'));
+                        .attr('class', prefix + 'grid'))
+                        .attr('font-size',label_size);
                 }
                 
 
@@ -1676,7 +1679,7 @@
                                 
                         _['rule_'+coordinate].transition(_.duration).call( _['axis_'+coordinate])
                             .attr('font-family','inherit')
-                            .attr('font-size',null);
+                            .attr('font-size','inherit');
     
                         if(args[coordinate+'Grid']){
                             
@@ -1958,8 +1961,22 @@
                             .attr('font-size',function(){
                                 var toReturn = null;
 
-                                if( keyKey == 0 && !args[getAxisStringOppo (getAxisString(keyKey) )+'Ticks']){
-                                    
+                                if( (
+                                        args.type !== 'pie'
+                                        && !args[ getAxisStringOppo ( getAxisString(keyKey) )+'Ticks']
+                                    )
+                                    || (
+                                        args.type == 'pie'
+                                        && !args.colorLegend
+                                    )
+                                ){
+                                
+
+                                    if( keyKey == 0 ){
+                                        toReturn = '.75em';
+                                    }else{
+                                        toReturn = '1.75em';
+                                    }    
                                 }
 
                                 return toReturn;
@@ -2065,7 +2082,8 @@
                 _.legend_height = 0;
 
                 _.container_legend = _.container.append('g')
-                    .attr('class',prefix+'legend');
+                    .attr('class',prefix+'legend')
+                    .attr('font-size',label_size);
                     
                     
                 _.dom_color.forEach(function(key,i){
