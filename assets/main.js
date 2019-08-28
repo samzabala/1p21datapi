@@ -662,11 +662,14 @@
                         if(args.piLabelStyle == 'linked'){
                             toReturn =  initial ? 1 : 2.5;
                         }else{
-                            if(!initial) {
+                            if(initial == false) {
 
                                 toReturn = 1;
+
+                                console.log('di pa');
                             }
                         }
+
 
                         return toReturn;
 
@@ -675,6 +678,7 @@
                     calcWithInnerRadius = args.piLabelStyle == 'linked' ? false : true,
                     
                     orArr =  getArcPath( getPiData(i) ,calcWithInnerRadius,'centroid',multiplier,customInitial);
+                    console.log(selector,dis.data.name,multiplier,customInitial,orArr);
 
                     offset = ( coordinate =='x') ? orArr[0] : orArr[1];
                 
@@ -1053,7 +1057,7 @@
                 outerRadius = (function(){
                 var toReturn = 0;
 
-                if(!initial || ( initial && (outerRadiusMultiplier <=1 ) )){
+                if(!initial || ( initial && (outerRadiusMultiplier <=1 ) && calcWithInnerRadius == false )){
                     toReturn = _.pi_radius * outerRadiusMultiplier;
                 }
 
