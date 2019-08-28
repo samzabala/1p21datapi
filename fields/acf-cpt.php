@@ -600,7 +600,7 @@ if layout is set to line, this will be applied to plot points and will override 
 							'append' => '',
 							'min' => '',
 							'max' => '',
-							'step' => '.01',
+							'step' => '.0000000001',
 						),
 						array(
 							'key' => 'field_5d5c5b3134def',
@@ -720,7 +720,7 @@ if layout is set to line, this will be applied to plot points and will override 
 							'append' => '',
 							'min' => '',
 							'max' => '',
-							'step' => '.01',
+							'step' => '.0000000001',
 						),
 						array(
 							'key' => 'field_5d5c5c0734df6',

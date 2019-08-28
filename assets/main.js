@@ -1520,10 +1520,9 @@
                                 var divider = args[ 'format' + keyKey.toString().toUpperCase() + 'Divider'],
                                     prepend = args[ 'format' + keyKey.toString().toUpperCase() + 'Prepend'],
                                     append = args[ 'format' + keyKey.toString().toUpperCase() + 'Append'],
-                                    dataPossiblyDivided = (args[keyKey+'Data'] == 1 || args.nameIsNum ) ? (value / divider): value,
-                                
-                                formatted = prepend + dataPossiblyDivided + append;
-    
+                                    dataPossiblyDivided = (keyKey == 1 || args.nameIsNum ) ? (value / divider): value,
+                                    formatted = prepend + dataPossiblyDivided + append;
+
                                 return formatted;
                             }
                         }
@@ -1644,26 +1643,26 @@
         // tick inits
         var renderGraph = function() {
             // ok do the thing now
-            // console.log(
-            //     selector,'-------------------------------------------------------------------',"\n",
-            //     'calculated',_,"\n",
-            //     'data',_.data,"\n",
-            //     'args',args,"\n",
+            console.log(
+                selector,'-------------------------------------------------------------------',"\n",
+                'calculated',_,"\n",
+                'data',_.data,"\n",
+                'args',args,"\n",
 
-            //     "\n",'x',"\n",
-            //     'domain',_['dom_'+ args.xData],"\n",
-            //     'range',_['range_'+ args.xData],"\n",
+                "\n",'x',"\n",
+                'domain',_['dom_'+ args.xData],"\n",
+                'range',_['range_'+ args.xData],"\n",
 
-            //     "\n",'y',"\n",
-            //     'domain',_['dom_'+ args.yData],"\n",
-            //     'range',_['range_'+ args.yData],"\n",
-            //     "\n",
+                "\n",'y',"\n",
+                'domain',_['dom_'+ args.yData],"\n",
+                'range',_['range_'+ args.yData],"\n",
+                "\n",
 
-            //     "\n",'color',"\n",
-            //     'domain',_['dom_color'],"\n",
-            //     'range',_['range_color'],"\n",
-            //     "\n",
-            // );
+                "\n",'color',"\n",
+                'domain',_['dom_color'],"\n",
+                'range',_['range_color'],"\n",
+                "\n",
+            );
 
             //generate the graph boi
 
@@ -1956,7 +1955,15 @@
                             .attr('text-anchor',function(dis,i){
                                 return getBlobTextAnchor(dis,i);
                             })
-                            .attr('font-size',null)
+                            .attr('font-size',function(){
+                                var toReturn = null;
+
+                                if( keyKey == 0 && !args[getAxisStringOppo (getAxisString(keyKey) )+'Ticks']){
+                                    
+                                }
+
+                                return toReturn;
+                            }) // @TODO migrate embed css styles to here
                             .text(function(dis,i){
                                 return _['format_'+ keyKey ]( deepGet(dis,args.key[ keyKey ]) );
                             })
