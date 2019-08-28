@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<h6 id="pluginname:1point21datavizualizer">Plugin Name: 1Point21 Data Vizualizer</h6>
+<h1 id="pluginname:1point21datavizualizer">Plugin Name: 1Point21 Data Vizualizer</h1>
 
 <h6 id="pluginuri:https:www.1point21interactive.com">Plugin URI: https://www.1point21interactive.com/</h6>
 
@@ -21,41 +21,41 @@
 
 <p>Hi. If you like graphs use this :)</p>
 
-<h1 id="shortcodeparameters">Shortcode Parameters</h1>
+<h2 id="shortcodeparameters">Shortcode Parameters</h2>
 
-<h3 id="idrequireddefault:nulltype:number">id (REQUIRED | default: null | type: number),</h3>
+<h4 id="idrequireddefault:nulltype:number">id (REQUIRED | default: null | type: number),</h4>
 
 <p>post id of the graph to display</p>
 
-<h3 id="margindefault:10type:number">margin (default: 10 | type: number),</h3>
+<h4 id="margindefault:10type:number">margin (default: 10 | type: number),</h4>
 
 <p>gutter to set on graph canvas to compensate spaces for ticks and labels</p>
 
-<h3 id="margin_offsetdefault:2type:number">margin_offset (default: 2 | type: number),</h3>
+<h4 id="margin_offsetdefault:2type:number">margin_offset (default: 2 | type: number),</h4>
 
 <p>multiplier of the gutter</p>
 
-<h3 id="widthdefault:600type:number">width (default: 600 | type: number),</h3>
+<h4 id="widthdefault:600type:number">width (default: 600 | type: number),</h4>
 
 <p>width of canvas. if graph spacing seems broken, the default canvas just isn&#8217;t enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired</p>
 
-<h3 id="heightdefault:600type:number">height (default: 600 | type: number),</h3>
+<h4 id="heightdefault:600type:number">height (default: 600 | type: number),</h4>
 
 <p>height canvas. if graph spacing seems broken, the default canvas just isn&#8217;t enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired</p>
 
-<h3 id="transitiondefault:1500type:number">transition (default: 1500 | type: number),</h3>
+<h4 id="transitiondefault:1500type:number">transition (default: 1500 | type: number),</h4>
 
 <p>how long should all animations or transitions take</p>
 
-<h3 id="delaydefault:250type:number">delay (default: 250 | type: number),</h3>
+<h4 id="delaydefault:250type:number">delay (default: 250 | type: number),</h4>
 
 <p>delay of rendering the boi. useful in case there is a script that needs to load before the graph rendering</p>
 
-<h1 id="backendsettings">Backend Settings</h1>
+<h2 id="backendsettings">Backend Settings</h2>
 
-<h2 id="sourcetab">Source Tab</h2>
+<h3 id="sourcetab">Source Tab</h3>
 
-<h3 id="sourcetyperequired">Source Type (REQUIRED)</h3>
+<h4 id="sourcetyperequired">Source Type (REQUIRED)</h4>
 
 <p>Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)</p>
 
@@ -77,23 +77,23 @@
 <li>Rows</li>
 </ul>
 
-<h2 id="datasetup">Data Setup</h2>
+<h3 id="datasetup">Data Setup</h3>
 
-<h3 id="sourcekey">Source key</h3>
+<h4 id="sourcekey">Source key</h4>
 
 <p>Key where the data to be used is stored. This is in case the loaded data could not be modified and is in one or two sublevels deep of the data requested</p>
 
-<h3 id="namekey">Name Key</h3>
+<h4 id="namekey">Name Key</h4>
 
 <p>data Key that will link the representation of each graph element. set relative to the instance of data</p>
 
-<h3 id="valuekey">Value Key</h3>
+<h4 id="valuekey">Value Key</h4>
 
 <p>data Key that will link the representation of each graph element. set relative to the instance of data</p>
 
-<h2 id="layout">Layout</h2>
+<h3 id="layout">Layout</h3>
 
-<h3 id="typedefault:bar">Type (default: &#8216;bar&#8217;)</h3>
+<h4 id="typedefault:bar">Type (default: &#8216;bar&#8217;)</h4>
 
 <p>what type of graph to visualize the data into. appropriate graph settings fields will appear for the set option</p>
 
@@ -105,11 +105,11 @@
 <li>Pie (Not Yet)</li>
 </ul>
 
-<h3 id="xandysettings">X and Y Settings</h3>
+<h4 id="xandysettings">X and Y Settings</h4>
 
 <p>Only available for Bar and line graph. Each axis setting has the following fields</p>
 
-<h4 id="axisdatadefault:namekeyxvaluekeyy">Axis Data (default: Name Key (x)| Value Key (y))</h4>
+<h5 id="axisdatadefault:namekeyxvaluekeyy">Axis Data (default: Name Key (x)| Value Key (y))</h5>
 
 <p>Key that will represent the axis ( name key or value key)</p>
 
@@ -117,23 +117,23 @@
 *Name Key
 *Value Key</p>
 
-<h4 id="alignmentdefault:bottomxlefty">Alignment (default: Bottom (x), Left (y))</h4>
+<h5 id="alignmentdefault:bottomxlefty">Alignment (default: Bottom (x), Left (y))</h5>
 
 <p>which corner the axis or the graph elements offset from</p>
 
-<h4 id="useticksdefault:false">Use Ticks (default: false)</h4>
+<h5 id="useticksdefault:false">Use Ticks (default: false)</h5>
 
 <p>Whether to use a tick ruler for the axis</p>
 
-<h4 id="label">Label</h4>
+<h5 id="label">Label</h5>
 
 <p>Custom text label for the axis</p>
 
-<h4 id="colorspalette">Colors Palette</h4>
+<h5 id="colorspalette">Colors Palette</h5>
 
 <p>Scheme to color graphic items</p>
 
-<h4 id="advancedsettings">Advanced Settings</h4>
+<h5 id="advancedsettings">Advanced Settings</h5>
 
 <table>
 <colgroup>
@@ -180,25 +180,25 @@
 </tbody>
 </table>
 
-<h3 id="linesettings">Line Settings</h3>
+<h4 id="linesettings">Line Settings</h4>
 
 <p>Only available for Pie graph</p>
 
-<h3 id="piesettings">Pie Settings</h3>
+<h4 id="piesettings">Pie Settings</h4>
 
-<h4 id="strokecolor">Stroke Color</h4>
+<h5 id="strokecolor">Stroke Color</h5>
 
 <p>yes</p>
 
-<h4 id="addplotpoints">Add Plot Points</h4>
+<h5 id="addplotpoints">Add Plot Points</h5>
 
 <p>add a doot doot on a data instance</p>
 
-<h2 id="advancedtab">Advanced Tab</h2>
+<h3 id="advancedtab">Advanced Tab</h3>
 
-<h1 id="filters">Filters</h1>
+<h2 id="filters">Filters</h2>
 
-<h3 id="apply_filters_1p21_dv_infobooleandebug">apply_filters( &#8216;_1p21_dv_info&#8217;, boolean $debug )</h3>
+<h4 id="apply_filters_1p21_dv_infobooleandebug">apply_filters( &#8216;_1p21_dv_info&#8217;, boolean $debug )</h4>
 
 <ul>
 <li>output array of the current data visuals on the page</li>

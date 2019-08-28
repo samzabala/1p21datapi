@@ -189,7 +189,7 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
 
             if($data_visual['type'] !== 'scatter') {
-                unset($data_visual['scatter']);
+                unset($data_visual['area']);
             }
 
         }else{

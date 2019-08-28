@@ -61,13 +61,17 @@
   .data-visualizer-no-palette.data-visualizer-type-pie .graph-item-blob:nth-of-type(5n),
   .data-visualizer-no-palette.data-visualizer-type-pie .legend-item-blob:nth-of-type(5n) {
     fill: #BBB; }
-  .data-visualizer-no-palette.data-visualizer-type-pie .graph-item-text:nth-of-type(2n) {
+  .data-visualizer-no-palette.data-visualizer-type-pie.data-visualizer-label-style-within .graph-item-text:nth-of-type(2n),
+  .data-visualizer-no-palette.data-visualizer-type-scatter .blob-item-blob:nth-of-type(2n) {
     stroke: #444; }
-  .data-visualizer-no-palette.data-visualizer-type-pie .graph-item-text:nth-of-type(3n) {
+  .data-visualizer-no-palette.data-visualizer-type-pie.data-visualizer-label-style-within .graph-item-text:nth-of-type(3n),
+  .data-visualizer-no-palette.data-visualizer-type-scatter .blob-item-blob:nth-of-type(3n) {
     stroke: #666; }
-  .data-visualizer-no-palette.data-visualizer-type-pie .graph-item-text:nth-of-type(4n) {
+  .data-visualizer-no-palette.data-visualizer-type-pie.data-visualizer-label-style-within .graph-item-text:nth-of-type(4n),
+  .data-visualizer-no-palette.data-visualizer-type-scatter .blob-item-blob:nth-of-type(4n) {
     stroke: #888; }
-  .data-visualizer-no-palette.data-visualizer-type-pie .graph-item-text:nth-of-type(5n) {
+  .data-visualizer-no-palette.data-visualizer-type-pie.data-visualizer-label-style-within .graph-item-text:nth-of-type(5n),
+  .data-visualizer-no-palette.data-visualizer-type-scatter .blob-item-blob:nth-of-type(5n) {
     stroke: #BBB; }
   .data-visualizer-type-line .graph-item-text,
   .data-visualizer-type-pie .graph-item-text, .data-visualizer-legend-item-text, .data-visualizer-legend-item-blob {
@@ -91,6 +95,8 @@
     font-weight: 700; }
     .data-visualizer-graph .graph-item-text.dark {
       fill: #222; }
+  .data-visualizer-type-scatter .data-visualizer-graph .graph-item-blob {
+    stroke-width: 1; }
   .data-visualizer-no-ticks .data-visualizer-graph .graph-item-text-data-0,
   .data-visualizer-type-pie.data-visualizer-no-legend .data-visualizer-graph .graph-item-text-data-0 {
     font-weight: 700;

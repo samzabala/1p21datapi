@@ -62,6 +62,14 @@ function _1p21_dv_display_id_to_edit_page() {
 add_action( 'edit_form_after_title', '_1p21_dv_display_id_to_edit_page' );
 
 
+function _1p21_dv_add_documentation_link (){
+    //add_options_page(title, menu name, capability, slug, form callback);
+
+        // add_options_page('Documentation', 'Documentation','none', '1p21-dv-documentation', function(){
+        //     get_template_part()
+        // });
+}
+
 //style classes of acf
     function _1p21_dv_acf_fields_styles(){
         ?>

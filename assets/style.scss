@@ -132,24 +132,24 @@ $color-neutral-darker: #444;
             }
 
         }
+    }
 
-        .graph-item-text {
+    &-no-palette#{$prefix}-type-pie#{$prefix}-label-style-within .graph-item-text, 
+    &-no-palette#{$prefix}-type-scatter .blob-item-blob {
 
-            &:nth-of-type(2n){
-                stroke: $color-neutral-darker;
-            }
-            &:nth-of-type(3n){
-                stroke: $color-neutral-dark;
-            }
+        &:nth-of-type(2n){
+            stroke: $color-neutral-darker;
+        }
+        &:nth-of-type(3n){
+            stroke: $color-neutral-dark;
+        }
 
-            &:nth-of-type(4n){
-                stroke: $color-neutral;
-            }
+        &:nth-of-type(4n){
+            stroke: $color-neutral;
+        }
 
-            &:nth-of-type(5n){
-                stroke: $color-neutral-light;
-            }
-            
+        &:nth-of-type(5n){
+            stroke: $color-neutral-light;
         }
     }
 
@@ -197,6 +197,10 @@ $color-neutral-darker: #444;
             &.dark {
                 fill: $color-base;
             }
+        }
+
+        #{$prefix}-type-scatter &-blob {
+            stroke-width: 1;
         }
             
 

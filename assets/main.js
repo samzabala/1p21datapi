@@ -197,8 +197,10 @@
                         format1Append: '',
                         format1Parameter: null,
     
-                
-
+                //kulay
+                    areaMin: 10,
+                    areaMax: 50,
+                    areaOpacity: .8,
     
                 //kulay
                     colorPalette : [],
@@ -248,8 +250,8 @@
                     lineDash: [100,0],
                 
                 //pi
-                piLabelStyle: null,
-                piInRadius: 0
+                    piLabelStyle: null,
+                    piInRadius: 0
         };
 
         //merge defaults with custom
@@ -300,6 +302,16 @@
             return padding;
 
         }
+
+        //get nearest power of tenth
+        var getNearest = function(num){
+            if(num > 10){
+
+                return Math.pow(10, num.toString().length - 1) * 10;
+            }else{
+                return 1;
+            }
+        };
 
         // get data but with aility to get down deep because we never know where the fuck the date will be at
         // @param obj : duh 
@@ -355,6 +367,9 @@
 
                     range = args[key+'Palette'];
                     break;
+                case 'area':
+                    range = [args.areaMin,args.areaMax];
+                    break;
 
                 case 0:
                 case 1:
@@ -386,7 +401,6 @@
             switch(keyKey){
                 
                 case 'color':
-                case 'area':
                     
                     var instances = dat.reduce(function(acc,dis){
                         if(!acc.includes(deepGet(dis, keyString ))){
@@ -400,15 +414,17 @@
 
                     break;
 
+                case 'area':
                 case 0:
                 case 1:
 
-                    if(args.nameIsNum || keyKey == 1){
+                    if(args.nameIsNum || keyKey == 1 || keyKey == 'area'){
 
                         var min,max;
 
                         //min
-                        if(args[getAxisString(keyKey) + 'Min'] !== null){
+                        if(args[getAxisString(keyKey) + 'Min'] !== null && keyKey !== 'area'){
+
                             min = args[getAxisString(keyKey) + 'Min'];
                         }else{
                             min = d3.min(dat,function(dis){
@@ -417,7 +433,8 @@
                         }
                         
                         //max
-                        if(args[getAxisString(keyKey) + 'Max'] !== null){
+                        if(args[getAxisString(keyKey) + 'Max'] !== null && keyKey !== 'area'){
+
                             max = args[getAxisString(keyKey) + 'Max']
                         }else{
                             max = d3.max(dat,function(dis){
@@ -426,6 +443,15 @@
                         }
 
                         domain = [min,max];
+
+                        //if it a scatter plot we shit on the boi
+                        if(args.type == 'scatter' && keyKey == 0){
+                            
+                            var newMin = getNearest(min),
+                                newMax = getNearest(max);
+
+                            domain = [newMin,newMax];
+                        }
 
                     }else{
                         
@@ -536,24 +562,23 @@
 
         //duh 
         var getBlobRadius = function(dis,i,initial){
-            var radius = 2;
+            initial = initial || false;
+            var radius = initial ? 0 : 2;
 
-            if(args.type == 'line'){
-            
-                if(!initial){
-    
+            if(!initial){
+
+
+                if(args.type == 'line'){
+        
                     if(args.type == 'line' && args.linePointsSize){
                         radius = args.linePointsSize
                     }
     
-                }else{
+                }else if(args.type == 'scatter'){
     
-                    radius = 0;
-    
+                    radius = _.the_area( deepGet(dis,args.key['area'],true) );
+
                 }
-
-            }else if(args.type == 'scatter'){
-
 
             }
 
@@ -626,10 +651,25 @@
                 offset = 0;
 
             if(args.type == 'pie'){
-                if(!initial) {
-                    var orArr =  getArcPath( dis ,'text','centroid');
+
+                var customInitial = (function(){
+                        return (args.piLabelStyle == 'linked') ?  false : initial;
+                    }()),
+                    
+                    multiplier = (function(){
+                        if(args.piLabelStyle == 'linked'){
+                            return  initial ? 1 : 2.5;
+                        }else{
+                            return 1.5;
+                        }
+
+                    }()),
+
+                    calcWithInnerRadius = args.piLabelStyle == 'linked' ? false : true,
+                    
+                    orArr =  getArcPath( getPiData(i) ,calcWithInnerRadius,'centroid',multiplier,customInitial);
+
                     offset = ( coordinate =='x') ? orArr[0] : orArr[1];
-                }
                 
             }else{
 
@@ -689,7 +729,7 @@
                                 )
                             )
                             || (
-                                args.type == 'line' 
+                                args.type !== 'bar' 
                                 && (
                                     args[getAxisStringOppo(coordinate)+'Align'] == 'top'
                                     || args[getAxisStringOppo(coordinate)+'Align'] == 'left'
@@ -702,11 +742,11 @@
                         if(
                             (
                                 (
-                                    args.type !== 'line'
+                                    args.type == 'bar'
                                     && parseFloat(getBlobSize(coordinate,dis,i)) < _.mLength(coordinate,i)
                                 )
                                 || (
-                                    args.type == 'line'
+                                    args.type !== 'bar'
                                     && parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.mLength(coordinate,i))
                                 )
                             )
@@ -798,53 +838,46 @@
 
                 initial = initial || false;
 
-                switch(args.type) {
+            if(args.type !== 'pie') {
 
-                    case 'pie':
+                if( args.nameIsNum || keyKey == 1){
+                    
+                    if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
+                        
+                        if(initial && keyKey !== 0 && args.type !== 'scatter'){
 
-
-                        break;
-
-                    default:
-
-                        if( args.nameIsNum || keyKey == 1){
-                            
-                            if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
-                                
-                                if(initial && keyKey !== 0){
-
-                                    offset = args[getDimension(coordinate)];
-
-                                }else{
-
-                                    offset = args[getDimension(coordinate)] - (args[getDimension(coordinate)] - _['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true )));
-
-                                }
-
-                            }else{
-
-                                if(args.type == 'line' || args.type == 'scatter'){
-                                    if(!(initial && keyKey !== 0)){
-
-                                        offset = _['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true ));
-
-                                    }
-
-                                }
-                                
-                            }
+                            offset = args[getDimension(coordinate)];
 
                         }else{
 
-                            offset = _['the_'+ args[coordinate+'Data'] ](deepGet(dis, args.key[ keyKey ], false));
-                            
-                            if(
-                                (args.type == 'line' || args.type == 'scatter')
-                                && !args.nameIsNum 
-                            ) {
-                                offset += getBlobSize( coordinate ,dis,i) / 2;
-                            }
+                            offset = args[getDimension(coordinate)] - (args[getDimension(coordinate)] - _['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true )));
+
                         }
+
+                    }else{
+
+                        if(args.type == 'line' || args.type == 'scatter'){
+                            if(!(initial && keyKey !== 0 && args.type !== 'scatter')){
+
+                                offset = _['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true ));
+
+                            }
+
+                        }
+                        
+                    }
+
+                }else{
+
+                    offset = _['the_'+ args[coordinate+'Data'] ](deepGet(dis, args.key[ keyKey ], false));
+                    
+                    if(
+                        (args.type == 'line' || args.type == 'scatter')
+                        && !args.nameIsNum 
+                    ) {
+                        offset += getBlobSize( coordinate ,dis,i) / 2;
+                    }
+                }
                     
 
             }
@@ -995,52 +1028,34 @@
 
         }
 
-        var getArcPath = function(disPi,forElem,subMethod,initial){
-            forElem = forElem || 'blob';
+        var getArcPath = function(disPi,calcWithInnerRadius,subMethod,outerRadiusMultiplier,initial){
+            outerRadiusMultiplier = outerRadiusMultiplier || 1;
             subMethod = subMethod || '';
+            calcWithInnerRadius = calcWithInnerRadius || false;
+            initial = initial || false;
 
-            var chartRadius = (function(){
+            var innerRadius = (function(){
                 var toReturn = 0;
 
-                if(!initial){
+                if( calcWithInnerRadius ){
+                    toReturn = _.pi_radius * args.piInRadius;
+                }
 
-                
-                    if( forElem !== 'blob'){
-                        console.log('ha bitch');
-    
-                        if(forElem == 'link'){
-                            toReturn = _.pi_radius * 1.25;
-                        }else if(forElem == 'text'){
-                            if( args.piLabelStyle == 'linked'){
-                                toReturn = _.pi_radius * 1.5;
-                            }else{
-        
-                                toReturn = _.pi_radius * .75;
-                            }
-                        }
-    
-                    }else{
-                        toReturn = _.pi_radius
-                    }
-    
-                    if(forElem == 'text' || forElem == 'linked'){
-                        toReturn -= (_.pi_radius * args.piInRadius);
-                    }
+                return toReturn;
+            }()),
+                outerRadius = (function(){
+                var toReturn = 0;
+
+                if(!initial || ( initial && (outerRadiusMultiplier <=1 ) )){
+                    toReturn = _.pi_radius * outerRadiusMultiplier;
                 }
 
                 return toReturn;
             }()),
                 path = d3.arc()
-                    .outerRadius( chartRadius )
-                    .innerRadius(  (_.pi_radius * args.piInRadius) );
+                    .outerRadius( outerRadius )
+                    .innerRadius( innerRadius );
 
-
-            !initial && console.warn(
-                disPi.data.name,
-                forElem,"\n",
-                'outer',chartRadius,
-                "\n",'inner',
-                (chartRadius * args.piInRadius));
             
             if(subMethod){
                 return path[subMethod](disPi);
@@ -1064,7 +1079,7 @@
             var offset = 0;
 
             if(args.colorLegend && axisString =='x'){
-                offset = args[getDimension(axisString)] * .375;
+                offset = args[getDimension(axisString)] * .35;
             }else{
                 offset  = (args[getDimension(axisString)] * .5);
             }
@@ -1105,16 +1120,25 @@
                             .range(_['range_'+keyKey]) 
                     break;
 
+                case 'area':
                 case 0:
                 case 1:
 
-                    if(args.nameIsNum || keyKey == 1 ){
+                    if(args.nameIsNum || keyKey == 1 || keyKey == 'area' ){
+
+                        if(args.nameIsNum && keyKey == 0){
+
+                            scale = d3.scaleSymlog()
+                                .constant(10)
+                                .range(_['range_'+keyKey]);
+                        }else{
+                            scale = d3.scaleLinear()
+                                .range(_['range_'+keyKey]);
+                        }
                         
-                        scale = d3.scaleLinear()
-                            .range(_['range_'+keyKey]);
                         
                     }else{
-                        if(args.type == 'line'){
+                        if(args.type == 'line' || args.type == 'scatter'){
                             scale = d3.scalePoint() //scales shit to dimensios
                                 .range(_['range_'+keyKey]) // scaled data from available space
                         }else{
@@ -1224,6 +1248,22 @@
 
                     if(args[axisString +'Ticks']){
 
+                        if(args.type == 'scatter' && args[axisString+'Data'] == 0 ){
+                            var tickValues = function(){
+                                var values = [],
+                                    currVal = _.dom_0[0];
+                                do{
+                                    values.push(currVal);
+                                    currVal *= 10;
+
+                                }while(currVal <= _.dom_0[1]);
+
+                                return values;
+                            }
+
+                            _['axis_'+gridString+axisString].tickValues( tickValues() );
+                        }
+
                         if(args[axisString +'TicksAmount']){
                             
                             var ticksAmount = function(){
@@ -1287,9 +1327,9 @@
                 
                 var sortable = [];
 
-                for(var i = 0 ;i < data.length; i++){
-                    if(data[i]){
-                        sortable.push(data[i]);
+                for(var i = 0 ;i < _.data.length; i++){
+                    if(_.data[i]){
+                        sortable.push(_.data[i]);
                     }
                 }
                 
@@ -1414,7 +1454,7 @@
                             value -= (value * .25)
 
                             if(args.piLabelStyle == 'linked'){
-                                value -= (value * .125)
+                                value -= (value * .25)
                             }
 
                         }else{
@@ -1602,18 +1642,18 @@
                 'data',_.data,"\n",
                 'args',args,"\n",
 
-                // "\n",'x',"\n",
-                // 'domain',_['dom_'+ args.xData],"\n",
-                // 'range',_['range_'+ args.xData],"\n",
+                "\n",'x',"\n",
+                'domain',_['dom_'+ args.xData],"\n",
+                'range',_['range_'+ args.xData],"\n",
 
-                // "\n",'y',"\n",
-                // 'domain',_['dom_'+ args.yData],"\n",
-                // 'range',_['range_'+ args.yData],"\n",
-                // "\n",
+                "\n",'y',"\n",
+                'domain',_['dom_'+ args.yData],"\n",
+                'range',_['range_'+ args.yData],"\n",
+                "\n",
 
-                // "\n",'color',"\n",
-                // 'domain',_['dom_color'],"\n",
-                // 'range',_['range_color'],"\n",
+                "\n",'color',"\n",
+                'domain',_['dom_color'],"\n",
+                'range',_['range_color'],"\n",
                 "\n",
             );
 
@@ -1717,7 +1757,8 @@
                 _.enter_blob = _.blob.enter()
                     .append(_.graph_item_element)
                         .attr('class', function(dis){
-                            return prefix + 'graph-item graph-item-blob';
+                            return prefix + 'graph-item graph-item-blob'
+                                + ' '+ 'data-name-'+deepGet(dis,args.key[0]);
                         });
                         
                     //coordinates
@@ -1762,7 +1803,7 @@
                                         function(value){
 
                                             current.startAngle = value;
-                                            return getArcPath(current,'blob');
+                                            return getArcPath(current,true);
                                         }
                                     )
                                 });
@@ -1795,7 +1836,7 @@
                                 })
                     }
                     
-                    //line graph line and fill and shit
+                    //line  colors
                     if(!args.colorPalette.length){
                         if(
                             args.type == 'line'
@@ -1815,6 +1856,14 @@
                             .attr('fill',function(dis,i){
                                 return _.the_color(deepGet(dis,args.key.color));
                             });
+
+                            if(args.type == 'scatter'){
+                                _.blob.merge(_.enter_blob)
+                                    .attr('fill-opacity',args.areaOpacity)
+                                    .attr('stroke',function(dis,i){
+                                        return _.the_color(deepGet(dis,args.key.color));
+                                    })
+                            }
                     }
 
             }
@@ -1829,7 +1878,10 @@
                     _.enter_blob_text_link = _.blob_text_link
                         .enter()
                         .append('polyline')
-                        .attr('class',prefix+'graph-item graph-item-link')
+                        .attr('class',function(dis){
+                            return prefix+'graph-item graph-item-link' 
+                                + ' '+ 'data-name-'+deepGet(dis,args.key[0]);
+                        })
 
                     
                     _.blob_text_link.merge(_.enter_blob_text_link)
@@ -1842,16 +1894,15 @@
                         })
                         .attrTween('points',function(dis,i){
                             
+                            //in pie, initial means it starts at zero but we dont want that so dont set the initial to true
                             var start = [
-                                    getArcPath(getPiData(i),'blob','centroid',true),
-                                    getArcPath(getPiData(i),'link',null,true),
-                                    // [getBlobTextOrigin('x',getPiData(i),i,true),getBlobTextOrigin('y',getPiData(i),i,true)]
+                                    getArcPath(getPiData(i),true,'centroid',1,false), //first coord is centroid of our pie boi
+                                    getArcPath(getPiData(i),true,'centroid',1,false), // second is outer radius.
                                 ],
                                 end = [
 
-                                    getArcPath(getPiData(i),'blob','centroid',false),
-                                    getArcPath(getPiData(i),'link',null,false),
-                                    // [getBlobTextOrigin('x',getPiData(i),i,false),getBlobTextOrigin('y',getPiData(i),i,false)]
+                                    getArcPath(getPiData(i),true,'centroid',1.5,false),
+                                    getArcPath(getPiData(i),false,'centroid',2.25,false),
                                 ];
 
                             return getInterpolation(
@@ -1859,6 +1910,7 @@
                                 end
                             )
                         });
+
                 }
 
                 _.enter_blob_text = _.blob_text
@@ -1890,7 +1942,10 @@
 
                         _['blob_text_'+keyKey] = _.enter_blob_text.append('tspan')
 
-                            .attr('class', 'graph-item-text-data-'+keyKey )
+                            .attr('class', function(dis){
+                                return 'graph-item-text-data-'+keyKey
+                                    + ' '+ 'data-name-'+deepGet(dis,args.key[0]);
+                            } )
                             .attr('dominant-baseline','middle')
                             .attr('text-anchor',function(dis,i){
                                 return getBlobTextAnchor(dis,i);

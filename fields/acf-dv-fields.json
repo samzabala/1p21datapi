@@ -55,8 +55,8 @@
                 "choices": {
                     "bar": "Bar (Default)",
                     "line": "Line",
-                    "pie": "Pie (In Progress)",
-                    "scatter": "Scatter Plot (Coming Soon)"
+                    "pie": "Pie",
+                    "scatter": "Scatter Plot"
                 },
                 "default_value": [
                     "bar"
@@ -471,10 +471,6 @@
                             "field": "field_5d420de06b6c9",
                             "operator": "!=",
                             "value": "rows"
-                        },
-                        {
-                            "field": "field_5d420de06b6c9",
-                            "operator": "!=empty"
                         }
                     ]
                 ],
@@ -565,13 +561,50 @@
                     },
                     {
                         "ID": 0,
+                        "key": "field_5d602683abd8f",
+                        "label": "Plot Point Area Key",
+                        "name": "area",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 2,
+                        "instructions": "data that will influence the size of the scatter plot data. leaving blank will make all scatter plots the same size",
+                        "required": 1,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "scatter"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d5702b2b6d93",
+                        "wrapper": {
+                            "width": "",
+                            "class": "dv-code",
+                            "id": ""
+                        },
+                        "_name": "area",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "data[0].",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "ID": 0,
                         "key": "field_5d42ffcf5f464",
                         "label": "Colors Key",
                         "name": "color",
                         "prefix": "acf",
                         "type": "text",
                         "value": null,
-                        "menu_order": 2,
+                        "menu_order": 3,
                         "instructions": "Data key to link color scheme to.<br>\nif layout is set to line, this will be applied to plot points and will override set points color",
                         "required": 0,
                         "id": "",
@@ -597,43 +630,6 @@
                             "id": ""
                         },
                         "_name": "color",
-                        "_prepare": 0,
-                        "_valid": 1,
-                        "default_value": "",
-                        "placeholder": "",
-                        "prepend": "data[0].",
-                        "append": "",
-                        "maxlength": ""
-                    },
-                    {
-                        "ID": 0,
-                        "key": "field_5d602683abd8f",
-                        "label": "Plot Point Area Key",
-                        "name": "area",
-                        "prefix": "acf",
-                        "type": "text",
-                        "value": null,
-                        "menu_order": 3,
-                        "instructions": "data that will influence the size of the scatter plot data. leaving blank will make all scatter plots the same size",
-                        "required": 0,
-                        "id": "",
-                        "class": "",
-                        "conditional_logic": [
-                            [
-                                {
-                                    "field": "field_5d420a45de26f",
-                                    "operator": "==",
-                                    "value": "scatter"
-                                }
-                            ]
-                        ],
-                        "parent": "field_5d5702b2b6d93",
-                        "wrapper": {
-                            "width": "",
-                            "class": "dv-code",
-                            "id": ""
-                        },
-                        "_name": "area",
                         "_prepare": 0,
                         "_valid": 1,
                         "default_value": "",
@@ -768,8 +764,8 @@
                                 "_valid": 1,
                                 "default_value": "",
                                 "placeholder": "$",
-                                "prepend": "'",
-                                "append": "'",
+                                "prepend": "",
+                                "append": "",
                                 "maxlength": ""
                             },
                             {
@@ -797,8 +793,8 @@
                                 "_valid": 1,
                                 "default_value": "",
                                 "placeholder": "k",
-                                "prepend": "'",
-                                "append": "'",
+                                "prepend": "",
+                                "append": "",
                                 "maxlength": ""
                             },
                             {
@@ -956,8 +952,8 @@
                                 "_valid": 1,
                                 "default_value": "",
                                 "placeholder": "$",
-                                "prepend": "'",
-                                "append": "'",
+                                "prepend": "",
+                                "append": "",
                                 "maxlength": ""
                             },
                             {
@@ -985,8 +981,8 @@
                                 "_valid": 1,
                                 "default_value": "",
                                 "placeholder": "k",
-                                "prepend": "'",
-                                "append": "'",
+                                "prepend": "",
+                                "append": "",
                                 "maxlength": ""
                             },
                             {
@@ -1106,7 +1102,7 @@
                         ],
                         "parent": "field_5d60205502da2",
                         "wrapper": {
-                            "width": "50",
+                            "width": "",
                             "class": "",
                             "id": ""
                         },
@@ -1140,8 +1136,8 @@
                                 "_valid": 1,
                                 "default_value": "",
                                 "placeholder": "$",
-                                "prepend": "'",
-                                "append": "'",
+                                "prepend": "",
+                                "append": "",
                                 "maxlength": ""
                             },
                             {
@@ -1169,8 +1165,8 @@
                                 "_valid": 1,
                                 "default_value": "",
                                 "placeholder": "k",
-                                "prepend": "'",
-                                "append": "'",
+                                "prepend": "",
+                                "append": "",
                                 "maxlength": ""
                             },
                             {
@@ -1474,6 +1470,23 @@
                                     "operator": "==",
                                     "value": "1"
                                 }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "scatter"
+                                },
+                                {
+                                    "field": "field_5d55d2e48b9a1",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d42110769b59",
+                                    "operator": "==",
+                                    "value": "0"
+                                }
                             ]
                         ],
                         "parent": "field_5d448fef59823",
@@ -1512,6 +1525,23 @@
                                     "field": "field_5d42110769b59",
                                     "operator": "==",
                                     "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "scatter"
+                                },
+                                {
+                                    "field": "field_5d55d2e48b9a1",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d42110769b59",
+                                    "operator": "==",
+                                    "value": "0"
                                 }
                             ]
                         ],
@@ -1956,6 +1986,23 @@
                                     "operator": "==",
                                     "value": "1"
                                 }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "scatter"
+                                },
+                                {
+                                    "field": "field_5d55d2e48b9a1",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d4494e1f5295",
+                                    "operator": "==",
+                                    "value": "0"
+                                }
                             ]
                         ],
                         "parent": "field_5d4494e1f5294",
@@ -1994,6 +2041,23 @@
                                     "field": "field_5d4494e1f5295",
                                     "operator": "==",
                                     "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "scatter"
+                                },
+                                {
+                                    "field": "field_5d55d2e48b9a1",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d4494e1f5295",
+                                    "operator": "==",
+                                    "value": "0"
                                 }
                             ]
                         ],
@@ -2819,13 +2883,141 @@
             },
             {
                 "ID": 0,
+                "key": "field_5d66b3ea0fdc3",
+                "label": "Scatter Plot Area Settings",
+                "name": "dv_area",
+                "prefix": "acf",
+                "type": "group",
+                "value": null,
+                "menu_order": 11,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420a45de26f",
+                            "operator": "==",
+                            "value": "scatter"
+                        }
+                    ]
+                ],
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_area",
+                "_prepare": 0,
+                "_valid": 1,
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "ID": 0,
+                        "key": "field_5d66b5bf0fdc7",
+                        "label": "Minimum Radius",
+                        "name": "min",
+                        "prefix": "acf",
+                        "type": "number",
+                        "value": null,
+                        "menu_order": 0,
+                        "instructions": "minimum size range of scatter plots to represent the lower range data",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d66b3ea0fdc3",
+                        "wrapper": {
+                            "width": "33",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "min",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "min": "",
+                        "max": "",
+                        "step": ".01"
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d66b5dc0fdc8",
+                        "label": "Maximum Radius",
+                        "name": "max",
+                        "prefix": "acf",
+                        "type": "number",
+                        "value": null,
+                        "menu_order": 1,
+                        "instructions": "maximum size range of scatter plots to represent the lower range data",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d66b3ea0fdc3",
+                        "wrapper": {
+                            "width": "33",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "max",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "min": "",
+                        "max": "",
+                        "step": ".01"
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d66bf01b4de3",
+                        "label": "Opacity",
+                        "name": "opacity",
+                        "prefix": "acf",
+                        "type": "number",
+                        "value": null,
+                        "menu_order": 2,
+                        "instructions": "Opacity of scatter plots' fill. opacity below 1 is recommended",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d66b3ea0fdc3",
+                        "wrapper": {
+                            "width": "33",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "opacity",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "min": 0,
+                        "max": 1,
+                        "step": ".01"
+                    }
+                ]
+            },
+            {
+                "ID": 0,
                 "key": "field_5d570e0a7d32b",
                 "label": "Colors Settings",
                 "name": "dv_color",
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 11,
+                "menu_order": 12,
                 "instructions": "If the graph type is set to pie or the color data key is left blank, the name data will be linked to the palette",
                 "required": 0,
                 "id": "",
@@ -2957,7 +3149,7 @@
                 "prefix": "acf",
                 "type": "tab",
                 "value": false,
-                "menu_order": 12,
+                "menu_order": 13,
                 "instructions": "",
                 "required": 0,
                 "id": "",
