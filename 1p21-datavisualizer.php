@@ -3,7 +3,7 @@
 Plugin Name: 1Point21 Data Vizualizer
 Plugin URI: https://github.com/samzabala/1p21datapi
 Description: Data visualizer using d3 and svgs
-Version: 1.0.0
+Version: 1.0.1
 Author: 1Point21 Interactive
 Author URI: https://www.1point21interactive.com/
 */
@@ -26,8 +26,10 @@ $_1p21_dv['defaults'] = array(
     'id' => null, //post id
     'margin' => null, //spacing necessary within the canvas to avoid cuttong off elements
     'margin_offset' => null, //multiplier for spacing
+    'font_size' => null,
     'width' => null, //duh
     'height' => null, //duh
+    'align' => 'center', //duh
     'transition' => null, //duh
     'delay' => null, //duh
 );
@@ -44,10 +46,9 @@ Roast the user in the admin because ACF is not installed
 //  yes
 function _1p21_dv_check_for_acf(){
     if (!class_exists('ACF')){
-        
-        $class = 'notice notice-error';
-        $message = __( 'Advanced Custom Fields PRO is not installed. 1Point21 Data Vizualizer needs this plugin for complete functionality' );
-        printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) ); 
+        $message = 'Advanced Custom Fields PRO is not installed. 1Point21 Data Vizualizer needs this plugin for complete functionality';
+
+        _1p21_dv_create_admin_error($message);
     };
 }
 add_action('admin_init','_1p21_dv_check_for_acf');

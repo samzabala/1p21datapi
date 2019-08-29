@@ -162,6 +162,11 @@
                 marginOffset: 2,
                 transition: 1500,
                 delay: 250,
+                fontSize: '16px',
+
+            // content
+                title:'',
+                description:'',
             //src
                 srcType: '',
                 srcPath: '',
@@ -1309,6 +1314,7 @@
         //render a good boi
         var init = function(retrievedData){
             
+            d3.select(selector).classed(prefix+'initialized' ,true )
             _.data = null;
 
             //element
@@ -1327,6 +1333,7 @@
                     break;
 
             }
+            
             // heck if src key exists
             _.data = args.srcKey ? deepGet(retrievedData,args.srcKey) : retrievedData;
             //validation
@@ -1361,73 +1368,33 @@
             };
 
 
-            //canvas
+                // setup padding and sizes
                 _.legend_size = 30;
-                _.off_x = getCanvasPadding('x'),
-                _.off_y = getCanvasPadding('y'),
-                
-                _.outerWidth = args.width + (_.off_x * 2),
-                _.outerHeight = args.height + (_.off_y * 2),
-               
-                _.canvas = d3.select(selector)
-                    .append('div')
-                    .attr('class', prefix + 'wrapper');
-
-                var dimensionString = '0 0 '+ _.outerWidth +' ' + _.outerHeight;
-
-                // _.canvas.style('padding-bottom', Math.floor(_.outerHeight/_.outerWidth * 100 )  + '%');
-                
-
-                _.svg = _.canvas.append('svg')
-                    .attr('id',selector+'-svg')
-                    .attr('version','1.1')
-                    .attr('x','0px')
-                    .attr('y','0px')
-                    .attr('class',
-                        prefix + 'svg '
-                        + prefix + 'type-' + args.type + ' '
-                        + prefix + ( (args.colorPalette.length > 0 || args.linePointsColor !== null || args.lineColor !== null) ?  'has-palette' : 'no-palette' )
-                        + ((args.type !== 'pie' && !args.xTicks && !args.yTicks) ? ' '+prefix+'no-ticks' : '')
-                        + ((!args.colorLegend) ? ' '+prefix+'no-legend' : '')
-                        + ((args.type == 'pie' && args.piLabelStyle !== null) ? ' '+prefix+'label-style-'+args.piLabelStyle : ' '+prefix+'no-label')
-                    )
-                    .attr('viewBox', dimensionString)
-                    .attr("preserveAspectRatio", "xMidYMid meet")
-                    .attr('xml:space','preserve')
-                    .style('style','enable-background','new '+ dimensionString)
-                    .attr('width',_.outerWidth)
-                    .attr('height',_.outerHeight)
-                    ;
-
-                    
-                //duration
-                _.duration = _.svg.transition().duration( args.transition ).ease(d3.easeLinear);
-                    
-                _.container = _.svg.append('g')
-                    .attr('class',prefix+'svg-wrapper')
+                _.off_x = getCanvasPadding('x');
+                _.off_y = getCanvasPadding('y');
 
                 var shift = {
                     more: 1.5,
                     less: .5
                 },
 
-                transformX = _.off_x,
-                transformY = _.off_y;
+                transform_X = _.off_x,
+                transform_Y = _.off_y;
 
                 if(args.type !== 'pie'){
                     //x COORDINATE value @TODO fucking loop na lang
                     switch ( args.yAlign+' '+ ((args.xLabel == null) ? 'empty' : 'has') ){
                         
                         case 'left has':
-                            transformX = (_.off_x * shift.more);
+                            transform_X = (_.off_x * shift.more);
                             break;
 
                         case 'right has':
-                            transformX = (_.off_x * shift.less);
+                            transform_X = (_.off_x * shift.less);
                             break;
 
                         default:
-                            transformX = (_.off_x);
+                            transform_X = (_.off_x);
 
                     }
 
@@ -1436,202 +1403,282 @@
                     switch ( args.xAlign+' '+ ((args.yLabel == null) ? 'empty' : 'has') ){
                         
                         case 'top has':
-                            transformY = (_.off_y * shift.more);
+                            transform_Y = (_.off_y * shift.more);
                             break;
                         
                         case 'bottom has':
-                            transformY = (_.off_y * shift.less);
+                            transform_Y = (_.off_y * shift.less);
                             break;
 
                         default:
-                            transformY = (_.off_y);
+                            transform_Y = (_.off_y);
 
                     }
 
                 }
-
                 
-                    
-                _.container.attr('transform','translate('+ transformX +','+ transformY +')');
-                
-                if(args.type == 'pie'){
-                    //radius boi
-                    _.pi_radius = (function(){
-                        var value = Math.min((args.width * .5),(args.height * .5));
-    
-                        if(args.colorLegend){
-                            value -= (value * .25)
+                _.outerWidth = args.width + (_.off_x * 2);
+                _.outerHeight = args.height + (_.off_y * 2);
 
-                            if(args.piLabelStyle == 'linked'){
-                                value -= (value * .25)
-                            }
+
+                d3.select(selector).append('div',':first-child')
+                    .attr('class',prefix+'heading');
+                
+                _.heading_sel = d3.select(selector).select('div.'+prefix+'heading');
+
+                    if(args.title){
+                        _.heading_title = _.heading_sel.append('span')
+                        .attr('class',prefix+'title')
+                        .text(args.title)
+                    }
+
+                    if(args.description){
+                        _.heading_description = _.heading_sel.append('span')
+                        .attr('class',prefix+'description')
+                        .text(args.description)
+                    }
+
+                _.heading_sel
+                    .style('padding-top', function(){
+                        return  ((transform_Y / args.height) * 50) + '%'
+                    })
+                    .style('padding-left', function(){
+                        return  ((transform_X / args.width) * 100) + '%'
+                    })
+                    .style('padding-right', function(){
+                        return  ((transform_X / args.width) * 100) + '%'
+                    })
+                    .transition(_.duration)
+                    .styleTween('opacity',function(){return getInterpolation(0,1)});
+               
+                _.canvas = d3.select(selector)
+                    .append('div')
+                    .attr('class', prefix + 'wrapper')
+                    .style('position','relative')
+                    .style('padding-bottom',function(){
+                        return (( _.outerHeight / _.outerWidth) * 100) + '%';
+                    })
+                    .style('position','relative');
+
+                var dimensionString = '0 0 '+ _.outerWidth +' ' + _.outerHeight;
+
+
+                // _.canvas.style('padding-bottom', Math.floor(_.outerHeight/_.outerWidth * 100 )  + '%');
+                
+                //check if its scrolled on the place it should be at
+                _.dv_init = false;
+                
+                document.addEventListener('scroll',function(e) {
+                    var graphPosition = dataContainer.getBoundingClientRect().top;
+                    if(graphPosition < (window.innerHeight * .5) && !_.dv_init) {
+                        _.dv_init = true;
+                        
+                        setTimeout(function(){
+
+                        _.svg = _.canvas.append('svg')
+                            .attr('id',selector+'-svg')
+                            .style('position','absolute')
+                            .style('top','0')
+                            .style('left','0')
+                            .style('bottom','0')
+                            .style('right','0')
+                            .style('margin','auto')
+                            .style('width','100%')
+                            .style('height','auto')
+                            .attr('version','1.1')
+                            .attr('x','0px')
+                            .attr('y','0px')
+                            .attr('class',
+                                prefix + 'svg '
+                                + prefix + 'type-' + args.type + ' '
+                                + prefix + ( (args.colorPalette.length > 0 || args.linePointsColor !== null || args.lineColor !== null) ?  'has-palette' : 'no-palette' )
+                                + ((args.type !== 'pie' && !args.xTicks && !args.yTicks) ? ' '+prefix+'no-ticks' : '')
+                                + ((!args.colorLegend) ? ' '+prefix+'no-legend' : '')
+                                + ((args.type == 'pie' && args.piLabelStyle !== null) ? ' '+prefix+'label-style-'+args.piLabelStyle : ' '+prefix+'no-label')
+                            )
+                            .attr('viewBox', dimensionString)
+                            .attr("preserveAspectRatio", "xMidYMid meet")
+                            .attr('xml:space','preserve')
+                            .attr('width',_.outerWidth)
+                            .attr('height',_.outerHeight)
+                            ;
+
+                            
+                        //duration
+                        _.duration = _.svg.transition().duration( args.transition ).ease(d3.easeLinear);
+                            
+                        _.container = _.svg.append('g')
+                            .attr('class',prefix+'svg-wrapper')
+                            .attr('font-size',args.fontSize)
+                            .attr('transform','translate('+ transform_X +','+ transform_Y +')');
+
+                        
+                        if(args.type == 'pie'){
+                            //radius boi
+                            _.pi_radius = (function(){
+                                var value = Math.min((args.width * .5),(args.height * .5));
+            
+                                if(args.colorLegend){
+                                    value -= (value * .25)
+
+                                }
+                                
+
+            
+                                if( args.piLabelStyle == 'linked' ){
+                                    value -= (value * .25)
+                                }
+            
+                                return value;
+                            }());
 
                         }else{
-    
-                            if(args.piLabelStyle == 'linked'){
-                                value -= (value * .25)
-                            }
 
-                        }
-    
-                        return value;
-                    }());
-
-                }else{
-
-                    // labels and shit
-                    _.container_lab = _.container.append('g')
-                        .attr('class', prefix + 'label');
-        
-                    //axis
-                    _.container_rule = _.container.append('g')
-                        .attr('class', prefix + 'axis')
-                        .attr('font-size',label_size);
-                        
-                    //kung may grid gibo kang grid
-                    (args.xGrid || args.yGrid) && (_.container_grid = _.container.append('g')
-                        .attr('class', prefix + 'grid'))
-                        .attr('font-size',label_size);
-                }
+                            // labels and shit
+                            _.container_lab = _.container.append('g')
+                                .attr('class', prefix + 'label');
                 
-
-                datum_keys.forEach(function(keyKey){
-                    
-                    // scales and shit
-                    _['range_'+keyKey] = getRange(keyKey),
-                    _['dom_'+keyKey] = getDomain(keyKey,_.data);
-                    _['the_'+keyKey] = setScale(keyKey);
-
-                    //set that fucker
-                    (_['the_'+keyKey] && _['dom_'+keyKey]) && _['the_'+keyKey].domain(_['dom_'+keyKey]);
-
-                    _['format_'+keyKey] = (function(){
-
-                        if(typeof args[keyKey+'Parameter'] === 'function' ) {
-                            return args[keyKey+'Parameter']
-
-                        }else if( typeof args[keyKey+'Parameter'] === 'string'  ) {
-                            
-                            return function(value){
-                                return d3.format(args[keyKey+'Parameter'])(value)
-                            }
-
-                        }else{
-                            
-                            return function(value){
-
-                                var divider = args[ 'format' + keyKey.toString().toUpperCase() + 'Divider'],
-                                    prepend = args[ 'format' + keyKey.toString().toUpperCase() + 'Prepend'],
-                                    append = args[ 'format' + keyKey.toString().toUpperCase() + 'Append'],
-                                    dataPossiblyDivided = (keyKey == 1 || args.nameIsNum ) ? (value / divider): value,
-                                    formatted = prepend + dataPossiblyDivided + append;
-
-                                return formatted;
-                            }
+                            //axis
+                            _.container_rule = _.container.append('g')
+                                .attr('class', prefix + 'axis')
+                                .attr('font-size',label_size);
+                                
+                            //kung may grid gibo kang grid
+                            (args.xGrid || args.yGrid) && (_.container_grid = _.container.append('g')
+                                .attr('class', prefix + 'grid'))
+                                .attr('font-size',label_size);
                         }
-                    }());
+                        
 
-                    switch(keyKey){
-
-                        case 0:
-                        case 1:
-
-                            setAxis(getAxisString(keyKey),_.container_rule)
-
-                            //formatter
+                        datum_keys.forEach(function(keyKey){
                             
+                            // scales and shit
+                            _['range_'+keyKey] = getRange(keyKey),
+                            _['dom_'+keyKey] = getDomain(keyKey,_.data);
+                            _['the_'+keyKey] = setScale(keyKey);
 
-                            if(args[getAxisString(keyKey)+'Grid']) {
-                                setAxis(getAxisString(keyKey),_.container_grid,true)
+                            //set that fucker
+                            (_['the_'+keyKey] && _['dom_'+keyKey]) && _['the_'+keyKey].domain(_['dom_'+keyKey]);
+
+                            _['format_'+keyKey] = (function(){
+
+                                if(typeof args[keyKey+'Parameter'] === 'function' ) {
+                                    return args[keyKey+'Parameter']
+
+                                }else if( typeof args[keyKey+'Parameter'] === 'string'  ) {
+                                    
+                                    return function(value){
+                                        return d3.format(args[keyKey+'Parameter'])(value)
+                                    }
+
+                                }else{
+                                    
+                                    return function(value){
+
+                                        var divider = args[ 'format' + keyKey.toString().toUpperCase() + 'Divider'],
+                                            prepend = args[ 'format' + keyKey.toString().toUpperCase() + 'Prepend'],
+                                            append = args[ 'format' + keyKey.toString().toUpperCase() + 'Append'],
+                                            dataPossiblyDivided = (keyKey == 1 || args.nameIsNum ) ? (value / divider): value,
+                                            formatted = prepend + dataPossiblyDivided + append;
+
+                                        return formatted;
+                                    }
+                                }
+                            }());
+
+                            switch(keyKey){
+
+                                case 0:
+                                case 1:
+
+                                    setAxis(getAxisString(keyKey),_.container_rule)
+
+                                    //formatter
+                                    
+
+                                    if(args[getAxisString(keyKey)+'Grid']) {
+                                        setAxis(getAxisString(keyKey),_.container_grid,true)
+                                    }
+
+                                    
+
+                                case 'color':
+                                    //colors kung meron
+                                    if(args.colorPalette.length) {
+                                        break;
+                                    }
+                                    
+                                default:
+                                    
+                                
                             }
 
-                            
 
-                        case 'color':
-                            //colors kung meron
-                            if(args.colorPalette.length) {
-                                break;
-                            }
-                            
-                        default:
-                            
-                        
-                    }
-
-
-                });
-
-
-
-                //select
-                _.container_graph = _.container.insert('g')
-                    .attr('class',
-                        prefix + 'graph'
-                    );
-
-                    if(args.type == 'pie'){
-                        _.container_graph
-                            .attr('transform','translate('+ getPiOrigin('x') +','+ getPiOrigin('y') +')');
-                    }
-                    
-                    if(
-                        args.width == defaults.width
-                        && args.height == defaults.height
-                        && _.data.length > 9
-                    ){
-                        
-                        console.warn(selector+' Width and height was not adjusted. graph elements may not fit in the canvas');
-                    
-                    }else if(
-                        args.width < defaults.width
-                        && args.height < defaults.height
-                    ){
-
-                        console.warn(selector+' set canvas width and or height may be too small.\n Tip: The given height and width are not absolute and act more like aspect ratios. svgs are responsive and will shrink along with content.');
-
-                    }
-
-                if(!(args.type == 'line' && !args.linePoints)){
-
-
-                    _.blob = _.container_graph.selectAll(_.graph_item_element +'.'+prefix + 'graph-item graph-item-blob')
-                        .data(_.data,function(dis){
-                            return deepGet(dis,args.key[0])
                         });
 
-                    if(
-                        ( !args.xTicks || !args.yTicks )
-                        || (
-                            args.type == 'pie'
-                            && ( !args.piLabelStyle || !args.colorLegend )
-                        )
-                    ){
 
-                        _.blob_text = _.container_graph.selectAll('text.'+prefix + 'graph-item graph-item-text')
-                            .data(_.data,function(dis){
-                                return deepGet(dis,args.key[0])
-                            });
-                        
-                        if(args.type == 'pie' && args.piLabelStyle == 'linked'){
 
-                            _.blob_text_link = _.container_graph.selectAll('polyline.'+prefix + 'graph-item graph-item-link')
+                        //select
+                        _.container_graph = _.container.insert('g')
+                            .attr('class',
+                                prefix + 'graph'
+                            );
+
+                            if(args.type == 'pie'){
+                                _.container_graph
+                                    .attr('transform','translate('+ getPiOrigin('x') +','+ getPiOrigin('y') +')');
+                            }
+                            
+                            if(
+                                args.width == defaults.width
+                                && args.height == defaults.height
+                                && _.data.length > 9
+                            ){
+                                
+                                console.warn(selector+' Width and height was not adjusted. graph elements may not fit in the canvas');
+                            
+                            }else if(
+                                args.width < defaults.width
+                                && args.height < defaults.height
+                            ){
+
+                                console.warn(selector+' set canvas width and or height may be too small.\n Tip: The given height and width are not absolute and act more like aspect ratios. svgs are responsive and will shrink along with content.');
+
+                            }
+
+                        if(!(args.type == 'line' && !args.linePoints)){
+
+
+                            _.blob = _.container_graph.selectAll(_.graph_item_element +'.'+prefix + 'graph-item graph-item-blob')
                                 .data(_.data,function(dis){
                                     return deepGet(dis,args.key[0])
                                 });
 
+                            if(
+                                ( !args.xTicks || !args.yTicks )
+                                || (
+                                    args.type == 'pie'
+                                    && ( !args.piLabelStyle || !args.colorLegend )
+                                )
+                            ){
+
+                                _.blob_text = _.container_graph.selectAll('text.'+prefix + 'graph-item graph-item-text')
+                                    .data(_.data,function(dis){
+                                        return deepGet(dis,args.key[0])
+                                    });
+                                
+                                if(args.type == 'pie' && args.piLabelStyle == 'linked'){
+
+                                    _.blob_text_link = _.container_graph.selectAll('polyline.'+prefix + 'graph-item graph-item-link')
+                                        .data(_.data,function(dis){
+                                            return deepGet(dis,args.key[0])
+                                        });
+
+                                }
+                            }
                         }
-                    }
-                }
 
-            //check if it's loaded boi
-            _.dv_init = false;
-
-            document.addEventListener('scroll',function(e) {
-                var graphPosition = dataContainer.getBoundingClientRect().top;
-                
-                if(graphPosition < (window.innerHeight * .5) && !_.dv_init) {
-                    _.dv_init = true;
-                    setTimeout(function(){
+            
                         renderGraph();
                     },args.delay);
                 }
@@ -1646,26 +1693,26 @@
         // tick inits
         var renderGraph = function() {
             // ok do the thing now
-            console.log(
-                selector,'-------------------------------------------------------------------',"\n",
-                'calculated',_,"\n",
-                'data',_.data,"\n",
-                'args',args,"\n",
+            // console.log(
+            //     selector,'-------------------------------------------------------------------',"\n",
+            //     'calculated',_,"\n",
+            //     'data',_.data,"\n",
+            //     'args',args,"\n",
 
-                "\n",'x',"\n",
-                'domain',_['dom_'+ args.xData],"\n",
-                'range',_['range_'+ args.xData],"\n",
+            //     "\n",'x',"\n",
+            //     'domain',_['dom_'+ args.xData],"\n",
+            //     'range',_['range_'+ args.xData],"\n",
 
-                "\n",'y',"\n",
-                'domain',_['dom_'+ args.yData],"\n",
-                'range',_['range_'+ args.yData],"\n",
-                "\n",
+            //     "\n",'y',"\n",
+            //     'domain',_['dom_'+ args.yData],"\n",
+            //     'range',_['range_'+ args.yData],"\n",
+            //     "\n",
 
-                "\n",'color',"\n",
-                'domain',_['dom_color'],"\n",
-                'range',_['range_color'],"\n",
-                "\n",
-            );
+            //     "\n",'color',"\n",
+            //     'domain',_['dom_color'],"\n",
+            //     'range',_['range_color'],"\n",
+            //     "\n",
+            // );
 
             //generate the graph boi
 
@@ -1678,8 +1725,8 @@
                     if( args[coordinate+'Ticks'] ){
                                 
                         _['rule_'+coordinate].transition(_.duration).call( _['axis_'+coordinate])
-                            .attr('font-family','inherit')
-                            .attr('font-size','inherit');
+                            .attr('font-family',null)
+                            .attr('font-size',null);
     
                         if(args[coordinate+'Grid']){
                             

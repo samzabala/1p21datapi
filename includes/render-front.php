@@ -38,9 +38,6 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
         
         $att_prefix = 'data-visualizer';
-
-        
-
         
         //create unique id for instance to avoid script conflict
             $wrapper_id = "{$att_prefix}-{$args['id']}";
@@ -53,11 +50,21 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
             $data_visual['front']['wrapper_id'] = $wrapper_id;
     
         // start wrapper
+        $render .= "<div id='$wrapper_id' class='{$att_prefix} {$att_prefix}-type-{$data_visual['type']}'>";
 
         
-            $render .= "<div id='$wrapper_id' class='{$att_prefix} {$att_prefix}-type-{$data_visual['type']}'>";
-            $render .= "<span class='{$att_prefix}-title'>{$data_visual['title']}</span>";
-            // $render .= "<div class='data-visualizer-wrapper'><!-- Render Data here boi --></div>";
+                    
+        //heading wrapper
+            // $render .= "<div style='opacity:0;' class='{$att_prefix}-heading {$att_prefix}-heading-align-{$data_visual['settings']['align']}'>";
+            //     $render .= "<span class='{$att_prefix}-title'>{$data_visual['title']}</span>";
+                
+            //     if(isset($data_visual['description'])){
+
+            //         $render .= "<span class='{$att_prefix}-description'>{$data_visual['description']}</span>";
+            //     }
+            // $render .= "</div>";
+
+                    
         
         
         //json if applicable
@@ -95,15 +102,30 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
                                 switch($attribute){
                                     case 'settings':
 
+                                        $not_js_args = array(
+                                            'align', //a class is added to the heading wrapper
+                                            'id' //id is already  in the obj
+                                        );
 
                                         foreach( $value as $sub_setting => $sub_value ){
-                                            if( $sub_value != null && $sub_setting != 'id') {
+                                            if( $sub_value != null && !in_array($sub_setting,$not_js_args)) {
+                                                if($sub_setting == 'font_size'){
+                                                    
+                                                    if( is_numeric($sub_value) ){
+                                                        $sub_value = $sub_value.'px';
+                                                    }else{
+                                                        $sub_value = json_encode($sub_value);
+                                                    }
+                                                }
                                                 $render .= _1p21_dv_dashes_to_camel_case($sub_setting).": {$sub_value},\n";
                                             }
                                         }
                                         break;
-
-
+                                    case 'title':
+                                    case 'description':
+                                        $parsed_value = json_encode($value);
+                                        $render .= _1p21_dv_dashes_to_camel_case($attribute) .": {$parsed_value},\n";
+                                        break;
                                     case 'type':
 
                                         $render .= "type: '{$data_visual['type']}',\n";
@@ -337,7 +359,7 @@ function _1p21_div_data_visualizer_render_by_short($atts = array()){
     return $render;
     
 } 
-//shortlived legacy
+//shortlived legacy / fallback
 function _1p21_div_data_visualizer_render_by_short_longer($atts = array()){
     global $_1p21_dv;
     $args = shortcode_atts($_1p21_dv['defaults'],$atts,'data_visualizer');
@@ -353,7 +375,21 @@ function _1p21_div_data_visualizer_render_by_short_longer($atts = array()){
 /********************************************************************************************
 * Shortcodes
 *********************************************************************************************/
-add_shortcode('dv', '_1p21_div_data_visualizer_render_by_short');
-//shortlived legacy
+
+$_1p21_dv_shortcode_dv_is_native = false;
+if(!shortcode_exists('dv')){
+
+    add_shortcode('dv', '_1p21_div_data_visualizer_render_by_short');
+    $_1p21_dv_shortcode_dv_is_native = true;
+
+}else{
+    //there is a plugin with dv in it. just in case
+    if(!shortcode_exists('data_visualizer')){
+        _1p21_dv_create_admin_error('<code>dv</code> shortcode could not be used by 1Point21 Data Vizualizer because it\'s already used by another plugin or the theme. Declare data visualizer shortcodes with <code>data_visualizer</code> instead','warning');
+    }
+    
+}
+
+//shortlived legacy / also fallback
 add_shortcode('data_visualizer', '_1p21_div_data_visualizer_render_by_short_longer');
 

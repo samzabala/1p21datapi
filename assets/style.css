@@ -1,32 +1,35 @@
 .data-visualizer {
   background: #EEE;
   position: relative;
-  text-align: center;
   padding: 2.5em 1em 1em; }
+  .data-visualizer-heading-align-center {
+    text-align: center; }
+  .data-visualizer-heading-align-left {
+    text-align: left; }
+  .data-visualizer-heading-align-right {
+    text-align: right; }
+  .data-visualizer-title, .data-visualizer-description {
+    display: block; }
   .data-visualizer-title {
     font-size: 1.25em;
     font-weight: 700; }
+  .data-visualizer-description {
+    opacity: .8;
+    font-size: .875em; }
   .data-visualizer-wrapper.fatality {
     padding: 4em 0;
     max-width: 28em;
     font-size: .875em;
     margin: 0 auto; }
-  .data-visualizer-wrapper:empty {
+  .data-visualizer:not(.data-visualizer-initialized), .data-visualizer-wrapper:empty {
     padding-bottom: 75%; }
-    .data-visualizer-wrapper:empty:before {
+    .data-visualizer:not(.data-visualizer-initialized):before, .data-visualizer-wrapper:empty:before {
       content: "Loading...";
       position: absolute;
       margin: auto;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%); }
-  .data-visualizer svg {
-    display: inline-block;
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
-    font-size: 16px !important;
-    font-family: inherit !important; }
   .data-visualizer text {
     font-family: inherit !important; }
   .data-visualizer-axis line,

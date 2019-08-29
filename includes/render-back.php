@@ -37,9 +37,30 @@ function _1p21_dv_get_data_visual_object($args = array()) {
         $data_visual['title'] = get_the_title($id);
 
         //settings
-        $data_visual['settings'] =  wp_parse_args( $args, $_1p21_dv['defaults'] );
         if(!empty($args)){
-            $data_visual['settings'] =  wp_parse_args( $args, $_1p21_dv['defaults'] );
+            $data_visual['settings'] =  wp_parse_args( array_change_key_case($args), $_1p21_dv['defaults'] );
+
+            $data_visual['settings']['id'] =filter_var($data_visual['settings']['id'],FILTER_VALIDATE_INT);
+
+            $data_visual['settings']['margin'] =filter_var($data_visual['settings']['margin'],FILTER_VALIDATE_INT);
+            $data_visual['settings']['margin_offset'] =filter_var($data_visual['settings']['margin_offset'],FILTER_VALIDATE_INT);
+
+            if( is_string($data_visual['settings']['font_size']) ){
+                $data_visual['settings']['font_size'] =filter_var($data_visual['settings']['font_size'],FILTER_SANITIZE_STRING);
+            }else{
+                $data_visual['settings']['font_size'] =filter_var($data_visual['settings']['font_size'],FILTER_VALIDATE_INT);
+            }
+
+            $data_visual['settings']['width'] =filter_var($data_visual['settings']['width'],FILTER_VALIDATE_INT);
+            $data_visual['settings']['height'] =filter_var($data_visual['settings']['height'],FILTER_VALIDATE_INT);
+
+
+            $data_visual['settings']['align'] =filter_var($data_visual['settings']['align'],FILTER_SANITIZE_STRING);
+
+            $data_visual['settings']['transition'] =filter_var($data_visual['settings']['transition'],FILTER_VALIDATE_INT);
+            $data_visual['settings']['delay'] =filter_var($data_visual['settings']['delay'],FILTER_VALIDATE_INT);
+
+
         }
 
         // fields that make the bby

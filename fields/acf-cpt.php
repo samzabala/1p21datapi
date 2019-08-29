@@ -6,6 +6,25 @@ $_1p21_dv_fields_cpt = array(
 	'title' => 'Data Visualizer',
 	'fields' => array(
 		array(
+			'key' => 'field_5d67f813edf06',
+			'label' => 'Description',
+			'name' => 'description',
+			'type' => 'textarea',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'maxlength' => '',
+			'rows' => 4,
+			'new_lines' => '',
+		),
+		array(
 			'key' => 'field_5d571ad986ab3',
 			'label' => 'Data Settings',
 			'name' => '',

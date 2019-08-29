@@ -15,14 +15,39 @@ $color-neutral-darker: #444;
 #{$prefix} {
     background: $color-bg;
     position:relative;
-    text-align: center;
+    // text-align: center;
     padding: 2.5em 1em 1em;
 
     // * { outline: 1px solid red!important}
 
+    &-heading {
+        &-align {
+            &-center{
+                text-align: center;
+            }
+
+            &-left{
+                text-align: left;
+            }
+
+            &-right{
+                text-align: right;
+            }
+        }
+    }
+
+    &-title,&-description {
+        display: block;
+    }
+
     &-title {
         font-size: 1.25em;
         font-weight: 700;
+    }
+    
+    &-description {
+        opacity: .8;
+        font-size: .875em;
     }
 
     &-wrapper {
@@ -33,10 +58,10 @@ $color-neutral-darker: #444;
             font-size: .875em;
             margin: 0 auto;
         }
-
+        @at-root #{$prefix}:not(#{$prefix}-initialized),
         &:empty {
             padding-bottom: 75%;
-            &:before {
+            &:before { 
                 content:"Loading...";
                 position: absolute;
                 margin: auto;
@@ -48,13 +73,12 @@ $color-neutral-darker: #444;
     }
 
     svg {
-        display: inline-block;
-        width:100%;
-        height:auto;
-        margin: 0 auto;
-        font-size: 16px!important;
-        // line-height:1!important;
-        font-family: inherit!important;
+        // display: inline-block;
+        // width:100%;
+        // height:auto;
+        // margin: 0 auto;
+        // // line-height:1!important;
+        // font-family: inherit!important;
         // position:absolute;
         // top:0;
         // left:0;
@@ -77,13 +101,6 @@ $color-neutral-darker: #444;
             fill: $color-neutral;
         }
     }
-
-    // &-axis,
-    // &-grid,
-    // &-legend {
-        
-    //     font-size: .75em;
-    // }
 
     &-grid {
         

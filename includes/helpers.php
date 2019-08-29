@@ -10,16 +10,20 @@
 IDK D:
 i might use later
 */
-function _1p21_dv_convert_to_option($field_key){
-    global $_1p21_dv;
-
-}
 
 function _1p21_dv_output_arr($args) {
 
     echo '<div class="content" style="background:#ccc;font-size:10px;padding:1em;margin-bottom:1em;height:400px;overflow:scroll;"><pre>';
     print_r($args);
     echo '</pre></div>';
+
+}
+
+function _1p21_dv_create_admin_error($message,$notice_type = 'error'){
+        
+    $class = 'notice notice-'.$notice_type;
+    $parsed_message = __( $message );
+    printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), strip_tags( $parsed_message,"<br><pre><code><br/><strong><b><i><em><p><strong>" ) ); 
 }
 
 
