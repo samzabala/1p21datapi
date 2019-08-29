@@ -46,7 +46,10 @@ function _1p21_dv_get_data_visual_object($args = array()) {
             $data_visual['settings']['margin_offset'] =filter_var($data_visual['settings']['margin_offset'],FILTER_VALIDATE_INT);
 
             if( is_string($data_visual['settings']['font_size']) ){
-                $data_visual['settings']['font_size'] =filter_var($data_visual['settings']['font_size'],FILTER_SANITIZE_STRING);
+                $data_visual['settings']['font_size'] =filter_var($data_visual['settings']['font_size'],FILTER_VALIDATE_REGEXP,
+                array(
+                     "options" => array("regexp"=>"/(([+-]?\d*\.?\d+(\s)*(px|em|ex|pt|in|pc|mm|cm)?)|thin|medium|thick)(\s|;|$)/i")
+                ));
             }else{
                 $data_visual['settings']['font_size'] =filter_var($data_visual['settings']['font_size'],FILTER_VALIDATE_INT);
             }

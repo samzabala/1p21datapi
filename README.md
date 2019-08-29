@@ -56,6 +56,10 @@ how long should all animations or transitions take
 
 delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering
 
+### font_size (default: '16px' | type: integer / string)
+
+base font size to size text relative to. also accepts integer value.
+
 ## Backend Settings
 
 ### Data Settings
