@@ -8,6 +8,10 @@ $color-neutral-light: #BBB;
 $color-neutral-dark: #666;
 $color-neutral-darker: #444;
 
+$palette-size: 5;
+
+$palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$color-neutral-light;
+
 // $color-base: #444;
 
 
@@ -56,6 +60,7 @@ $color-neutral-darker: #444;
             padding: 4em 0;
             max-width: 28em;
             font-size: .875em;
+            text-align: center;
             margin: 0 auto;
         }
         @at-root #{$prefix}:not(#{$prefix}-initialized),
@@ -70,19 +75,6 @@ $color-neutral-darker: #444;
                 transform: translate(-50%,-50%);
             }
         }
-    }
-
-    svg {
-        // display: inline-block;
-        // width:100%;
-        // height:auto;
-        // margin: 0 auto;
-        // // line-height:1!important;
-        // font-family: inherit!important;
-        // position:absolute;
-        // top:0;
-        // left:0;
-        // // outline: 1px solid red;
     }
 
     text {
@@ -128,27 +120,19 @@ $color-neutral-darker: #444;
         fill-opacity: .25;
     }
 
-    &-no-palette#{$prefix}-type-pie {
-        
-        .graph-item-blob,
-        .legend-item-blob {
+    &-no-palette#{$prefix}-type-pie,
+    &-no-palette#{$prefix}-type-scatter,
+    &-no-palette#{$prefix}-type-bar {
 
-            &:nth-of-type(2n){
-                fill: $color-neutral-darker;
-            }
-            &:nth-of-type(3n){
-                fill: $color-neutral-dark;
-            }
+        @for $i from 2 through $palette-size {
+            .graph-item-blob:nth-of-type(#{$i}n),
+            #{$prefix}-legend-item:nth-of-type(#{$i}n) .legend-item-blob {
+                fill: nth($palette,$i);
 
-            &:nth-of-type(4n){
-                fill: $color-neutral;
             }
-
-            &:nth-of-type(5n){
-                fill: $color-neutral-light;
-            }
-
         }
+        
+        
     }
 
     &-no-palette#{$prefix}-type-pie#{$prefix}-label-style-within .graph-item-text, 
@@ -172,16 +156,16 @@ $color-neutral-darker: #444;
 
     &-type-line .graph-item-text,
     &-type-pie .graph-item-text,
-    &-legend-item-text,
-    &-legend-item-blob {
+    & .legend-item-text,
+    & .legend-item-blob {
         paint-order: stroke;
         stroke-linejoin: round;
     }
 
     &-type-line .graph-item-text,
     &-type-pie#{$prefix}-label-style-within .graph-item-text,
-    &-legend-item-text,
-    &-legend-item-blob {
+    & .legend-item-text,
+    & .legend-item-blob {
         stroke-width: 4;
     }
 
@@ -193,8 +177,8 @@ $color-neutral-darker: #444;
 
     &-type-line .graph-item-text,
     &-type-pie#{$prefix}-label-style-linked .graph-item-text,
-    &-legend-item-text,
-    &-legend-item-blob {
+    & .legend-item-text,
+    & .legend-item-blob {
         stroke: $color-bg;
     }
 

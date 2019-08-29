@@ -20,6 +20,7 @@
     padding: 4em 0;
     max-width: 28em;
     font-size: .875em;
+    text-align: center;
     margin: 0 auto; }
   .data-visualizer:not(.data-visualizer-initialized), .data-visualizer-wrapper:empty {
     padding-bottom: 75%; }
@@ -51,16 +52,24 @@
   .data-visualizer-fill.no-color {
     fill-opacity: .25; }
   .data-visualizer-no-palette.data-visualizer-type-pie .graph-item-blob:nth-of-type(2n),
-  .data-visualizer-no-palette.data-visualizer-type-pie .legend-item-blob:nth-of-type(2n) {
+  .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-legend-item:nth-of-type(2n) .legend-item-blob, .data-visualizer-no-palette.data-visualizer-type-scatter .graph-item-blob:nth-of-type(2n),
+  .data-visualizer-no-palette.data-visualizer-type-scatter .data-visualizer-legend-item:nth-of-type(2n) .legend-item-blob, .data-visualizer-no-palette.data-visualizer-type-bar .graph-item-blob:nth-of-type(2n),
+  .data-visualizer-no-palette.data-visualizer-type-bar .data-visualizer-legend-item:nth-of-type(2n) .legend-item-blob {
     fill: #444; }
   .data-visualizer-no-palette.data-visualizer-type-pie .graph-item-blob:nth-of-type(3n),
-  .data-visualizer-no-palette.data-visualizer-type-pie .legend-item-blob:nth-of-type(3n) {
+  .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-legend-item:nth-of-type(3n) .legend-item-blob, .data-visualizer-no-palette.data-visualizer-type-scatter .graph-item-blob:nth-of-type(3n),
+  .data-visualizer-no-palette.data-visualizer-type-scatter .data-visualizer-legend-item:nth-of-type(3n) .legend-item-blob, .data-visualizer-no-palette.data-visualizer-type-bar .graph-item-blob:nth-of-type(3n),
+  .data-visualizer-no-palette.data-visualizer-type-bar .data-visualizer-legend-item:nth-of-type(3n) .legend-item-blob {
     fill: #666; }
   .data-visualizer-no-palette.data-visualizer-type-pie .graph-item-blob:nth-of-type(4n),
-  .data-visualizer-no-palette.data-visualizer-type-pie .legend-item-blob:nth-of-type(4n) {
+  .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-legend-item:nth-of-type(4n) .legend-item-blob, .data-visualizer-no-palette.data-visualizer-type-scatter .graph-item-blob:nth-of-type(4n),
+  .data-visualizer-no-palette.data-visualizer-type-scatter .data-visualizer-legend-item:nth-of-type(4n) .legend-item-blob, .data-visualizer-no-palette.data-visualizer-type-bar .graph-item-blob:nth-of-type(4n),
+  .data-visualizer-no-palette.data-visualizer-type-bar .data-visualizer-legend-item:nth-of-type(4n) .legend-item-blob {
     fill: #888; }
   .data-visualizer-no-palette.data-visualizer-type-pie .graph-item-blob:nth-of-type(5n),
-  .data-visualizer-no-palette.data-visualizer-type-pie .legend-item-blob:nth-of-type(5n) {
+  .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-legend-item:nth-of-type(5n) .legend-item-blob, .data-visualizer-no-palette.data-visualizer-type-scatter .graph-item-blob:nth-of-type(5n),
+  .data-visualizer-no-palette.data-visualizer-type-scatter .data-visualizer-legend-item:nth-of-type(5n) .legend-item-blob, .data-visualizer-no-palette.data-visualizer-type-bar .graph-item-blob:nth-of-type(5n),
+  .data-visualizer-no-palette.data-visualizer-type-bar .data-visualizer-legend-item:nth-of-type(5n) .legend-item-blob {
     fill: #BBB; }
   .data-visualizer-no-palette.data-visualizer-type-pie.data-visualizer-label-style-within .graph-item-text:nth-of-type(2n),
   .data-visualizer-no-palette.data-visualizer-type-scatter .blob-item-blob:nth-of-type(2n) {
@@ -75,16 +84,22 @@
   .data-visualizer-no-palette.data-visualizer-type-scatter .blob-item-blob:nth-of-type(5n) {
     stroke: #BBB; }
   .data-visualizer-type-line .graph-item-text,
-  .data-visualizer-type-pie .graph-item-text, .data-visualizer-legend-item-text, .data-visualizer-legend-item-blob {
+  .data-visualizer-type-pie .graph-item-text,
+  .data-visualizer .legend-item-text,
+  .data-visualizer .legend-item-blob {
     paint-order: stroke;
     stroke-linejoin: round; }
   .data-visualizer-type-line .graph-item-text,
-  .data-visualizer-type-pie.data-visualizer-label-style-within .graph-item-text, .data-visualizer-legend-item-text, .data-visualizer-legend-item-blob {
+  .data-visualizer-type-pie.data-visualizer-label-style-within .graph-item-text,
+  .data-visualizer .legend-item-text,
+  .data-visualizer .legend-item-blob {
     stroke-width: 4; }
   .data-visualizer-type-pie.data-visualizer-label-style-linked .graph-item-text {
     stroke-width: 10; }
   .data-visualizer-type-line .graph-item-text,
-  .data-visualizer-type-pie.data-visualizer-label-style-linked .graph-item-text, .data-visualizer-legend-item-text, .data-visualizer-legend-item-blob {
+  .data-visualizer-type-pie.data-visualizer-label-style-linked .graph-item-text,
+  .data-visualizer .legend-item-text,
+  .data-visualizer .legend-item-blob {
     stroke: #EEE; }
   .data-visualizer-graph .graph-item-link {
     stroke: #222; }

@@ -2,17 +2,15 @@
 
 <h1 id="pluginname:1point21datavizualizer">Plugin Name: 1Point21 Data Vizualizer</h1>
 
-<p>Plugin URI: <a href="https://github.com/samzabala">https://github.com/samzabala</a></p>
+<p>Plugin URI: <a href="https://github.com/samzabala">https://github.com/samzabala</a><br />
+Description: Data visualizer using d3 and svgs<br />
+Version: 1.0.1<br />
+Author: 1Point21 Interactive<br />
+Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21interactive.com/</a></p>
 
-<p>Description: Data visualizer using d3 and svgs</p>
+<h1 id="tableofcontents">Table of contents</h1>
 
-<p>Version: 1.0.1</p>
-
-<p>Author: 1Point21 Interactive</p>
-
-<p>Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21interactive.com/</a></p>
-
-<h2 id="tableofcontents">Table of contents</h2>
+<p>1: <a href="#shortcode">Shortcode</a>]</p>
 
 <ol>
 <li><a href="#shortcodeparameters">Shortcode Parameters</a></li>
@@ -20,7 +18,7 @@
 <li><a href="#functions">Functions</a></li>
 </ol>
 
-<h2 id="shortcode">Shortcode</h2>
+<h1 id="shortcode">Shortcode</h1>
 
 <p>You can add a data visualizer using the shortcode <code>dv</code> or <code>data_visalizer</code></p>
 
@@ -34,118 +32,109 @@
 
 <p><em><strong>Note:</strong> in case <code>dv</code> conflicts with another shortcode, the plugin will output an error in the back end and advise to use <code>data_visualizer</code></em></p>
 
-<h2 id="shortcodeparameters">Shortcode Parameters</h2>
+<h1 id="shortcodeparameters">Shortcode Parameters</h1>
 
-<p><strong><code>id</code></strong></p>
+<dl>
+<dt><strong><code>id</code></strong></dt>
+<dd> <strong>[ REQUIRED | default: <code>null</code> | type: number ]</strong></dd>
 
-<blockquote>
-<p><strong>(REQUIRED | default: <code>null</code> | type: number)</strong></p>
+<dd> post id of the graph to display.</dd>
 
-<p>post id of the graph to display.</p>
-</blockquote>
+<dt><strong><code>margin</code></strong></dt>
+<dd> <strong>[ optional | default: <code>10</code> | type: number ]</strong></dd>
 
-<p><strong><code>margin</code></strong></p>
+<dd> gutter to set on graph canvas to compensate spaces for ticks and labels.</dd>
 
-<blockquote>
-<p><strong>( optional | default: <code>10</code> | type: number)</strong></p>
+<dt><strong><code>margin_offset</code></strong></dt>
+<dd> <strong>[ optional | default: <code>2</code> | type: number ]</strong></dd>
 
-<p>gutter to set on graph canvas to compensate spaces for ticks and labels.</p>
-</blockquote>
+<dd> multiplier of the gutter.</dd>
 
-<p><strong><code>margin_offset</code></strong></p>
+<dt><strong><code>width</code></strong></dt>
+<dd> <strong>[ optional | default: <code>600</code> | type: number ]</strong></dd>
 
-<blockquote>
-<p><strong>( optional | default: 2 | type: number)</strong></p>
+<dd> width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn&#8217;t enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</dd>
 
-<p>multiplier of the gutter.</p>
-</blockquote>
+<dt><strong><code>height</code></strong></dt>
+<dd> <strong>[ optional | default: <code>600</code> | type: number ]</strong></dd>
 
-<p><strong><code>width</code></strong></p>
+<dd> height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn&#8217;t enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</dd>
 
-<blockquote>
-<p><strong>( optional | default: <code>600</code> | type: number)</strong></p>
+<dt><strong><code>transition</code></strong></dt>
+<dd> <strong>[ optional | default: <code>1500</code> | type: number ]</strong></dd>
 
-<p>width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn&#8217;t enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p>
-</blockquote>
+<dd> how long should all animations or transitions take</dd>
 
-<p><strong><code>height</code></strong></p>
+<dt><strong><code>delay</code></strong></dt>
+<dd> <strong>[ optional | default: <code>250</code> | type: number ]</strong></dd>
 
-<blockquote>
-<p><strong>( optional | default: <code>600</code> | type: number)</strong></p>
+<dd> delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering</dd>
 
-<p>height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn&#8217;t enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p>
-</blockquote>
+<dt><strong><code>font_size</code></strong></dt>
+<dd> <strong>[ optional | default: <code>'16px'</code> | type: integer / string ]</strong></dd>
 
-<p><strong><code>transition</code></strong></p>
+<dd> base font size to size text relative to. also accepts integer value.</dd>
+</dl>
 
-<blockquote>
-<p><strong>( optional | default: <code>1500</code> | type: number)</strong></p>
+<h1 id="backendsettings">Backend Settings</h1>
 
-<p>how long should all animations or transitions take</p>
-</blockquote>
+<dl>
+<dt><strong>Description</strong></dt>
+<dd> <strong>[ optional | default: <code>''</code> ]</strong></dd>
 
-<p><strong><code>delay</code></strong></p>
+<dd> Add a subtilte or description for the data visual</dd>
+</dl>
 
-<blockquote>
-<p><strong>( optional | default: <code>250</code> | type: number)</strong></p>
+<h2 id="datasettings">Data Settings</h2>
 
-<p>delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering</p>
-</blockquote>
+<dl>
+<dt><strong>Type</strong></dt>
+<dd> <strong>[ REQUIRED | default: Bar (<code>bar</code>) | options: Line (<code>line</code>), Pie (<code>pie</code>), Scatter plot (<code>scatter</code>) ]</strong></dd>
 
-<p><strong><code>font_size</code></strong></p>
+<dd> how long should all animations or transitions take</dd>
+</dl>
 
-<blockquote>
-<p><strong>( optional | default: <code>'16px'</code> | type: integer / string)</strong></p>
+<h3 id="source">Source</h3>
 
-<p>base font size to size text relative to. also accepts integer value.</p>
-</blockquote>
+<dl>
+<dt><strong>Source Type</strong></dt>
+<dd> <strong>[ REQUIRED | options: File (csv,tsv) (<code>file</code>), URL (<code>url</code>), Text (JSON code) (<code>text</code>), Rows (UI Field) (<code>rows</code>) ]</strong></dd>
 
-<h2 id="backendsettings">Backend Settings</h2>
+<dd> Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)</dd>
 
-<h3 id="description">Description</h3>
+<dd><dl>
+<dt> depending on set option one of the appropriate REQUIRED fields for input will be shown.</dt>
+<dt><strong>File</strong></dt>
+<dd> <strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code> | Available when: Source type is <code>file</code> ]</strong></dd>
 
-<blockquote>
-<p><strong>( optional | default: <code>bar</code>)</strong></p>
+<dd> Input directly from the media library. <em>(Note: JSON is not allowed through this method for security)</em></dd>
 
-<p>Add a subtilte or description for the data visual</p>
-</blockquote>
+<dt><strong>URL (url)</strong></dt>
+<dd> <strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code>, <code>json</code> | Available when: Source type is <code>url</code> ]</strong></dd>
 
-<h3 id="datasettings">Data Settings</h3>
+<dd> Input data through an external file&#8217;s url</dd>
 
-<h4 id="type">Type</h4>
+<dt><strong>Text (JSON code)</strong></dt>
+<dd> <strong>[ REQUIRED | Valid file types: <code>json</code> | Available when: Source type is <code>text</code> ]</strong></dd>
 
-<blockquote>
-<p><strong>( default: <code>bar</code>)</strong><br />
-how long should all animations or transitions take</p>
-</blockquote>
+<dd> Input through the data in json format through a textbox. recommended for a more customized and controlled data</dd>
 
-<h4 id="source">Source</h4>
+<dt><strong>Rows</strong></dt>
+<dd> <strong>[ REQUIRED | Valid file types: Available when: Source type is <code>rows</code> ]</strong></dd>
 
-<p>**Source Type **</p>
+<dd> Input via acf repeater fields</dd>
 
-<blockquote>
-<p><strong>( REQUIRED | default: Bar (<code>bar</code>) | options: )</strong></p>
+<dt><strong>Source Key</strong></dt>
+<dd> <strong>[ optional | Valid file types: Available when: Source type is <code>file</code>, <code>url</code>, <code>text</code> ]</strong></dd>
 
-<p>Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)</p>
-</blockquote>
+<dd> object key to the data to use.</dd>
 
-<p>available options:</p>
+<dd> if left blank, data will be taken from the root level</dd>
 
-<ul>
-<li>file - input directly from the media library. (Note: JSON is not allowed through this method due to Wordpress security reasons)</li>
-<li>url - input data through a url</li>
-<li>text - input through the data in json format through a textbox. recommended for a more customized and controlled data</li>
-<li>rows - input via acf repeater fields</li>
-</ul>
-
-<p>depending on set option one of the appropriate REQUIRED fields for input will be shown.</p>
-
-<ul>
-<li>File</li>
-<li>Url</li>
-<li>Text</li>
-<li>Rows</li>
-</ul>
+<dd> if there is a value, the data returned from that key will be used</dd>
+</dl>
+</dd>
+</dl>
 
 <h3 id="datasetup">Data Setup</h3>
 
