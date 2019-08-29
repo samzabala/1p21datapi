@@ -568,7 +568,7 @@ if layout is set to line, this will be applied to plot points and will override 
 								'id' => '',
 							),
 							'default_value' => '',
-							'placeholder' => 'Mr. ',
+							'placeholder' => 'Est. ',
 							'prepend' => '',
 							'append' => '',
 							'maxlength' => '',
