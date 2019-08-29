@@ -123,6 +123,14 @@
 		"oAP": "/includes/admin.php",
 		"oF": 0
 		},
+	"/includes/documentation.php": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/includes/documentation.php",
+		"oF": 0
+		},
 	"/includes/helpers.php": {
 		"cB": 0,
 		"ft": 8192,
@@ -171,14 +179,6 @@
 		"oAP": "/includes/render-front.php",
 		"oF": 0
 		},
-	"/README.html": {
-		"cB": 0,
-		"ft": 8192,
-		"hM": 0,
-		"oA": 0,
-		"oAP": "/README.html",
-		"oF": 0
-		},
 	"/README.md": {
 		"cB": 0,
 		"cS": 0,
@@ -189,10 +189,10 @@
 		"ft": 4096,
 		"hM": 0,
 		"oA": 0,
-		"oAP": "/README.html",
-		"oF": 0,
+		"oAP": "/includes/documentation.php",
+		"oF": 2,
 		"oFM": 0,
-		"oS": 0,
+		"oS": 1,
 		"pHT": 0,
 		"pME": 1,
 		"rFN": 0,

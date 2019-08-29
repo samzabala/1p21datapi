@@ -1,3 +1,4 @@
+<!-- DO NOT EDIT document.php. edit README.md instead -->
 # Plugin Name: 1Point21 Data Vizualizer
 
 Plugin URI: [https://github.com/samzabala](https://github.com/samzabala)
@@ -9,6 +10,12 @@ Version: 1.0.1
 Author: 1Point21 Interactive
 
 Author URI: [https://www.1point21interactive.com/](https://www.1point21interactive.com/)
+
+## Table of contents
+
+1. [Shortcode Parameters](#shortcodeparameters)
+2. [Backend Settings](#backendsettings)
+3. [Functions](#functions)
 
 ## Shortcode
 
@@ -24,49 +31,61 @@ Examples:
 [data_visalizer id=666 width=800 height=600]
 ```
 
-_**Note:** in case `dv` conflicts with another shortcode, the plugin will output an error in the back end and advise to use `data_visalizer`_
+_**Note:** in case `dv` conflicts with another shortcode, the plugin will output an error in the back end and advise to use `data_visualizer`_
 
 ## Shortcode Parameters
 
-### id (REQUIRED | default: null | type: number)
+**`id`**  
+> **(REQUIRED | default: `null` | type: number)**  
+> post id of the graph to display.
 
-post id of the graph to display.
+**`margin`**  
+> **( optional | default: `10` | type: number)**  
+> gutter to set on graph canvas to compensate spaces for ticks and labels.
 
-### margin (default: 10 | type: number)
+**`margin_offset`**  
+> **( optional | default: 2 | type: number)**  
+> multiplier of the gutter.
 
-gutter to set on graph canvas to compensate spaces for ticks and labels.
+**`width`**  
+> **( optional | default: `600` | type: number)**  
+> width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
 
-### margin_offset (default: 2 | type: number)
+**`height`**  
+> **( optional | default: `600` | type: number)**  
+> height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
 
-multiplier of the gutter.
+**`transition`**  
+> **( optional | default: `1500` | type: number)**  
+> how long should all animations or transitions take
 
-### width (default: 600 | type: number)
+**`delay`**  
+> **( optional | default: `250` | type: number)**  
+> delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering
 
-width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
-
-### height (default: 600 | type: number)
-
-height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
-
-### transition (default: 1500 | type: number)
-
-how long should all animations or transitions take
-
-### delay (default: 250 | type: number)
-
-delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering
-
-### font_size (default: '16px' | type: integer / string)
-
-base font size to size text relative to. also accepts integer value.
+**`font_size`**  
+> **( optional | default: `'16px'` | type: integer / string)**  
+> base font size to size text relative to. also accepts integer value.
 
 ## Backend Settings
 
+### Description
+
+> **( optional | default: `bar`)**  
+> Add a subtilte or description for the data visual
+
 ### Data Settings
 
-#### Source Type (REQUIRED)
+#### Type
 
-Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)
+> **( default: `bar`)**  
+> how long should all animations or transitions take
+
+#### Source
+
+**Source Type **
+> **( REQUIRED | default: Bar (`bar`) | options: )**  
+> Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)
 
 available options:
 * file - input directly from the media library. (Note: JSON is not allowed through this method due to Wordpress security reasons)
@@ -151,6 +170,6 @@ yes
 add a doot doot on a data instance
 
 ### Advanced Tab
-## Filters
-#### apply_filters( '_1p21_dv_info', boolean $debug )
-- output array of the current data visuals on the page
+
+## Functions
+

@@ -60,18 +60,43 @@ function _1p21_dv_display_id_to_edit_page() {
 add_action( 'edit_form_after_title', '_1p21_dv_display_id_to_edit_page' );
 
 
-function _1p21_dv_add_documentation_link (){
-    //add_options_page(title, menu name, capability, slug, form callback);
+function _1p21_dv_add_documentation_link(){
+    // add_options_page(title, menu name, capability, slug, form callback);
 
-        // add_options_page('Documentation', 'Documentation','none', '1p21-dv-documentation', function(){
-        //     get_template_part()
-        // });
+    add_submenu_page(
+        'edit.php?post_type=data-visual',
+        __('1p21 Data Visualizer Documentation'),
+        __('Documentation'),
+        'edit_posts',
+        '1p21-dv-documentation',
+        '_1p21_dv_get_documentation'
+        );
+
+        function _1p21_dv_get_documentation(){
+            ?>
+            <div class="_1p21-dv-content">
+
+                <?php
+                include_once _1P21_DV_PLUGIN_PATH .'/includes/documentation.php';
+
+                ?>
+            </div>
+            <?php
+        };
+
 }
+add_action( 'admin_menu', '_1p21_dv_add_documentation_link',11 );
 
 //style classes of acf
     function _1p21_dv_acf_fields_styles(){
         ?>
         <style type="text/css">
+
+        ._1p21-dv-content {
+            max-width: 960px;
+            padding: 40px 0;
+            margin: 0 auto;
+        }
 
         #acf-group_5d4206c985d00 .dv-code input,
         #acf-group_5d4206c985d00 .dv-code textarea{
@@ -83,4 +108,4 @@ function _1p21_dv_add_documentation_link (){
     }
 
 
-add_action('acf/input/admin_head', '_1p21_dv_acf_fields_styles');
+add_action('admin_head', '_1p21_dv_acf_fields_styles');

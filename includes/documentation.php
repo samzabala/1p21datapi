@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-<head>
-	<meta charset="utf-8"/>
-</head>
-<body>
+<!-- DO NOT EDIT document.php. edit README.md instead -->
 
 <h1 id="pluginname:1point21datavizualizer">Plugin Name: 1Point21 Data Vizualizer</h1>
 
@@ -17,6 +12,14 @@
 
 <p>Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21interactive.com/</a></p>
 
+<h2 id="tableofcontents">Table of contents</h2>
+
+<ol>
+<li><a href="#shortcodeparameters">Shortcode Parameters</a></li>
+<li><a href="#backendsettings">Backend Settings</a></li>
+<li><a href="#functions">Functions</a></li>
+</ol>
+
 <h2 id="shortcode">Shortcode</h2>
 
 <p>You can add a data visualizer using the shortcode <code>dv</code> or <code>data_visalizer</code></p>
@@ -29,49 +32,102 @@
 <pre><code class="txt">[data_visalizer id=666 width=800 height=600]
 </code></pre>
 
-<p><em><strong>Note:</strong> in case <code>dv</code> conflicts with another shortcode, the plugin will output an error in the back end and advise to use <code>data_visalizer</code></em></p>
+<p><em><strong>Note:</strong> in case <code>dv</code> conflicts with another shortcode, the plugin will output an error in the back end and advise to use <code>data_visualizer</code></em></p>
 
 <h2 id="shortcodeparameters">Shortcode Parameters</h2>
 
-<h3 id="idrequireddefault:nulltype:number">id (REQUIRED | default: null | type: number)</h3>
+<p><strong><code>id</code></strong></p>
+
+<blockquote>
+<p><strong>(REQUIRED | default: <code>null</code> | type: number)</strong></p>
 
 <p>post id of the graph to display.</p>
+</blockquote>
 
-<h3 id="margindefault:10type:number">margin (default: 10 | type: number)</h3>
+<p><strong><code>margin</code></strong></p>
+
+<blockquote>
+<p><strong>( optional | default: <code>10</code> | type: number)</strong></p>
 
 <p>gutter to set on graph canvas to compensate spaces for ticks and labels.</p>
+</blockquote>
 
-<h3 id="margin_offsetdefault:2type:number">margin_offset (default: 2 | type: number)</h3>
+<p><strong><code>margin_offset</code></strong></p>
+
+<blockquote>
+<p><strong>( optional | default: 2 | type: number)</strong></p>
 
 <p>multiplier of the gutter.</p>
+</blockquote>
 
-<h3 id="widthdefault:600type:number">width (default: 600 | type: number)</h3>
+<p><strong><code>width</code></strong></p>
+
+<blockquote>
+<p><strong>( optional | default: <code>600</code> | type: number)</strong></p>
 
 <p>width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn&#8217;t enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p>
+</blockquote>
 
-<h3 id="heightdefault:600type:number">height (default: 600 | type: number)</h3>
+<p><strong><code>height</code></strong></p>
+
+<blockquote>
+<p><strong>( optional | default: <code>600</code> | type: number)</strong></p>
 
 <p>height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn&#8217;t enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p>
+</blockquote>
 
-<h3 id="transitiondefault:1500type:number">transition (default: 1500 | type: number)</h3>
+<p><strong><code>transition</code></strong></p>
+
+<blockquote>
+<p><strong>( optional | default: <code>1500</code> | type: number)</strong></p>
 
 <p>how long should all animations or transitions take</p>
+</blockquote>
 
-<h3 id="delaydefault:250type:number">delay (default: 250 | type: number)</h3>
+<p><strong><code>delay</code></strong></p>
+
+<blockquote>
+<p><strong>( optional | default: <code>250</code> | type: number)</strong></p>
 
 <p>delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering</p>
+</blockquote>
 
-<h3 id="font_sizedefault:16pxtype:integerstring">font_size (default: &#8216;16px&#8217; | type: integer / string)</h3>
+<p><strong><code>font_size</code></strong></p>
+
+<blockquote>
+<p><strong>( optional | default: <code>'16px'</code> | type: integer / string)</strong></p>
 
 <p>base font size to size text relative to. also accepts integer value.</p>
+</blockquote>
 
 <h2 id="backendsettings">Backend Settings</h2>
 
+<h3 id="description">Description</h3>
+
+<blockquote>
+<p><strong>( optional | default: <code>bar</code>)</strong></p>
+
+<p>Add a subtilte or description for the data visual</p>
+</blockquote>
+
 <h3 id="datasettings">Data Settings</h3>
 
-<h4 id="sourcetyperequired">Source Type (REQUIRED)</h4>
+<h4 id="type">Type</h4>
+
+<blockquote>
+<p><strong>( default: <code>bar</code>)</strong><br />
+how long should all animations or transitions take</p>
+</blockquote>
+
+<h4 id="source">Source</h4>
+
+<p>**Source Type **</p>
+
+<blockquote>
+<p><strong>( REQUIRED | default: Bar (<code>bar</code>) | options: )</strong></p>
 
 <p>Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)</p>
+</blockquote>
 
 <p>available options:</p>
 
@@ -210,14 +266,4 @@
 
 <h3 id="advancedtab">Advanced Tab</h3>
 
-<h2 id="filters">Filters</h2>
-
-<h4 id="apply_filters_1p21_dv_infobooleandebug">apply_filters( &#8216;_1p21_dv_info&#8217;, boolean $debug )</h4>
-
-<ul>
-<li>output array of the current data visuals on the page</li>
-</ul>
-
-</body>
-</html>
-
+<h2 id="functions">Functions</h2>
