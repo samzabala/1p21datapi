@@ -792,7 +792,7 @@
                                 "_prepare": 0,
                                 "_valid": 1,
                                 "default_value": "",
-                                "placeholder": "$",
+                                "placeholder": "Mr. ",
                                 "prepend": "",
                                 "append": "",
                                 "maxlength": ""
@@ -821,7 +821,7 @@
                                 "_prepare": 0,
                                 "_valid": 1,
                                 "default_value": "",
-                                "placeholder": "k",
+                                "placeholder": " Million Dollars",
                                 "prepend": "",
                                 "append": "",
                                 "maxlength": ""
