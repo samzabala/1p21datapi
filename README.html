@@ -18,19 +18,20 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <li><a href="#Troubleshooting">Troubleshooting</a></li>
 </ol>
 
+<hr />
+
 <h1>Shortcode</h1>
 
 <p>You can add a data visualizer using the shortcode <code>dv</code> or <code>data_visalizer</code></p>
 
 <p>Examples:</p>
 
-<p><code>txt
-[dv id=666 width=800 height=600]</code></p>
+<pre><code>[dv id=666 width=800 height=600]
 
-<p><code>txt
-[data_visalizer id=666 width=800 height=600]</code></p>
+[data_visalizer id=666 width=800 height=600]
+</code></pre>
 
-<p><em><strong>Note:</strong> in case <code>dv</code> conflicts with another shortcode, the plugin will output an error in the back end and advise to use <code>data_visualizer</code></em></p>
+<p><em><strong>Note:</strong> in case</em> <code>dv</code> <em>conflicts with another shortcode, the plugin will output an error in the back end and advise to use</em> <code>data_visualizer</code></p>
 
 <h1>Shortcode Parameters</h1>
 
@@ -89,7 +90,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <h3><em>Type</em></h3>
 
-<p><strong>[ REQUIRED | Default: <em>Bar</em> ('Bar') | options: <em>Line</em> ('Line'), <em>Pie</em> ('Pie'), <em>Scatter plot</em> ('Scatter') ]</strong></p>
+<p><strong>[ REQUIRED | Default: <em>Bar</em> ('Bar') | options: <em>Line</em> ('Line'), <em>Pie</em> ('Pie'), <em>Scatter plot</em> ('Scatter Plot') ]</strong></p>
 
 <p>Type of graph the data will be presented as.</p>
 
@@ -141,12 +142,12 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>Value for the data</p></li>
 <li><p><strong>Category</strong></p>
 
-<p><strong>[ Optional | Available when: <em>Type</em> is set to 'Bar', 'Line', 'Scatter' ]</strong></p>
+<p><strong>[ Optional | Available when: <em>Type</em> is set to 'Bar', 'Line', 'Scatter Plot' ]</strong></p>
 
 <p>Category value to represent the color the data</p></li>
 <li><p><strong>Plot Point Area</strong></p>
 
-<p><strong>[ Optional | Available when: <em>Type</em> is set to 'Scatter' ]</strong></p>
+<p><strong>[ Optional | Available when: <em>Type</em> is set to 'Scatter Plot' ]</strong></p>
 
 <p>Numeric data value that will influence the size of the scatter plot point</p></li>
 </ul></li>
@@ -177,7 +178,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>Key relative to a datum instance's level to represent the data's value</p></li>
 <li><p><strong>Plot Points Area Key</strong></p>
 
-<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Source Type</em> is 'File (csv,tsv)', 'URL', 'Text (JSON code)'; <em>Type</em> is 'Scatter' ]</strong></p>
+<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Source Type</em> is 'File (csv,tsv)', 'URL', 'Text (JSON code)'; <em>Type</em> is 'Scatter Plot' ]</strong></p>
 
 <p>Key relative to a datum instance's level to represent the data's value</p></li>
 <li><p><strong>Color Key</strong></p>
@@ -249,7 +250,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <h3>X and Y Settings</h3>
 
-<p><strong>[ Optional | Available when: <em>Type</em> is 'Bar','Line','Scatter' ]</strong></p>
+<p><strong>[ Optional | Available when: <em>Type</em> is 'Bar','Line','Scatter Plot' ]</strong></p>
 
 <ul>
 <li><p><strong>Axis Data</strong></p>
@@ -274,14 +275,14 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>Text label along the axis</p></li>
 <li><p><strong>Minimum</strong></p>
 
-<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Axis Data</em> is 'Value Data'; <em>Type</em> is 'Scatter', <em>Axis Data</em> is 'Name Data', <em>Set Name Key As Numeric?</em> is <code>true</code>; ]</strong></p>
+<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Axis Data</em> is 'Value Data'; <em>Type</em> is 'Scatter Plot', <em>Axis Data</em> is 'Name Data', <em>Set Name Key As Numeric?</em> is <code>true</code>; ]</strong></p>
 
 <p>Minimum value of the axis.</p>
 
 <p>Leaving blank will automatically set the minimum from the smallest value present in data</p></li>
 <li><p><strong>Maximum</strong></p>
 
-<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Axis Data</em> is 'Value Data'; <em>Type</em> is 'Scatter', <em>Axis Data</em> is 'Name Data', <em>Set Name Key As Numeric?</em> is <code>true</code>; ]</strong></p>
+<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Axis Data</em> is 'Value Data'; <em>Type</em> is 'Scatter Plot', <em>Axis Data</em> is 'Name Data', <em>Set Name Key As Numeric?</em> is <code>true</code>; ]</strong></p>
 
 <p>Maximum value of the axis.</p>
 
@@ -410,19 +411,61 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p><strong>[ Optional | Available when: <em>Type</em> is 'Pie' ]</strong></p>
 
-<pre><code>*	**Label Style**
+<ul>
+<li><p><strong>Label Style</strong></p>
 
-	[ Optional | Default: `false` ]
+<p>[ Optional | Default: <code>false</code> ]</p>
 
-	Whether or not to invert the fill opposite to the alignment of the axis
+<p>Whether or not to invert the fill opposite to the alignment of the axis</p></li>
+<li><p><strong>Inner Radius</strong></p>
 
+<p>[ Optional | Default: <code>0</code> ]</p>
 
-*	**Inner Radius**
+<p>Radius of pie hole</p></li>
+</ul>
 
-	[ Optional | Default: `0` ]
+<h3>Scatter Plot Area Settings</h3>
 
-	Radius of pie hole
-</code></pre>
+<p><strong>[ Optional | Available when: <em>Type</em> is 'Scatter Plot' ]</strong></p>
+
+<ul>
+<li><p><strong>Minimum Radius</strong></p>
+
+<p>[ Optional | Default: <code>10</code> ]</p>
+
+<p>Minimum size of plot points</p></li>
+<li><p><strong>Maximum Radius</strong></p>
+
+<p>[ Optional | Default: <code>50</code> ]</p>
+
+<p>Maximum size of plot points</p></li>
+<li><p><strong>Opacity</strong></p>
+
+<p>[ Optional | Default: <code>.8</code> ]</p>
+
+<p>Opacity of plot points. Recommended to be below .9 as scatter plots will overlap</p></li>
+</ul>
+
+<h3>Color Settings</h3>
+
+<ul>
+<li><p><strong>Color Palette</strong></p>
+
+<p>[ Optional ]</p>
+
+<p>Repeater field of colors to use for the data. The color will be used based on the datum instance's index</p>
+
+<p>If <em>Color Key</em> is not set and there are colors inputted, the colors will be applied based on the <em>Name Key</em> value of the data</p>
+
+<p>If not set, the plugin's loaded css will apply a default color palette</p>
+
+<p>Adding one color will apply the color to all graph elements</p></li>
+<li><p><strong>Legend</strong></p>
+
+<p>[ Optional | Default: <code>true</code> (when available) | Available when <em>Color Key</em> is set; <em>Type</em> is 'Pie`; <em>Category</em> in <em>Row</em> field has value ]</p>
+
+<p>Enable legend presentation of data</p></li>
+</ul>
 
 <h1>Troubleshooting</h1>
 

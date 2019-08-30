@@ -29,7 +29,7 @@ $_1p21_dv['defaults'] = array(
     'font_size' => null,
     'width' => null, //duh
     'height' => null, //duh
-    'align' => 'center', //duh
+    'align' => 'center', // default value is not in js because js doesnt need to use this boi. use it @ shortcode render
     'transition' => null, //duh
     'delay' => null, //duh
 );

@@ -14,22 +14,19 @@ Author URI: [https://www.1point21interactive.com/](https://www.1point21interacti
 2. [Backend Settings](#backendsettings)
 3. [Functions](#functions)
 4. [Troubleshooting](#Troubleshooting)
-
+--------------------------
 # Shortcode
 
 You can add a data visualizer using the shortcode `dv` or `data_visalizer`
 
 Examples:
 
-``` txt
-[dv id=666 width=800 height=600]
-```
+	[dv id=666 width=800 height=600]
 
-``` txt
-[data_visalizer id=666 width=800 height=600]
-```
+	[data_visalizer id=666 width=800 height=600]
 
-_**Note:** in case `dv` conflicts with another shortcode, the plugin will output an error in the back end and advise to use `data_visualizer`_
+
+_**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will output an error in the back end and advise to use_ `data_visualizer`
 
 # Shortcode Parameters
 
@@ -93,7 +90,7 @@ Add a subtilte or description for the data visual
 
 ###	*Type*
 
-**[ REQUIRED | Default: *Bar* ('Bar') | options: *Line* ('Line'), *Pie* ('Pie'), *Scatter plot* ('Scatter') ]**
+**[ REQUIRED | Default: *Bar* ('Bar') | options: *Line* ('Line'), *Pie* ('Pie'), *Scatter plot* ('Scatter Plot') ]**
 
 Type of graph the data will be presented as.
 
@@ -147,13 +144,13 @@ Type of graph the data will be presented as.
 		
 		*	**Category**
 
-			**[ Optional | Available when: *Type* is set to 'Bar', 'Line', 'Scatter' ]**
+			**[ Optional | Available when: *Type* is set to 'Bar', 'Line', 'Scatter Plot' ]**
 
 			Category value to represent the color the data
 		
 		*	**Plot Point Area**
 
-			**[ Optional | Available when: *Type* is set to 'Scatter' ]**
+			**[ Optional | Available when: *Type* is set to 'Scatter Plot' ]**
 
 			Numeric data value that will influence the size of the scatter plot point
 		
@@ -184,7 +181,7 @@ Type of graph the data will be presented as.
 
 *	**Plot Points Area Key**
 
-	**[ Optional | Default: `null` | Available when: *Source Type* is 'File (csv,tsv)', 'URL', 'Text (JSON code)'; *Type* is 'Scatter' ]**
+	**[ Optional | Default: `null` | Available when: *Source Type* is 'File (csv,tsv)', 'URL', 'Text (JSON code)'; *Type* is 'Scatter Plot' ]**
 
 	Key relative to a datum instance's level to represent the data's value
 
@@ -256,7 +253,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 ### X and Y Settings
 
-**[ Optional | Available when: *Type* is 'Bar','Line','Scatter' ]**
+**[ Optional | Available when: *Type* is 'Bar','Line','Scatter Plot' ]**
 
 *	**Axis Data**
 
@@ -284,7 +281,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 *	**Minimum**
 
-	**[ Optional | Default: `null` | Available when: *Axis Data* is 'Value Data'; *Type* is 'Scatter', *Axis Data* is 'Name Data', *Set Name Key As Numeric?* is `true`; ]**
+	**[ Optional | Default: `null` | Available when: *Axis Data* is 'Value Data'; *Type* is 'Scatter Plot', *Axis Data* is 'Name Data', *Set Name Key As Numeric?* is `true`; ]**
 
 	Minimum value of the axis.
 
@@ -293,7 +290,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 *	**Maximum**
 
-	**[ Optional | Default: `null` | Available when: *Axis Data* is 'Value Data'; *Type* is 'Scatter', *Axis Data* is 'Name Data', *Set Name Key As Numeric?* is `true`; ]**
+	**[ Optional | Default: `null` | Available when: *Axis Data* is 'Value Data'; *Type* is 'Scatter Plot', *Axis Data* is 'Name Data', *Set Name Key As Numeric?* is `true`; ]**
 
 	Maximum value of the axis.
 
@@ -424,24 +421,70 @@ These are optional settings to allow reformatting data on the visualizer
 		Check [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray) For more information on the documentation
 	
 	*	**More options will be added soon!**
-		
 
 ### Pie Settings
 
 **[ Optional | Available when: *Type* is 'Pie' ]**
 
-	*	**Label Style**
+*	**Label Style**
 
-		[ Optional | Default: `false` ]
+	[ Optional | Default: `false` ]
 
-		Whether or not to invert the fill opposite to the alignment of the axis
+	Whether or not to invert the fill opposite to the alignment of the axis
 
 
-	*	**Inner Radius**
+*	**Inner Radius**
 
-		[ Optional | Default: `0` ]
+	[ Optional | Default: `0` ]
 
-		Radius of pie hole
+	Radius of pie hole
+
+
+### Scatter Plot Area Settings
+
+**[ Optional | Available when: *Type* is 'Scatter Plot' ]**
+
+*	**Minimum Radius**
+
+	[ Optional | Default: `10` ]
+
+	Minimum size of plot points
+
+*	**Maximum Radius**
+
+	[ Optional | Default: `50` ]
+
+	Maximum size of plot points
+
+
+*	**Opacity**
+
+	[ Optional | Default: `.8` ]
+
+	Opacity of plot points. Recommended to be below .9 as scatter plots will overlap
+
+
+### Color Settings
+
+*	**Color Palette**
+
+	[ Optional ]
+
+	Repeater field of colors to use for the data. The color will be used based on the datum instance's index
+
+	If *Color Key* is not set and there are colors inputted, the colors will be applied based on the *Name Key* value of the data
+
+	If not set, the plugin's loaded css will apply a default color palette
+
+	Adding one color will apply the color to all graph elements
+
+*	**Legend**
+
+	[ Optional | Default: `true` (when available) | Available when *Color Key* is set; *Type* is 'Pie`; *Category* in *Row* field has value ]
+
+	Enable legend presentation of data
+
+
 
 # Troubleshooting
 
