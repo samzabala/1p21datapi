@@ -478,7 +478,7 @@
         };
 
         //AXIS STRING AND AXIS POSITION COORDINATES ARE VERY DIFFERENT THINGS U DUMB FUCK
-        var getLabelPosition = function(coordinateAttribute,axisString){ 
+        var getLabelOrigin = function(coordinateAttribute,axisString){ 
             var offset = 0;
 
             if(coordinateAttribute == 'x'){ //x
@@ -499,11 +499,11 @@
 
                     if(args[axisString+'Align'] == 'bottom'){
 
-                        offset = args[getDimension(axisString,true)] + (_.off_y - (args.margin * .125)); 
+                        offset = args[getDimension(axisString,true)] + (_.off_y); 
                         
                     }else{
 
-                        offset = -(_.off_y - (args.margin * 1.5));
+                        offset = -(_.off_y - text_offset);
 
                     }
 
@@ -511,11 +511,11 @@
 
                     if(args[axisString+'Align'] == 'right'){
 
-                        offset = args[getDimension(axisString,true)] + (_.off_x);
+                        offset = args[getDimension(axisString,true)] + (_.off_x + text_offset);
 
                     }else{
 
-                        offset = -(_.off_x * .125)
+                        offset = -(_.off_x + text_offset)
 
                     }
 
@@ -561,6 +561,10 @@
                         }
                     }else{
                         dimension = _[ 'the_'+ keyKey ].bandwidth()
+                    }
+
+                    if(dimension < 0 ){
+                        dimension = 0;
                     }
 
             }
@@ -1188,10 +1192,10 @@
                         _['lab_'+axisString] = _.container_lab.append('text')
                             .attr('class', prefix + 'label-'+axisString)
                             .attr('y', function(){
-                                return getLabelPosition('y',axisString);
+                                return getLabelOrigin('y',axisString);
                             })
                             .attr('x', function(){
-                                return getLabelPosition('x',axisString);
+                                return getLabelOrigin('x',axisString);
                             })
                             .attr('font-size', '1em')
                             .attr('text-anchor', 'middle')

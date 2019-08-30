@@ -24,19 +24,17 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 
     // * { outline: 1px solid red!important}
 
-    &-heading {
-        &-align {
-            &-center{
-                text-align: center;
-            }
+    &-align {
+        &-center{
+            text-align: center;
+        }
 
-            &-left{
-                text-align: left;
-            }
+        &-left{
+            text-align: left;
+        }
 
-            &-right{
-                text-align: right;
-            }
+        &-right{
+            text-align: right;
         }
     }
 

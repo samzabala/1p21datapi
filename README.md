@@ -37,49 +37,49 @@ _**Note:** in case `dv` conflicts with another shortcode, the plugin will output
 
 *	**`id`**
 
-	**[ REQUIRED | default: `null` | type: number ]**
+	**[ REQUIRED | Default: `null` | type: number ]**
 
 	post id of the graph to display.
 
 *	**`margin`**
 
-	**[ optional | default: `10` | type: number ]**
+	**[ optional | Default: `10` | type: number ]**
 
 	gutter to set on graph canvas to compensate spaces for ticks and labels.
 
 *	**`margin_offset`**
 
-	**[ optional | default: `2` | type: number ]**
+	**[ optional | Default: `2` | type: number ]**
 
 	multiplier of the gutter.
 
 *	**`width`**
 
-	**[ optional | default: `600` | type: number ]**
+	**[ optional | Default: `600` | type: number ]**
 
 	width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
 
 *	**`height`**
 
-	**[ optional | default: `600` | type: number ]**
+	**[ optional | Default: `600` | type: number ]**
 
 	height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
 
 *	**`transition`**
 
-	**[ optional | default: `1500` | type: number ]**
+	**[ optional | Default: `1500` | type: number ]**
 
 	how long should all animations or transitions take
 
 *	**`delay`**
 
-	**[ optional | default: `250` | type: number ]**
+	**[ optional | Default: `250` | type: number ]**
 
 	delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering
 
 *	**`font_size`**
 
-	**[ optional | default: `'16px'` | type: integer / string ]**
+	**[ optional | Default: `'16px'` | type: integer / string ]**
 
 	base font size to size text relative to. also accepts integer value.
 
@@ -87,23 +87,23 @@ _**Note:** in case `dv` conflicts with another shortcode, the plugin will output
 
 ## Description
 
-**[ optional | default: `''` ]**
+**[ optional | Default: `''` ]**
 
 Add a subtilte or description for the data visual
 
 ## Data Settings
 
-###	Type
+###	*Type*
 
-**[ REQUIRED | default: Bar (`bar`) | options: Line (`line`), Pie (`pie`), Scatter plot (`scatter`) ]**
+**[ REQUIRED | Default: *Bar* (`bar`) | options: *Line* (`line`), *Pie* (`pie`), *Scatter plot* (`scatter`) ]**
 
 Type of graph the data will be presented as.
 
-###	Source
+###	*Source*
 
 *	***Source Type***
 
-	**[ REQUIRED | options: File (csv,tsv) (`file`), URL (`url`), Text (JSON code) (`text`), Rows (UI Field) (`rows`) ]**
+	**[ REQUIRED | options: *File (csv,tsv)* (`file`), *URL* (`url`), *Text (JSON code)* (`text`), *Rows (UI Field)* (`rows`) ]**
 
 	Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)
 
@@ -170,7 +170,7 @@ Type of graph the data will be presented as.
 	if there is a value, the data returned from that key will be used
 	
 
-### Data Keys
+### *Data Keys*
 
 *	***Name Key***
 
@@ -196,16 +196,16 @@ Type of graph the data will be presented as.
 
 	Key relative to a datum instance's level to represent the data's value
 
-### Set Name Key As Numeric
+### *Set Name Key As Numeric*
 
-**[ Optional | default: false | Available when: *Source Type* is `file`, `url`, `text`; *Type* is NOT `pie`, NOT `bar` ]**
+**[ Optional | Default: `false` | Available when: *Source Type* is `file`, `url`, `text`; *Type* is NOT `pie`, NOT `bar` ]**
 
 Adds numeric capabilities to name data.
 
 __**Note:** If name value is not numeric, this will cause errors and the graph will not render properly_
 
 
-###	Format Settings
+###	*Format Settings*
 
 **[ Optional | Available for: `name`, `value`, `color` keys ]**
 
@@ -213,7 +213,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 *	***Prepend***
 
-	**[ Optional ]**
+	**[ Optional | Default: `''` ]**
 
 	Character/s to append to the data.
 
@@ -221,7 +221,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 * 	***Append***
 
-	**[ Optional ]**
+	**[ Optional | Default: `''` ]**
 
 	Character/s to append to the data.
 
@@ -229,7 +229,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 *	***Divider***
 
-	**[ Optional Available for: `value` key; *Set Name Key As Numeric* is set to `true` ]**
+	**[ Optional | Default: `1` | Available for/when: `value` key; *Set Name Key As Numeric* is set to `true` ]**
 
 	Amount to divide numeric data by. good for shortening values.
 	
@@ -239,11 +239,9 @@ These are optional settings to allow reformatting data on the visualizer
 	- `100000` is divided by `Divider` set to `1000` to shorten to `100`
 	- `K` comes from set *Append*
 
-
-
 *	***Advanced***
 
-	*	***Divider***
+	*	***Format Parameter***
 
 		**[ Optional ]**
 
@@ -253,4 +251,59 @@ These are optional settings to allow reformatting data on the visualizer
 
 	*	***More options will be added soon!***
 
+
+## Graph Settings
+
+### X and Y Settings
+
+**[ Optional |  Available when: *Type* is `bar`,`line`,`scatter` ]**
+
+*	***Axis Data***
+
+	**[ REQUIRED | Default: *Name Data* (For X); *Value Data* (For Y); | options: *Name Data* (`0`), *Value Data* (`1`) ]**
+
+	Links the data that will be represented along the axis
+
+*	***Alignment***
+
+	**[ REQUIRED | Default: *Bottom* (For X); *Left* (For Y); | options: *Top* (`top`), *Bottom* (`bottom`), *Left* (`left`), *Right* (`right`) ]**
+
+	Alignment of the axis
+
+*	***Use Ticks?***
+
+	**[ Optional | Default: `false` ]**
+
+	Insert ruler along the axis of alignment
+
+*	***Label***
+
+	**[ Optional ]**
+
+	Text label along the axis
+
+*	***Minimum***
+
+	**[ Optional | Available when: *Axis Data* is *Value Data*; *Type* is *`scatter`*, *Axis Data* is *Name Data*, *Set Name Key As Numeric* is `true`; ]**
+
+	Minimum value of the axis.
+
+	Leaving blank will automatically set the minimum from the smallest value present in data
+
+
+*	***Maximum***
+
+	**[ Optional | Available when: *Axis Data* is *Value Data*; *Type* is *`scatter`*, *Axis Data* is *Name Data*, *Set Name Key As Numeric* is `true`; ]**
+
+	Maximum value of the axis.
+
+	Leaving blank will automatically set the maximum from the largest value present in data
+	
+	Recommended to increase if more negative space is desired
+
+* ***Tick Settings***
+
+	**[ Available when: *Use Ticks?* is `true` ]**
+
+	* ***Ticks Amount***
 

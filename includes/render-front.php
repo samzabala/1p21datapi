@@ -50,7 +50,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
             $data_visual['front']['wrapper_id'] = $wrapper_id;
     
         // start wrapper
-        $render .= "<div id='$wrapper_id' class='{$att_prefix} {$att_prefix}-type-{$data_visual['type']}'>";
+        $render .= "<div id='$wrapper_id' class='{$att_prefix} {$att_prefix}-type-{$data_visual['type']} {$att_prefix}-align-{$data_visual['settings']['align']}'>";
 
         
                     

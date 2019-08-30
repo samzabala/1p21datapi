@@ -2,11 +2,11 @@
   background: #EEE;
   position: relative;
   padding: 2.5em 1em 1em; }
-  .data-visualizer-heading-align-center {
+  .data-visualizer-align-center {
     text-align: center; }
-  .data-visualizer-heading-align-left {
+  .data-visualizer-align-left {
     text-align: left; }
-  .data-visualizer-heading-align-right {
+  .data-visualizer-align-right {
     text-align: right; }
   .data-visualizer-title, .data-visualizer-description {
     display: block; }

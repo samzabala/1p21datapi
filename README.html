@@ -36,42 +36,42 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <ul>
 <li><p><strong><code>id</code></strong></p>
 
-<p><strong>[ REQUIRED | default: <code>null</code> | type: number ]</strong></p>
+<p><strong>[ REQUIRED | Default: <code>null</code> | type: number ]</strong></p>
 
 <p>post id of the graph to display.</p></li>
 <li><p><strong><code>margin</code></strong></p>
 
-<p><strong>[ optional | default: <code>10</code> | type: number ]</strong></p>
+<p><strong>[ optional | Default: <code>10</code> | type: number ]</strong></p>
 
 <p>gutter to set on graph canvas to compensate spaces for ticks and labels.</p></li>
 <li><p><strong><code>margin_offset</code></strong></p>
 
-<p><strong>[ optional | default: <code>2</code> | type: number ]</strong></p>
+<p><strong>[ optional | Default: <code>2</code> | type: number ]</strong></p>
 
 <p>multiplier of the gutter.</p></li>
 <li><p><strong><code>width</code></strong></p>
 
-<p><strong>[ optional | default: <code>600</code> | type: number ]</strong></p>
+<p><strong>[ optional | Default: <code>600</code> | type: number ]</strong></p>
 
 <p>width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p></li>
 <li><p><strong><code>height</code></strong></p>
 
-<p><strong>[ optional | default: <code>600</code> | type: number ]</strong></p>
+<p><strong>[ optional | Default: <code>600</code> | type: number ]</strong></p>
 
 <p>height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p></li>
 <li><p><strong><code>transition</code></strong></p>
 
-<p><strong>[ optional | default: <code>1500</code> | type: number ]</strong></p>
+<p><strong>[ optional | Default: <code>1500</code> | type: number ]</strong></p>
 
 <p>how long should all animations or transitions take</p></li>
 <li><p><strong><code>delay</code></strong></p>
 
-<p><strong>[ optional | default: <code>250</code> | type: number ]</strong></p>
+<p><strong>[ optional | Default: <code>250</code> | type: number ]</strong></p>
 
 <p>delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering</p></li>
 <li><p><strong><code>font_size</code></strong></p>
 
-<p><strong>[ optional | default: <code>'16px'</code> | type: integer / string ]</strong></p>
+<p><strong>[ optional | Default: <code>'16px'</code> | type: integer / string ]</strong></p>
 
 <p>base font size to size text relative to. also accepts integer value.</p></li>
 </ul>
@@ -80,24 +80,24 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <h2>Description</h2>
 
-<p><strong>[ optional | default: <code>''</code> ]</strong></p>
+<p><strong>[ optional | Default: <code>''</code> ]</strong></p>
 
 <p>Add a subtilte or description for the data visual</p>
 
 <h2>Data Settings</h2>
 
-<h3>Type</h3>
+<h3><em>Type</em></h3>
 
-<p><strong>[ REQUIRED | default: Bar (<code>bar</code>) | options: Line (<code>line</code>), Pie (<code>pie</code>), Scatter plot (<code>scatter</code>) ]</strong></p>
+<p><strong>[ REQUIRED | Default: <em>Bar</em> (<code>bar</code>) | options: <em>Line</em> (<code>line</code>), <em>Pie</em> (<code>pie</code>), <em>Scatter plot</em> (<code>scatter</code>) ]</strong></p>
 
 <p>Type of graph the data will be presented as.</p>
 
-<h3>Source</h3>
+<h3><em>Source</em></h3>
 
 <ul>
 <li><p><strong><em>Source Type</em></strong></p>
 
-<p><strong>[ REQUIRED | options: File (csv,tsv) (<code>file</code>), URL (<code>url</code>), Text (JSON code) (<code>text</code>), Rows (UI Field) (<code>rows</code>) ]</strong></p>
+<p><strong>[ REQUIRED | options: <em>File (csv,tsv)</em> (<code>file</code>), <em>URL</em> (<code>url</code>), <em>Text (JSON code)</em> (<code>text</code>), <em>Rows (UI Field)</em> (<code>rows</code>) ]</strong></p>
 
 <p>Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)</p>
 
@@ -161,7 +161,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>if there is a value, the data returned from that key will be used</p></li>
 </ul>
 
-<h3>Data Keys</h3>
+<h3><em>Data Keys</em></h3>
 
 <ul>
 <li><p><strong><em>Name Key</em></strong></p>
@@ -186,15 +186,15 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>Key relative to a datum instance's level to represent the data's value</p></li>
 </ul>
 
-<h3>Set Name Key As Numeric</h3>
+<h3><em>Set Name Key As Numeric</em></h3>
 
-<p><strong>[ Optional | default: false | Available when: <em>Source Type</em> is <code>file</code>, <code>url</code>, <code>text</code>; <em>Type</em> is NOT <code>pie</code>, NOT <code>bar</code> ]</strong></p>
+<p><strong>[ Optional | Default: <code>false</code> | Available when: <em>Source Type</em> is <code>file</code>, <code>url</code>, <code>text</code>; <em>Type</em> is NOT <code>pie</code>, NOT <code>bar</code> ]</strong></p>
 
 <p>Adds numeric capabilities to name data.</p>
 
 <p>_<em><strong>Note:</strong> If name value is not numeric, this will cause errors and the graph will not render properly</em></p>
 
-<h3>Format Settings</h3>
+<h3><em>Format Settings</em></h3>
 
 <p><strong>[ Optional | Available for: <code>name</code>, <code>value</code>, <code>color</code> keys ]</strong></p>
 
@@ -203,21 +203,21 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <ul>
 <li><p><strong><em>Prepend</em></strong></p>
 
-<p><strong>[ Optional ]</strong></p>
+<p><strong>[ Optional | Default: <code>''</code> ]</strong></p>
 
 <p>Character/s to append to the data.</p>
 
 <p><em><strong>Note:</strong> Input will be translated as a parsed string</em></p></li>
 <li><p><strong><em>Append</em></strong></p>
 
-<p><strong>[ Optional ]</strong></p>
+<p><strong>[ Optional | Default: <code>''</code> ]</strong></p>
 
 <p>Character/s to append to the data.</p>
 
 <p><em><strong>Note:</strong> Input will be translated as a parsed string</em></p></li>
 <li><p><strong><em>Divider</em></strong></p>
 
-<p><strong>[ Optional Available for: <code>value</code> key; <em>Set Name Key As Numeric</em> is set to <code>true</code> ]</strong></p>
+<p><strong>[ Optional | Default: <code>1</code> | Available for/when: <code>value</code> key; <em>Set Name Key As Numeric</em> is set to <code>true</code> ]</strong></p>
 
 <p>Amount to divide numeric data by. good for shortening values.</p>
 
@@ -231,7 +231,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <li><p><strong><em>Advanced</em></strong></p>
 
 <ul>
-<li><p><strong><em>Divider</em></strong></p>
+<li><p><strong><em>Format Parameter</em></strong></p>
 
 <p><strong>[ Optional ]</strong></p>
 
@@ -239,5 +239,57 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p>Or a javascript function that passes the <code>data</code> and its <code>index</code></p></li>
 <li><p><strong><em>More options will be added soon!</em></strong></p></li>
+</ul></li>
+</ul>
+
+<h2>Graph Settings</h2>
+
+<h3>X and Y Settings</h3>
+
+<p><strong>[ Optional | Available when: <em>Type</em> is <code>bar</code>,<code>line</code>,<code>scatter</code> ]</strong></p>
+
+<ul>
+<li><p><strong><em>Axis Data</em></strong></p>
+
+<p><strong>[ REQUIRED | Default: <em>Name Data</em> (For X); <em>Value Data</em> (For Y); | options: <em>Name Data</em> (<code>0</code>), <em>Value Data</em> (<code>1</code>) ]</strong></p>
+
+<p>Links the data that will be represented along the axis</p></li>
+<li><p><strong><em>Alignment</em></strong></p>
+
+<p><strong>[ REQUIRED | Default: <em>Bottom</em> (For X); <em>Left</em> (For Y); | options: <em>Top</em> (<code>top</code>), <em>Bottom</em> (<code>bottom</code>), <em>Left</em> (<code>left</code>), <em>Right</em> (<code>right</code>) ]</strong></p>
+
+<p>Alignment of the axis</p></li>
+<li><p><strong><em>Use Ticks?</em></strong></p>
+
+<p><strong>[ Optional | Default: <code>false</code> ]</strong></p>
+
+<p>Insert ruler along the axis of alignment</p></li>
+<li><p><strong><em>Label</em></strong></p>
+
+<p><strong>[ Optional ]</strong></p>
+
+<p>Text label along the axis</p></li>
+<li><p><strong><em>Minimum</em></strong></p>
+
+<p><strong>[ Optional | Available when: <em>Axis Data</em> is <em>Value Data</em>; <em>Type</em> is <em><code>scatter</code></em>, <em>Axis Data</em> is <em>Name Data</em>, <em>Set Name Key As Numeric</em> is <code>true</code>; ]</strong></p>
+
+<p>Minimum value of the axis.</p>
+
+<p>Leaving blank will automatically set the minimum from the smallest value present in data</p></li>
+<li><p><strong><em>Maximum</em></strong></p>
+
+<p><strong>[ Optional | Available when: <em>Axis Data</em> is <em>Value Data</em>; <em>Type</em> is <em><code>scatter</code></em>, <em>Axis Data</em> is <em>Name Data</em>, <em>Set Name Key As Numeric</em> is <code>true</code>; ]</strong></p>
+
+<p>Maximum value of the axis.</p>
+
+<p>Leaving blank will automatically set the maximum from the largest value present in data</p>
+
+<p>Recommended to increase if more negative space is desired</p></li>
+<li><p><strong><em>Tick Settings</em></strong></p>
+
+<p><strong>[ Available when: <em>Use Ticks?</em> is <code>true</code> ]</strong></p>
+
+<ul>
+<li><strong><em>Ticks Amount</em></strong></li>
 </ul></li>
 </ul>

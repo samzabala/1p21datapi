@@ -106,7 +106,7 @@ add_action( 'admin_menu', '_1p21_dv_add_documentation_link',11 );
             margin-bottom: 2em;
         }
 
-        ._1p21-dv-content li ul {
+        ._1p21-dv-content ul {
             padding-left: 2em;
         }
 

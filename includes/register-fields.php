@@ -65,13 +65,18 @@ add_action('acf/init', '_1p21_dv_load_acf');
 function _1p21_dv_validate_x_and_y_data($valid,$value,$field,$input){
     if( !$valid ) {
 		return $valid;
-	}
-    $value_x = $_POST['acf']['field_5d42110769b59'];
-    $value_y  = $_POST['acf']['field_5d4494e1f5295'];
-    
-    if($value_x == $value_y){
-        $valid = 'X Axis Data and Y Axis Data cannot be the same value';
     }
+    if(isset($_POST['acf']['field_5d42110769b59']) && isset($_POST['acf']['field_5d4494e1f5295'])){
+
+        $value_x = $_POST['acf']['field_5d42110769b59'];
+        $value_y  = $_POST['acf']['field_5d4494e1f5295'];
+
+
+        if($value_x == $value_y){
+            $valid = 'X Axis Data and Y Axis Data cannot be the same value';
+        }
+    }
+    
 
     return $valid;
 }
