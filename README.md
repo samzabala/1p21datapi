@@ -11,9 +11,10 @@ Author URI: [https://www.1point21interactive.com/](https://www.1point21interacti
 
 1. [Shortcode](#shortcode)
 2. [Shortcode Parameters](#shortcodeparameters)
-2. [Backend Settings](#backendsettings)
-3. [Functions](#functions)
-4. [Troubleshooting](#Troubleshooting)
+3. [Backend Settings](#backendsettings)
+4. [settings](#settings)
+5. [Functions](#functions)
+6. [Troubleshooting](#Troubleshooting)
 --------------------------
 # Shortcode
 
@@ -488,7 +489,16 @@ These are optional settings to allow reformatting data on the visualizer
 
 	Enable legend presentation of data
 
+# Functions
 
+*	**`get_data_visualizer($args = array());`**
+
+*	**`the_data_visualizer($args = array());`**
+
+# Settings
+
+
+wait
 
 # Troubleshooting
 

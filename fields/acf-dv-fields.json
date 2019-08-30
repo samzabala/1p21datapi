@@ -3223,9 +3223,9 @@
         "fields": [
             {
                 "ID": 0,
-                "key": "field_5d40bfd2562be",
-                "label": "Legacy Support",
-                "name": "dv_legacy_support",
+                "key": "field_5d42155513d47",
+                "label": "Optimize for performance",
+                "name": "dv_optimize",
                 "prefix": "acf",
                 "type": "true_false",
                 "value": null,
@@ -3241,43 +3241,14 @@
                     "class": "",
                     "id": ""
                 },
-                "_name": "dv_legacy_support",
+                "_name": "dv_optimize",
                 "_prepare": 0,
                 "_valid": 1,
-                "message": "",
+                "message": "Optimize rendering for performance (note: turning this one may cause script conflicts)",
                 "default_value": 0,
                 "ui": 0,
                 "ui_on_text": "",
                 "ui_off_text": ""
-            },
-            {
-                "ID": 0,
-                "key": "field_5d42155513d47",
-                "label": "Optimize for performance",
-                "name": "dv_optimize",
-                "prefix": "acf",
-                "type": "text",
-                "value": null,
-                "menu_order": 1,
-                "instructions": "Optimize rendering for performance (note: turning this one may cause script conflicts)",
-                "required": 0,
-                "id": "",
-                "class": "",
-                "conditional_logic": 0,
-                "parent": "group_5d40bfc5e49db",
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "_name": "dv_optimize",
-                "_prepare": 0,
-                "_valid": 1,
-                "default_value": "",
-                "placeholder": "",
-                "prepend": "",
-                "append": "",
-                "maxlength": ""
             }
         ],
         "location": [
