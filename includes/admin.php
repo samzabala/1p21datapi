@@ -26,8 +26,8 @@
 	add_filter('upload_mimes', '_1p21_dv_allow_file_types');
 
 
-//endqueue scripts
-	function _1p21_dv_enqueue_scripts() {
+//register scripts. enqueue only happens when data visualizer is present
+	function _1p21_dv_register_scripts() {
 
 		// wp_register_script( 'd3','https://d3js.org/d3.v5.js',array(),false,true);
 		wp_register_script( 'd3',_1P21_DV_PLUGIN_URL.'assets/d3.v5.min.js',array(),false,true);
@@ -36,13 +36,11 @@
 			wp_register_script( '1p21-dv-d3', _1P21_DV_PLUGIN_URL . 'assets/main.js',array('d3'),null,true);
 		}else{
 			wp_register_script( '1p21-dv-d3', _1P21_DV_PLUGIN_URL . 'assets/main.min.js',array('d3'),null,true);
-		}
-
-		wp_enqueue_script( 'd3' );
-		wp_enqueue_script( '1p21-dv-d3' );
-		wp_enqueue_style( '1p21-dv-d3-styles', _1P21_DV_PLUGIN_URL . 'assets/style.css',array(),null );
+        }
+        
+		wp_register_style( '1p21-dv-d3-styles', _1P21_DV_PLUGIN_URL . 'assets/style.css',array(),null );
 	}
-	add_action( 'wp_enqueue_scripts', '_1p21_dv_enqueue_scripts' );
+	add_action( 'wp_enqueue_scripts', '_1p21_dv_register_scripts' );
 
 // display id on edit page
 function _1p21_dv_display_id_to_edit_page() {

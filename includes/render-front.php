@@ -337,7 +337,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 		$render .= "</div>";
 
 
-		_1p21_dv_output_arr($data_visual);
+		// _1p21_dv_output_arr($data_visual);
 		
 	}else{
 		$render =  '<div class="data-visualizer no-data"><div class="data-visualizer-wrapper fatality">Sorry, the data visual does not exist</div></div>';
@@ -353,7 +353,13 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 }
 
 function _1p21_div_data_visualizer_render_by_short($atts = array()){
-	global $_1p21_dv;
+    global $_1p21_dv;
+    
+
+    wp_enqueue_script( 'd3' );
+    wp_enqueue_script( '1p21-dv-d3' );
+    wp_enqueue_style( '1p21-dv-d3-styles' );
+    
 	$args = shortcode_atts($_1p21_dv['defaults'],$atts,'dv');
 
 	extract( $args );
@@ -364,7 +370,13 @@ function _1p21_div_data_visualizer_render_by_short($atts = array()){
 } 
 //shortlived legacy / fallback
 function _1p21_div_data_visualizer_render_by_short_longer($atts = array()){
-	global $_1p21_dv;
+    global $_1p21_dv;
+    
+
+    wp_enqueue_script( 'd3' );
+    wp_enqueue_script( '1p21-dv-d3' );
+    wp_enqueue_style( '1p21-dv-d3-styles' );
+    
 	$args = shortcode_atts($_1p21_dv['defaults'],$atts,'data_visualizer');
 
 	extract( $args );
