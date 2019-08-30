@@ -1,6 +1,6 @@
 <!-- DO NOT EDIT README.html. edit README.md instead -->
 
-<h1 id="pluginname:1point21datavizualizer">Plugin Name: 1Point21 Data Vizualizer</h1>
+<h1>Plugin Name: 1Point21 Data Vizualizer</h1>
 
 <p>Plugin URI: <a href="https://github.com/samzabala">https://github.com/samzabala</a><br />
 Description: Data visualizer using d3 and svgs<br />
@@ -8,7 +8,7 @@ Version: 1.0.1<br />
 Author: 1Point21 Interactive<br />
 Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21interactive.com/</a></p>
 
-<h1 id="tableofcontents">Table of contents</h1>
+<h1>Table of contents</h1>
 
 <ol>
 <li><p><a href="#shortcode">Shortcode</a>]</p></li>
@@ -17,21 +17,21 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <li><p><a href="#functions">Functions</a></p></li>
 </ol>
 
-<h1 id="shortcode">Shortcode</h1>
+<h1>Shortcode</h1>
 
 <p>You can add a data visualizer using the shortcode <code>dv</code> or <code>data_visalizer</code></p>
 
 <p>Examples:</p>
 
-<pre><code class="txt">[dv id=666 width=800 height=600]
-</code></pre>
+<p><code>txt
+[dv id=666 width=800 height=600]</code></p>
 
-<pre><code class="txt">[data_visalizer id=666 width=800 height=600]
-</code></pre>
+<p><code>txt
+[data_visalizer id=666 width=800 height=600]</code></p>
 
 <p><em><strong>Note:</strong> in case <code>dv</code> conflicts with another shortcode, the plugin will output an error in the back end and advise to use <code>data_visualizer</code></em></p>
 
-<h1 id="shortcodeparameters">Shortcode Parameters</h1>
+<h1>Shortcode Parameters</h1>
 
 <ul>
 <li><p><strong><code>id</code></strong><br />
@@ -45,10 +45,10 @@ gutter to set on graph canvas to compensate spaces for ticks and labels.</p></li
 multiplier of the gutter.</p></li>
 <li><p><strong><code>width</code></strong><br />
 <strong>[ optional | default: <code>600</code> | type: number ]</strong><br />
-width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn&#8217;t enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p></li>
+width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p></li>
 <li><p><strong><code>height</code></strong><br />
 <strong>[ optional | default: <code>600</code> | type: number ]</strong><br />
-height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn&#8217;t enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p></li>
+height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p></li>
 <li><p><strong><code>transition</code></strong><br />
 <strong>[ optional | default: <code>1500</code> | type: number ]</strong><br />
 how long should all animations or transitions take</p></li>
@@ -60,101 +60,104 @@ delay of rendering the graph. useful in case there is a script that needs to loa
 base font size to size text relative to. also accepts integer value.</p></li>
 </ul>
 
-<h1 id="backendsettings">Backend Settings</h1>
+<h1>Backend Settings</h1>
 
-<p><strong>Description</strong><br />
-<strong>[ optional | default: <code>''</code> ]</strong><br />
+<h2>Description</h2>
+
+<p><strong>[ optional | default: <code>''</code> ]</strong><br />
 Add a subtilte or description for the data visual</p>
 
-<h2 id="datasettings">Data Settings</h2>
+<h2>Data Settings</h2>
 
-<p><strong>Type</strong><br />
-<strong>[ REQUIRED | default: Bar (<code>bar</code>) | options: Line (<code>line</code>), Pie (<code>pie</code>), Scatter plot (<code>scatter</code>) ]</strong><br />
-how long should all animations or transitions take</p>
+<h3><strong>Type</strong></h3>
 
-<h3 id="source">Source</h3>
+<p><strong>[ REQUIRED | default: Bar (<code>bar</code>) | options: Line (<code>line</code>), Pie (<code>pie</code>), Scatter plot (<code>scatter</code>) ]</strong><br />
+Type of graph the data will be presented as.</p>
+
+<h3><strong>Source</strong></h3>
 
 <ul>
-<li><dl>
-<dt><strong>Source Type</strong></dt>
-<dt>Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)</dt>
-<dt>depending on set option one of the appropriate REQUIRED fields for input will be shown.</dt>
-<dt><strong>File</strong></dt>
-<dd> <strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code> | Available when: <em>Source Type</em> is <code>file</code> ]</strong></dd>
+<li><strong>Source Type</strong><br />
+<strong>[ REQUIRED | options: File (csv,tsv) (<code>file</code>), URL (<code>url</code>), Text (JSON code) (<code>text</code>), Rows (UI Field) (<code>rows</code>) ]</strong><br />
+Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)<br />
+depending on set option one of the appropriate REQUIRED fields for input will be shown.
 
-<dd> Input directly from the media library. <em>(Note: JSON is not allowed through this method for security)</em><br />
-<strong>URL (url)</strong></dd>
+<ul>
+<li><p><strong>File</strong><br />
+<strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code> | Available when: <em>Source Type</em> is <code>file</code> ]</strong><br />
+Input directly from the media library. <em>(Note: JSON is not allowed through this method for security)</em></p></li>
+<li><p><strong>URL (url)</strong><br />
+<strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code>, <code>json</code> | Available when: <em>Source Type</em> is <code>url</code> ]</strong><br />
+Input data through an external file's url</p></li>
+<li><p><strong>Text (JSON code)</strong><br />
+<strong>[ REQUIRED | Valid file types: <code>json</code> | Available when: <em>Source Type</em> is <code>text</code> ]</strong><br />
+Input through the data in json format through a textbox. recommended for a more customized and controlled data</p></li>
+<li><p><strong>Rows</strong><br />
+<strong>[ REQUIRED | Valid file types: Available when: <em>Source Type</em> is <code>rows</code> ]</strong><br />
+Input via acf repeater fields. For each row there are available input fields</p>
 
-<dd> <strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code>, <code>json</code> | Available when: <em>Source Type</em> is <code>url</code> ]</strong></dd>
-
-<dd> Input data through an external file&#8217;s url<br />
-<strong>Text (JSON code)</strong></dd>
-
-<dd> <strong>[ REQUIRED | Valid file types: <code>json</code> | Available when: <em>Source Type</em> is <code>text</code> ]</strong></dd>
-
-<dd> Input through the data in json format through a textbox. recommended for a more customized and controlled data<br />
-<strong>Rows</strong></dd>
-
-<dd> <strong>[ REQUIRED | Valid file types: Available when: <em>Source Type</em> is <code>rows</code> ]</strong></dd>
-
-<dd><dl>
-<dt> Input via acf repeater fields. For each row there are available input fields</dt>
-<dt><strong>Name</strong></dt>
-<dd> <strong>[ REQUIRED ]</strong></dd>
-
-<dd> Name for the data<br />
-<strong>Value</strong></dd>
-
-<dd> <strong>[ REQUIRED ]</strong></dd>
-
-<dd> Value for the data<br />
-<strong>Category</strong></dd>
-
-<dd> <strong>[ Optional | Available when: <em>Type</em> is set to <code>bar</code>, <code>line</code>, or <code>scatter</code> ]</strong></dd>
-
-<dd> Category value to represent the color the data<br />
-<strong>Plot Point Area</strong></dd>
-
-<dd> <strong>[ Optional | Available when: <em>Type</em> is set to <code>scatter</code> ]</strong></dd>
-
-<dd> Numeric data value that will influence the size of the scatter plot point<br />
-<strong>Source Key</strong></dd>
-</dl>
-</dd>
-
-<dd> <strong>[ optional | Valid file types: Available when: <em>Source Type</em> is <code>file</code>, <code>url</code>, <code>text</code> ]</strong></dd>
-
-<dd> object key to the data to use.</dd>
-
-<dd> if left blank, data will be taken from the root level</dd>
-
-<dd> if there is a value, the data returned from that key will be us</dd>
-</dl>
-</li>
+<ul>
+<li><p><strong>Name</strong><br />
+<strong>[ REQUIRED ]</strong><br />
+Name for the data</p></li>
+<li><p><strong>Value</strong><br />
+<strong>[ REQUIRED ]</strong><br />
+Value for the data</p></li>
+<li><p><strong>Category</strong><br />
+<strong>[ Optional | Available when: <em>Type</em> is set to <code>bar</code>, <code>line</code>, or <code>scatter</code> ]</strong><br />
+Category value to represent the color the data</p></li>
+<li><p><strong>Plot Point Area</strong><br />
+<strong>[ Optional | Available when: <em>Type</em> is set to <code>scatter</code> ]</strong><br />
+Numeric data value that will influence the size of the scatter plot point</p></li>
+</ul></li>
+<li><p><strong>Source Key</strong><br />
+<strong>[ optional | Valid file types: Available when: <em>Source Type</em> is <code>file</code>, <code>url</code>, <code>text</code> ]</strong><br />
+object key to the data to use.<br />
+if left blank, data will be taken from the root level<br />
+if there is a value, the data returned from that key will be used</p></li>
+</ul></li>
 </ul>
 
-<h3 id="datakeys">Data Keys</h3>
+<h3>Data Keys</h3>
 
-<dl>
-<dt><strong>Name Key</strong></dt>
-<dd> ** [ REQUIRED ] **</dd>
-</dl>
+<ul>
+<li><p><strong>Name Key</strong></p>
 
-<h4 id="sourcekey">Source key</h4>
+<p>** [ REQUIRED ] **</p>
+
+<p>Key relative to a datum instance's level to represent the data' name</p></li>
+<li><p><strong>Value Key</strong></p>
+
+<p>** [ REQUIRED ] **</p>
+
+<p>Key relative to a datum instance's level to represent the data's value</p></li>
+<li><p><strong>Value Key</strong></p>
+
+<p>** [ REQUIRED ] **</p>
+
+<p>Key relative to a datum instance's level to represent the data's value</p></li>
+<li><p><strong>Value Key</strong></p>
+
+<p>** [ REQUIRED ] **</p>
+
+<p>Key relative to a datum instance's level to represent the data's value</p></li>
+</ul>
+
+<h4>Source key</h4>
 
 <p>Key where the data to be used is stored. This is in case the loaded data could not be modified and is in one or two sublevels deep of the data requested</p>
 
-<h4 id="namekey">Name Key</h4>
+<h4>Name Key</h4>
 
 <p>data Key that will link the representation of each graph element. set relative to the instance of data</p>
 
-<h4 id="valuekey">Value Key</h4>
+<h4>Value Key</h4>
 
 <p>data Key that will link the representation of each graph element. set relative to the instance of data</p>
 
-<h3 id="layout">Layout</h3>
+<h3>Layout</h3>
 
-<h4 id="typedefault:bar">Type (default: &#8216;bar&#8217;)</h4>
+<h4>Type (default: 'bar')</h4>
 
 <p>what type of graph to visualize the data into. appropriate graph settings fields will appear for the set option</p>
 
@@ -166,11 +169,11 @@ how long should all animations or transitions take</p>
 <li>Pie (Not Yet)</li>
 </ul>
 
-<h4 id="xandysettings">X and Y Settings</h4>
+<h4>X and Y Settings</h4>
 
 <p>Only available for Bar and line graph. Each axis setting has the following fields</p>
 
-<h5 id="axisdatadefault:namekeyxvaluekeyy">Axis Data (default: Name Key (x)| Value Key (y))</h5>
+<h5>Axis Data (default: Name Key (x)| Value Key (y))</h5>
 
 <p>Key that will represent the axis ( name key or value key)</p>
 
@@ -178,83 +181,45 @@ how long should all animations or transitions take</p>
 *Name Key
 *Value Key</p>
 
-<h5 id="alignmentdefault:bottomxlefty">Alignment (default: Bottom (x), Left (y))</h5>
+<h5>Alignment (default: Bottom (x), Left (y))</h5>
 
 <p>which corner the axis or the graph elements offset from</p>
 
-<h5 id="useticksdefault:false">Use Ticks (default: false)</h5>
+<h5>Use Ticks (default: false)</h5>
 
 <p>Whether to use a tick ruler for the axis</p>
 
-<h5 id="label">Label</h5>
+<h5>Label</h5>
 
 <p>Custom text label for the axis</p>
 
-<h5 id="colorspalette">Colors Palette</h5>
+<h5>Colors Palette</h5>
 
 <p>Scheme to color graphic items</p>
 
-<h5 id="advancedsettings">Advanced Settings</h5>
+<h5>Advanced Settings</h5>
 
-<table>
-<colgroup>
-<col />
-<col />
-<col />
-<col />
-</colgroup>
+<p>| Settings name | Default | Available Options | Description |
+| ------------- | ------- | ----------------- | ------------ |
+| Ticks format | '' | n/a | string or javascript function to format data |
+| Ticks amount | '' | n/a | string or javascript function to set amount of data |
+| Minimum  | null | n/a | number to minimum of axis |
+| Maximum  | null | n/a | number to maximum of axis |</p>
 
-<thead>
-<tr>
-	<th> Settings name </th>
-	<th> Default </th>
-	<th> Available Options </th>
-	<th> Description </th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-	<td> Ticks format </td>
-	<td> '' </td>
-	<td> n/a </td>
-	<td> string or javascript function to format data </td>
-</tr>
-<tr>
-	<td> Ticks amount </td>
-	<td> '' </td>
-	<td> n/a </td>
-	<td> string or javascript function to set amount of data </td>
-</tr>
-<tr>
-	<td> Minimum  </td>
-	<td> null </td>
-	<td> n/a </td>
-	<td> number to minimum of axis </td>
-</tr>
-<tr>
-	<td> Maximum  </td>
-	<td> null </td>
-	<td> n/a </td>
-	<td> number to maximum of axis </td>
-</tr>
-</tbody>
-</table>
-
-<h4 id="linesettings">Line Settings</h4>
+<h4>Line Settings</h4>
 
 <p>Only available for Pie graph</p>
 
-<h4 id="piesettings">Pie Settings</h4>
+<h4>Pie Settings</h4>
 
-<h5 id="strokecolor">Stroke Color</h5>
+<h5>Stroke Color</h5>
 
 <p>yes</p>
 
-<h5 id="addplotpoints">Add Plot Points</h5>
+<h5>Add Plot Points</h5>
 
 <p>add a doot doot on a data instance</p>
 
-<h3 id="advancedtab">Advanced Tab</h3>
+<h3>Advanced Tab</h3>
 
-<h2 id="functions">Functions</h2>
+<h2>Functions</h2>

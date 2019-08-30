@@ -69,56 +69,89 @@ _**Note:** in case `dv` conflicts with another shortcode, the plugin will output
 
 # Backend Settings
 
-**Description**  
-	**[ optional | default: `''` ]**  
-	Add a subtilte or description for the data visual
+## Description
+
+**[ optional | default: `''` ]**  
+Add a subtilte or description for the data visual
 
 ## Data Settings
 
-**Type**  
-	**[ REQUIRED | default: Bar (`bar`) | options: Line (`line`), Pie (`pie`), Scatter plot (`scatter`) ]**  
-	how long should all animations or transitions take  
+###	**Type**
 
-### Source
+**[ REQUIRED | default: Bar (`bar`) | options: Line (`line`), Pie (`pie`), Scatter plot (`scatter`) ]**  
+Type of graph the data will be presented as.
+
+###	**Source**
 
 *	**Source Type**  
 	**[ REQUIRED | options: File (csv,tsv) (`file`),  URL (`url`), Text (JSON code) (`text`), Rows (UI Field) (`rows`) ]**  
 	Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)  
-	depending on set option one of the appropriate  REQUIRED fields for input will be shown.  
-    **File**  
-    : **[  REQUIRED | Valid file types: `csv`, `tsv`  | Available when: *Source Type* is `file` ]**  
-    : Input directly from the media library. *(Note: JSON is not allowed through this method for security)*  
-    **URL (url)**  
-    : **[  REQUIRED | Valid file types: `csv`, `tsv`, `json` | Available when: *Source Type* is `url` ]**  
-    : Input data through an external file's url  
-    **Text (JSON code)**  
-    : **[  REQUIRED | Valid file types: `json` | Available when: *Source Type* is `text` ]**  
-    : Input through the data in json format through a textbox. recommended for a more customized and controlled data  
-    **Rows**  
-    : **[  REQUIRED | Valid file types: Available when: *Source Type* is `rows` ]**  
-	: Input via acf repeater fields. For each row there are available input fields  
-		**Name**  
-		: **[ REQUIRED ]**  
-		: Name for the data  
-		**Value**  
-		: **[ REQUIRED ]**  
-		: Value for the data  
-		**Category**  
-		: **[ Optional | Available when: *Type* is set to `bar`, `line`, or `scatter` ]**  
-		: Category value to represent the color the data  
-		**Plot Point Area**  
-		: **[ Optional | Available when: *Type* is set to `scatter` ]**  
-		: Numeric data value that will influence the size of the scatter plot point  
-	**Source Key**  
-    : **[ optional | Valid file types: Available when: *Source Type* is `file`, `url`, `text` ]**  
-    : object key to the data to use.  
-    : if left blank, data will be taken from the root level  
-    : if there is a value, the data returned from that key will be us
+	depending on set option one of the appropriate  REQUIRED fields for input will be shown.
+
+	-	**File**  
+	**[  REQUIRED | Valid file types: `csv`, `tsv`  | Available when: *Source Type* is `file` ]**  
+	Input directly from the media library. *(Note: JSON is not allowed through this method for security)*
+	
+	-	**URL (url)**  
+	**[  REQUIRED | Valid file types: `csv`, `tsv`, `json` | Available when: *Source Type* is `url` ]**  
+	Input data through an external file's url
+	
+	-	**Text (JSON code)**  
+	**[  REQUIRED | Valid file types: `json` | Available when: *Source Type* is `text` ]**  
+	Input through the data in json format through a textbox. recommended for a more customized and controlled data
+	
+	-	**Rows**  
+	**[  REQUIRED | Valid file types: Available when: *Source Type* is `rows` ]**  
+	Input via acf repeater fields. For each row there are available input fields
+		
+		-	**Name**  
+		**[ REQUIRED ]**  
+		Name for the data
+		
+		-	**Value**  
+		**[ REQUIRED ]**  
+		Value for the data
+		
+		-	**Category**  
+		**[ Optional | Available when: *Type* is set to `bar`, `line`, or `scatter` ]**  
+		Category value to represent the color the data
+		
+		-	**Plot Point Area**  
+		**[ Optional | Available when: *Type* is set to `scatter` ]**  
+		Numeric data value that will influence the size of the scatter plot point
+		
+	*	**Source Key**  
+		**[ optional | Valid file types: Available when: *Source Type* is `file`, `url`, `text` ]**  
+		object key to the data to use.  
+		if left blank, data will be taken from the root level  
+		if there is a value, the data returned from that key will be used
 	
 
 ### Data Keys
-**Name Key**
-: ** [ REQUIRED ] **
+
+*	**Name Key**
+
+	** [ REQUIRED ] **
+	
+	Key relative to a datum instance's level to represent the data' name
+
+*	**Value Key**
+
+	** [ REQUIRED ] **
+	
+	Key relative to a datum instance's level to represent the data's value
+
+*	**Value Key**
+
+	** [ REQUIRED ] **
+	
+	Key relative to a datum instance's level to represent the data's value
+
+*	**Value Key**
+
+	** [ REQUIRED ] **
+	
+	Key relative to a datum instance's level to represent the data's value
 
 #### Source key
 Key where the data to be used is stored. This is in case the loaded data could not be modified and is in one or two sublevels deep of the data requested

@@ -98,16 +98,16 @@ add_action( 'admin_menu', '_1p21_dv_add_documentation_link',11 );
             margin: 0 auto;
         }
 
-        ._1p21-dv-content {
-            line-height: 2;
-        }
-
         ._1p21-dv-content h3 {
             font-size: 1.2em;
         }
 
         ._1p21-dv-content li {
             margin-bottom: 2em;
+        }
+
+        ._1p21-dv-content li ul {
+            padding-left: 2em;
         }
 
         ._1p21-dv-content dt:not(:first-child) {
