@@ -60,7 +60,7 @@ function _1p21_dv_display_id_to_edit_page() {
 add_action( 'edit_form_after_title', '_1p21_dv_display_id_to_edit_page' );
 
 
-function _1p21_dv_add_documentation_link(){
+function _1p21_dv_add_documentation_link_to_cpt_dropdown(){
     // add_options_page(title, menu name, capability, slug, form callback);
 
     add_submenu_page(
@@ -85,7 +85,18 @@ function _1p21_dv_add_documentation_link(){
         };
 
 }
-add_action( 'admin_menu', '_1p21_dv_add_documentation_link',11 );
+add_action( 'admin_menu', '_1p21_dv_add_documentation_link_to_cpt_dropdown',11 );
+
+
+//add link
+add_filter('plugin_action_links_' . _1P21_DV_PLUGIN_BASENAME, '_1p21_dv_add_documentation_link_to_plugins');
+function _1p21_dv_add_documentation_link_to_plugins( $links ) {
+    echo 'shit';
+    $links[] = '<a href="' .
+    get_admin_url( null,'edit.php?post_type=data-visual&page=1p21-dv-documentation' ) .
+        '">' . __('Documentation') . '</a>';
+    return $links;
+}
 
 //style classes of acf
     function _1p21_dv_acf_fields_styles(){

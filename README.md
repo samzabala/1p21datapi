@@ -21,7 +21,11 @@ You can add a data visualizer using the shortcode `dv` or `data_visalizer`
 
 Examples:
 
+Using `dv`
+
 	[dv id=666 width=800 height=600]
+
+Using `data_visualizer`
 
 	[data_visalizer id=666 width=800 height=600]
 
@@ -90,7 +94,7 @@ Add a subtilte or description for the data visual
 
 ###	*Type*
 
-**[ REQUIRED | Default: *Bar* ('Bar') | options: *Line* ('Line'), *Pie* ('Pie'), *Scatter plot* ('Scatter Plot') ]**
+**[ REQUIRED | Default: *Bar* | options: *Bar*, *Line*, *Pie*, *Scatter Plot* ]**
 
 Type of graph the data will be presented as.
 
