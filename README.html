@@ -34,192 +34,210 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <h1>Shortcode Parameters</h1>
 
 <ul>
-<li><p><strong><code>id</code></strong><br />
-<strong>[ REQUIRED | default: <code>null</code> | type: number ]</strong><br />
-post id of the graph to display.</p></li>
-<li><p><strong><code>margin</code></strong><br />
-<strong>[ optional | default: <code>10</code> | type: number ]</strong><br />
-gutter to set on graph canvas to compensate spaces for ticks and labels.</p></li>
-<li><p><strong><code>margin_offset</code></strong><br />
-<strong>[ optional | default: <code>2</code> | type: number ]</strong><br />
-multiplier of the gutter.</p></li>
-<li><p><strong><code>width</code></strong><br />
-<strong>[ optional | default: <code>600</code> | type: number ]</strong><br />
-width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p></li>
-<li><p><strong><code>height</code></strong><br />
-<strong>[ optional | default: <code>600</code> | type: number ]</strong><br />
-height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p></li>
-<li><p><strong><code>transition</code></strong><br />
-<strong>[ optional | default: <code>1500</code> | type: number ]</strong><br />
-how long should all animations or transitions take</p></li>
-<li><p><strong><code>delay</code></strong><br />
-<strong>[ optional | default: <code>250</code> | type: number ]</strong><br />
-delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering</p></li>
-<li><p><strong><code>font_size</code></strong><br />
-<strong>[ optional | default: <code>'16px'</code> | type: integer / string ]</strong><br />
-base font size to size text relative to. also accepts integer value.</p></li>
+<li><p><strong><code>id</code></strong></p>
+
+<p><strong>[ REQUIRED | default: <code>null</code> | type: number ]</strong></p>
+
+<p>post id of the graph to display.</p></li>
+<li><p><strong><code>margin</code></strong></p>
+
+<p><strong>[ optional | default: <code>10</code> | type: number ]</strong></p>
+
+<p>gutter to set on graph canvas to compensate spaces for ticks and labels.</p></li>
+<li><p><strong><code>margin_offset</code></strong></p>
+
+<p><strong>[ optional | default: <code>2</code> | type: number ]</strong></p>
+
+<p>multiplier of the gutter.</p></li>
+<li><p><strong><code>width</code></strong></p>
+
+<p><strong>[ optional | default: <code>600</code> | type: number ]</strong></p>
+
+<p>width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p></li>
+<li><p><strong><code>height</code></strong></p>
+
+<p><strong>[ optional | default: <code>600</code> | type: number ]</strong></p>
+
+<p>height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p></li>
+<li><p><strong><code>transition</code></strong></p>
+
+<p><strong>[ optional | default: <code>1500</code> | type: number ]</strong></p>
+
+<p>how long should all animations or transitions take</p></li>
+<li><p><strong><code>delay</code></strong></p>
+
+<p><strong>[ optional | default: <code>250</code> | type: number ]</strong></p>
+
+<p>delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering</p></li>
+<li><p><strong><code>font_size</code></strong></p>
+
+<p><strong>[ optional | default: <code>'16px'</code> | type: integer / string ]</strong></p>
+
+<p>base font size to size text relative to. also accepts integer value.</p></li>
 </ul>
 
 <h1>Backend Settings</h1>
 
 <h2>Description</h2>
 
-<p><strong>[ optional | default: <code>''</code> ]</strong><br />
-Add a subtilte or description for the data visual</p>
+<p><strong>[ optional | default: <code>''</code> ]</strong></p>
+
+<p>Add a subtilte or description for the data visual</p>
 
 <h2>Data Settings</h2>
 
-<h3><strong>Type</strong></h3>
+<h3>Type</h3>
 
-<p><strong>[ REQUIRED | default: Bar (<code>bar</code>) | options: Line (<code>line</code>), Pie (<code>pie</code>), Scatter plot (<code>scatter</code>) ]</strong><br />
-Type of graph the data will be presented as.</p>
+<p><strong>[ REQUIRED | default: Bar (<code>bar</code>) | options: Line (<code>line</code>), Pie (<code>pie</code>), Scatter plot (<code>scatter</code>) ]</strong></p>
 
-<h3><strong>Source</strong></h3>
+<p>Type of graph the data will be presented as.</p>
 
-<ul>
-<li><strong>Source Type</strong><br />
-<strong>[ REQUIRED | options: File (csv,tsv) (<code>file</code>), URL (<code>url</code>), Text (JSON code) (<code>text</code>), Rows (UI Field) (<code>rows</code>) ]</strong><br />
-Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)<br />
-depending on set option one of the appropriate REQUIRED fields for input will be shown.
+<h3>Source</h3>
 
 <ul>
-<li><p><strong>File</strong><br />
-<strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code> | Available when: <em>Source Type</em> is <code>file</code> ]</strong><br />
-Input directly from the media library. <em>(Note: JSON is not allowed through this method for security)</em></p></li>
-<li><p><strong>URL (url)</strong><br />
-<strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code>, <code>json</code> | Available when: <em>Source Type</em> is <code>url</code> ]</strong><br />
-Input data through an external file's url</p></li>
-<li><p><strong>Text (JSON code)</strong><br />
-<strong>[ REQUIRED | Valid file types: <code>json</code> | Available when: <em>Source Type</em> is <code>text</code> ]</strong><br />
-Input through the data in json format through a textbox. recommended for a more customized and controlled data</p></li>
-<li><p><strong>Rows</strong><br />
-<strong>[ REQUIRED | Valid file types: Available when: <em>Source Type</em> is <code>rows</code> ]</strong><br />
-Input via acf repeater fields. For each row there are available input fields</p>
+<li><p><strong><em>Source Type</em></strong></p>
+
+<p><strong>[ REQUIRED | options: File (csv,tsv) (<code>file</code>), URL (<code>url</code>), Text (JSON code) (<code>text</code>), Rows (UI Field) (<code>rows</code>) ]</strong></p>
+
+<p>Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)</p>
+
+<p>depending on set option, one of the fields below for data input will be shown.</p>
 
 <ul>
-<li><p><strong>Name</strong><br />
-<strong>[ REQUIRED ]</strong><br />
-Name for the data</p></li>
-<li><p><strong>Value</strong><br />
-<strong>[ REQUIRED ]</strong><br />
-Value for the data</p></li>
-<li><p><strong>Category</strong><br />
-<strong>[ Optional | Available when: <em>Type</em> is set to <code>bar</code>, <code>line</code>, or <code>scatter</code> ]</strong><br />
-Category value to represent the color the data</p></li>
-<li><p><strong>Plot Point Area</strong><br />
-<strong>[ Optional | Available when: <em>Type</em> is set to <code>scatter</code> ]</strong><br />
-Numeric data value that will influence the size of the scatter plot point</p></li>
+<li><p><strong><em>File</em></strong></p>
+
+<p><strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code> | Available when: <em>Source Type</em> is <code>file</code> ]</strong></p>
+
+<p>Input directly from the media library.</p>
+
+<p><em><strong>Note:</strong> JSON is not allowed through this method for security</em></p></li>
+<li><p><strong><em>URL (url)</em></strong></p>
+
+<p><strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code>, <code>json</code> | Available when: <em>Source Type</em> is <code>url</code> ]</strong></p>
+
+<p>Input data through an external file's url</p></li>
+<li><p><strong><em>Text (JSON code)</em></strong></p>
+
+<p><strong>[ REQUIRED | Valid file types: <code>json</code> | Available when: <em>Source Type</em> is <code>text</code> ]</strong></p>
+
+<p>Input through the data in json format through a textbox. recommended for a more customized and controlled data</p></li>
+<li><p><strong><em>Rows</em></strong></p>
+
+<p><strong>[ REQUIRED | Valid file types: Available when: <em>Source Type</em> is <code>rows</code> ]</strong></p>
+
+<p>Input via acf repeater fields. For each row there are available input fields</p>
+
+<ul>
+<li><p><strong><em>Name</em></strong></p>
+
+<p><strong>[ REQUIRED ]</strong>*</p>
+
+<p>Name for the data</p></li>
+<li><p><strong><em>Value</em></strong></p>
+
+<p><strong>[ REQUIRED ]</strong>*</p>
+
+<p>Value for the data</p></li>
+<li><p><strong><em>Category</em></strong></p>
+
+<p><strong>[ Optional | Available when: <em>Type</em> is set to <code>bar</code>, <code>line</code>, <code>scatter</code> ]</strong></p>
+
+<p>Category value to represent the color the data</p></li>
+<li><p><strong><em>Plot Point Area</em></strong></p>
+
+<p><strong>[ Optional | Available when: <em>Type</em> is set to <code>scatter</code> ]</strong></p>
+
+<p>Numeric data value that will influence the size of the scatter plot point</p></li>
 </ul></li>
-<li><p><strong>Source Key</strong><br />
-<strong>[ optional | Valid file types: Available when: <em>Source Type</em> is <code>file</code>, <code>url</code>, <code>text</code> ]</strong><br />
-object key to the data to use.<br />
-if left blank, data will be taken from the root level<br />
-if there is a value, the data returned from that key will be used</p></li>
 </ul></li>
+<li><p><strong>Source Key</strong></p>
+
+<p><strong>[ optional | Valid file types: Available when: <em>Source Type</em> is <code>file</code>, <code>url</code>, <code>text</code> ]</strong></p>
+
+<p>object key to the data to use.</p>
+
+<p>if left blank, data will be taken from the root level</p>
+
+<p>if there is a value, the data returned from that key will be used</p></li>
 </ul>
 
 <h3>Data Keys</h3>
 
 <ul>
-<li><p><strong>Name Key</strong></p>
+<li><p><strong><em>Name Key</em></strong></p>
 
-<p>** [ REQUIRED ] **</p>
+<p><strong>[ REQUIRED | Available when: <em>Source Type</em> is <code>file</code>, <code>url</code>, <code>text</code> ]</strong></p>
 
 <p>Key relative to a datum instance's level to represent the data' name</p></li>
-<li><p><strong>Value Key</strong></p>
+<li><p><strong><em>Value Key</em></strong></p>
 
-<p>** [ REQUIRED ] **</p>
-
-<p>Key relative to a datum instance's level to represent the data's value</p></li>
-<li><p><strong>Value Key</strong></p>
-
-<p>** [ REQUIRED ] **</p>
+<p><strong>[ REQUIRED | Available when: <em>Source Type</em> is <code>file</code>, <code>url</code>, <code>text</code> ]</strong></p>
 
 <p>Key relative to a datum instance's level to represent the data's value</p></li>
-<li><p><strong>Value Key</strong></p>
+<li><p><strong><em>Plot Points Area Key</em></strong></p>
 
-<p>** [ REQUIRED ] **</p>
+<p><strong>[ Optional | Available when: <em>Source Type</em> is <code>file</code>, <code>url</code>, <code>text</code>; <em>Type</em> is <code>scatter</code> ]</strong></p>
+
+<p>Key relative to a datum instance's level to represent the data's value</p></li>
+<li><p><strong><em>Color Key</em></strong></p>
+
+<p><strong>[ Optional | Available when: <em>Source Type</em> is <code>file</code>, <code>url</code>, <code>text</code>; <em>Type</em> is NOT <code>pie</code> ]</strong></p>
 
 <p>Key relative to a datum instance's level to represent the data's value</p></li>
 </ul>
 
-<h4>Source key</h4>
+<h3>Set Name Key As Numeric</h3>
 
-<p>Key where the data to be used is stored. This is in case the loaded data could not be modified and is in one or two sublevels deep of the data requested</p>
+<p><strong>[ Optional | default: false | Available when: <em>Source Type</em> is <code>file</code>, <code>url</code>, <code>text</code>; <em>Type</em> is NOT <code>pie</code>, NOT <code>bar</code> ]</strong></p>
 
-<h4>Name Key</h4>
+<p>Adds numeric capabilities to name data.</p>
 
-<p>data Key that will link the representation of each graph element. set relative to the instance of data</p>
+<p>_<em><strong>Note:</strong> If name value is not numeric, this will cause errors and the graph will not render properly</em></p>
 
-<h4>Value Key</h4>
+<h3>Format Settings</h3>
 
-<p>data Key that will link the representation of each graph element. set relative to the instance of data</p>
+<p><strong>[ Optional | Available for: <code>name</code>, <code>value</code>, <code>color</code> keys ]</strong></p>
 
-<h3>Layout</h3>
-
-<h4>Type (default: 'bar')</h4>
-
-<p>what type of graph to visualize the data into. appropriate graph settings fields will appear for the set option</p>
-
-<p>available options:</p>
+<p>These are optional settings to allow reformatting data on the visualizer</p>
 
 <ul>
-<li>Bar</li>
-<li>Line (Not yet)</li>
-<li>Pie (Not Yet)</li>
+<li><p><strong><em>Prepend</em></strong></p>
+
+<p><strong>[ Optional ]</strong></p>
+
+<p>Character/s to append to the data.</p>
+
+<p><em><strong>Note:</strong> Input will be translated as a parsed string</em></p></li>
+<li><p><strong><em>Append</em></strong></p>
+
+<p><strong>[ Optional ]</strong></p>
+
+<p>Character/s to append to the data.</p>
+
+<p><em><strong>Note:</strong> Input will be translated as a parsed string</em></p></li>
+<li><p><strong><em>Divider</em></strong></p>
+
+<p><strong>[ Optional Available for: <code>value</code> key; <em>Set Name Key As Numeric</em> is set to <code>true</code> ]</strong></p>
+
+<p>Amount to divide numeric data by. good for shortening values.</p>
+
+<p>For example, presenting <code>100000</code> as dollar value in thousands as <code>$100K</code></p>
+
+<ul>
+<li><code>$</code> Comes from set <em>Prepend</em></li>
+<li><code>100000</code> is divided by <code>Divider</code> set to <code>1000</code> to shorten to <code>100</code></li>
+<li><code>K</code> comes from set <em>Append</em></li>
+</ul></li>
+<li><p><strong><em>Advanced</em></strong></p>
+
+<ul>
+<li><p><strong><em>Divider</em></strong></p>
+
+<p><strong>[ Optional ]</strong></p>
+
+<p>Accepts a string that follows the format for <a href="https://github.com/d3/d3-format#locale_format"><code>d3.format()</code></a></p>
+
+<p>Or a javascript function that passes the <code>data</code> and its <code>index</code></p></li>
+<li><p><strong><em>More options will be added soon!</em></strong></p></li>
+</ul></li>
 </ul>
-
-<h4>X and Y Settings</h4>
-
-<p>Only available for Bar and line graph. Each axis setting has the following fields</p>
-
-<h5>Axis Data (default: Name Key (x)| Value Key (y))</h5>
-
-<p>Key that will represent the axis ( name key or value key)</p>
-
-<p>options available:
-*Name Key
-*Value Key</p>
-
-<h5>Alignment (default: Bottom (x), Left (y))</h5>
-
-<p>which corner the axis or the graph elements offset from</p>
-
-<h5>Use Ticks (default: false)</h5>
-
-<p>Whether to use a tick ruler for the axis</p>
-
-<h5>Label</h5>
-
-<p>Custom text label for the axis</p>
-
-<h5>Colors Palette</h5>
-
-<p>Scheme to color graphic items</p>
-
-<h5>Advanced Settings</h5>
-
-<p>| Settings name | Default | Available Options | Description |
-| ------------- | ------- | ----------------- | ------------ |
-| Ticks format | '' | n/a | string or javascript function to format data |
-| Ticks amount | '' | n/a | string or javascript function to set amount of data |
-| Minimum  | null | n/a | number to minimum of axis |
-| Maximum  | null | n/a | number to maximum of axis |</p>
-
-<h4>Line Settings</h4>
-
-<p>Only available for Pie graph</p>
-
-<h4>Pie Settings</h4>
-
-<h5>Stroke Color</h5>
-
-<p>yes</p>
-
-<h5>Add Plot Points</h5>
-
-<p>add a doot doot on a data instance</p>
-
-<h3>Advanced Tab</h3>
-
-<h2>Functions</h2>

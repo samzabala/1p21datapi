@@ -35,193 +35,222 @@ _**Note:** in case `dv` conflicts with another shortcode, the plugin will output
 
 # Shortcode Parameters
 
-*	**`id`**  
-	**[ REQUIRED | default: `null` | type: number ]**  
+*	**`id`**
+
+	**[ REQUIRED | default: `null` | type: number ]**
+
 	post id of the graph to display.
 
-*	**`margin`**  
-	**[ optional | default: `10` | type: number ]**  
+*	**`margin`**
+
+	**[ optional | default: `10` | type: number ]**
+
 	gutter to set on graph canvas to compensate spaces for ticks and labels.
 
-*	**`margin_offset`**  
-	**[ optional | default: `2` | type: number ]**  
+*	**`margin_offset`**
+
+	**[ optional | default: `2` | type: number ]**
+
 	multiplier of the gutter.
 
-*	**`width`**  
-	**[ optional | default: `600` | type: number ]**  
+*	**`width`**
+
+	**[ optional | default: `600` | type: number ]**
+
 	width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
 
-*	**`height`**  
-	**[ optional | default: `600` | type: number ]**  
+*	**`height`**
+
+	**[ optional | default: `600` | type: number ]**
+
 	height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
 
-*	**`transition`**  
-	**[ optional | default: `1500` | type: number ]**  
+*	**`transition`**
+
+	**[ optional | default: `1500` | type: number ]**
+
 	how long should all animations or transitions take
 
-*	**`delay`**  
-	**[ optional | default: `250` | type: number ]**  
+*	**`delay`**
+
+	**[ optional | default: `250` | type: number ]**
+
 	delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering
 
-*	**`font_size`**  
-	**[ optional | default: `'16px'` | type: integer / string ]**  
+*	**`font_size`**
+
+	**[ optional | default: `'16px'` | type: integer / string ]**
+
 	base font size to size text relative to. also accepts integer value.
 
 # Backend Settings
 
 ## Description
 
-**[ optional | default: `''` ]**  
+**[ optional | default: `''` ]**
+
 Add a subtilte or description for the data visual
 
 ## Data Settings
 
-###	**Type**
+###	Type
 
-**[ REQUIRED | default: Bar (`bar`) | options: Line (`line`), Pie (`pie`), Scatter plot (`scatter`) ]**  
+**[ REQUIRED | default: Bar (`bar`) | options: Line (`line`), Pie (`pie`), Scatter plot (`scatter`) ]**
+
 Type of graph the data will be presented as.
 
-###	**Source**
+###	Source
 
-*	**Source Type**  
-	**[ REQUIRED | options: File (csv,tsv) (`file`),  URL (`url`), Text (JSON code) (`text`), Rows (UI Field) (`rows`) ]**  
-	Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)  
-	depending on set option one of the appropriate  REQUIRED fields for input will be shown.
+*	***Source Type***
 
-	-	**File**  
-	**[  REQUIRED | Valid file types: `csv`, `tsv`  | Available when: *Source Type* is `file` ]**  
-	Input directly from the media library. *(Note: JSON is not allowed through this method for security)*
+	**[ REQUIRED | options: File (csv,tsv) (`file`), URL (`url`), Text (JSON code) (`text`), Rows (UI Field) (`rows`) ]**
+
+	Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)
+
+	depending on set option, one of the fields below for data input will be shown.
+
+	*	***File***
+
+		**[ REQUIRED | Valid file types: `csv`, `tsv` | Available when: *Source Type* is `file` ]**
+
+		Input directly from the media library. 
+
+		_**Note:** JSON is not allowed through this method for security_
 	
-	-	**URL (url)**  
-	**[  REQUIRED | Valid file types: `csv`, `tsv`, `json` | Available when: *Source Type* is `url` ]**  
-	Input data through an external file's url
+	*	***URL (url)***
+
+		**[ REQUIRED | Valid file types: `csv`, `tsv`, `json` | Available when: *Source Type* is `url` ]**
+
+		Input data through an external file's url
 	
-	-	**Text (JSON code)**  
-	**[  REQUIRED | Valid file types: `json` | Available when: *Source Type* is `text` ]**  
-	Input through the data in json format through a textbox. recommended for a more customized and controlled data
+	*	***Text (JSON code)***
+
+		**[ REQUIRED | Valid file types: `json` | Available when: *Source Type* is `text` ]**
+
+		Input through the data in json format through a textbox. recommended for a more customized and controlled data
 	
-	-	**Rows**  
-	**[  REQUIRED | Valid file types: Available when: *Source Type* is `rows` ]**  
-	Input via acf repeater fields. For each row there are available input fields
+	*	***Rows***
+
+		**[ REQUIRED | Valid file types: Available when: *Source Type* is `rows` ]**
+
+		Input via acf repeater fields. For each row there are available input fields
 		
-		-	**Name**  
-		**[ REQUIRED ]**  
-		Name for the data
+		*	***Name***
+
+			**[ REQUIRED ]***
+
+			Name for the data
 		
-		-	**Value**  
-		**[ REQUIRED ]**  
-		Value for the data
+		*	***Value***
+
+			**[ REQUIRED ]***
+
+			Value for the data
 		
-		-	**Category**  
-		**[ Optional | Available when: *Type* is set to `bar`, `line`, or `scatter` ]**  
-		Category value to represent the color the data
+		*	***Category***
+
+			**[ Optional | Available when: *Type* is set to `bar`, `line`, `scatter` ]**
+
+			Category value to represent the color the data
 		
-		-	**Plot Point Area**  
-		**[ Optional | Available when: *Type* is set to `scatter` ]**  
-		Numeric data value that will influence the size of the scatter plot point
+		*	***Plot Point Area***
+
+			**[ Optional | Available when: *Type* is set to `scatter` ]**
+
+			Numeric data value that will influence the size of the scatter plot point
 		
-	*	**Source Key**  
-		**[ optional | Valid file types: Available when: *Source Type* is `file`, `url`, `text` ]**  
-		object key to the data to use.  
-		if left blank, data will be taken from the root level  
-		if there is a value, the data returned from that key will be used
+*	**Source Key**
+
+	**[ optional | Valid file types: Available when: *Source Type* is `file`, `url`, `text` ]**
+
+	object key to the data to use.
+
+	if left blank, data will be taken from the root level
+
+	if there is a value, the data returned from that key will be used
 	
 
 ### Data Keys
 
-*	**Name Key**
+*	***Name Key***
 
-	** [ REQUIRED ] **
-	
+	**[ REQUIRED | Available when: *Source Type* is `file`, `url`, `text` ]**
+
 	Key relative to a datum instance's level to represent the data' name
 
-*	**Value Key**
+*	***Value Key***
 
-	** [ REQUIRED ] **
-	
+	**[ REQUIRED | Available when: *Source Type* is `file`, `url`, `text` ]**
+
 	Key relative to a datum instance's level to represent the data's value
 
-*	**Value Key**
+*	***Plot Points Area Key***
 
-	** [ REQUIRED ] **
-	
+	**[ Optional | Available when: *Source Type* is `file`, `url`, `text`; *Type* is `scatter` ]**
+
 	Key relative to a datum instance's level to represent the data's value
 
-*	**Value Key**
+*	***Color Key***
 
-	** [ REQUIRED ] **
-	
+	**[ Optional | Available when: *Source Type* is `file`, `url`, `text`; *Type* is NOT `pie` ]**
+
 	Key relative to a datum instance's level to represent the data's value
 
-#### Source key
-Key where the data to be used is stored. This is in case the loaded data could not be modified and is in one or two sublevels deep of the data requested
+### Set Name Key As Numeric
+
+**[ Optional | default: false | Available when: *Source Type* is `file`, `url`, `text`; *Type* is NOT `pie`, NOT `bar` ]**
+
+Adds numeric capabilities to name data.
+
+__**Note:** If name value is not numeric, this will cause errors and the graph will not render properly_
 
 
-#### Name Key
-data Key that will link the representation of each graph element. set relative to the instance of data
+###	Format Settings
 
-#### Value Key
-data Key that will link the representation of each graph element. set relative to the instance of data 
+**[ Optional | Available for: `name`, `value`, `color` keys ]**
 
+These are optional settings to allow reformatting data on the visualizer
 
+*	***Prepend***
 
-### Layout
-#### Type (default: 'bar')
-what type of graph to visualize the data into. appropriate graph settings fields will appear for the set option
+	**[ Optional ]**
 
-available options:
-* Bar
-* Line (Not yet)
-* Pie (Not Yet)
+	Character/s to append to the data.
 
-#### X and Y Settings
-Only available for Bar and line graph. Each axis setting has the following fields
+	_**Note:** Input will be translated as a parsed string_
 
-##### Axis Data (default: Name Key (x)| Value Key (y))
-Key that will represent the axis ( name key or value key)
+* 	***Append***
 
-options available:
-*Name Key
-*Value Key
+	**[ Optional ]**
 
-##### Alignment (default: Bottom (x), Left (y))
-which corner the axis or the graph elements offset from
+	Character/s to append to the data.
 
+	_**Note:** Input will be translated as a parsed string_
 
-##### Use Ticks (default: false)
-Whether to use a tick ruler for the axis
+*	***Divider***
 
-##### Label
-Custom text label for the axis
+	**[ Optional Available for: `value` key; *Set Name Key As Numeric* is set to `true` ]**
+
+	Amount to divide numeric data by. good for shortening values.
+	
+	For example, presenting `100000` as dollar value in thousands as `$100K`
+
+	- `$` Comes from set *Prepend*
+	- `100000` is divided by `Divider` set to `1000` to shorten to `100`
+	- `K` comes from set *Append*
 
 
-##### Colors Palette
-Scheme to color graphic items
 
+*	***Advanced***
 
-##### Advanced Settings
+	*	***Divider***
 
-| Settings name | Default | Available Options | Description  |
-| ------------- | ------- | ----------------- | ------------ |
-| Ticks format  | '' | n/a | string or javascript function to format data |
-| Ticks amount  | '' | n/a | string or javascript function to set amount of data |
-| Minimum       | null | n/a | number to minimum of axis |
-| Maximum       | null | n/a | number to maximum of axis |
+		**[ Optional ]**
 
+		Accepts a string that follows the format for [`d3.format()`](https://github.com/d3/d3-format#locale_format)
 
-#### Line Settings
-Only available for Pie graph
+		Or a javascript function that passes the `data` and its `index`
 
+	*	***More options will be added soon!***
 
-#### Pie Settings
-
-##### Stroke Color
-yes
-
-##### Add Plot Points
-add a doot doot on a data instance
-
-### Advanced Tab
-
-## Functions
 

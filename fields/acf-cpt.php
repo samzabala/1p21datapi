@@ -452,7 +452,7 @@ Key or column name of the data that will represent data based on the name key',
 				),
 				array(
 					'key' => 'field_5d42ffcf5f464',
-					'label' => 'Colors Key',
+					'label' => 'Color Key',
 					'name' => 'color',
 					'type' => 'text',
 					'instructions' => 'Data key to link color scheme to.<br>
@@ -490,7 +490,7 @@ if layout is set to line, this will be applied to plot points and will override 
 			'label' => 'Set Name Key As Numeric',
 			'name' => 'dv_name_is_num',
 			'type' => 'true_false',
-			'instructions' => 'Adds additional capabilities to data.',
+			'instructions' => 'Adds additional numeric capabilities to name data.',
 			'required' => 0,
 			'conditional_logic' => array(
 				array(
@@ -651,7 +651,7 @@ if layout is set to line, this will be applied to plot points and will override 
 							'label' => 'Format Parameter',
 							'name' => 'parameter',
 							'type' => 'textarea',
-							'instructions' => 'accepts string format or function<br>Reference: <a href="https://github.com/d3/d3-format">https://github.com/d3/d3-format</a><br>Setting this will override prepend,append, and divider settings',
+							'instructions' => 'accepts string format or function<br>Reference: <a href="https://github.com/d3/d3-format#locale_format">https://github.com/d3/d3-format#locale_format</a><br>Setting this will override prepend,append, and divider settings',
 							'required' => 0,
 							'conditional_logic' => 0,
 							'wrapper' => array(
@@ -660,7 +660,7 @@ if layout is set to line, this will be applied to plot points and will override 
 								'id' => '',
 							),
 							'default_value' => '',
-							'placeholder' => '"~s" | function(data){ return +data; }',
+							'placeholder' => '"~s" | function(data,index){ return +data; }',
 							'maxlength' => '',
 							'rows' => 3,
 							'new_lines' => '',
@@ -763,7 +763,7 @@ if layout is set to line, this will be applied to plot points and will override 
 							'label' => 'Format Parameter',
 							'name' => 'parameter',
 							'type' => 'textarea',
-							'instructions' => 'accepts string format or function<br>Reference: <a href="https://github.com/d3/d3-format">https://github.com/d3/d3-format</a><br>Setting this will override prepend,append, and divider settings',
+							'instructions' => 'accepts string format or function<br>Reference: <a href="https://github.com/d3/d3-format#locale_format">https://github.com/d3/d3-format#locale_format</a><br>Setting this will override prepend,append, and divider settings',
 							'required' => 0,
 							'conditional_logic' => 0,
 							'wrapper' => array(
@@ -772,7 +772,7 @@ if layout is set to line, this will be applied to plot points and will override 
 								'id' => '',
 							),
 							'default_value' => '',
-							'placeholder' => '"~s" | function(data){ return +data; }',
+							'placeholder' => '"~s" | function(data,index){ return +data; }',
 							'maxlength' => '',
 							'rows' => 3,
 							'new_lines' => '',
@@ -874,7 +874,7 @@ if layout is set to line, this will be applied to plot points and will override 
 							'label' => 'Format Parameter',
 							'name' => 'parameter',
 							'type' => 'textarea',
-							'instructions' => 'accepts string format or function<br>Reference: <a href="https://github.com/d3/d3-format">https://github.com/d3/d3-format</a><br>Setting this will override prepend,append, and divider settings',
+							'instructions' => 'accepts string format or function<br>Reference: <a href="https://github.com/d3/d3-format#locale_format">https://github.com/d3/d3-format#locale_format</a><br>Setting this will override prepend,append, and divider settings',
 							'required' => 0,
 							'conditional_logic' => 0,
 							'wrapper' => array(
@@ -883,7 +883,7 @@ if layout is set to line, this will be applied to plot points and will override 
 								'id' => '',
 							),
 							'default_value' => '',
-							'placeholder' => '"~s" | function(data){ return +data; }',
+							'placeholder' => '"~s" | function(data,index){ return +data; }',
 							'maxlength' => '',
 							'rows' => 3,
 							'new_lines' => '',
