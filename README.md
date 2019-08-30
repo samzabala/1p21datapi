@@ -84,36 +84,28 @@ _**Note:** in case `dv` conflicts with another shortcode, the plugin will output
 : depending on set option one of the appropriate  REQUIRED fields for input will be shown.  
     **File**  
     : **[  REQUIRED | Valid file types: `csv`, `tsv`  | Available when: *Source Type* is `file` ]**  
-    : Input directly from the media library. *(Note: JSON is not allowed through this method for security)*
-
+    : Input directly from the media library. *(Note: JSON is not allowed through this method for security)*  
     **URL (url)**  
     : **[  REQUIRED | Valid file types: `csv`, `tsv`, `json` | Available when: *Source Type* is `url` ]**  
-    : Input data through an external file's url
-
+    : Input data through an external file's url  
     **Text (JSON code)**  
     : **[  REQUIRED | Valid file types: `json` | Available when: *Source Type* is `text` ]**  
-    : Input through the data in json format through a textbox. recommended for a more customized and controlled data
-
+    : Input through the data in json format through a textbox. recommended for a more customized and controlled data  
     **Rows**  
     : **[  REQUIRED | Valid file types: Available when: *Source Type* is `rows` ]**  
-	: Input via acf repeater fields. For each row there are available input fields
-
+	: Input via acf repeater fields. For each row there are available input fields  
 		**Name**  
 		: **[ REQUIRED ]**  
-		: Name for the data
-
+		: Name for the data  
 		**Value**  
 		: **[ REQUIRED ]**  
-		: Value for the data
-
+		: Value for the data  
 		**Category**  
 		: **[ Optional | Available when: *Type* is set to `bar`, `line`, or `scatter` ]**  
-		: Category value to represent the color the data
-
+		: Category value to represent the color the data  
 		**Plot Point Area**  
 		: **[ Optional | Available when: *Type* is set to `scatter` ]**  
-		: Numeric data value that will influence the size of the scatter plot point
-		
+		: Numeric data value that will influence the size of the scatter plot point  
 	**Source Key**  
     : **[ optional | Valid file types: Available when: *Source Type* is `file`, `url`, `text` ]**  
     : object key to the data to use.  
