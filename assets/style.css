@@ -56,30 +56,30 @@
   .data-visualizer-no-palette.data-visualizer-type-scatter .data-visualizer-legend-item:nth-of-type(2n) .legend-item-blob, .data-visualizer-no-palette.data-visualizer-type-bar .graph-item-blob:nth-of-type(2n),
   .data-visualizer-no-palette.data-visualizer-type-bar .data-visualizer-legend-item:nth-of-type(2n) .legend-item-blob {
     fill: #444; }
+  .data-visualizer-no-palette.data-visualizer-type-pie.data-visualizer-label-style-within .graph-item-text:nth-of-type(2n),
+  .data-visualizer-no-palette.data-visualizer-type-scatter .blob-item-blob:nth-of-type(2n) {
+    stroke: #444; }
   .data-visualizer-no-palette.data-visualizer-type-pie .graph-item-blob:nth-of-type(3n),
   .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-legend-item:nth-of-type(3n) .legend-item-blob, .data-visualizer-no-palette.data-visualizer-type-scatter .graph-item-blob:nth-of-type(3n),
   .data-visualizer-no-palette.data-visualizer-type-scatter .data-visualizer-legend-item:nth-of-type(3n) .legend-item-blob, .data-visualizer-no-palette.data-visualizer-type-bar .graph-item-blob:nth-of-type(3n),
   .data-visualizer-no-palette.data-visualizer-type-bar .data-visualizer-legend-item:nth-of-type(3n) .legend-item-blob {
     fill: #666; }
+  .data-visualizer-no-palette.data-visualizer-type-pie.data-visualizer-label-style-within .graph-item-text:nth-of-type(3n),
+  .data-visualizer-no-palette.data-visualizer-type-scatter .blob-item-blob:nth-of-type(3n) {
+    stroke: #666; }
   .data-visualizer-no-palette.data-visualizer-type-pie .graph-item-blob:nth-of-type(4n),
   .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-legend-item:nth-of-type(4n) .legend-item-blob, .data-visualizer-no-palette.data-visualizer-type-scatter .graph-item-blob:nth-of-type(4n),
   .data-visualizer-no-palette.data-visualizer-type-scatter .data-visualizer-legend-item:nth-of-type(4n) .legend-item-blob, .data-visualizer-no-palette.data-visualizer-type-bar .graph-item-blob:nth-of-type(4n),
   .data-visualizer-no-palette.data-visualizer-type-bar .data-visualizer-legend-item:nth-of-type(4n) .legend-item-blob {
     fill: #888; }
+  .data-visualizer-no-palette.data-visualizer-type-pie.data-visualizer-label-style-within .graph-item-text:nth-of-type(4n),
+  .data-visualizer-no-palette.data-visualizer-type-scatter .blob-item-blob:nth-of-type(4n) {
+    stroke: #888; }
   .data-visualizer-no-palette.data-visualizer-type-pie .graph-item-blob:nth-of-type(5n),
   .data-visualizer-no-palette.data-visualizer-type-pie .data-visualizer-legend-item:nth-of-type(5n) .legend-item-blob, .data-visualizer-no-palette.data-visualizer-type-scatter .graph-item-blob:nth-of-type(5n),
   .data-visualizer-no-palette.data-visualizer-type-scatter .data-visualizer-legend-item:nth-of-type(5n) .legend-item-blob, .data-visualizer-no-palette.data-visualizer-type-bar .graph-item-blob:nth-of-type(5n),
   .data-visualizer-no-palette.data-visualizer-type-bar .data-visualizer-legend-item:nth-of-type(5n) .legend-item-blob {
     fill: #BBB; }
-  .data-visualizer-no-palette.data-visualizer-type-pie.data-visualizer-label-style-within .graph-item-text:nth-of-type(2n),
-  .data-visualizer-no-palette.data-visualizer-type-scatter .blob-item-blob:nth-of-type(2n) {
-    stroke: #444; }
-  .data-visualizer-no-palette.data-visualizer-type-pie.data-visualizer-label-style-within .graph-item-text:nth-of-type(3n),
-  .data-visualizer-no-palette.data-visualizer-type-scatter .blob-item-blob:nth-of-type(3n) {
-    stroke: #666; }
-  .data-visualizer-no-palette.data-visualizer-type-pie.data-visualizer-label-style-within .graph-item-text:nth-of-type(4n),
-  .data-visualizer-no-palette.data-visualizer-type-scatter .blob-item-blob:nth-of-type(4n) {
-    stroke: #888; }
   .data-visualizer-no-palette.data-visualizer-type-pie.data-visualizer-label-style-within .graph-item-text:nth-of-type(5n),
   .data-visualizer-no-palette.data-visualizer-type-scatter .blob-item-blob:nth-of-type(5n) {
     stroke: #BBB; }

@@ -96,6 +96,11 @@ add_action( 'admin_menu', '_1p21_dv_add_documentation_link',11 );
             max-width: 960px;
             padding: 40px 2em;
             margin: 0 auto;
+            font-size: 1.125em;
+        }
+
+        ._1p21-dv-content p {
+            font-size: inherit;
         }
 
         ._1p21-dv-content h3 {
@@ -108,15 +113,6 @@ add_action( 'admin_menu', '_1p21_dv_add_documentation_link',11 );
 
         ._1p21-dv-content ul {
             padding-left: 2em;
-        }
-
-        ._1p21-dv-content dt:not(:first-child) {
-            /* margin-top: 2em; */
-            /* margin-bottom: .5em; */
-        }
-
-        ._1p21-dv-content dt {
-            margin-bottom: .5em;
         }
 
         #acf-group_5d4206c985d00 .dv-code input,

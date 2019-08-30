@@ -11,10 +11,11 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <h1>Table of contents</h1>
 
 <ol>
-<li><p><a href="#shortcode">Shortcode</a>]</p></li>
-<li><p><a href="#shortcodeparameters">Shortcode Parameters</a></p></li>
-<li><p><a href="#backendsettings">Backend Settings</a></p></li>
-<li><p><a href="#functions">Functions</a></p></li>
+<li><a href="#shortcode">Shortcode</a></li>
+<li><a href="#shortcodeparameters">Shortcode Parameters</a></li>
+<li><a href="#backendsettings">Backend Settings</a></li>
+<li><a href="#functions">Functions</a></li>
+<li><a href="#Troubleshooting">Troubleshooting</a></li>
 </ol>
 
 <h1>Shortcode</h1>
@@ -88,71 +89,71 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <h3><em>Type</em></h3>
 
-<p><strong>[ REQUIRED | Default: <em>Bar</em> (<code>bar</code>) | options: <em>Line</em> (<code>line</code>), <em>Pie</em> (<code>pie</code>), <em>Scatter plot</em> (<code>scatter</code>) ]</strong></p>
+<p><strong>[ REQUIRED | Default: <em>Bar</em> ('Bar') | options: <em>Line</em> ('Line'), <em>Pie</em> ('Pie'), <em>Scatter plot</em> ('Scatter') ]</strong></p>
 
 <p>Type of graph the data will be presented as.</p>
 
 <h3><em>Source</em></h3>
 
 <ul>
-<li><p><strong><em>Source Type</em></strong></p>
+<li><p><strong>Source Type</strong></p>
 
-<p><strong>[ REQUIRED | options: <em>File (csv,tsv)</em> (<code>file</code>), <em>URL</em> (<code>url</code>), <em>Text (JSON code)</em> (<code>text</code>), <em>Rows (UI Field)</em> (<code>rows</code>) ]</strong></p>
+<p><strong>[ REQUIRED | options: 'File (csv,tsv)', 'URL', 'Text (JSON code)', 'Rows (UI Field)' ]</strong></p>
 
 <p>Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)</p>
 
 <p>depending on set option, one of the fields below for data input will be shown.</p>
 
 <ul>
-<li><p><strong><em>File</em></strong></p>
+<li><p><strong>File</strong></p>
 
-<p><strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code> | Available when: <em>Source Type</em> is <code>file</code> ]</strong></p>
+<p><strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code> | Available when: <em>Source Type</em> is 'File (csv,tsv)' ]</strong></p>
 
 <p>Input directly from the media library.</p>
 
-<p><em><strong>Note:</strong> JSON is not allowed through this method for security</em></p></li>
-<li><p><strong><em>URL (url)</em></strong></p>
+<p><em><strong>Note:</strong> This input is available if <em>Tick Amount</em> is set JSON is not allowed through this method for security</em></p></li>
+<li><p><strong>URL (url)</strong></p>
 
-<p><strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code>, <code>json</code> | Available when: <em>Source Type</em> is <code>url</code> ]</strong></p>
+<p><strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code>, <code>json</code> | Available when: <em>Source Type</em> is 'URL' ]</strong></p>
 
 <p>Input data through an external file's url</p></li>
-<li><p><strong><em>Text (JSON code)</em></strong></p>
+<li><p><strong>Text (JSON code)</strong></p>
 
-<p><strong>[ REQUIRED | Valid file types: <code>json</code> | Available when: <em>Source Type</em> is <code>text</code> ]</strong></p>
+<p><strong>[ REQUIRED | Valid file types: <code>json</code> | Available when: <em>Source Type</em> is 'Text (JSON code)' ]</strong></p>
 
 <p>Input through the data in json format through a textbox. recommended for a more customized and controlled data</p></li>
-<li><p><strong><em>Rows</em></strong></p>
+<li><p><strong>Rows</strong></p>
 
-<p><strong>[ REQUIRED | Valid file types: Available when: <em>Source Type</em> is <code>rows</code> ]</strong></p>
+<p><strong>[ REQUIRED | Valid file types: Available when: <em>Source Type</em> is 'Rows (UI Field)' ]</strong></p>
 
 <p>Input via acf repeater fields. For each row there are available input fields</p>
 
 <ul>
-<li><p><strong><em>Name</em></strong></p>
+<li><p><strong>Name</strong></p>
 
-<p><strong>[ REQUIRED ]</strong>*</p>
+<p><strong>[ REQUIRED ]</strong></p>
 
 <p>Name for the data</p></li>
-<li><p><strong><em>Value</em></strong></p>
+<li><p><strong>Value</strong></p>
 
-<p><strong>[ REQUIRED ]</strong>*</p>
+<p><strong>[ REQUIRED ]</strong></p>
 
 <p>Value for the data</p></li>
-<li><p><strong><em>Category</em></strong></p>
+<li><p><strong>Category</strong></p>
 
-<p><strong>[ Optional | Available when: <em>Type</em> is set to <code>bar</code>, <code>line</code>, <code>scatter</code> ]</strong></p>
+<p><strong>[ Optional | Available when: <em>Type</em> is set to 'Bar', 'Line', 'Scatter' ]</strong></p>
 
 <p>Category value to represent the color the data</p></li>
-<li><p><strong><em>Plot Point Area</em></strong></p>
+<li><p><strong>Plot Point Area</strong></p>
 
-<p><strong>[ Optional | Available when: <em>Type</em> is set to <code>scatter</code> ]</strong></p>
+<p><strong>[ Optional | Available when: <em>Type</em> is set to 'Scatter' ]</strong></p>
 
 <p>Numeric data value that will influence the size of the scatter plot point</p></li>
 </ul></li>
 </ul></li>
 <li><p><strong>Source Key</strong></p>
 
-<p><strong>[ optional | Valid file types: Available when: <em>Source Type</em> is <code>file</code>, <code>url</code>, <code>text</code> ]</strong></p>
+<p><strong>[ Optional | Default: <code>null</code> | Valid file types: Available when: <em>Source Type</em> is 'File (csv,tsv)', 'URL', 'Text (JSON code)' ]</strong></p>
 
 <p>object key to the data to use.</p>
 
@@ -164,81 +165,83 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <h3><em>Data Keys</em></h3>
 
 <ul>
-<li><p><strong><em>Name Key</em></strong></p>
+<li><p><strong>Name Key</strong></p>
 
-<p><strong>[ REQUIRED | Available when: <em>Source Type</em> is <code>file</code>, <code>url</code>, <code>text</code> ]</strong></p>
+<p><strong>[ REQUIRED | Default: <code>null</code> | Available when: <em>Source Type</em> is 'File (csv,tsv)', 'URL', 'Text (JSON code)' ]</strong></p>
 
 <p>Key relative to a datum instance's level to represent the data' name</p></li>
-<li><p><strong><em>Value Key</em></strong></p>
+<li><p><strong>Value Key</strong></p>
 
-<p><strong>[ REQUIRED | Available when: <em>Source Type</em> is <code>file</code>, <code>url</code>, <code>text</code> ]</strong></p>
-
-<p>Key relative to a datum instance's level to represent the data's value</p></li>
-<li><p><strong><em>Plot Points Area Key</em></strong></p>
-
-<p><strong>[ Optional | Available when: <em>Source Type</em> is <code>file</code>, <code>url</code>, <code>text</code>; <em>Type</em> is <code>scatter</code> ]</strong></p>
+<p><strong>[ REQUIRED | Default: <code>null</code> | Available when: <em>Source Type</em> is 'File (csv,tsv)', 'URL', 'Text (JSON code)' ]</strong></p>
 
 <p>Key relative to a datum instance's level to represent the data's value</p></li>
-<li><p><strong><em>Color Key</em></strong></p>
+<li><p><strong>Plot Points Area Key</strong></p>
 
-<p><strong>[ Optional | Available when: <em>Source Type</em> is <code>file</code>, <code>url</code>, <code>text</code>; <em>Type</em> is NOT <code>pie</code> ]</strong></p>
+<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Source Type</em> is 'File (csv,tsv)', 'URL', 'Text (JSON code)'; <em>Type</em> is 'Scatter' ]</strong></p>
+
+<p>Key relative to a datum instance's level to represent the data's value</p></li>
+<li><p><strong>Color Key</strong></p>
+
+<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Source Type</em> is 'File (csv,tsv)', 'URL', 'Text (JSON code)'; <em>Type</em> is NOT 'Pie' ]</strong></p>
 
 <p>Key relative to a datum instance's level to represent the data's value</p></li>
 </ul>
 
-<h3><em>Set Name Key As Numeric</em></h3>
+<h3><em>Set Name Key As Numeric?</em></h3>
 
-<p><strong>[ Optional | Default: <code>false</code> | Available when: <em>Source Type</em> is <code>file</code>, <code>url</code>, <code>text</code>; <em>Type</em> is NOT <code>pie</code>, NOT <code>bar</code> ]</strong></p>
+<p><strong>[ Optional | Default: <code>false</code> | Available when: <em>Source Type</em> is 'File (csv,tsv)', 'URL', 'Text (JSON code)'; <em>Type</em> is NOT 'Pie', NOT 'Bar' ]</strong></p>
 
 <p>Adds numeric capabilities to name data.</p>
 
-<p>_<em><strong>Note:</strong> If name value is not numeric, this will cause errors and the graph will not render properly</em></p>
+<p>_<em><strong>Note:</strong> This input is available if <em>Tick Amount</em> is set If name value is not numeric, this will cause errors and the graph will not render properly</em></p>
 
 <h3><em>Format Settings</em></h3>
 
-<p><strong>[ Optional | Available for: <code>name</code>, <code>value</code>, <code>color</code> keys ]</strong></p>
+<p><strong>[ Optional | Available for: <code>name</code>, <code>value</code>, <code>color</code> <em>keys</em> ]</strong></p>
 
 <p>These are optional settings to allow reformatting data on the visualizer</p>
 
 <ul>
-<li><p><strong><em>Prepend</em></strong></p>
+<li><p><strong>Prepend</strong></p>
 
 <p><strong>[ Optional | Default: <code>''</code> ]</strong></p>
 
 <p>Character/s to append to the data.</p>
 
-<p><em><strong>Note:</strong> Input will be translated as a parsed string</em></p></li>
-<li><p><strong><em>Append</em></strong></p>
+<p><em><strong>Note:</strong> This input is available if <em>Tick Amount</em> is set Input will be translated as a parsed string</em></p></li>
+<li><p><strong>Append</strong></p>
 
 <p><strong>[ Optional | Default: <code>''</code> ]</strong></p>
 
 <p>Character/s to append to the data.</p>
 
-<p><em><strong>Note:</strong> Input will be translated as a parsed string</em></p></li>
-<li><p><strong><em>Divider</em></strong></p>
+<p><em><strong>Note:</strong> This input is available if <em>Tick Amount</em> is set Input will be translated as a parsed string</em></p></li>
+<li><p><strong>Divider</strong></p>
 
-<p><strong>[ Optional | Default: <code>1</code> | Available for/when: <code>value</code> key; <em>Set Name Key As Numeric</em> is set to <code>true</code> ]</strong></p>
+<p><strong>[ Optional | Default: <code>1</code> | Available for/when: <code>value</code> key; <em>Set Name Key As Numeric?</em> is set to <code>true</code> ]</strong></p>
 
 <p>Amount to divide numeric data by. good for shortening values.</p>
 
-<p>For example, presenting <code>100000</code> as dollar value in thousands as <code>$100K</code></p>
+<p>For example, presenting <code>'100000'</code> as dollar value in thousands as <code>'$100K'</code></p>
+
+<blockquote>
+<p><code>'$'</code> Comes from set <em>Prepend</em></p>
+
+<p><code>100000</code> is divided by <code>Divider</code> set to <code>1000</code> to shorten to <code>100</code></p>
+
+<p><code>'K'</code> comes from set <em>Append</em></p>
+</blockquote></li>
+<li><p><strong>Advanced</strong></p>
 
 <ul>
-<li><code>$</code> Comes from set <em>Prepend</em></li>
-<li><code>100000</code> is divided by <code>Divider</code> set to <code>1000</code> to shorten to <code>100</code></li>
-<li><code>K</code> comes from set <em>Append</em></li>
-</ul></li>
-<li><p><strong><em>Advanced</em></strong></p>
+<li><p><strong>Format Parameter</strong></p>
 
-<ul>
-<li><p><strong><em>Format Parameter</em></strong></p>
-
-<p><strong>[ Optional ]</strong></p>
+<p><strong>[ Optional | Default: <code>null</code> ]</strong></p>
 
 <p>Accepts a string that follows the format for <a href="https://github.com/d3/d3-format#locale_format"><code>d3.format()</code></a></p>
 
 <p>Or a javascript function that passes the <code>data</code> and its <code>index</code></p></li>
-<li><p><strong><em>More options will be added soon!</em></strong></p></li>
+<li><p><strong>More options will be added soon!</strong></p></li>
 </ul></li>
 </ul>
 
@@ -246,50 +249,181 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <h3>X and Y Settings</h3>
 
-<p><strong>[ Optional | Available when: <em>Type</em> is <code>bar</code>,<code>line</code>,<code>scatter</code> ]</strong></p>
+<p><strong>[ Optional | Available when: <em>Type</em> is 'Bar','Line','Scatter' ]</strong></p>
 
 <ul>
-<li><p><strong><em>Axis Data</em></strong></p>
+<li><p><strong>Axis Data</strong></p>
 
-<p><strong>[ REQUIRED | Default: <em>Name Data</em> (For X); <em>Value Data</em> (For Y); | options: <em>Name Data</em> (<code>0</code>), <em>Value Data</em> (<code>1</code>) ]</strong></p>
+<p><strong>[ REQUIRED | Default: 'Name Data' (For X); 'Value Data' (For Y); | options: 'Name Data', 'Value Data' ]</strong></p>
 
 <p>Links the data that will be represented along the axis</p></li>
-<li><p><strong><em>Alignment</em></strong></p>
+<li><p><strong>Alignment</strong></p>
 
-<p><strong>[ REQUIRED | Default: <em>Bottom</em> (For X); <em>Left</em> (For Y); | options: <em>Top</em> (<code>top</code>), <em>Bottom</em> (<code>bottom</code>), <em>Left</em> (<code>left</code>), <em>Right</em> (<code>right</code>) ]</strong></p>
+<p><strong>[ REQUIRED | Default: <code>Bottom</code> (For X); <code>Left</code> (For Y); | options: <code>Top</code>, <code>Bottom</code>, <code>Left</code>, <code>Right</code> ]</strong></p>
 
 <p>Alignment of the axis</p></li>
-<li><p><strong><em>Use Ticks?</em></strong></p>
+<li><p><strong>Use Ticks?</strong></p>
 
 <p><strong>[ Optional | Default: <code>false</code> ]</strong></p>
 
 <p>Insert ruler along the axis of alignment</p></li>
-<li><p><strong><em>Label</em></strong></p>
+<li><p><strong>Label</strong></p>
 
-<p><strong>[ Optional ]</strong></p>
+<p><strong>[ Optional | Default <code>null</code> ]</strong></p>
 
 <p>Text label along the axis</p></li>
-<li><p><strong><em>Minimum</em></strong></p>
+<li><p><strong>Minimum</strong></p>
 
-<p><strong>[ Optional | Available when: <em>Axis Data</em> is <em>Value Data</em>; <em>Type</em> is <em><code>scatter</code></em>, <em>Axis Data</em> is <em>Name Data</em>, <em>Set Name Key As Numeric</em> is <code>true</code>; ]</strong></p>
+<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Axis Data</em> is 'Value Data'; <em>Type</em> is 'Scatter', <em>Axis Data</em> is 'Name Data', <em>Set Name Key As Numeric?</em> is <code>true</code>; ]</strong></p>
 
 <p>Minimum value of the axis.</p>
 
 <p>Leaving blank will automatically set the minimum from the smallest value present in data</p></li>
-<li><p><strong><em>Maximum</em></strong></p>
+<li><p><strong>Maximum</strong></p>
 
-<p><strong>[ Optional | Available when: <em>Axis Data</em> is <em>Value Data</em>; <em>Type</em> is <em><code>scatter</code></em>, <em>Axis Data</em> is <em>Name Data</em>, <em>Set Name Key As Numeric</em> is <code>true</code>; ]</strong></p>
+<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Axis Data</em> is 'Value Data'; <em>Type</em> is 'Scatter', <em>Axis Data</em> is 'Name Data', <em>Set Name Key As Numeric?</em> is <code>true</code>; ]</strong></p>
 
 <p>Maximum value of the axis.</p>
 
 <p>Leaving blank will automatically set the maximum from the largest value present in data</p>
 
 <p>Recommended to increase if more negative space is desired</p></li>
-<li><p><strong><em>Tick Settings</em></strong></p>
+<li><p><strong>Tick Settings</strong></p>
 
 <p><strong>[ Available when: <em>Use Ticks?</em> is <code>true</code> ]</strong></p>
 
 <ul>
-<li><strong><em>Ticks Amount</em></strong></li>
+<li><p><strong>Ticks Amount</strong></p>
+
+<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Use Ticks?</em> is <code>true</code> and <em>Axis Data</em> is 'Value Data' or <em>Type</em> is NOT 'Bar', <em>Axis Data</em> is 'Name Data', <em>Set Name Key As Numeric?</em> is <code>true</code>; ]</strong></p>
+
+<p>Number of ticks to display</p>
+
+<p>Leaving blank will allow the plugin to automatically set the amount based on the data given</p></li>
+<li><p><strong>Add Grid</strong></p>
+
+<p><strong>[ Optional | Default: <code>false</code> | Available when: <em>Axis Data</em> is 'Value Data' or <em>Type</em> is NOT 'Bar' ]</strong></p>
+
+<p>Enable grid along the axis</p></li>
+<li><p><strong>Grid Increment</strong></p>
+
+<p><strong>[ Optional | Default: <code>1</code> | Available when: <em>Add Grid?</em> is <code>true</code> and 'Ticks Amount' is NOT <code>null</code>]</strong></p>
+
+<p>Amount of grid rules each tick mark will be equal to.</p>
+
+<p>_<strong>Note:</strong> This field is available only if <em>Tick Amount</em> is set</p></li>
 </ul></li>
 </ul>
+
+<h3>Line Settings</h3>
+
+<p><strong>[ Optional | Available when: <em>Type</em> is 'Line' ]</strong></p>
+
+<ul>
+<li><p><strong>Line Style</strong></p>
+
+<p><strong>[ REQUIRED | Default : 'None' | Available Options: 'None','Curve','Step' ]</strong></p>
+
+<p>Style of the line graph</p></li>
+<li><p><strong>Stroke Weight</strong></p>
+
+<p><strong>[ Optional | Default : <code>1</code> ]</strong></p>
+
+<p>Thickness of the line graph stroke</p></li>
+<li><p><strong>Stroke Color</strong></p>
+
+<p><strong>[ Optional | Default : <code>null</code> ]</strong></p>
+
+<p>Color of the line graph</p></li>
+<li><p><strong>Add Plot Points?</strong></p>
+
+<p><strong>[ Optional | Default : <code>false</code> ]</strong></p>
+
+<p>Enable plot points on the line graph</p>
+
+<p>Additional options become available once this is checked</p></li>
+<li><p><strong>Add Area Fill?</strong></p>
+
+<p><strong>[ Optional | Default : <code>false</code> ]</strong></p>
+
+<p>Enable fill on the line graph</p>
+
+<p>Additional options become available once this is checked</p></li>
+<li><p><strong>Plot Point Settings</strong></p>
+
+<p><strong>[ Available when: 'Add Plot Points?' is <code>true</code> ]</strong></p>
+
+<ul>
+<li><p><strong>Points Color</strong></p>
+
+<p>[ Optional ]</p>
+
+<p>Color of plot points</p>
+
+<p>If not set, the color of the points will be the same as set <em>Stroke Color</em></p>
+
+<p><em><strong>Note:</strong> If 'Color Palette' has rows, this data will be overriden</em></p></li>
+<li><p><strong>Size</strong></p>
+
+<p>[ Optional ]</p>
+
+<p>Size of plot points radius</p></li>
+</ul></li>
+<li><p><strong>Area Settings</strong></p>
+
+<p><strong>[ Available when: 'Add Plot Points?' is <code>true</code> ]</strong></p>
+
+<ul>
+<li><p><strong>Color</strong></p>
+
+<p>[ Optional ]</p>
+
+<p>Color of the fill</p>
+
+<p>If not set, the fill will be the same as set <em>Stroke Color</em></p></li>
+<li><p><strong>Opacity</strong></p>
+
+<p>[ Optional | Default: <code>.5</code> ]</p>
+
+<p>Opacity of the fill</p></li>
+<li><p><strong>Invert Axis?</strong></p>
+
+<p>[ Optional | Default: <code>false</code> ]</p>
+
+<p>Whether or not to invert the fill opposite to the alignment of the axis</p></li>
+</ul></li>
+<li><p>Advanced</p>
+
+<ul>
+<li><p><strong>Dash Array</strong></p>
+
+<p>[ Optional | Default: <code>null</code> ]</p>
+
+<p>Set dashes on the line graph. The pattern is <code>dash, gap, dash, gap...</code><br></p>
+
+<p>Check <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray">MDN</a> For more information on the documentation</p></li>
+<li><p><strong>More options will be added soon!</strong></p></li>
+</ul></li>
+</ul>
+
+<h3>Pie Settings</h3>
+
+<p><strong>[ Optional | Available when: <em>Type</em> is 'Pie' ]</strong></p>
+
+<pre><code>*	**Label Style**
+
+	[ Optional | Default: `false` ]
+
+	Whether or not to invert the fill opposite to the alignment of the axis
+
+
+*	**Inner Radius**
+
+	[ Optional | Default: `0` ]
+
+	Radius of pie hole
+</code></pre>
+
+<h1>Troubleshooting</h1>
+
+<p>Good luck.</p>

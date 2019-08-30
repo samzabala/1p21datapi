@@ -2716,7 +2716,7 @@
                     {
                         "ID": 0,
                         "key": "field_5d558b60931b7",
-                        "label": "Fill against the axis?",
+                        "label": "Invert Axis?",
                         "name": "fill_invert",
                         "prefix": "acf",
                         "type": "true_false",
@@ -2865,7 +2865,7 @@
                         "_prepare": 0,
                         "_valid": 1,
                         "choices": {
-                            "none": "None",
+                            "": "None",
                             "linked": "Linked",
                             "within": "Within"
                         },

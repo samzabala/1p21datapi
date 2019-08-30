@@ -242,7 +242,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
                                             case 'line':
                                                 $string_values = array('style','stroke','color','points_color','fill_color','fill_axis');
-                                                $boolean_values = array('points','fill','invert');
+                                                $boolean_values = array('points','fill','fill_invert');
                                                 $array_values_from_string = array('dash');
                                                 break;
 
@@ -281,7 +281,10 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
                                                 //straight up string
                                                 if(in_array($sub_setting,$string_values)){
-                                                    $parsed_value = '\''.addslashes($sub_value). '\'';
+                                                    if($sub_value !== null) {
+
+                                                        $parsed_value = '\''.addslashes($sub_value). '\'';
+                                                    }
 
                                                 //boolean bitch
                                                 }elseif(in_array($sub_setting,$boolean_values)){
@@ -334,7 +337,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
         $render .= "</div>";
 
 
-        // _1p21_dv_output_arr($data_visual);
+        _1p21_dv_output_arr($data_visual);
         
     }else{
         $render =  '<div class="data-visualizer no-data"><div class="data-visualizer-wrapper fatality">Sorry, the data visual does not exist</div></div>';

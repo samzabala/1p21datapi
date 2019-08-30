@@ -254,6 +254,7 @@
                     linePointsColor: null,
                     linePointsSize: null,
                     lineFillColor: null,
+                    lineFillInvert: false,
                     lineFillOpacity: .5,
                     lineDash: [100,0],
                 
@@ -996,20 +997,21 @@
 
                 //name coord, value coord, fill coordinate
                 var aCord = { //default is top
-                    name: axisToFill,
-                    value: getAxisStringOppo(axisToFill)+1,
+                    name: axisToFill, //x
+                    value: getAxisStringOppo(axisToFill)+1, //y
                     fill: getAxisStringOppo(axisToFill)+0 //initial of data name is the bottom of the fill
                 };
                 
-                if( 
-                    args[getAxisStringOppo(axisToFill)+'Align'] == 'right'
-                    || args[getAxisStringOppo(axisToFill)+'Align'] == 'bottom'
-                ){
+                var multiplier = (function(){
+                    var toReturn = 0;
 
-                    aCord.value = getAxisStringOppo(axisToFill)+0,
-                    aCord.fill = getAxisStringOppo(axisToFill)+1
+                    if(args.lineFillInvert){
+                        toReturn = ((args[axisToFill+'Align'] == 'top') || (args[axisToFill+'Align'] == 'left' )) ? 1 : -1;
+                    }
 
-                }
+                    return toReturn;
+                }());
+                
                 
                 path
                     [aCord.name](function(dis,i){
@@ -1019,7 +1021,7 @@
                         return getBlobOrigin(getAxisStringOppo(axisToFill),dis,i,initial);
                     })
                     [aCord.fill](function(dis,i){
-                        return getBlobOrigin( getAxisStringOppo(axisToFill),dis,i,true);
+                        return getBlobOrigin( getAxisStringOppo(axisToFill),dis,i,true) + (multiplier * args[getDimension(axisToFill)]);
                     });
 
             }else{
@@ -1146,7 +1148,7 @@
 
                     if(args.nameIsNum || keyKey == 1 || keyKey == 'area' ){
 
-                        if(args.nameIsNum && keyKey == 0){
+                        if(args.nameIsNum && keyKey == 0 && args.type == 'scatter'){
 
                             scale = d3.scaleSymlog()
                                 .constant(10)

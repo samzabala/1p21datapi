@@ -1757,7 +1757,7 @@ if layout is set to line, this will be applied to plot points and will override 
 						'id' => '',
 					),
 					'choices' => array(
-						'' => 'None',
+						null => 'None',
 						'curve' => 'Curve',
 						'step' => 'Step',
 					),
@@ -1992,7 +1992,7 @@ if layout is set to line, this will be applied to plot points and will override 
 				),
 				array(
 					'key' => 'field_5d558b60931b7',
-					'label' => 'Fill against the axis?',
+					'label' => 'Invert Axis?',
 					'name' => 'fill_invert',
 					'type' => 'true_false',
 					'instructions' => '',
@@ -2093,7 +2093,7 @@ if layout is set to line, this will be applied to plot points and will override 
 						'id' => '',
 					),
 					'choices' => array(
-						'none' => 'None',
+						'' => 'None',
 						'linked' => 'Linked',
 						'within' => 'Within',
 					),
