@@ -77,7 +77,7 @@ function _1p21_dv_add_documentation_link(){
             <div class="_1p21-dv-content">
 
                 <?php
-                include_once _1P21_DV_PLUGIN_PATH .'/includes/documentation.php';
+                include_once _1P21_DV_PLUGIN_PATH .'/README.html';
 
                 ?>
             </div>
@@ -94,7 +94,7 @@ add_action( 'admin_menu', '_1p21_dv_add_documentation_link',11 );
 
         ._1p21-dv-content {
             max-width: 960px;
-            padding: 40px 0;
+            padding: 40px 2em;
             margin: 0 auto;
         }
 

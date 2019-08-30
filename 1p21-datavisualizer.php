@@ -62,7 +62,7 @@ require_once _1P21_DV_PLUGIN_PATH . 'includes/admin.php';
 
 if( !post_type_exists('data-visual') ){
     require_once _1P21_DV_PLUGIN_PATH . 'includes/register-cpt.php';
-    require_once _1P21_DV_PLUGIN_PATH . 'includes/register-settings.php';
+    // require_once _1P21_DV_PLUGIN_PATH . 'includes/register-settings.php';
     require_once _1P21_DV_PLUGIN_PATH . 'includes/register-fields.php';
     require_once _1P21_DV_PLUGIN_PATH . 'includes/render-back.php';
     require_once _1P21_DV_PLUGIN_PATH . 'includes/render-front.php';

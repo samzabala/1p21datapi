@@ -44,7 +44,7 @@
             add_submenu_page('edit.php?post_type=data-visual','Data Visualizer Settings', 'Data Visualizer Settings','manage_options', '1p21-dv-settings', '_1p21_dv_options_build_form');
         }
     }
-    // add_action( 'admin_menu', '_1p21_dv_options_add_page',11 );
+    add_action( 'admin_menu', '_1p21_dv_options_add_page',11 );
 
 
 //add link

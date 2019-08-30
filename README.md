@@ -1,4 +1,4 @@
-<!-- DO NOT EDIT document.php. edit README.md instead -->
+<!-- DO NOT EDIT README.php. edit README.md instead -->
 # Plugin Name: 1Point21 Data Vizualizer
 
 Plugin URI: [https://github.com/samzabala](https://github.com/samzabala)  
