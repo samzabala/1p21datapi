@@ -10,12 +10,11 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <h1 id="tableofcontents">Table of contents</h1>
 
-<p>1: <a href="#shortcode">Shortcode</a>]</p>
-
 <ol>
-<li><a href="#shortcodeparameters">Shortcode Parameters</a></li>
-<li><a href="#backendsettings">Backend Settings</a></li>
-<li><a href="#functions">Functions</a></li>
+<li><p><a href="#shortcode">Shortcode</a>]</p></li>
+<li><p><a href="#shortcodeparameters">Shortcode Parameters</a></p></li>
+<li><p><a href="#backendsettings">Backend Settings</a></p></li>
+<li><p><a href="#functions">Functions</a></p></li>
 </ol>
 
 <h1 id="shortcode">Shortcode</h1>
@@ -34,76 +33,52 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <h1 id="shortcodeparameters">Shortcode Parameters</h1>
 
-<dl>
-<dt><strong><code>id</code></strong></dt>
-<dd> <strong>[ REQUIRED | default: <code>null</code> | type: number ]</strong></dd>
-
-<dd> post id of the graph to display.</dd>
-
-<dt><strong><code>margin</code></strong></dt>
-<dd> <strong>[ optional | default: <code>10</code> | type: number ]</strong></dd>
-
-<dd> gutter to set on graph canvas to compensate spaces for ticks and labels.</dd>
-
-<dt><strong><code>margin_offset</code></strong></dt>
-<dd> <strong>[ optional | default: <code>2</code> | type: number ]</strong></dd>
-
-<dd> multiplier of the gutter.</dd>
-
-<dt><strong><code>width</code></strong></dt>
-<dd> <strong>[ optional | default: <code>600</code> | type: number ]</strong></dd>
-
-<dd> width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn&#8217;t enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</dd>
-
-<dt><strong><code>height</code></strong></dt>
-<dd> <strong>[ optional | default: <code>600</code> | type: number ]</strong></dd>
-
-<dd> height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn&#8217;t enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</dd>
-
-<dt><strong><code>transition</code></strong></dt>
-<dd> <strong>[ optional | default: <code>1500</code> | type: number ]</strong></dd>
-
-<dd> how long should all animations or transitions take</dd>
-
-<dt><strong><code>delay</code></strong></dt>
-<dd> <strong>[ optional | default: <code>250</code> | type: number ]</strong></dd>
-
-<dd> delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering</dd>
-
-<dt><strong><code>font_size</code></strong></dt>
-<dd> <strong>[ optional | default: <code>'16px'</code> | type: integer / string ]</strong></dd>
-
-<dd> base font size to size text relative to. also accepts integer value.</dd>
-</dl>
+<ul>
+<li><p><strong><code>id</code></strong><br />
+<strong>[ REQUIRED | default: <code>null</code> | type: number ]</strong><br />
+post id of the graph to display.</p></li>
+<li><p><strong><code>margin</code></strong><br />
+<strong>[ optional | default: <code>10</code> | type: number ]</strong><br />
+gutter to set on graph canvas to compensate spaces for ticks and labels.</p></li>
+<li><p><strong><code>margin_offset</code></strong><br />
+<strong>[ optional | default: <code>2</code> | type: number ]</strong><br />
+multiplier of the gutter.</p></li>
+<li><p><strong><code>width</code></strong><br />
+<strong>[ optional | default: <code>600</code> | type: number ]</strong><br />
+width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn&#8217;t enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p></li>
+<li><p><strong><code>height</code></strong><br />
+<strong>[ optional | default: <code>600</code> | type: number ]</strong><br />
+height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn&#8217;t enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p></li>
+<li><p><strong><code>transition</code></strong><br />
+<strong>[ optional | default: <code>1500</code> | type: number ]</strong><br />
+how long should all animations or transitions take</p></li>
+<li><p><strong><code>delay</code></strong><br />
+<strong>[ optional | default: <code>250</code> | type: number ]</strong><br />
+delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering</p></li>
+<li><p><strong><code>font_size</code></strong><br />
+<strong>[ optional | default: <code>'16px'</code> | type: integer / string ]</strong><br />
+base font size to size text relative to. also accepts integer value.</p></li>
+</ul>
 
 <h1 id="backendsettings">Backend Settings</h1>
 
-<dl>
-<dt><strong>Description</strong></dt>
-<dd> <strong>[ optional | default: <code>''</code> ]</strong></dd>
-
-<dd> Add a subtilte or description for the data visual</dd>
-</dl>
+<p><strong>Description</strong><br />
+<strong>[ optional | default: <code>''</code> ]</strong><br />
+Add a subtilte or description for the data visual</p>
 
 <h2 id="datasettings">Data Settings</h2>
 
-<dl>
-<dt><strong>Type</strong></dt>
-<dd> <strong>[ REQUIRED | default: Bar (<code>bar</code>) | options: Line (<code>line</code>), Pie (<code>pie</code>), Scatter plot (<code>scatter</code>) ]</strong></dd>
-
-<dd> how long should all animations or transitions take</dd>
-</dl>
+<p><strong>Type</strong><br />
+<strong>[ REQUIRED | default: Bar (<code>bar</code>) | options: Line (<code>line</code>), Pie (<code>pie</code>), Scatter plot (<code>scatter</code>) ]</strong><br />
+how long should all animations or transitions take</p>
 
 <h3 id="source">Source</h3>
 
-<dl>
+<ul>
+<li><dl>
 <dt><strong>Source Type</strong></dt>
-<dd> <strong>[ REQUIRED | options: File (csv,tsv) (<code>file</code>), URL (<code>url</code>), Text (JSON code) (<code>text</code>), Rows (UI Field) (<code>rows</code>) ]</strong></dd>
-
-<dd> Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)</dd>
-
-<dd><dl>
-<dt> depending on set option one of the appropriate REQUIRED fields for input will be shown.</dt>
+<dt>Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)</dt>
+<dt>depending on set option one of the appropriate REQUIRED fields for input will be shown.</dt>
 <dt><strong>File</strong></dt>
 <dd> <strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code> | Available when: <em>Source Type</em> is <code>file</code> ]</strong></dd>
 
@@ -155,8 +130,8 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <dd> if there is a value, the data returned from that key will be us</dd>
 </dl>
-</dd>
-</dl>
+</li>
+</ul>
 
 <h3 id="datakeys">Data Keys</h3>
 
