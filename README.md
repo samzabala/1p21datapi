@@ -42,43 +42,43 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 
 *	**`margin`**
 
-	**[ optional | Default: `10` | type: number ]**
+	**[ Optional | Default: `10` | type: number ]**
 
 	gutter to set on graph canvas to compensate spaces for ticks and labels.
 
 *	**`margin_offset`**
 
-	**[ optional | Default: `2` | type: number ]**
+	**[ Optional | Default: `2` | type: number ]**
 
 	multiplier of the gutter.
 
 *	**`width`**
 
-	**[ optional | Default: `600` | type: number ]**
+	**[ Optional | Default: `600` | type: number ]**
 
 	width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
 
 *	**`height`**
 
-	**[ optional | Default: `600` | type: number ]**
+	**[ Optional | Default: `600` | type: number ]**
 
 	height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
 
 *	**`transition`**
 
-	**[ optional | Default: `1500` | type: number ]**
+	**[ Optional | Default: `1500` | type: number ]**
 
 	how long should all animations or transitions take
 
 *	**`delay`**
 
-	**[ optional | Default: `250` | type: number ]**
+	**[ Optional | Default: `250` | type: number ]**
 
 	delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering
 
 *	**`font_size`**
 
-	**[ optional | Default: `'16px'` | type: integer / string ]**
+	**[ Optional | Default: `'16px'` | type: integer / string ]**
 
 	base font size to size text relative to. also accepts integer value.
 
@@ -86,7 +86,7 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 
 ## Description
 
-**[ optional | Default: `''` ]**
+**[ Optional | Default: `''` ]**
 
 Add a subtilte or description for the data visual
 
