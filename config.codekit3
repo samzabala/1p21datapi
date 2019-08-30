@@ -189,11 +189,11 @@
 		"ft": 4096,
 		"hM": 0,
 		"oA": 0,
-		"oAP": "/README.php",
+		"oAP": "/README.html",
 		"oF": 2,
 		"oFM": 0,
 		"oS": 1,
-		"pHT": 0,
+		"pHT": 1,
 		"pME": 1,
 		"rFN": 0,
 		"uCM": 0

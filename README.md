@@ -9,14 +9,14 @@ Author URI: [https://www.1point21interactive.com/](https://www.1point21interacti
 
 # Table of contents
 
-1: [Shortcode](#shortcode)]
+1. [Shortcode](#shortcode)
 2. [Shortcode Parameters](#shortcodeparameters)
-2. [Backend Settings](#backendsettings)
-3. [Functions](#functions)
+3. [Backend Settings](#backendsettings)
+4. [Functions](#functions)
 
 # Shortcode
 
-You can add a data visualizer using the shortcode `dv` or `data_visalizer`
+You can add a data visualizer using the shortcode `dv` or `data_visualizer`
 
 Examples:
 
@@ -25,87 +25,105 @@ Examples:
 ```
 
 ``` txt
-[data_visalizer id=666 width=800 height=600]
+[data_visualizer id=666 width=800 height=600]
 ```
 
-_**Note:** in case `dv` conflicts with another shortcode, the plugin will output an error in the back end and advise to use `data_visualizer`_
+_**Note:** in case `dv` conflicts with another shortcode, the plugin will output a warning and the shortcode will fallback to using only `data_visualizer`_
 
 # Shortcode Parameters
 
-**`id`**
-: **[ REQUIRED | default: `null` | type: number ]**
-: post id of the graph to display.
-
-**`margin`**
-: **[ optional | default: `10` | type: number ]**
-: gutter to set on graph canvas to compensate spaces for ticks and labels.
-
-**`margin_offset`**
-: **[ optional | default: `2` | type: number ]**
-: multiplier of the gutter.
-
-**`width`**
-: **[ optional | default: `600` | type: number ]**
-: width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
-
-**`height`**
-: **[ optional | default: `600` | type: number ]**
-: height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
-
-**`transition`**
-: **[ optional | default: `1500` | type: number ]**
-: how long should all animations or transitions take
-
-**`delay`**
-: **[ optional | default: `250` | type: number ]**
-: delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering
-
-**`font_size`**
-: **[ optional | default: `'16px'` | type: integer / string ]**
-: base font size to size text relative to. also accepts integer value.
+<dl>
+	<dt><strong><code>id</code></strong></dt>
+	<dd><strong>[ REQUIRED | default: <code>null</code> | type: number ]</strong></dd>
+	<dd>post id of the graph to display.</dd>
+	<dt><strong><code>margin</code></strong></dt>
+	<dd><strong>[ optional | default: <code>10</code> | type: number ]</strong></dd>
+	<dd>gutter to set on graph canvas to compensate spaces for ticks and labels.</dd>
+	<dt><strong><code>margin_offset</code></strong></dt>
+	<dd><strong>[ optional | default: <code>2</code> | type: number ]</strong></dd>
+	<dd>multiplier of the gutter.</dd>
+	<dt><strong><code>width</code></strong></dt>
+	<dd><strong>[ optional | default: <code>600</code> | type: number ]</strong></dd>
+	<dd>width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn&#8217;t enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</dd>
+	<dt><strong><code>height</code></strong></dt>
+	<dd><strong>[ optional | default: <code>600</code> | type: number ]</strong></dd>
+	<dd>height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn&#8217;t enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</dd>
+	<dt><strong><code>transition</code></strong></dt>
+	<dd><strong>[ optional | default: <code>1500</code> | type: number ]</strong></dd>
+	<dd>how long should all animations or transitions take</dd>
+	<dt><strong><code>delay</code></strong></dt>
+	<dd><strong>[ optional | default: <code>250</code> | type: number ]</strong></dd>
+	<dd>delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering</dd>
+	<dt><strong><code>font_size</code></strong></dt>
+	<dd><strong>[ optional | default: <code>'16px'</code> | type: integer / string ]</strong></dd>
+	<dd>base font size to size text relative to. also accepts integer value.</dd>
+</dl>
 
 # Backend Settings
 
-**Description**
-: **[ optional | default: `''` ]**
-: Add a subtilte or description for the data visual
+
+<dl>
+    <dt><strong>Description</strong></dt>
+    <dd> <strong>[ optional | default: <code>''</code> ]</strong></dd>
+    <dd> Add a subtilte or description for the data visual</dd>
+</dl>
 
 ## Data Settings
 
-**Type**
-: **[ REQUIRED | default: Bar (`bar`) | options: Line (`line`), Pie (`pie`), Scatter plot (`scatter`) ]**
-: how long should all animations or transitions take
+<dl>
+    <dt><strong>Type</strong></dt>
+    <dd> <strong>[ REQUIRED | default: Bar (<code>bar</code>) | options: Line (<code>line</code>), Pie (<code>pie</code>), Scatter plot (<code>scatter</code>) ]</strong></dd>
+    <dd> how long should all animations or transitions take</dd>
+</dl>
 
 ### Source
 
-**Source Type**  
-: **[ REQUIRED | options: File (csv,tsv) (`file`),  URL (`url`), Text (JSON code) (`text`), Rows (UI Field) (`rows`) ]**
-: Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)
+<dl>
+	<dt><strong>Source Type</strong></dt>
+	<dd><strong>[ REQUIRED | options: File (csv,tsv) (<code>file</code>), URL (<code>url</code>), Text (JSON code) (<code>text</code>), Rows (UI Field) (<code>rows</code>) ]</strong></dd>
+	<dd>Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)</dd>
+	<dd>depending on set option one of the appropriate REQUIRED fields for input will be shown.
+		<dl>
+			<dt></dt>
+			<dt><strong>File</strong></dt>
+			<dd><strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code> | Available when: <em>Source Type</em> is <code>file</code> ]</strong></dd>
+			<dd>Input directly from the media library. <em>(Note: JSON is not allowed through this method for security)</em></dd>
+			<dt><strong>URL (url)</strong></dt>
+			<dd><strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code>, <code>json</code> | Available when: <em>Source Type</em> is <code>url</code> ]</strong></dd>
+			<dd>Input data through an external file&#8217;s url</dd>
+			<dt><strong>Text (JSON code)</strong></dt>
+			<dd><strong>[ REQUIRED | Valid file types: <code>json</code> | Available when: <em>Source Type</em> is <code>text</code> ]</strong></dd>
+			<dd>Input through the data in json format through a textbox. recommended for a more customized and controlled data</dd>
+			<dt><strong>Rows</strong></dt>
+			<dd><strong>[ REQUIRED | Valid file types: Available when: <em>Source Type</em> is <code>rows</code> ]</strong></dd>
+			<dd>Input via acf repeater fields. For each row there are available input fields
+				<dl>
+					<dt><strong>Name</strong></dt>
+					<dd><strong>[ REQUIRED ]</strong></dd>
+					<dd>Name for the data</dd>
+					<dt><strong>Value</strong></dt>
+					<dd><strong>[ REQUIRED ]</strong></dd>
+					<dd>Value for the data</dd>
+					<dt><strong>Category</strong></dt>
+					<dd><strong>[ Optional | Available when: <em>Type</em> is set to <code>bar</code>, <code>line</code>, or <code>scatter</code> ]</strong></dd>
+					<dd>Category value to represent the color the data</dd>
+					<dt><strong>Plot Point Area</strong></dt>
+					<dd><strong>[ Optional | Available when: <em>Type</em> is set to <code>scatter</code> ]</strong></dd>
+					<dd>Numeric data value that will influence the size of the scatter plot point</dd>
+				</dl>
+			</dd>
+			<dt><strong>Source Key</strong></dt>
+			<dd><strong>[ optional | Available when: <em>Source Type</em> is <code>file</code>, <code>url</code>, <code>text</code> ]</strong></dd>
+			<dd>object key to the data to use.</dd>
+			<dd>if left blank, data will be taken from the root level</dd>
+			<dd>if there is a value, the data returned from that key will be used</dd>
+		</dl>
+	</dd>
+</dl>
 
-: depending on set option one of the appropriate  REQUIRED fields for input will be shown. 
-    **File**
-    : **[  REQUIRED | Valid file types: `csv`, `tsv`  | Available when: Source type is `file` ]**
-    : Input directly from the media library. *(Note: JSON is not allowed through this method for security)*
-
-    **URL (url)**
-    : **[  REQUIRED | Valid file types: `csv`, `tsv`, `json` | Available when: Source type is `url` ]**
-    : Input data through an external file's url
-
-    **Text (JSON code)**
-    : **[  REQUIRED | Valid file types: `json` | Available when: Source type is `text` ]**
-    : Input through the data in json format through a textbox. recommended for a more customized and controlled data
-
-    **Rows**
-    : **[  REQUIRED | Valid file types: Available when: Source type is `rows` ]**
-    : Input via acf repeater fields
-
-    **Source Key**
-    : **[ optional | Valid file types: Available when: Source type is `file`, `url`, `text` ]**
-    : object key to the data to use.
-    : if left blank, data will be taken from the root level
-    : if there is a value, the data returned from that key will be used
-
-### Data Setup 
+### Data Keys
+**Name Key**
+: ** [ REQUIRED ] **
 
 #### Source key
 Key where the data to be used is stored. This is in case the loaded data could not be modified and is in one or two sublevels deep of the data requested

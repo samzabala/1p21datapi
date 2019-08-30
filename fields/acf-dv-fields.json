@@ -307,7 +307,7 @@
                             {
                                 "ID": 0,
                                 "key": "field_5d420962de26e",
-                                "label": "Label",
+                                "label": "Name",
                                 "name": "0",
                                 "prefix": "acf",
                                 "type": "text",

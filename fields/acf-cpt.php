@@ -219,7 +219,7 @@ $_1p21_dv_fields_cpt = array(
 					'sub_fields' => array(
 						array(
 							'key' => 'field_5d420962de26e',
-							'label' => 'Label',
+							'label' => 'Name',
 							'name' => '0',
 							'type' => 'text',
 							'instructions' => 'data that will represent the labels or a separate axis of the data.',
