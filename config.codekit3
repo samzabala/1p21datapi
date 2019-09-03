@@ -188,23 +188,7 @@
 		"pHT": 1,
 		"pME": 1,
 		"rFN": 0,
-		"uCM": 1
-		},
-	"/speed/_css.php": {
-		"cB": 0,
-		"ft": 8192,
-		"hM": 0,
-		"oA": 1,
-		"oAP": "/speed/_css.php",
-		"oF": 0
-		},
-	"/speed/_js.php": {
-		"cB": 0,
-		"ft": 8192,
-		"hM": 0,
-		"oA": 1,
-		"oAP": "/speed/_js.php",
-		"oF": 0
+		"uCM": 0
 		}
 	},
 "hooks": [

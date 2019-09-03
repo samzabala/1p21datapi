@@ -69,33 +69,15 @@ function _1p21_dv_merge_include_assets(){
 		if($_1p21_dv['enqueued'] == false){
 
 			//stylesheet
-				// $style_mod = filemtime(_1P21_DV_PLUGIN_PATH . '/assets/style.css');
-				// $style_speed_mod = filemtime(_1P21_DV_PLUGIN_PATH . '/speed/_css.php');
+				wp_add_inline_style('1p21-dv-d3-styles',_1p21_dv_get_file_as_string(_1P21_DV_PLUGIN_PATH . '/assets/style.css') );
 
-				// if( $style_mod > $style_speed_mod ){
-					
-				// 	$css_contents = _1p21_dv_file_as_string(_1P21_DV_PLUGIN_PATH . '/assets/style.css');
-				// 	$css_contents = preg_replace('~/\*[^!][^*]*\*+([^/][^*]*\*+)*/~', '', $css_contents); //uncomment. u need comments on this set up
-				// 	$css_contents = str_replace(': ', ':', $css_contents);
-				// 	$css_contents = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $css_contents);
-
-				// 	file_put_contents( _1P21_DV_PLUGIN_PATH . '/speed/_css.php', $css_contents );
-				// }
-
-				// echo _1p21_dv_file_as_string(_1P21_DV_PLUGIN_PATH . '/assets/style.css');
-
-				// wp_enqueue_style( '1p21-dv-d3-styles' );
-				wp_add_inline_style('1p21-dv-d3-styles',_1p21_dv_file_as_string(_1P21_DV_PLUGIN_PATH . '/assets/style.css'));
-
-			
 			//script
-				// wp_enqueue_script( 'd3' );
-				wp_add_inline_script('d3',_1p21_dv_file_as_string(_1P21_DV_PLUGIN_PATH.'/assets/d3.v5.min.js'));
+				wp_add_inline_script('d3',_1p21_dv_get_file_as_string(_1P21_DV_PLUGIN_PATH.'/assets/d3.v5.min.js') );
 
 				if(current_user_can('administrator')) {
-					wp_add_inline_script( '1p21-dv-d3', _1p21_dv_file_as_string( _1P21_DV_PLUGIN_PATH . 'assets/main.js') );
+					wp_add_inline_script( '1p21-dv-d3', _1p21_dv_get_file_as_string( _1P21_DV_PLUGIN_PATH . 'assets/main.js') );
 				}else{
-					wp_add_inline_script( '1p21-dv-d3', _1p21_dv_file_as_string( _1P21_DV_PLUGIN_PATH . '/assets/main.min.js') );
+					wp_add_inline_script( '1p21-dv-d3', _1p21_dv_get_file_as_string( _1P21_DV_PLUGIN_PATH . '/assets/main.min.js') );
 				}
 
 

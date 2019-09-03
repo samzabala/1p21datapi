@@ -27,7 +27,7 @@ function _1p21_dv_create_admin_error($message,$notice_type = 'error'){
 }
 
 
-function _1p21_dv_file_as_string($filepath) {
+function _1p21_dv_get_file_as_string($filepath) {
 	
     ob_start();
     include $filepath;

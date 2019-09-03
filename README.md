@@ -12,11 +12,10 @@ Author URI: [https://www.1point21interactive.com/](https://www.1point21interacti
 1. [Shortcode](#shortcode)
 2. [Shortcode Parameters](#shortcodeparameters)
 3. [Backend Settings](#backendsettings)
-4. [settings](#settings)
-5. [Functions](#functions)
-6. [Troubleshooting](#Troubleshooting)
+4. [Functions](#functions)
+5. [Troubleshooting](#troubleshooting)
 --------------------------
-# Shortcode
+# Shortcode {#shortcode}
 
 You can add a data visualizer using the shortcode `dv` or `data_visalizer`
 
@@ -376,7 +375,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 	*	**Points Color**
 		
-		[ Optional ]
+		**[ Optional ]**
 
 		Color of plot points
 
@@ -386,7 +385,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 	*	**Size**
 		
-		[ Optional ]
+		**[ Optional ]**
 
 		Size of plot points radius
 
@@ -397,7 +396,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 	*	**Color**
 
-		[ Optional ]
+		**[ Optional ]**
 
 		Color of the fill
 
@@ -405,13 +404,13 @@ These are optional settings to allow reformatting data on the visualizer
 
 	*	**Opacity**
 
-		[ Optional | Default: `.5` ]
+		**[ Optional | Default: `.5` ]**
 
 		Opacity of the fill
 
 	*	**Invert Axis?**
 
-		[ Optional | Default: `false` ]
+		**[ Optional | Default: `false` ]**
 
 		Whether or not to invert the fill opposite to the alignment of the axis
 
@@ -419,7 +418,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 	*	**Dash Array**
 
-		[ Optional | Default: `null` ]
+		**[ Optional | Default: `null` ]**
 
 		Set dashes on the line graph. The pattern is `dash, gap, dash, gap...`<br>
 
@@ -433,14 +432,14 @@ These are optional settings to allow reformatting data on the visualizer
 
 *	**Label Style**
 
-	[ Optional | Default: `false` ]
+	**[ Optional | Default: `false` ]**
 
 	Whether or not to invert the fill opposite to the alignment of the axis
 
 
 *	**Inner Radius**
 
-	[ Optional | Default: `0` ]
+	**[ Optional | Default: `0` ]**
 
 	Radius of pie hole
 
@@ -451,20 +450,20 @@ These are optional settings to allow reformatting data on the visualizer
 
 *	**Minimum Radius**
 
-	[ Optional | Default: `10` ]
+	**[ Optional | Default: `10` ]**
 
 	Minimum size of plot points
 
 *	**Maximum Radius**
 
-	[ Optional | Default: `50` ]
+	**[ Optional | Default: `50` ]**
 
 	Maximum size of plot points
 
 
 *	**Opacity**
 
-	[ Optional | Default: `.8` ]
+	**[ Optional | Default: `.8` ]**
 
 	Opacity of plot points. Recommended to be below .9 as scatter plots will overlap
 
@@ -473,7 +472,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 *	**Color Palette**
 
-	[ Optional ]
+	**[ Optional ]**
 
 	Repeater field of colors to use for the data. The color will be used based on the datum instance's index
 
@@ -485,21 +484,40 @@ These are optional settings to allow reformatting data on the visualizer
 
 *	**Legend**
 
-	[ Optional | Default: `true` (when available) | Available when *Color Key* is set; *Type* is 'Pie`; *Category* in *Row* field has value ]
+	**[ Optional | Default: `true` (when available) | Available when *Color Key* is set; *Type* is 'Pie`; *Category* in *Row* field has any value ]**
 
 	Enable legend presentation of data
 
 # Functions
 
-*	**`get_data_visualizer($args = array());`**
+*	**`get_data_visualizer($args = array(),$echo);`**
+
+	Function to get html render of data visualizer as string
+
+	*	**`$args`**
+
+		**[ REQUIRED ]**
+
+		Accepts arguments of the [shortcode parameters](#shortcodeparameters) in array format
+
+	*	$echo
+
+		**[ Optional | Default: `false` ]**
+
+		Whether to output the html or return a string
+
 
 *	**`the_data_visualizer($args = array());`**
+
+	Function to output an existing data visualizer. Unlike `get_data_visualizer()` this function does not accept an echo parameter because duh.
+		
 
 # Settings
 
 
 ### Enable Optimization
- Embeds scripts and stylesheets directly on the markup of the page to optimize performance. may cause script conflicts
+
+Embeds scripts and stylesheets directly on the markup of the page to optimize performance. May cause script conflicts
 
 # Troubleshooting
 
