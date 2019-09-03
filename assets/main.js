@@ -18,9 +18,7 @@
 
 		//yeeee
 		prefix = 'data-visualizer-', 
-		
-		// relative to 1em supposedly idk
-		text_offset = 15,
+
 		label_size = '.75em',
 
 		error_front = "Sorry, unable to display data.<br> Please check the console for more details",
@@ -500,11 +498,11 @@
 
 					if(args[axisString+'Align'] == 'bottom'){
 
-						offset = args[getDimension(axisString,true)] + (_.off_y); 
+						offset = args[getDimension(axisString,true)] + (_.transform_Y); 
 						
 					}else{
 
-						offset = -(_.off_y - text_offset);
+						offset = -(_.off_y - _.text_offset);
 
 					}
 
@@ -512,11 +510,11 @@
 
 					if(args[axisString+'Align'] == 'right'){
 
-						offset = args[getDimension(axisString,true)] + (_.off_x + text_offset);
+						offset = args[getDimension(axisString,true)] + (_.off_x );
 
 					}else{
 
-						offset = -(_.off_x + text_offset)
+						offset = -(_.transform_X - _.text_offset)
 
 					}
 
@@ -587,7 +585,7 @@
 						radius = args.linePointsSize
 					}
 		
-				}else if(args.type == 'scatter'){
+				}else if(args.type == 'scatter' && args.key['area'] ){
 		
 					radius = _.the_area( deepGet(dis,args.key['area'],true) );
 
@@ -699,7 +697,7 @@
 					var value = 0,
 					multiplier = 1;
 
-					if(!initial){
+					if(!(initial && args.type !== 'scatter')){
 
 						if(
 							(
@@ -722,7 +720,7 @@
 						
 
 						if(args[getAxisStringOppo(coordinate)+'Data'] == 0){
-							(coordinate == 'x') ? value = text_offset : value = ( ( _.mLength(coordinate,i) / 2 ) );
+							(coordinate == 'x') ? value = _.text_offset : value = ( ( _.mLength(coordinate,i) / 2 ) );
 							_.mLength(coordinate,i);
 						}
 
@@ -739,7 +737,7 @@
 					var multiplier = 1,
 						value = 0;
 
-					if(!initial) {
+					if(!(initial && args.type !== 'scatter')) {
 
 						if(
 							(
@@ -809,14 +807,14 @@
 
 						case 'top':
 
-							initial ? offset = getBlobOrigin(coordinate,dis,i) : offset = getBlobSize(coordinate,dis,i);
+							offset = (initial && args.type !== 'scatter') ? getBlobOrigin(coordinate,dis,i) : getBlobSize(coordinate,dis,i);
 							break;
 
 						case 'right':
 						case 'bottom':
 
 								if(
-									initial 
+									initial && args.type !== 'scatter'
 									|| (
 										args[getAxisStringOppo(coordinate)+'Align'] == 'right'
 										&& args.type == 'bar'
@@ -943,7 +941,7 @@
 						)
 					){
 
-						value = length + text_offset;
+						value = length + _.text_offset;
 
 					} else if(  (args.type == 'pie' && axisString == 'y') ){
 							value = length * .5;
@@ -1189,7 +1187,7 @@
 				isGrid = isGrid || false;
 
 				// label
-					if( args[axisString+'Label'] ){
+					if( args[axisString+'Label'] && !isGrid ){
 						
 						_['lab_'+axisString] = _.container_lab.append('text')
 							.attr('class', prefix + 'label-'+axisString)
@@ -1364,6 +1362,12 @@
 					return retrievedData
 				}
 			}());
+
+
+		
+		// relative to 1em supposedly idk
+			_.text_offset =parseFloat(args.fontSize);
+
 			
 			//filter data that has null value
 			_.data = _.data.filter(function(dis,i){
@@ -1395,6 +1399,8 @@
 			
 			
 				//sort data 0 so that it doesnt go forward then backward then forward on the graph which is weird
+
+				
 				if(args.nameIsNum){
 					
 					var sortable = [];
@@ -1411,6 +1417,7 @@
 
 					_.data = sortable;
 				}
+				
 
 				// fallback + validate color data
 				// if color data key aint set put in name
@@ -1432,25 +1439,25 @@
 					var shift = {
 						more: 1.5,
 						less: .5
-					},
+					};
 
-					transform_X = _.off_x,
-					transform_Y = _.off_y;
+					_.transform_X = _.off_x,
+					_.transform_Y = _.off_y;
 
 					if(args.type !== 'pie'){
 						//x COORDINATE value @TODO fucking loop na lang
 						switch ( args.yAlign+' '+ ((args.xLabel == null) ? 'empty' : 'has') ){
 							
 							case 'left has':
-								transform_X = (_.off_x * shift.more);
+								_.transform_X = (_.off_x * shift.more);
 								break;
 
 							case 'right has':
-								transform_X = (_.off_x * shift.less);
+								_.transform_X = (_.off_x * shift.less);
 								break;
 
 							default:
-								transform_X = (_.off_x);
+								_.transform_X = (_.off_x);
 
 						}
 
@@ -1459,15 +1466,15 @@
 						switch ( args.xAlign+' '+ ((args.yLabel == null) ? 'empty' : 'has') ){
 							
 							case 'top has':
-								transform_Y = (_.off_y * shift.more);
+								_.transform_Y = (_.off_y * shift.more);
 								break;
 							
 							case 'bottom has':
-								transform_Y = (_.off_y * shift.less);
+								_.transform_Y = (_.off_y * shift.less);
 								break;
 
 							default:
-								transform_Y = (_.off_y);
+								_.transform_Y = (_.off_y);
 
 						}
 
@@ -1496,13 +1503,13 @@
 
 					_.heading_sel
 						.style('padding-top', function(){
-							return  ((transform_Y / args.height) * 50) + '%'
+							return  ((_.transform_Y / args.height) * 50) + '%'
 						})
 						.style('padding-left', function(){
-							return  ((transform_X / args.width) * 100) + '%'
+							return  ((_.transform_X / args.width) * 100) + '%'
 						})
 						.style('padding-right', function(){
-							return  ((transform_X / args.width) * 100) + '%'
+							return  ((_.transform_X / args.width) * 100) + '%'
 						})
 						.transition(_.duration)
 						.styleTween('opacity',function(){return getInterpolation(0,1)});
@@ -1566,7 +1573,7 @@
 							_.container = _.svg.append('g')
 								.attr('class',prefix+'svg-wrapper')
 								.attr('font-size',args.fontSize)
-								.attr('transform','translate('+ transform_X +','+ transform_Y +')');
+								.attr('transform','translate('+ _.transform_X +','+ _.transform_Y +')');
 
 							
 							if(args.type == 'pie'){
@@ -1751,26 +1758,12 @@
 		// tick inits
 		var renderGraph = function() {
 			// ok do the thing now
-			// console.log(
-			//	 selector,'-------------------------------------------------------------------',"\n",
-			//	 'calculated',_,"\n",
-			//	 'data',_.data,"\n",
-			//	 'args',args,"\n",
-
-			//	 "\n",'x',"\n",
-			//	 'domain',_['dom_'+ args.xData],"\n",
-			//	 'range',_['range_'+ args.xData],"\n",
-
-			//	 "\n",'y',"\n",
-			//	 'domain',_['dom_'+ args.yData],"\n",
-			//	 'range',_['range_'+ args.yData],"\n",
-			//	 "\n",
-
-			//	 "\n",'color',"\n",
-			//	 'domain',_['dom_color'],"\n",
-			//	 'range',_['range_color'],"\n",
-			//	 "\n",
-			// );
+			console.log(
+				 selector,'-------------------------------------------------------------------',"\n",
+				 'calculated',_,"\n",
+				 'data',_.data,"\n",
+				 'args',args,"\n"
+			);
 
 			//generate the graph boi
 
@@ -2108,7 +2101,7 @@
 
 						length = _.enter_blob_text ? _.enter_blob_text.nodes()[i].getBoundingClientRect()[ getDimension( axisString ) ] : 0
 						
-						value = length + text_offset;
+						value = length + _.text_offset;
 
 					return value;
 				};
@@ -2240,7 +2233,8 @@
 				var dataIsJSON = JSON.parse(jsonSelector);
 				init(dataIsJSON);
 			}else{
-				console.error('Data input may not be valid. Please check and update the syntax')
+				dataContainer.classList.add(prefix+'initialized')
+				renderError('Data input may not be valid. Please check and update the syntax');
 			}
 
 

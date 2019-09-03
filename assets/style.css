@@ -20,6 +20,15 @@ Edit style.scss instead
   .data-visualizer-description {
     opacity: .8;
     font-size: .875em; }
+  .data-visualizer-wrapper:before {
+    content: "Loading...";
+    position: absolute;
+    margin: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: .25s opacity linear; }
   .data-visualizer-wrapper.fatality {
     padding: 4em 0;
     max-width: 28em;
@@ -29,12 +38,7 @@ Edit style.scss instead
   .data-visualizer:not(.data-visualizer-initialized), .data-visualizer-wrapper:empty {
     padding-bottom: 75%; }
     .data-visualizer:not(.data-visualizer-initialized):before, .data-visualizer-wrapper:empty:before {
-      content: "Loading...";
-      position: absolute;
-      margin: auto;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%); }
+      opacity: 1; }
   .data-visualizer text {
     font-family: inherit !important; }
   .data-visualizer-axis line,

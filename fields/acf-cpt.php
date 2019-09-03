@@ -568,7 +568,7 @@ if layout is set to line, this will be applied to plot points and will override 
 								'id' => '',
 							),
 							'default_value' => '',
-							'placeholder' => 'Est. ',
+							'placeholder' => 'Est.',
 							'prepend' => '',
 							'append' => '',
 							'maxlength' => '',
@@ -587,7 +587,7 @@ if layout is set to line, this will be applied to plot points and will override 
 								'id' => '',
 							),
 							'default_value' => '',
-							'placeholder' => ' Million Dollars',
+							'placeholder' => 'Million Dollars',
 							'prepend' => '',
 							'append' => '',
 							'maxlength' => '',
@@ -795,6 +795,17 @@ if layout is set to line, this will be applied to plot points and will override 
 							),
 							array(
 								'field' => 'field_5d42ffcf5f464',
+								'operator' => '!=empty',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'pie',
+							),
+							array(
+								'field' => 'field_5d5ef5079216e',
 								'operator' => '!=empty',
 							),
 						),
@@ -1757,7 +1768,7 @@ if layout is set to line, this will be applied to plot points and will override 
 						'id' => '',
 					),
 					'choices' => array(
-						null => 'None',
+						'' => 'None',
 						'curve' => 'Curve',
 						'step' => 'Step',
 					),
@@ -2314,7 +2325,7 @@ if layout is set to line, this will be applied to plot points and will override 
 			'label' => 'Advanced',
 			'name' => '',
 			'type' => 'tab',
-			'instructions' => 'Nothing here yet',
+			'instructions' => '',
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array(

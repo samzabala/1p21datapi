@@ -792,7 +792,7 @@
                                 "_prepare": 0,
                                 "_valid": 1,
                                 "default_value": "",
-                                "placeholder": "Est. ",
+                                "placeholder": "Est.",
                                 "prepend": "",
                                 "append": "",
                                 "maxlength": ""
@@ -821,7 +821,7 @@
                                 "_prepare": 0,
                                 "_valid": 1,
                                 "default_value": "",
-                                "placeholder": " Million Dollars",
+                                "placeholder": "Million Dollars",
                                 "prepend": "",
                                 "append": "",
                                 "maxlength": ""
@@ -1125,6 +1125,17 @@
                                 },
                                 {
                                     "field": "field_5d42ffcf5f464",
+                                    "operator": "!=empty"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "pie"
+                                },
+                                {
+                                    "field": "field_5d5ef5079216e",
                                     "operator": "!=empty"
                                 }
                             ]
@@ -3203,60 +3214,6 @@
                     "param": "post_type",
                     "operator": "==",
                     "value": "data-visual"
-                }
-            ]
-        ],
-        "menu_order": 0,
-        "position": "normal",
-        "style": "default",
-        "label_placement": "top",
-        "instruction_placement": "label",
-        "hide_on_screen": "",
-        "active": 1,
-        "description": "",
-        "_valid": 1,
-        "local": "php"
-    },
-    {
-        "key": "group_5d40bfc5e49db",
-        "title": "Data Visualizer Settings",
-        "fields": [
-            {
-                "ID": 0,
-                "key": "field_5d42155513d47",
-                "label": "Optimize for performance",
-                "name": "dv_optimize",
-                "prefix": "acf",
-                "type": "true_false",
-                "value": null,
-                "menu_order": 0,
-                "instructions": "",
-                "required": 0,
-                "id": "",
-                "class": "",
-                "conditional_logic": 0,
-                "parent": "group_5d40bfc5e49db",
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "_name": "dv_optimize",
-                "_prepare": 0,
-                "_valid": 1,
-                "message": "Optimize rendering for performance (note: turning this one may cause script conflicts)",
-                "default_value": 0,
-                "ui": 0,
-                "ui_on_text": "",
-                "ui_off_text": ""
-            }
-        ],
-        "location": [
-            [
-                {
-                    "param": "options_page",
-                    "operator": "==",
-                    "value": "1p21-dv-settings"
                 }
             ]
         ],

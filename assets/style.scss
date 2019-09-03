@@ -54,6 +54,18 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
     }
 
     &-wrapper {
+
+        
+        &:before { 
+            content:"Loading...";
+            position: absolute;
+            margin: auto;
+            top:50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            opacity:0;
+            transition: .25s opacity linear;
+        }
         
         &.fatality {
             padding: 4em 0;
@@ -66,12 +78,7 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
         &:empty {
             padding-bottom: 75%;
             &:before { 
-                content:"Loading...";
-                position: absolute;
-                margin: auto;
-                top:50%;
-                left: 50%;
-                transform: translate(-50%,-50%);
+                opacity:1;
             }
         }
     }
