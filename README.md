@@ -78,9 +78,11 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 
 *	**`font_size`**
 
-	**[ Optional | Default: `'16px'` | type: integer / string ]**
+	**[ Optional | Default: `'16px'` | type: number / string ]**
 
-	base font size to size text relative to. also accepts integer value.
+	css base font size to size all text relative to
+	
+	If given a number, it will be interpreted as to pixels.
 
 # Backend Settings
 
