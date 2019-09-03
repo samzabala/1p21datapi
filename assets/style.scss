@@ -130,8 +130,7 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 
 
         &-no-palette#{$prefix}-type-pie,
-        &-no-palette#{$prefix}-type-scatter,
-        &-no-palette#{$prefix}-type-bar {
+        &-no-palette#{$prefix}-has-legend {
 
             .graph-item-blob:nth-of-type(#{$i}n),
             #{$prefix}-legend-item:nth-of-type(#{$i}n) .legend-item-blob {
@@ -140,8 +139,8 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
             }
         }
 
-        &-no-palette#{$prefix}-type-pie#{$prefix}-label-style-within .graph-item-text, 
-        &-no-palette#{$prefix}-type-scatter .blob-item-blob {
+        &-no-palette#{$prefix}-type-pie#{$prefix}-pi-label-style-within .graph-item-text, 
+        &-no-palette#{$prefix}-has-legend#{$prefix}-type-scatter .blob-item-blob {
             &:nth-of-type(#{$i}n) {
                 stroke: nth($palette,$i);
             }

@@ -1552,12 +1552,12 @@
 								.attr('x','0px')
 								.attr('y','0px')
 								.attr('class',
-									prefix + 'svg '
-									+ prefix + 'type-' + args.type + ' '
-									+ prefix + ( (args.colorPalette.length > 0 || args.linePointsColor !== null || args.lineColor !== null) ?  'has-palette' : 'no-palette' )
-									+ ((args.type !== 'pie' && !args.xTicks && !args.yTicks) ? ' '+prefix+'no-ticks' : '')
-									+ ((!args.colorLegend) ? ' '+prefix+'no-legend' : '')
-									+ ((args.type == 'pie' && args.piLabelStyle !== null) ? ' '+prefix+'label-style-'+args.piLabelStyle : ' '+prefix+'no-label')
+									prefix + 'svg'
+									+ ' ' + prefix + 'type-' + args.type
+									+ ' ' + prefix + ( (args.colorPalette.length > 0 || args.linePointsColor !== null || args.lineColor !== null) ?  'has' : 'no' ) + '-palette'
+									+ ' ' + prefix + ((args.type !== 'pie' && !args.xTicks && !args.yTicks) ? 'no' : 'has') + '-ticks'
+									+ ' ' + prefix + ((args.colorLegend ) ? 'has' : 'no') + '-legend'
+									+ ((args.type == 'pie' && args.piLabelStyle !== null) ? ' ' + prefix +'pi-label-style-'+args.piLabelStyle : ' '+prefix+'no-label')
 								)
 								.attr('viewBox', dimensionString)
 								.attr("preserveAspectRatio", "xMidYMid meet")
