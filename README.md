@@ -56,13 +56,21 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 
 	**[ Optional | Default: `600` | type: number ]**
 
-	width of canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
+	width of canvas.
+
+	Note that this setting will also act like an aspect ratio to ensure responsiveness. Size below 600 may not be recommended depending on the number of data to render
+	
+	if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
 
 *	**`height`**
 
 	**[ Optional | Default: `600` | type: number ]**
 
-	height canvas. if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
+	height canvas.
+
+	Note that this setting will also act like an aspect ratio to ensure responsiveness. Size below 600 may not be recommended depending on the number of data to render
+	
+	if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
 
 *	**`transition`**
 
