@@ -71,13 +71,12 @@
 	}
 	add_action( 'admin_enqueue_scripts', '_1p21_dv_register_scripts_admin',1 );
 	
-//enqueueadmin
-	//style classes of acf
-	function _1p21_dv_acf_fields_styles(){
+//enqueueueueueue
+	function _1p21_dv_acf_enqueue_admin(){
 		wp_enqueue_style('1p21-dv-d3-styles-admin');
 		wp_add_inline_style('1p21-dv-d3-styles-admin',_1p21_dv_get_file_as_string(_1P21_DV_PLUGIN_PATH . '/assets/admin.css') );
 	}
-	add_action('admin_head', '_1p21_dv_acf_fields_styles',1);
+	add_action('admin_head', '_1p21_dv_acf_enqueue_admin',1);
 
 //add inline
 //if optimize setting is false, we are able to enqueue scriptsonly when the shortcode is called,

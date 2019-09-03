@@ -358,12 +358,9 @@ function _1p21_div_data_visualizer_render($atts = array()){
     global $_1p21_dv;
 	$settings = get_option( '_1p21_dv_opts' );
 
-	// if($settings['dv_optimize'] !== 'on'){
-			
-		wp_enqueue_script( 'd3' );
-		wp_enqueue_script( '1p21-dv-d3' );
-		wp_enqueue_style( '1p21-dv-d3-styles' );
-	// }
+	wp_enqueue_script( 'd3' );
+	wp_enqueue_script( '1p21-dv-d3' );
+	wp_enqueue_style( '1p21-dv-d3-styles' );
     
 	$args = shortcode_atts($_1p21_dv['defaults'],$atts);
 
