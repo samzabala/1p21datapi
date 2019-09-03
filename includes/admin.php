@@ -29,15 +29,15 @@
 //register scripts. enqueue only happens when data visualizer is present
 	function _1p21_dv_register_scripts_front() {
 
-		$settings = get_option( '_1p21_dv_opts' );
+		$values = get_option( '_1p21_dv_opts' );
 
-		if($settings['dv_optimize'] == true){
+		if(isset($values['dv_optimize'])){
 			//handles will be dummies now
 			
-			wp_register_style( '1p21-dv-d3-styles', false );
+			wp_register_style( '1p21-dv-d3-styles', false,array(),null );
 
-			wp_register_script( 'd3',false);
-				wp_register_script( '1p21-dv-d3', false);
+			wp_register_script( 'd3',false,array(),null,true);
+				wp_register_script( '1p21-dv-d3', false,array('d3'),null,true);
 
 		}else{
 			
@@ -53,14 +53,14 @@
 
 		
 	}
-	add_action( 'wp_enqueue_scripts', '_1p21_dv_register_scripts_front' );
+	add_action( 'wp_enqueue_scripts', '_1p21_dv_register_scripts_front',1 );
 
 
 	function _1p21_dv_register_scripts_admin(){
 
-		$settings = get_option( '_1p21_dv_opts' );
+		$values = get_option( '_1p21_dv_opts' );
 
-		if($settings['dv_optimize'] == true){
+		if(isset($values['dv_optimize'])){
 			//handles will be dummies now
 			wp_register_style( '1p21-dv-d3-styles-admin', false );
 
@@ -69,24 +69,26 @@
 		}
 
 	}
-	add_action( 'admin_enqueue_scripts', '_1p21_dv_register_scripts_admin' );
+	add_action( 'admin_enqueue_scripts', '_1p21_dv_register_scripts_admin',1 );
 	
 //enqueueadmin
-
-
 	//style classes of acf
 	function _1p21_dv_acf_fields_styles(){
 		wp_enqueue_style('1p21-dv-d3-styles-admin');
 		wp_add_inline_style('1p21-dv-d3-styles-admin',_1p21_dv_get_file_as_string(_1P21_DV_PLUGIN_PATH . '/assets/admin.css') );
 	}
-	add_action('admin_head', '_1p21_dv_acf_fields_styles');
+	add_action('admin_head', '_1p21_dv_acf_fields_styles',1);
 
-//if optimize setting is false, scripts get enqueued only when the shortcode is called, if not we can only embed all the assets an all pages because enqueueing dem bois embeded on the html only when a shortcode is present on an optimal setup is too komplikado
+//add inline
+//if optimize setting is false, we are able to enqueue scriptsonly when the shortcode is called,
+// if not, we can only embed all the assets an all pages because enqueueing dem bois embedded on the html only when a shortcode is present on an optimal setup is too komplikado
+//wp_enqueue functions happen on render-front functions
 function _1p21_dv_merge_include_assets(){
 	global $_1p21_dv;
-	$settings = get_option( '_1p21_dv_opts' );
 
-	if($settings['dv_optimize'] == true){
+	$values = get_option( '_1p21_dv_opts' );
+
+	if(isset($values['dv_optimize'])){
 
 		if($_1p21_dv['enqueued'] == false){
 
@@ -102,19 +104,16 @@ function _1p21_dv_merge_include_assets(){
 					wp_add_inline_script( '1p21-dv-d3', _1p21_dv_get_file_as_string( _1P21_DV_PLUGIN_PATH . '/assets/main.min.js') );
 				}
 
-
-
 			$_1p21_dv['enqueued'] = true;
 		}
 	}
 }
-add_action( 'wp_head', '_1p21_dv_merge_include_assets' );
+add_action( 'wp_head', '_1p21_dv_merge_include_assets',1 );
 
 // display id on edit page
 function _1p21_dv_display_id_to_edit_page() {
 	global $post;
 	$scr = get_current_screen();
-
 
 	if ( $scr->post_type == 'data-visual' && $scr->parent_base === 'edit' ){
 

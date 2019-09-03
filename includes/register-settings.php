@@ -81,7 +81,7 @@ function _1p21_dv_options_build_form(){
 		<h3>Optimize for performance</h3>
 		<p>
 			<label>
-				<input type="checkbox" name="_1p21_dv_opts[dv_optimize]" <?= $values['optimize'] == true ? 'checked' : '' ?> /> Optimize rendering for performance <em>(note: turning this one may cause script conflicts)</em>
+				<input type="checkbox" name="_1p21_dv_opts[dv_optimize]" <?= $values['dv_optimize'] == true ? 'checked' : '' ?> /> Optimize rendering for performance <em>(note: turning this one may cause script conflicts)</em>
 			</label>
 		</p>
 		
@@ -129,9 +129,10 @@ function _1p21_dv_options_validate($input){
 	*/
 
 	//remove all HTML, PHP, Mysql from some inputs
-
+	echo 'bitch ass';
+	var_dump($input);
 	foreach($input as $setting=> $value){
-		$input[$setting] = wp_filter_nohtml_kses($value);
+		$input[$setting] = $value ? true : false;
 	}
 	
 	return $input;
