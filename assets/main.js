@@ -1316,11 +1316,11 @@
 			}
 		}
 
-		var renderError = function(console_error){
-
+		var renderError = function(console_error,custom_error_front){
+			d3.select(selector).classed(prefix+'initialized',true);
 			d3.select(selector).append('div')
 			.attr('class',prefix+'wrapper fatality')
-			.html(error_front);
+			.html(custom_error_front || error_front);
 
 
 			throw new Error(console_error);
@@ -2233,7 +2233,6 @@
 				var dataIsJSON = JSON.parse(jsonSelector);
 				init(dataIsJSON);
 			}else{
-				dataContainer.classList.add(prefix+'initialized')
 				renderError('Data input may not be valid. Please check and update the syntax');
 			}
 
@@ -2243,11 +2242,24 @@
 				case 'csv':
 				case 'dsv':
 				case 'tsv':
-					d3[args.srcPath.getFileExtension()](args.srcPath,function(d){ return d; }).then(init);
+				case 'xml':
+					d3[args.srcPath.getFileExtension()](args.srcPath,function(d){
+							return d;
+						})
+						.then(init)
+						.catch(function(error){
+							renderError(error,'Data source couldn\'t be requested. Please check console for more details');
+						});
 					break;
 				
 				default:
-					d3.json(args.srcPath,function(d){ return d; }).then(init);
+					d3.json(args.srcPath,function(d){
+							return d;
+						})
+						.then(init)
+						.catch(function(error){
+							renderError(error,'Data source couldn\'t be requested. Please check console for more details');
+						});
 					break;
 			}
 		}
