@@ -24,7 +24,7 @@
 	function _1p21_dv_options_add_page(){
 		//add_options_page(title, menu name, capability, slug, form callback);
 
-		// add_options_page('DV Settings', 'DV Settings','manage_options', '1p21-dv-options-page', '_1p21_dv_options_build_form');
+		// add_options_page('Data Visualizer Settings', 'Settings','manage_options', '1p21-dv-options-page', '_1p21_dv_options_build_form');
 		
 		// if(function_exists('acf_add_options_sub_page') || function_exists('acf_add_local_field_group')){
 
@@ -32,8 +32,8 @@
 		// 		acf_add_options_sub_page(array(
 		// 			'capability'	=> 'edit_posts',
 		// 			'redirect'		=> false,
-		// 			'page_title' 	=> 'DV Settings (ACF)',
-		// 			'menu_title' 	=> 'DV Settings',
+		// 			'page_title' 	=> 'Data Visualizer Settings (ACF)',
+		// 			'menu_title' 	=> 'Settings',
 		// 			'menu_slug' 	=> '1p21-dv-settings',
 		// 			'parent_slug' 	=> 'edit.php?post_type=data-visual',
 		// 		));
@@ -41,7 +41,7 @@
 
 			
 		// }else{
-			add_submenu_page('edit.php?post_type=data-visual','DV Settings', 'DV Settings','manage_options', '1p21-dv-settings', '_1p21_dv_options_build_form');
+			add_submenu_page('edit.php?post_type=data-visual','Data Visualizer Settings', 'Settings','manage_options', '1p21-dv-settings', '_1p21_dv_options_build_form');
 		// }
 	}
 	add_action( 'admin_menu', '_1p21_dv_options_add_page',11 );
@@ -85,6 +85,7 @@ function _1p21_dv_options_build_form(){
 			</label>
 		</p>
 		
+		<hr class="form-foot-divider">
 		
 		<p class="submit">
 			<input type="submit" value="Save Changes" class="button-primary" />

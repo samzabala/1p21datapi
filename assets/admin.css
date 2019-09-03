@@ -1,0 +1,24 @@
+._1p21-dv-content {
+  max-width: 960px;
+  padding: 40px 2em;
+  margin: 0 auto;
+  font-size: 1.125em; }
+  ._1p21-dv-content form {
+    padding: 1em 2em;
+    margin-top: 2em;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.5); }
+    ._1p21-dv-content form .submit {
+      margin-top: 2em; }
+  ._1p21-dv-content p {
+    font-size: inherit; }
+  ._1p21-dv-content h3 {
+    font-size: 1.2em; }
+  ._1p21-dv-content li {
+    margin-bottom: 2em; }
+  ._1p21-dv-content ul {
+    padding-left: 2em; }
+
+#acf-group_5d4206c985d00 .dv-code input,
+#acf-group_5d4206c985d00 .dv-code textarea {
+  font-family: monospace; }

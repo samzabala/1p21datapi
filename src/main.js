@@ -1758,12 +1758,12 @@
 		// tick inits
 		var renderGraph = function() {
 			// ok do the thing now
-			console.log(
-				 selector,'-------------------------------------------------------------------',"\n",
-				 'calculated',_,"\n",
-				 'data',_.data,"\n",
-				 'args',args,"\n"
-			);
+			// console.log(
+			// 	 selector,'-------------------------------------------------------------------',"\n",
+			// 	 'calculated',_,"\n",
+			// 	 'data',_.data,"\n",
+			// 	 'args',args,"\n"
+			// );
 
 			//generate the graph boi
 

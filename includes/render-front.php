@@ -370,6 +370,7 @@ function _1p21_div_data_visualizer_render($atts = array()){
 	extract( $args );
 
 	$render = _1p21_div_get_data_visualizer($args);
+
 	return $render;
 	
 } 

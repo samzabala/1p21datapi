@@ -27,37 +27,59 @@
 
 
 //register scripts. enqueue only happens when data visualizer is present
-	function _1p21_dv_register_scripts() {
+	function _1p21_dv_register_scripts_front() {
 
 		$settings = get_option( '_1p21_dv_opts' );
 
 		if($settings['dv_optimize'] == true){
 			//handles will be dummies now
-
-			wp_register_script( 'd3',false);
-				wp_register_script( '1p21-dv-d3', false);
 			
 			wp_register_style( '1p21-dv-d3-styles', false );
 
+			wp_register_script( 'd3',false);
+				wp_register_script( '1p21-dv-d3', false);
+
 		}else{
-
-
-			// wp_register_script( 'd3','https://d3js.org/d3.v5.js',array(),false,true);
-			wp_register_script( 'd3',_1P21_DV_PLUGIN_URL.'assets/d3.v5.min.js',array(),false,true);
-			
-			if(current_user_can('administrator')) {
-				wp_register_script( '1p21-dv-d3', _1P21_DV_PLUGIN_URL . 'assets/main.js',array('d3'),null,true);
-			}else{
-				wp_register_script( '1p21-dv-d3', _1P21_DV_PLUGIN_URL . 'assets/main.min.js',array('d3'),null,true);
-			}
 			
 			wp_register_style( '1p21-dv-d3-styles', _1P21_DV_PLUGIN_URL . 'assets/style.css',array(),null );
+
+			wp_register_script( 'd3',_1P21_DV_PLUGIN_URL.'assets/d3.v5.min.js',array(),false,true);
+				if(current_user_can('administrator')) {
+					wp_register_script( '1p21-dv-d3', _1P21_DV_PLUGIN_URL . 'src/main.js',array('d3'),null,true);
+				}else{
+					wp_register_script( '1p21-dv-d3', _1P21_DV_PLUGIN_URL . 'assets/main.min.js',array('d3'),null,true);
+				}
 		}
 
 		
 	}
-	add_action( 'wp_enqueue_scripts', '_1p21_dv_register_scripts' );
+	add_action( 'wp_enqueue_scripts', '_1p21_dv_register_scripts_front' );
 
+
+	function _1p21_dv_register_scripts_admin(){
+
+		$settings = get_option( '_1p21_dv_opts' );
+
+		if($settings['dv_optimize'] == true){
+			//handles will be dummies now
+			wp_register_style( '1p21-dv-d3-styles-admin', false );
+
+		}else{
+			wp_register_style( '1p21-dv-d3-styles-admin', _1P21_DV_PLUGIN_URL . 'assets/admin.css',array(),null );
+		}
+
+	}
+	add_action( 'admin_enqueue_scripts', '_1p21_dv_register_scripts_admin' );
+	
+//enqueueadmin
+
+
+	//style classes of acf
+	function _1p21_dv_acf_fields_styles(){
+		wp_enqueue_style('1p21-dv-d3-styles-admin');
+		wp_add_inline_style('1p21-dv-d3-styles-admin',_1p21_dv_get_file_as_string(_1P21_DV_PLUGIN_PATH . '/assets/admin.css') );
+	}
+	add_action('admin_head', '_1p21_dv_acf_fields_styles');
 
 //if optimize setting is false, scripts get enqueued only when the shortcode is called, if not we can only embed all the assets an all pages because enqueueing dem bois embeded on the html only when a shortcode is present on an optimal setup is too komplikado
 function _1p21_dv_merge_include_assets(){
@@ -75,7 +97,7 @@ function _1p21_dv_merge_include_assets(){
 				wp_add_inline_script('d3',_1p21_dv_get_file_as_string(_1P21_DV_PLUGIN_PATH.'/assets/d3.v5.min.js') );
 
 				if(current_user_can('administrator')) {
-					wp_add_inline_script( '1p21-dv-d3', _1p21_dv_get_file_as_string( _1P21_DV_PLUGIN_PATH . 'assets/main.js') );
+					wp_add_inline_script( '1p21-dv-d3', _1p21_dv_get_file_as_string( _1P21_DV_PLUGIN_PATH . 'src/main.js') );
 				}else{
 					wp_add_inline_script( '1p21-dv-d3', _1p21_dv_get_file_as_string( _1P21_DV_PLUGIN_PATH . '/assets/main.min.js') );
 				}
@@ -141,54 +163,3 @@ function _1p21_dv_add_documentation_link_to_plugins( $links ) {
 		'">' . __('Documentation') . '</a>';
 	return $links;
 }
-
-//style classes of acf
-	function _1p21_dv_acf_fields_styles(){
-		?>
-		<style type="text/css">
-
-		._1p21-dv-content {
-			max-width: 960px;
-			padding: 40px 2em;
-			margin: 0 auto;
-			font-size: 1.125em;
-		}
-
-		._1p21-dv-content form {
-			padding: 1em 2em;
-			margin-top: 2em;
-			border: 1px solid rgba(0,0,0,.1);
-			background: rgba(255,255,255,.5)
-		}
-
-		._1p21-dv-content form .submit {
-			margin-top: 2em;
-		}
-
-		._1p21-dv-content p {
-			font-size: inherit;
-		}
-
-		._1p21-dv-content h3 {
-			font-size: 1.2em;
-		}
-
-		._1p21-dv-content li {
-			margin-bottom: 2em;
-		}
-
-		._1p21-dv-content ul {
-			padding-left: 2em;
-		}
-
-		#acf-group_5d4206c985d00 .dv-code input,
-		#acf-group_5d4206c985d00 .dv-code textarea{
-			font-family: monospace;
-			
-		}
-		</style>
-		<?php 
-	}
-
-
-add_action('admin_head', '_1p21_dv_acf_fields_styles');

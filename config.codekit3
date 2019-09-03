@@ -36,17 +36,6 @@
 		"sC": 0,
 		"tS": 0
 		},
-	"/assets/main.js": {
-		"bF": 0,
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/assets/main.min.js",
-		"oF": 3,
-		"sC": 0,
-		"tS": 0
-		},
 	"/assets/main.min.js": {
 		"bF": 0,
 		"ft": 64,
@@ -63,41 +52,10 @@
 		"bl": 0,
 		"ft": 16,
 		"ma": 0,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "/assets/style-min.css",
-		"oF": 0,
+		"oF": 1,
 		"oS": 3
-		},
-	"/assets/style.scss": {
-		"aP": 0,
-		"bl": 0,
-		"dP": 10,
-		"dS": 0,
-		"ft": 4,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/assets/style.css",
-		"oF": 0,
-		"oS": 0,
-		"uL": 1
-		},
-	"/assets/svgtest.svg": {
-		"ft": 2097152,
-		"miP": 0,
-		"oA": 2,
-		"oAP": "/assets/svgtest.svg",
-		"oF": 0,
-		"opt": 0,
-		"plM": 3758088159,
-		"prP": 0
-		},
-	"/assets/testpage.html": {
-		"cB": 0,
-		"ft": 8192,
-		"hM": 0,
-		"oA": 0,
-		"oAP": "/assets/testpage.html",
-		"oF": 0
 		},
 	"/fields/acf-cpt.php": {
 		"cB": 0,
@@ -197,6 +155,43 @@
 		"pME": 1,
 		"rFN": 0,
 		"uCM": 0
+		},
+	"/src/admin.scss": {
+		"aP": 0,
+		"bl": 0,
+		"dP": 10,
+		"dS": 0,
+		"ft": 4,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "/assets/admin.css",
+		"oF": 2,
+		"oS": 0,
+		"uL": 1
+		},
+	"/src/main.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "/assets/main.min.js",
+		"oF": 3,
+		"sC": 0,
+		"tS": 0
+		},
+	"/src/style.scss": {
+		"aP": 0,
+		"bl": 0,
+		"dP": 10,
+		"dS": 0,
+		"ft": 4,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "/assets/style.css",
+		"oF": 2,
+		"oS": 0,
+		"uL": 1
 		}
 	},
 "hooks": [
