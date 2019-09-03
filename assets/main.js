@@ -1616,14 +1616,14 @@
 								(_['the_'+keyKey] && _['dom_'+keyKey]) && _['the_'+keyKey].domain(_['dom_'+keyKey]);
 
 								_['format_'+keyKey] = (function(){
+									
+									if(typeof args['format'+keyKey+'Parameter'] === 'function' ) {
+										return args['format'+keyKey+'Parameter']
 
-									if(typeof args[keyKey+'Parameter'] === 'function' ) {
-										return args[keyKey+'Parameter']
-
-									}else if( typeof args[keyKey+'Parameter'] === 'string'  ) {
+									}else if( typeof args['format'+keyKey+'Parameter'] === 'string'  ) {
 										
 										return function(value){
-											return d3.format(args[keyKey+'Parameter'])(value)
+											return d3.format(args['format'+keyKey+'Parameter'])(value)
 										}
 
 									}else{
