@@ -34,6 +34,8 @@ $_1p21_dv['defaults'] = array(
 	'delay' => null, //duh
 );
 
+$_1p21_dv['enqueued'] = false;
+
 define('_1P21_DV_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define('_1P21_DV_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define('_1P21_DV_PLUGIN_BASENAME',plugin_basename(__FILE__));

@@ -107,14 +107,6 @@
 		"oO": 0,
 		"oS": 1
 		},
-	"/fields/acf-settings.php": {
-		"cB": 0,
-		"ft": 8192,
-		"hM": 0,
-		"oA": 0,
-		"oAP": "/fields/acf-settings.php",
-		"oF": 0
-		},
 	"/includes/admin.php": {
 		"cB": 0,
 		"ft": 8192,

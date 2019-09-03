@@ -1,6 +1,6 @@
 <?php
 /********************************************************************************************
-* filter + hooks and stuff
+* filter + hooks, enqueues and stuff
 *********************************************************************************************/
 
 	
@@ -29,18 +29,82 @@
 //register scripts. enqueue only happens when data visualizer is present
 	function _1p21_dv_register_scripts() {
 
-		// wp_register_script( 'd3','https://d3js.org/d3.v5.js',array(),false,true);
-		wp_register_script( 'd3',_1P21_DV_PLUGIN_URL.'assets/d3.v5.min.js',array(),false,true);
-		
-		if(current_user_can('administrator')) {
-			wp_register_script( '1p21-dv-d3', _1P21_DV_PLUGIN_URL . 'assets/main.js',array('d3'),null,true);
+		$settings = get_option( '_1p21_dv_opts' );
+
+		if($settings['dv_optimize'] == true){
+			//handles will be dummies now
+
+			wp_register_script( 'd3',false);
+				wp_register_script( '1p21-dv-d3', false);
+			
+			wp_register_style( '1p21-dv-d3-styles', false );
+
 		}else{
-			wp_register_script( '1p21-dv-d3', _1P21_DV_PLUGIN_URL . 'assets/main.min.js',array('d3'),null,true);
-        }
-        
-		wp_register_style( '1p21-dv-d3-styles', _1P21_DV_PLUGIN_URL . 'assets/style.css',array(),null );
+
+
+			// wp_register_script( 'd3','https://d3js.org/d3.v5.js',array(),false,true);
+			wp_register_script( 'd3',_1P21_DV_PLUGIN_URL.'assets/d3.v5.min.js',array(),false,true);
+			
+			if(current_user_can('administrator')) {
+				wp_register_script( '1p21-dv-d3', _1P21_DV_PLUGIN_URL . 'assets/main.js',array('d3'),null,true);
+			}else{
+				wp_register_script( '1p21-dv-d3', _1P21_DV_PLUGIN_URL . 'assets/main.min.js',array('d3'),null,true);
+			}
+			
+			wp_register_style( '1p21-dv-d3-styles', _1P21_DV_PLUGIN_URL . 'assets/style.css',array(),null );
+		}
+
+		
 	}
 	add_action( 'wp_enqueue_scripts', '_1p21_dv_register_scripts' );
+
+
+//if optimize setting is false, scripts get enqueued only when the shortcode is called, if not we can only embed all the assets an all pages because enqueueing dem bois embeded on the html only when a shortcode is present on an optimal setup is too komplikado
+function _1p21_dv_merge_include_assets(){
+	global $_1p21_dv;
+	$settings = get_option( '_1p21_dv_opts' );
+
+	if($settings['dv_optimize'] == true){
+
+		if($_1p21_dv['enqueued'] == false){
+
+			//stylesheet
+				// $style_mod = filemtime(_1P21_DV_PLUGIN_PATH . '/assets/style.css');
+				// $style_speed_mod = filemtime(_1P21_DV_PLUGIN_PATH . '/speed/_css.php');
+
+				// if( $style_mod > $style_speed_mod ){
+					
+				// 	$css_contents = _1p21_dv_file_as_string(_1P21_DV_PLUGIN_PATH . '/assets/style.css');
+				// 	$css_contents = preg_replace('~/\*[^!][^*]*\*+([^/][^*]*\*+)*/~', '', $css_contents); //uncomment. u need comments on this set up
+				// 	$css_contents = str_replace(': ', ':', $css_contents);
+				// 	$css_contents = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $css_contents);
+
+				// 	file_put_contents( _1P21_DV_PLUGIN_PATH . '/speed/_css.php', $css_contents );
+				// }
+
+				// echo _1p21_dv_file_as_string(_1P21_DV_PLUGIN_PATH . '/assets/style.css');
+
+				// wp_enqueue_style( '1p21-dv-d3-styles' );
+				wp_add_inline_style('1p21-dv-d3-styles',_1p21_dv_file_as_string(_1P21_DV_PLUGIN_PATH . '/assets/style.css'));
+
+			
+			//script
+				// wp_enqueue_script( 'd3' );
+				wp_add_inline_script('d3',_1p21_dv_file_as_string(_1P21_DV_PLUGIN_PATH.'/assets/d3.v5.min.js'));
+
+				if(current_user_can('administrator')) {
+					wp_add_inline_script( '1p21-dv-d3', _1p21_dv_file_as_string( _1P21_DV_PLUGIN_PATH . 'assets/main.js') );
+				}else{
+					wp_add_inline_script( '1p21-dv-d3', _1p21_dv_file_as_string( _1P21_DV_PLUGIN_PATH . '/assets/main.min.js') );
+				}
+
+
+
+			$_1p21_dv['enqueued'] = true;
+		}
+	}
+}
+add_action( 'wp_head', '_1p21_dv_merge_include_assets' );
 
 // display id on edit page
 function _1p21_dv_display_id_to_edit_page() {

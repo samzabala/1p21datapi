@@ -6,14 +6,14 @@
 
 //whitelist our group of options so WP knows they exist
 	function _1p21_dv_options_register(){
-		//register_setting(name of group, DB entry,  validator callback)
+		
 		register_setting(
 			'_1p21_dv_options_group',
 			'_1p21_dv_opts',
 			array(
 				'sanitize_callback' => '_1p21_dv_options_validate',
 				'default' => array(
-					'legacy_support'	=> 'false'
+					'dv_optimize' => false
 				)
 			)
 		);	
@@ -26,23 +26,23 @@
 
 		// add_options_page('DV Settings', 'DV Settings','manage_options', '1p21-dv-options-page', '_1p21_dv_options_build_form');
 		
-		if(function_exists('acf_add_options_sub_page') || function_exists('acf_add_local_field_group')){
+		// if(function_exists('acf_add_options_sub_page') || function_exists('acf_add_local_field_group')){
 
-			if(function_exists('acf_add_options_sub_page')){
-				acf_add_options_sub_page(array(
-					'capability'	=> 'edit_posts',
-					'redirect'		=> false,
-					'page_title' 	=> 'DV Settings (ACF)',
-					'menu_title' 	=> 'DV Settings',
-					'menu_slug' 	=> '1p21-dv-settings',
-					'parent_slug' 	=> 'edit.php?post_type=data-visual',
-				));
-			}
+		// 	if(function_exists('acf_add_options_sub_page')){
+		// 		acf_add_options_sub_page(array(
+		// 			'capability'	=> 'edit_posts',
+		// 			'redirect'		=> false,
+		// 			'page_title' 	=> 'DV Settings (ACF)',
+		// 			'menu_title' 	=> 'DV Settings',
+		// 			'menu_slug' 	=> '1p21-dv-settings',
+		// 			'parent_slug' 	=> 'edit.php?post_type=data-visual',
+		// 		));
+		// 	}
 
 			
-		}else{
+		// }else{
 			add_submenu_page('edit.php?post_type=data-visual','DV Settings', 'DV Settings','manage_options', '1p21-dv-settings', '_1p21_dv_options_build_form');
-		}
+		// }
 	}
 	add_action( 'admin_menu', '_1p21_dv_options_add_page',11 );
 
@@ -50,7 +50,7 @@
 //add link
 	add_filter('plugin_action_links_' . _1P21_DV_PLUGIN_BASENAME, '_1p21_dv_add_settings_link');
 	function _1p21_dv_add_settings_link( $links ) {
-		echo 'shit';
+		
 		$links[] = '<a href="' .
 		get_admin_url( null,'edit.php?post_type=data-visual&page=1p21-dv-settings' ) .
 			'">' . __('Settings') . '</a>';
@@ -59,12 +59,17 @@
 
 
 //Draw the form for the page (name must match callback above)
-function _1p21_dv_options_build_form(){ ?>
-	<div class="wrap">
-		<h2>Data Visuals Settings</h2>
+function _1p21_dv_options_build_form(){
+	
+	if(!current_user_can('manage_options')){
+		wp_die('Begone Thot!');
+	}
+	
+	?>
+	<div class="_1p21-dv-content">
+		<h1>Data Visuals Settings</h1>
 		<form method="post" action="options.php"><!-- always use options.php when parsing options with WP -->
 		<?php 
-
 		//must match the name of the group from the register settings step. this associates the settings row to this form
 		settings_fields( '_1p21_dv_options_group' ); 
 		
@@ -72,14 +77,15 @@ function _1p21_dv_options_build_form(){ ?>
 		$values = get_option( '_1p21_dv_opts' );
 		?>
 		
-		
+		<!-- Optimize -->
+		<h3>Optimize for performance</h3>
 		<p>
 			<label>
-				<input type="checkbox" name="_1p21_dv_opts[legacy_support]" <?= $values['legacy_support'] == true ? 'checked' : '' ?> /> Enable Legacy Support
+				<input type="checkbox" name="_1p21_dv_opts[dv_optimize]" <?= $values['optimize'] == true ? 'checked' : '' ?> /> Optimize rendering for performance <em>(note: turning this one may cause script conflicts)</em>
 			</label>
 		</p>
 		
-		yeet
+		
 		<p class="submit">
 			<input type="submit" value="Save Changes" class="button-primary" />
 		</p>		
@@ -91,6 +97,7 @@ function _1p21_dv_options_build_form(){ ?>
 
 //validation
 function _1p21_dv_options_validate($input){
+
 	/*
 	
 	//remove all HTML, PHP, Mysql from some inputs
@@ -120,7 +127,13 @@ function _1p21_dv_options_validate($input){
 	
 	*/
 
-	$input['legacy_support'] = wp_filter_nohtml_kses($input['legacy_support']);
+	//remove all HTML, PHP, Mysql from some inputs
 
+	foreach($input as $setting=> $value){
+		$input[$setting] = wp_filter_nohtml_kses($value);
+	}
+	
 	return $input;
 }
+
+// @TODO in case settings need to be intense, implement acf as a ui usage

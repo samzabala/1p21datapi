@@ -15,18 +15,18 @@ function _1p21_dv_load_acf(){
 		acf_add_local_field_group($_1p21_dv_fields_cpt);
 
 
-		require _1P21_DV_PLUGIN_PATH . 'fields/acf-settings.php';
-		acf_add_local_field_group($_1p21_dv_fields_settings);
+		// require _1P21_DV_PLUGIN_PATH . 'fields/acf-settings.php';
+		// acf_add_local_field_group($_1p21_dv_fields_settings);
 
 
 		//update json for debug or update via import
 
 		$fields_cpt_mod = filemtime(_1P21_DV_PLUGIN_PATH . '/fields/acf-cpt.php');
-		$fields_set_mod = filemtime(_1P21_DV_PLUGIN_PATH . '/fields/acf-settings.php');
+		// $fields_set_mod = filemtime(_1P21_DV_PLUGIN_PATH . '/fields/acf-settings.php');
 		$json_mod = filemtime(_1P21_DV_PLUGIN_PATH . '/fields/acf-dv-fields.json');
 
 		
-		if( $fields_cpt_mod > $json_mod ||  $fields_set_mod > $json_mod and function_exists('acf_get_local_fields') and is_admin() ){
+		if( $fields_cpt_mod > $json_mod and function_exists('acf_get_local_fields') and is_admin() ){
 
 			//update json on changes
 			$groups = acf_get_local_field_groups(array('group_5d40bfc5e49db','group_5d4206c985d00')); //taken from files mentioned above

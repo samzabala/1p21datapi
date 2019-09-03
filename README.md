@@ -1,4 +1,4 @@
-<!-- DO NOT EDIT README.html. edit README.md instead -->
+<!-- DO NOT EDIT OR REMOVE README.html. edit README.md instead -->
 # Plugin Name: 1Point21 Data Vizualizer
 
 Plugin URI: [https://github.com/samzabala](https://github.com/samzabala)  
@@ -498,7 +498,8 @@ These are optional settings to allow reformatting data on the visualizer
 # Settings
 
 
-wait
+### Enable Optimization
+ Embeds scripts and stylesheets directly on the markup of the page to optimize performance. may cause script conflicts
 
 # Troubleshooting
 

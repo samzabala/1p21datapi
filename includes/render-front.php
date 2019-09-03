@@ -352,32 +352,20 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 	}
 }
 
-function _1p21_div_data_visualizer_render_by_short($atts = array()){
+
+
+function _1p21_div_data_visualizer_render($atts = array()){
     global $_1p21_dv;
-    
+	$settings = get_option( '_1p21_dv_opts' );
 
-    wp_enqueue_script( 'd3' );
-    wp_enqueue_script( '1p21-dv-d3' );
-    wp_enqueue_style( '1p21-dv-d3-styles' );
+	// if($settings['dv_optimize'] !== 'on'){
+			
+		wp_enqueue_script( 'd3' );
+		wp_enqueue_script( '1p21-dv-d3' );
+		wp_enqueue_style( '1p21-dv-d3-styles' );
+	// }
     
-	$args = shortcode_atts($_1p21_dv['defaults'],$atts,'dv');
-
-	extract( $args );
-
-	$render = _1p21_div_get_data_visualizer($args);
-	return $render;
-	
-} 
-//shortlived legacy / fallback
-function _1p21_div_data_visualizer_render_by_short_longer($atts = array()){
-    global $_1p21_dv;
-    
-
-    wp_enqueue_script( 'd3' );
-    wp_enqueue_script( '1p21-dv-d3' );
-    wp_enqueue_style( '1p21-dv-d3-styles' );
-    
-	$args = shortcode_atts($_1p21_dv['defaults'],$atts,'data_visualizer');
+	$args = shortcode_atts($_1p21_dv['defaults'],$atts);
 
 	extract( $args );
 
@@ -394,7 +382,7 @@ function _1p21_div_data_visualizer_render_by_short_longer($atts = array()){
 $_1p21_dv_shortcode_dv_is_native = false;
 if(!shortcode_exists('dv')){
 
-	add_shortcode('dv', '_1p21_div_data_visualizer_render_by_short');
+	add_shortcode('dv', '_1p21_div_data_visualizer_render');
 	$_1p21_dv_shortcode_dv_is_native = true;
 
 }else{
@@ -406,5 +394,5 @@ if(!shortcode_exists('dv')){
 }
 
 //shortlived legacy / also fallback
-add_shortcode('data_visualizer', '_1p21_div_data_visualizer_render_by_short_longer');
+add_shortcode('data_visualizer', '_1p21_div_data_visualizer_render');
 
