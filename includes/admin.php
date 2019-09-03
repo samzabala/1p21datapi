@@ -154,6 +154,17 @@ function _1p21_dv_add_documentation_link_to_plugins( $links ) {
 			font-size: 1.125em;
 		}
 
+		._1p21-dv-content form {
+			padding: 1em 2em;
+			margin-top: 2em;
+			border: 1px solid rgba(0,0,0,.1);
+			background: rgba(255,255,255,.5)
+		}
+
+		._1p21-dv-content form .submit {
+			margin-top: 2em;
+		}
+
 		._1p21-dv-content p {
 			font-size: inherit;
 		}
