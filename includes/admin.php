@@ -33,10 +33,10 @@
 		if(isset($values['dv_optimize'])){
 			//handles will be dummies now
 			
-			wp_register_style( '1p21-dv-d3-styles', false,array(),null );
+			wp_register_style( '1p21-dv-d3-styles', null,array(),null );
 
-			wp_register_script( 'd3',false,array(),null,true);
-				wp_register_script( '1p21-dv-d3', false,array('d3'),null,true);
+			wp_register_script( 'd3',null,array(),null,true);
+				wp_register_script( '1p21-dv-d3', null,array('d3'),null,true);
 
 		}else{
 			
@@ -67,15 +67,12 @@
 			wp_register_style( '1p21-dv-d3-styles-admin', _1P21_DV_PLUGIN_URL . 'assets/admin.css',array(),null );
 		}
 
-	}
-	add_action( 'admin_enqueue_scripts', '_1p21_dv_register_scripts_admin',1 );
-	
-//enqueueueueueue
-	function _1p21_dv_acf_enqueue_admin(){
+
 		wp_enqueue_style('1p21-dv-d3-styles-admin');
 		wp_add_inline_style('1p21-dv-d3-styles-admin',_1p21_dv_get_file_as_string(_1P21_DV_PLUGIN_PATH . '/assets/admin.css') );
+
 	}
-	add_action('admin_head', '_1p21_dv_acf_enqueue_admin',1);
+	add_action( 'admin_enqueue_scripts', '_1p21_dv_register_scripts_admin',1 );
 
 //add inline
 //if optimize setting is false, we are able to enqueue scriptsonly when the shortcode is called,
@@ -108,21 +105,6 @@ function _1p21_dv_merge_include_assets(){
 }
 add_action( 'wp_head', '_1p21_dv_merge_include_assets',1 );
 
-// display id on edit page
-function _1p21_dv_display_id_to_edit_page() {
-	global $post;
-	$scr = get_current_screen();
-
-	if ( $scr->post_type == 'data-visual' && $scr->parent_base === 'edit' ){
-
-		echo '<h2 style="font-size: 1.25em;margin-top:.75em;display:inline-block;border: 1px solid #ccc;">Data Visual ID: <span class="wp-ui-highlight" style="position:relative; bottom: .0625em; left: .125em; padding: .25em .5em; font-family: monospace;">'.$post->ID.'</span></h2>';
-	}
-		return;
-}
-
-add_action( 'edit_form_after_title', '_1p21_dv_display_id_to_edit_page' );
-
-
 function _1p21_dv_add_documentation_link_to_cpt_dropdown(){
 	// add_options_page(title, menu name, capability, slug, form callback);
 
@@ -151,7 +133,7 @@ function _1p21_dv_add_documentation_link_to_cpt_dropdown(){
 add_action( 'admin_menu', '_1p21_dv_add_documentation_link_to_cpt_dropdown',11 );
 
 
-//add link
+//add doc link
 add_filter('plugin_action_links_' . _1P21_DV_PLUGIN_BASENAME, '_1p21_dv_add_documentation_link_to_plugins');
 function _1p21_dv_add_documentation_link_to_plugins( $links ) {
 	echo 'shit';
@@ -160,3 +142,34 @@ function _1p21_dv_add_documentation_link_to_plugins( $links ) {
 		'">' . __('Documentation') . '</a>';
 	return $links;
 }
+
+
+// EDIT PAGE
+	//display id
+		function _1p21_dv_display_id_to_edit_page() {
+			global $post;
+			$scr = get_current_screen();
+
+			if ( $scr->post_type == 'data-visual' && $scr->parent_base === 'edit' ){
+
+				add_thickbox();
+
+				echo '<h2 style="font-size: 1.25em;margin-top:.75em;display:inline-block;border: 1px solid #ccc;">Data Visual ID: <span class="wp-ui-highlight" style="position:relative; bottom: .0625em; left: .125em; padding: .25em .5em; font-family: monospace;">'.$post->ID.'</span></h2>';
+			}
+				return;
+		}
+		add_action( 'edit_form_after_title', '_1p21_dv_display_id_to_edit_page' );
+
+	//add wysiwyg features to add data visualizer
+
+		//add button
+			function _1p21_dv_add_wysiwyg_button(){
+
+				?>
+				<a href="#" class="button _1p21-dv-button"><i class="dashicons-before dashicons-chart-bar"></i><?= __('Add Data Visualizer'); ?></a>
+				<?php
+
+			}
+			add_action('media_buttons', '_1p21_dv_add_wysiwyg_button');
+
+		// implement thickbox for modal

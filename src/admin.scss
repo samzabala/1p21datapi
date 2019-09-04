@@ -1,38 +1,52 @@
-._1p21-dv-content {
-	max-width: 960px;
-	padding: 40px 2em;
-	margin: 0 auto;
-	font-size: 1.125em;
-	
-	form {
-		padding: 1em 2em;
-		margin-top: 2em;
-		border: 1px solid rgba(0,0,0,.1);
-		background: rgba(255,255,255,.5);
+._1p21-dv{
+	&-button {
+		i {
+			color: #82878c;
 
-		.submit {
+			&:before {
+				font-size: 1em;
+				vertical-align: middle;
+				line-height: 1;
+				margin-top: -.25em;
+				height:auto;
+			}
+		}
+	}
+	&-content {
+		max-width: 960px;
+		padding: 40px 2em;
+		margin: 0 auto;
+		font-size: 1.125em;
+		
+		form {
+			padding: 1em 2em;
 			margin-top: 2em;
+			border: 1px solid rgba(0,0,0,.1);
+			background: rgba(255,255,255,.5);
+
+			.submit {
+				margin-top: 2em;
+			}
+
 		}
 
-	}
+		p {
+			font-size: inherit;
+		}
 
-	p {
-		font-size: inherit;
-	}
+		h3 {
+			font-size: 1.2em;
+		}
 
-	h3 {
-		font-size: 1.2em;
-	}
+		li {
+			margin-bottom: 2em;
+		}
 
-	li {
-		margin-bottom: 2em;
-	}
-
-	ul {
-		padding-left: 2em;
-	}
+		ul {
+			padding-left: 2em;
+		}
 }
-
+}
 #acf-group_5d4206c985d00 .dv-code input,
 #acf-group_5d4206c985d00 .dv-code textarea{
     font-family: monospace;
