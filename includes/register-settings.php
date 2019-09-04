@@ -80,8 +80,8 @@ function _1p21_dv_options_build_form(){
 		<!-- Optimize -->
 		<h3>Optimize for performance</h3>
 		<p>
-			<label>
-				<input type="checkbox" name="_1p21_dv_opts[dv_optimize]" <?= $values['dv_optimize'] == true ? 'checked' : '' ?> /> Optimize rendering for performance <em>(note: turning this one may cause script conflicts)</em>
+			<label for="_1p21_dv-optimize">
+				<input id="_1p21_dv-optimize" type="checkbox" name="_1p21_dv_opts[dv_optimize]" <?= $values['dv_optimize'] == true ? 'checked' : '' ?> /> Optimize rendering for performance <em>(note: turning this one may cause script conflicts)</em>
 			</label>
 		</p>
 		

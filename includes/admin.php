@@ -166,10 +166,27 @@ function _1p21_dv_add_documentation_link_to_plugins( $links ) {
 			function _1p21_dv_add_wysiwyg_button(){
 
 				?>
-				<a href="#" class="button _1p21-dv-button"><i class="dashicons-before dashicons-chart-bar"></i><?= __('Add Data Visualizer'); ?></a>
+				<a href="#TB_inline?&width=600&height=550&inlineId=_1p21_dv_media_modal" class="thickbox button _1p21-dv-button"><i class="dashicons-before dashicons-chart-bar"></i><?= __('Add Data Visualizer'); ?></a>
 				<?php
 
 			}
 			add_action('media_buttons', '_1p21_dv_add_wysiwyg_button');
 
 		// implement thickbox for modal
+			function _1p21_dv_add_modal(){
+				add_thickbox();
+				?>
+				<div id="_1p21_dv_media_modal" style="display:none;">
+					<div>
+						<h2>Add Data Visualiser</h2>
+						<form class="_1p21_dv_media_form">
+							<label for="_1p21_dv-select-dv">Select Data Visual</label>	
+							<select name="select-dv" id="_1p21_dv-select-dv">
+								<!-- custom query boi -->
+							</select>
+						</form>
+					</div>
+				</div>
+				<?php
+			}
+			add_action('edit_form_after_editor', '_1p21_dv_add_modal');
