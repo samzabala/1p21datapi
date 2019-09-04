@@ -1,4 +1,4 @@
-._1p21-dv{
+._1p21_dv{
 	&-button {
 		i {
 			color: #82878c;
@@ -12,6 +12,21 @@
 			}
 		}
 	}
+
+	&-form {
+		max-width: 600px;
+		margin: 0 auto;
+		label,select,input:not([type="checkbox"]),textarea {
+			display:block;
+			width:100%;
+		}
+
+		label {
+			font-weight: 700;
+			margin: 2em 0 1em;
+		}
+	}
+	
 	&-content {
 		max-width: 960px;
 		padding: 40px 2em;
@@ -51,4 +66,11 @@
 #acf-group_5d4206c985d00 .dv-code textarea{
     font-family: monospace;
     
+}
+
+div#TB_ajaxContent {
+	max-width:100%;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
 }

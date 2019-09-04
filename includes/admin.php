@@ -119,7 +119,7 @@ function _1p21_dv_add_documentation_link_to_cpt_dropdown(){
 
 		function _1p21_dv_get_documentation(){
 			?>
-			<div class="_1p21-dv-content">
+			<div class="_1p21_dv-content">
 
 				<?php
 				include_once _1P21_DV_PLUGIN_PATH .'/README.html';
@@ -166,7 +166,7 @@ function _1p21_dv_add_documentation_link_to_plugins( $links ) {
 			function _1p21_dv_add_wysiwyg_button(){
 
 				?>
-				<a href="#TB_inline?&width=600&height=550&inlineId=_1p21_dv_media_modal" class="thickbox button _1p21-dv-button"><i class="dashicons-before dashicons-chart-bar"></i><?= __('Add Data Visualizer'); ?></a>
+				<a href="#TB_inline?&width=780&height=auto&inlineId=_1p21_dv-media-modal" class="thickbox button _1p21_dv-button"><i class="dashicons-before dashicons-chart-bar"></i><?= __('Add Data Visualizer'); ?></a>
 				<?php
 
 			}
@@ -176,17 +176,43 @@ function _1p21_dv_add_documentation_link_to_plugins( $links ) {
 			function _1p21_dv_add_modal(){
 				add_thickbox();
 				?>
-				<div id="_1p21_dv_media_modal" style="display:none;">
-					<div>
+				<div id="_1p21_dv-media-modal" style="display:none;">
+					<form class="_1p21_dv-form" action="#" method="get">
 						<h2>Add Data Visualiser</h2>
-						<form class="_1p21_dv_media_form">
+						<fieldset class="col-1">
+
 							<label for="_1p21_dv-select-dv">Select Data Visual</label>	
 							<select name="select-dv" id="_1p21_dv-select-dv">
 								<!-- custom query boi -->
+								<option value="">Select Data Visual..</option>
+								<?php
+								$available_dv = new WP_Query(array(
+									'post_type' => 'data-visual',
+									'post_status' => 'publish',
+									'posts_per_page' => -1
+								));
+
+								if($available_dv->have_posts()): while($available_dv->have_posts()): 
+									$available_dv->the_post();
+									?>
+									
+									<option value="<? the_ID(); ?>"><? the_title(); ?></option>
+									<?php
+								endwhile; endif;
+								
+								wp_reset_postdata();
+								?>
 							</select>
-						</form>
-					</div>
+							<span>Note: Only published Data visuals are available</span>
+						</fieldset>
+						
+						
+						<div class="col-2">
+							Margin
+						</div>
+					</form>
+					
 				</div>
 				<?php
 			}
-			add_action('edit_form_after_editor', '_1p21_dv_add_modal');
+			add_action('admin_footer', '_1p21_dv_add_modal');
