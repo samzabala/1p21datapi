@@ -25,6 +25,16 @@
 		"oAP": "/1p21-datavisualizer.php",
 		"oF": 0
 		},
+	"/assets/admin.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "/assets/admin-min.css",
+		"oF": 0,
+		"oS": 3
+		},
 	"/assets/d3.v5.min.js": {
 		"bF": 0,
 		"ft": 64,
