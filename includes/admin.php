@@ -3,7 +3,6 @@
 * filter + hooks, enqueues and stuff
 *********************************************************************************************/
 
-	
 // output the front end influenced global variable
 	function _1p21_dv_output_what_the_fuck_is_going_on(){
 		$debug = false;
