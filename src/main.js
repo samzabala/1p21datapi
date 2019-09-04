@@ -7,7 +7,7 @@
 	"use strict";
 
 
-	var _1p21 = _1p21 || {};
+	var _1p21 = window._1p21 || {};
 
 	// helpful variables
 	var coordinates = ['x','y'],

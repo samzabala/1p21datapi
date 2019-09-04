@@ -35,6 +35,17 @@
 		"oF": 0,
 		"oS": 3
 		},
+	"/assets/admin.min.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/assets/admin.min-min.js",
+		"oF": 0,
+		"sC": 0,
+		"tS": 0
+		},
 	"/assets/d3.v5.min.js": {
 		"bF": 0,
 		"ft": 64,
@@ -165,6 +176,17 @@
 		"pME": 0,
 		"rFN": 0,
 		"uCM": 0
+		},
+	"/src/admin.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "/assets/admin.min.js",
+		"oF": 3,
+		"sC": 0,
+		"tS": 0
 		},
 	"/src/admin.scss": {
 		"aP": 0,
