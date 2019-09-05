@@ -1,9 +1,9 @@
-<!-- DO NOT EDIT OR REMOVE README.html. edit README.md instead -->
+<!-- DO NOT EDIT OR REMOVE documentation.php as this is compiled from README.md. README.md must be edited instead -->
 # Plugin Name: 1Point21 Data Vizualizer
 
 Plugin URI: [https://github.com/samzabala](https://github.com/samzabala)  
 Description: Data visualizer using d3 and svgs  
-Version: 1.0.1  
+Version: 1.2.0  
 Author: 1Point21 Interactive  
 Author URI: [https://www.1point21interactive.com/](https://www.1point21interactive.com/)
 
@@ -15,20 +15,19 @@ Author URI: [https://www.1point21interactive.com/](https://www.1point21interacti
 4. [Functions](#functions)
 5. [Troubleshooting](#troubleshooting)
 --------------------------
-# Shortcode {#shortcode}
+# Shortcode
 
 You can add a data visualizer using the shortcode `dv` or `data_visalizer`
 
 Examples:
 
-Using `dv`
+##	Using `dv`
+	
+`[dv id=666 width=800 height=600]`
+	
+##	Using `data_visualizer`
 
-	[dv id=666 width=800 height=600]
-
-Using `data_visualizer`
-
-	[data_visalizer id=666 width=800 height=600]
-
+`[data_visalizer id=666 width=800 height=600]`
 
 _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will output an error in the back end and advise to use_ `data_visualizer`
 

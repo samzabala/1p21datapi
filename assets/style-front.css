@@ -1,5 +1,5 @@
 /*!
-1point21 Data Vizualiser Version 1.0.1
+1point21 Data Vizualiser Version 1.2.0
 DO NOT EDIT STYLE.CSS
 Edit style.scss instead
 */
@@ -7,6 +7,8 @@ Edit style.scss instead
   background: #EEE;
   position: relative;
   padding: 2.5em 1em 1em; }
+  .data-visualizer.data-visualizer-initialized, .data-visualizer.no-data {
+    padding-top: 1em; }
   .data-visualizer-align-center {
     text-align: center; }
   .data-visualizer-align-left {
@@ -36,9 +38,9 @@ Edit style.scss instead
     font-size: .875em;
     text-align: center;
     margin: 0 auto; }
-  .data-visualizer:not(.data-visualizer-initialized), .data-visualizer-wrapper:empty {
+  .data-visualizer:not(.data-visualizer-initialized):not(.no-data), .data-visualizer-wrapper:empty {
     padding-bottom: 75%; }
-    .data-visualizer:not(.data-visualizer-initialized):before, .data-visualizer-wrapper:empty:before {
+    .data-visualizer:not(.data-visualizer-initialized):not(.no-data):before, .data-visualizer-wrapper:empty:before {
       opacity: 1; }
   .data-visualizer text {
     font-family: inherit !important; }

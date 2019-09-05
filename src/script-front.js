@@ -1,5 +1,5 @@
 /*!
-1point21 Data Vizualiser Version 1.0.1
+1point21 Data Vizualiser Version 1.2.0
 */
 
 /* DO NOT TOUCH I DEV ON THIS BOI I ENQUEUE THE MINIFIED ONE ANYWAY  :< */
@@ -7,7 +7,7 @@
 	"use strict";
 
 
-	var _1p21 = _1p21 || {};
+	var _1p21 = window._1p21 || {};
 
 	// helpful variables
 	var coordinates = ['x','y'],

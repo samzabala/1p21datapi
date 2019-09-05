@@ -1,0 +1,84 @@
+/*!
+1point21 Data Vizualiser Version 1.2.0
+DO NOT EDIT STYLE.CSS
+Edit style.scss instead
+*/
+._1p21_dv-button i {
+  color: #82878c; }
+  ._1p21_dv-button i:before {
+    font-size: 1em;
+    vertical-align: middle;
+    line-height: 1;
+    margin-top: -.25em;
+    height: auto; }
+
+._1p21_dv-form {
+  max-width: 600px;
+  margin: 0 auto; }
+  ._1p21_dv-form label, ._1p21_dv-form select, ._1p21_dv-form input:not([type="checkbox"]), ._1p21_dv-form textarea {
+    display: block;
+    width: 100%; }
+  ._1p21_dv-form h2 {
+    font-size: 2em; }
+  ._1p21_dv-form h3 {
+    margin-bottom: 0;
+    padding-top: 1.75em;
+    margin-top: 2em;
+    margin-bottom: .5em;
+    border-top: 1px solid rgba(0, 0, 0, 0.2); }
+  ._1p21_dv-form label {
+    font-weight: 700;
+    margin-bottom: 1em; }
+  ._1p21_dv-form hr {
+    margin: 2em 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.2); }
+  ._1p21_dv-form ._1p21_dv-note {
+    display: block;
+    font-style: italic;
+    margin-top: .5em; }
+
+._1p21_dv-col-1, ._1p21_dv-col-2, ._1p21_dv-col-3 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-left: -40px; }
+
+._1p21_dv-field {
+  margin-left: 40px;
+  width: calc(100% - 40px); }
+  @media screen and (min-width: 783px) {
+    ._1p21_dv-col-2 ._1p21_dv-field {
+      width: calc(50% - 40px); }
+    ._1p21_dv-col-3 ._1p21_dv-field {
+      width: calc(33.33% - 40px); } }
+
+._1p21_dv-content {
+  max-width: 960px;
+  padding: 40px 2em;
+  margin: 0 auto;
+  font-size: 1.125em; }
+  ._1p21_dv-content form {
+    padding: 1em 2em;
+    margin-top: 2em;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.5); }
+    ._1p21_dv-content form .submit {
+      margin-top: 2em; }
+  ._1p21_dv-content p {
+    font-size: inherit; }
+  ._1p21_dv-content h3 {
+    font-size: 1.2em; }
+  ._1p21_dv-content li {
+    margin-bottom: 2em; }
+  ._1p21_dv-content ul {
+    padding-left: 2em; }
+
+#acf-group_5d4206c985d00 .dv-code input,
+#acf-group_5d4206c985d00 .dv-code textarea {
+  font-family: monospace; }
+
+div#TB_ajaxContent {
+  max-width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; }

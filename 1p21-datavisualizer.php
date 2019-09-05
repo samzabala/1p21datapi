@@ -3,7 +3,7 @@
 Plugin Name: 1Point21 Data Vizualizer
 Plugin URI: https://github.com/samzabala/1p21datapi
 Description: Data visualizer using d3 and svgs
-Version: 1.0.1
+Version: 1.2.0
 Author: 1Point21 Interactive
 Author URI: https://www.1point21interactive.com/
 */
@@ -56,16 +56,19 @@ function _1p21_dv_check_for_acf(){
 add_action('admin_init','_1p21_dv_check_for_acf');
 
 require_once _1P21_DV_PLUGIN_PATH . 'includes/helpers.php';
-require_once _1P21_DV_PLUGIN_PATH . 'includes/admin.php';
+require_once _1P21_DV_PLUGIN_PATH . 'includes/setup-admin.php';
 
 /********************************************************************************************
 * OK HERE WE GOOOOOOO
 *********************************************************************************************/
 
 if( !post_type_exists('data-visual') ){
+	require_once _1P21_DV_PLUGIN_PATH . 'includes/register-enqueues.php';
 	require_once _1P21_DV_PLUGIN_PATH . 'includes/register-cpt.php';
 	require_once _1P21_DV_PLUGIN_PATH . 'includes/register-settings.php';
 	require_once _1P21_DV_PLUGIN_PATH . 'includes/register-fields.php';
+
+	require_once _1P21_DV_PLUGIN_PATH . 'includes/render-documentation.php';
 	require_once _1P21_DV_PLUGIN_PATH . 'includes/render-back.php';
 	require_once _1P21_DV_PLUGIN_PATH . 'includes/render-front.php';
 
