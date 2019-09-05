@@ -114,8 +114,6 @@ Edit style.scss instead
     fill: #FFF; }
     .data-visualizer-graph .graph-item-text.dark {
       fill: #222; }
-  .data-visualizer-type-scatter .data-visualizer-graph .graph-item-blob {
-    stroke-width: 1; }
   @media only screen and (max-width: 700px) {
     .data-visualizer {
       padding: .5em; } }

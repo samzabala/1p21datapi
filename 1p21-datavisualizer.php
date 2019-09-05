@@ -24,14 +24,16 @@ $_1p21_dv['present'] = array();
 //default front end displaying related arguments or attributes to each instances
 $_1p21_dv['defaults'] = array(
 	'id' => null, //post id
-	'margin' => null, //spacing necessary within the canvas to avoid cuttong off elements
-	'margin_offset' => null, //multiplier for spacing
-	'font_size' => null,
-	'width' => null, //duh
-	'height' => null, //duh
-	'align' => 'center', // default value is not in js because js doesnt need to use this boi. use it @ shortcode render
-	'transition' => null, //duh
-	'delay' => null, //duh
+	//shortcode render reliant parameters
+		'align' => 'center', // default value is not in js because js doesnt need to use this boi. use it @ shortcode render
+	//js reliant parameters
+		'margin' => null, //spacing necessary within the canvas to avoid cuttong off elements
+		'margin_offset' => null, //multiplier for spacing
+		'font_size' => null,
+		'width' => null, //duh
+		'height' => null, //duh
+		'transition' => null, //duh
+		'delay' => null, //duh
 );
 
 $_1p21_dv['enqueued'] = false;

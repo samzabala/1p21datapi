@@ -19,192 +19,188 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 
 
 #{$prefix} {
-    background: $color-bg;
-    position:relative;
-    // text-align: center;
-    padding: 2.5em 1em 1em;
+	background: $color-bg;
+	position:relative;
+	// text-align: center;
+	padding: 2.5em 1em 1em;
 
-    &#{$prefix}-initialized,
-    &.no-data{
-        padding-top: 1em;
-    }
+	&#{$prefix}-initialized,
+	&.no-data{
+		padding-top: 1em;
+	}
 
-    // * { outline: 1px solid red!important}
+	// * { outline: 1px solid red!important}
 
-    &-align {
-        &-center{
-            text-align: center;
-        }
+	&-align {
+		&-center{
+			text-align: center;
+		}
 
-        &-left{
-            text-align: left;
-        }
+		&-left{
+			text-align: left;
+		}
 
-        &-right{
-            text-align: right;
-        }
-    }
+		&-right{
+			text-align: right;
+		}
+	}
 
-    &-title,&-description {
-        display: block;
-    }
+	&-title,&-description {
+		display: block;
+	}
 
-    &-title {
-        font-size: 1.25em;
-        font-weight: 700;
-    }
-    
-    &-description {
-        opacity: .8;
-        font-size: .875em;
-    }
+	&-title {
+		font-size: 1.25em;
+		font-weight: 700;
+	}
+	
+	&-description {
+		opacity: .8;
+		font-size: .875em;
+	}
 
-    &-wrapper {
+	&-wrapper {
 
-        
-        &:before { 
-            content:"Loading...";
-            position: absolute;
-            margin: auto;
-            top:50%;
-            left: 50%;
-            transform: translate(-50%,-50%);
-            opacity:0;
-            transition: .25s opacity linear;
-        }
-        
-        &.fatality {
-            padding: 4em 0;
-            max-width: 28em;
-            font-size: .875em;
-            text-align: center;
-            margin: 0 auto;
-        }
-        @at-root #{$prefix}:not(#{$prefix}-initialized):not(.no-data),
-        &:empty {
-            padding-bottom: 75%;
-            &:before { 
-                opacity:1;
-            }
-        }
-    }
+		
+		&:before { 
+			content:"Loading...";
+			position: absolute;
+			margin: auto;
+			top:50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+			opacity:0;
+			transition: .25s opacity linear;
+		}
+		
+		&.fatality {
+			padding: 4em 0;
+			max-width: 28em;
+			font-size: .875em;
+			text-align: center;
+			margin: 0 auto;
+		}
+		@at-root #{$prefix}:not(#{$prefix}-initialized):not(.no-data),
+		&:empty {
+			padding-bottom: 75%;
+			&:before { 
+				opacity:1;
+			}
+		}
+	}
 
-    text {
-        font-family: inherit!important;
-    }
+	text {
+		font-family: inherit!important;
+	}
 
-    &-axis,
-    &-grid,
-    &-label{
-        line,
-        path {
-            stroke: $color-neutral;
-        }
-        
-        text {
-            fill: $color-neutral;
-        }
-    }
+	&-axis,
+	&-grid,
+	&-label{
+		line,
+		path {
+			stroke: $color-neutral;
+		}
+		
+		text {
+			fill: $color-neutral;
+		}
+	}
 
-    &-grid {
-        
-        line,path {
-            stroke-opacity: .25;
-        }
+	&-grid {
+		
+		line,path {
+			stroke-opacity: .25;
+		}
 
-        .tick-aligned {
-            line,path {
-                stroke-opacity: .625;
-            }
-        }
-    }
-    
-    &-fill.no-color,
-    &-no-palette #{$prefix}-graph-item-blob {
-        fill: $color-base;
-    }
-    
-    &-line.no-color {
-        stroke: $color-base;
-    }
-    
-    &-fill.no-color {
-        fill-opacity: .25;
-    }
+		.tick-aligned {
+			line,path {
+				stroke-opacity: .625;
+			}
+		}
+	}
+	
+	&-fill.no-color,
+	&-no-palette #{$prefix}-graph-item-blob {
+		fill: $color-base;
+	}
+	
+	&-line.no-color {
+		stroke: $color-base;
+	}
+	
+	&-fill.no-color {
+		fill-opacity: .25;
+	}
 
-    @for $i from 2 through length($palette) {
-
-
-        &-no-palette#{$prefix}-type-pie,
-        &-no-palette#{$prefix}-has-legend {
-
-            .graph-item-blob:nth-of-type(#{$i}n),
-            #{$prefix}-legend-item:nth-of-type(#{$i}n) .legend-item-blob {
-                fill: nth($palette,$i);
-
-            }
-        }
-
-        &-no-palette#{$prefix}-type-pie#{$prefix}-pi-label-style-within .graph-item-text, 
-        &-no-palette#{$prefix}-has-legend#{$prefix}-type-scatter .blob-item-blob {
-            &:nth-of-type(#{$i}n) {
-                stroke: nth($palette,$i);
-            }
-        }
-            
-    }
-
-    &-type-line .graph-item-text,
-    &-type-pie .graph-item-text,
-    & .legend-item-text,
-    & .legend-item-blob {
-        paint-order: stroke;
-        stroke-linejoin: round;
-    }
-
-    &-type-line .graph-item-text,
-    & .legend-item-text,
-    & .legend-item-blob {
-        stroke-width: 4;
-    }
-
-    &-type-pie#{$prefix}-pi-label-style-linked .graph-item-text,
-    &-type-pie#{$prefix}-pi-label-style-within .graph-item-text {
-
-        stroke-width: 6;
-    }
+	@for $i from 2 through length($palette) {
 
 
-    &-type-line .graph-item-text,
-    &-type-pie#{$prefix}-pi-label-style-linked .graph-item-text,
-    & .legend-item-text,
-    & .legend-item-blob {
-        stroke: $color-bg;
-    }
+		&-no-palette#{$prefix}-type-pie,
+		&-no-palette#{$prefix}-has-legend {
 
-    &-graph .graph-item {
+			.graph-item-blob:nth-of-type(#{$i}n),
+			#{$prefix}-legend-item:nth-of-type(#{$i}n) .legend-item-blob {
+				fill: nth($palette,$i);
 
-        &-link {
-            stroke: $color-base;
-        }
-        
-        &-text {
-            fill: $color-white;
+			}
+		}
 
-            &.dark {
-                fill: $color-base;
-            }
-        }
+		&-no-palette#{$prefix}-type-pie#{$prefix}-pi-label-style-within .graph-item-text, 
+		&-no-palette#{$prefix}-has-legend#{$prefix}-type-scatter .blob-item-blob {
+			&:nth-of-type(#{$i}n) {
+				stroke: nth($palette,$i);
+			}
+		}
+			
+	}
 
-        #{$prefix}-type-scatter &-blob {
-            stroke-width: 1;
-        }
+	&-type-line .graph-item-text,
+	&-type-pie .graph-item-text,
+	& .legend-item-text,
+	& .legend-item-blob {
+		paint-order: stroke;
+		stroke-linejoin: round;
+	}
 
-        
-    }
+	&-type-line .graph-item-text,
+	& .legend-item-text,
+	& .legend-item-blob {
+		stroke-width: 4;
+	}
 
-    @media only screen and (max-width: 700px){
-        padding: .5em;
-    }
+	&-type-pie#{$prefix}-pi-label-style-linked .graph-item-text,
+	&-type-pie#{$prefix}-pi-label-style-within .graph-item-text {
+
+		stroke-width: 6;
+	}
+
+
+	&-type-line .graph-item-text,
+	&-type-pie#{$prefix}-pi-label-style-linked .graph-item-text,
+	& .legend-item-text,
+	& .legend-item-blob {
+		stroke: $color-bg;
+	}
+
+	&-graph .graph-item {
+
+		&-link {
+			stroke: $color-base;
+		}
+		
+		&-text {
+			fill: $color-white;
+
+			&.dark {
+				fill: $color-base;
+			}
+		}
+
+		
+	}
+
+	@media only screen and (max-width: 700px){
+		padding: .5em;
+	}
 
 }

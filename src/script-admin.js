@@ -1,40 +1,63 @@
 (function(window){
-    "use strict";
-    var _1p21 = window._1p21 || {};
+	"use strict";
+	var _1p21 = window._1p21 || {};
 
-    var appendShortcode = function(e,dis){
-        // foreach()
-        e.stopPropagation();
-        e.preventDefault();
+	var appendShortcode = function(e,dis){
+		
+		e.stopPropagation();
+		e.preventDefault();
 
-        var fields = dis.querySelectorAll('._1p21_dv-input');
-        var inputs = [];
+		var fields = dis.querySelectorAll('._1p21_dv-input');
+		var inputs = [];
 
-        //validate
-        fields.forEach(function(field){
+		var is_string = ['align'];
+		var is_boolean = [];
 
-            if( field.value ){
-                inputs.push([field.name,parseFloat(field.value)]);
-            }
-        })
+		//validate
+		fields.forEach(function(field){
 
-        var shortCode = "[data_visualizer";
-        
-        inputs.forEach(function(input){
-            shortCode += " "+input[0]+"="+input[1];
-        });
+			var parsedValue = (function(){
+				var toReturn = field.value //a striing
+				
+				switch(field.name) {
+					case 'id':
+						toReturn = parseInt(field.value)
+						break;
+					case 'margin':
+					case 'margin_offset':
+					case 'font_size':
+					case 'width':
+					case 'transition':
+					case 'delay':
+						toReturn = parseFloat(field.value);
+						break;
 
-        shortCode += "]";
+				}
+				return toReturn;
+			}())
 
-        window.send_to_editor(shortCode);
+			if( field.value ){
+				inputs.push([field.name,parsedValue]);
+			}
+		})
 
-        console.log(shortCode,wp.editor.getContent());
+		var shortCode = "[data_visualizer";
+		
+		inputs.forEach(function(input){
+			shortCode += " "+input[0]+"="+input[1];
+		});
 
-        tb_remove();
+		shortCode += "]";
 
-        return false;
-    }
+		window.send_to_editor(shortCode);
 
-    _1p21.appendShortcode = appendShortcode;
-    window._1p21 = _1p21;
+		console.log(shortCode,wp.editor.getContent());
+
+		tb_remove();
+
+		return false;
+	}
+
+	_1p21.appendShortcode = appendShortcode;
+	window._1p21 = _1p21;
 }(window))

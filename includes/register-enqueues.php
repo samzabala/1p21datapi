@@ -35,8 +35,8 @@
 
 	function _1p21_dv_register_enqueue_scripts_admin(){
 
-        $values = get_option( '_1p21_dv_opts' );
-        
+		$values = get_option( '_1p21_dv_opts' );
+		
 		if(isset($values['dv_optimize'])){
 			//handles will be dummies now
 			wp_register_style( '1p21-dv-styles-admin', null );

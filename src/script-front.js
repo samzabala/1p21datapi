@@ -1983,6 +1983,7 @@
 							if(args.type == 'scatter'){
 								_.blob.merge(_.enter_blob)
 									.attr('fill-opacity',args.areaOpacity)
+									.attr('stroke-width',1)
 									.attr('stroke',function(dis,i){
 										return _.the_color(deepGet(dis,args.key.color));
 									})

@@ -38,6 +38,13 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 	**[ REQUIRED | Default: `null` | type: number ]**
 
 	post id of the graph to display.
+	
+
+*	**`align`**
+
+	**[ Optional | Default: `center` | type: string | options available: `left`,`center`,`right` ]**
+
+	alignment of title and description
 
 *	**`margin`**
 
