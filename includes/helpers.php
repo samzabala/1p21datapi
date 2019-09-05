@@ -11,6 +11,20 @@ IDK D:
 i might use later
 */
 
+
+// output the front end influenced global variable
+function _1p21_dv_output_what_the_fuck_is_going_on(){
+	$debug = false;
+	$debug = apply_filters('_1p21_dv_info',$debug);
+
+
+		if($debug) {
+			global $_1p21_dv;
+			_1p21_dv_output_arr($_1p21_dv);
+		}
+}
+add_action( 'wp_footer', '_1p21_dv_output_what_the_fuck_is_going_on');
+
 function _1p21_dv_output_arr($args) {
 
 	echo '<div class="content" style="background:#ccc;font-size:10px;padding:1em;margin-bottom:1em;height:400px;overflow:scroll;"><pre>';

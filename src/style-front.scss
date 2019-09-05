@@ -1,5 +1,5 @@
 /*!
-1point21 Data Vizualiser Version 1.0.1
+1point21 Data Vizualiser Version 1.2.0
 DO NOT EDIT STYLE.CSS
 Edit style.scss instead
 */
@@ -23,6 +23,11 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
     position:relative;
     // text-align: center;
     padding: 2.5em 1em 1em;
+
+    &#{$prefix}-initialized,
+    &.no-data{
+        padding-top: 1em;
+    }
 
     // * { outline: 1px solid red!important}
 
@@ -75,7 +80,7 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
             text-align: center;
             margin: 0 auto;
         }
-        @at-root #{$prefix}:not(#{$prefix}-initialized),
+        @at-root #{$prefix}:not(#{$prefix}-initialized):not(.no-data),
         &:empty {
             padding-bottom: 75%;
             &:before { 

@@ -12,11 +12,14 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 	global $_1p21_dv;
 
 
-	$id = $args['id'];
+	if( isset($args['id']) ){
+		$id = $args['id'];
+		$post_exists = get_post( $id );
+	}
 
 	// dont give shit if boi doesnt even exist
-	$post_exists = get_post( $id );
-	if(!$post_exists) {
+	
+	if(!isset($id) || !$post_exists) {
 		return false;
 	}else{
 
@@ -65,14 +68,16 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
 
 		}
+		
+		$retrieved_dv_post_meta = _1p21_dv_deep_sub_fields(array(
+			'id' => $id,
+			'fields' => $_1p21_dv_fields_cpt['fields'],
+		));
 
 		// fields that make the bby
 		$data_visual = array_merge(
 			$data_visual,
-			_1p21_dv_deep_sub_fields(array(
-				'id' => $id,
-				'fields' => $_1p21_dv_fields_cpt['fields'],
-			))
+			$retrieved_dv_post_meta
 		);
 
 		//also parse sources. yuckeeee
@@ -211,8 +216,8 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
 
 			//no data means it fucks with the name. no need for legegends
-			if( !isset($data_visual['color']['data'] )){
-				$data_visual['color']['legend'] == null;
+			if( !isset($data_visual['key']['color']) || $data_visual['key']['color'] == null){
+				unset($data_visual['color']['legend']);
 			}
 
 			if($data_visual['type'] !== 'line') {

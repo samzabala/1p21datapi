@@ -1,9 +1,9 @@
-<!-- DO NOT EDIT OR REMOVE README.html. edit README.md instead -->
+<!-- DO NOT EDIT OR REMOVE documentation.php as this is compiled from README.md. README.md must be edited instead -->
 # Plugin Name: 1Point21 Data Vizualizer
 
 Plugin URI: [https://github.com/samzabala](https://github.com/samzabala)  
 Description: Data visualizer using d3 and svgs  
-Version: 1.0.1  
+Version: 1.2.0  
 Author: 1Point21 Interactive  
 Author URI: [https://www.1point21interactive.com/](https://www.1point21interactive.com/)
 

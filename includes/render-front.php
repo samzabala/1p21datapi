@@ -360,8 +360,8 @@ function _1p21_div_data_visualizer_render($atts = array()){
 
 	
 	wp_enqueue_script( 'd3' );
-	wp_enqueue_script( '1p21-dv-d3' );
-	wp_enqueue_style( '1p21-dv-d3-styles' );
+	wp_enqueue_script( '1p21-dv-script-front' );
+	wp_enqueue_style( '1p21-dv-style-front' );
     
 	$args = shortcode_atts($_1p21_dv['defaults'],$atts);
 

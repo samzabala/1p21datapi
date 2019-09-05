@@ -1,5 +1,5 @@
 /*!
-1point21 Data Vizualiser Version 1.0.1
+1point21 Data Vizualiser Version 1.2.0
 */
 
 /* DO NOT TOUCH I DEV ON THIS BOI I ENQUEUE THE MINIFIED ONE ANYWAY  :< */

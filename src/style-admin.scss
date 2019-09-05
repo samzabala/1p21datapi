@@ -1,4 +1,13 @@
-._1p21_dv{
+/*!
+1point21 Data Vizualiser Version 1.2.0
+DO NOT EDIT STYLE.CSS
+Edit style.scss instead
+*/
+
+$prefix: '._1p21_dv';
+$gutter: 40px;
+
+#{$prefix} {
 	&-button {
 		i {
 			color: #82878c;
@@ -21,9 +30,59 @@
 			width:100%;
 		}
 
+		h2 {
+			font-size: 2em;
+		}
+
+		h3 {
+			margin-bottom: 0;
+			padding-top: 1.75em;
+			margin-top: 2em;
+			margin-bottom: .5em;
+			border-top: 1px solid rgba(0,0,0,.2);
+		}
+
 		label {
 			font-weight: 700;
-			margin: 2em 0 1em;
+			margin-bottom: 1em;
+		}
+
+		hr {
+			margin: 2em 0;
+			border-top: 1px solid rgba(0,0,0,.2);
+		}
+
+		#{$prefix}-note {
+			display:block;
+			font-style: italic;
+			margin-top: .5em;
+		}
+
+	}
+
+	&-col {
+		&-1,
+		&-2,
+		&-3 {
+			display: flex;
+			flex-wrap:wrap;
+			justify-content: space-between;
+			margin-left: $gutter * -1;
+		}
+	}
+
+	&-field {
+		margin-left: $gutter;
+		width: calc(100% - #{$gutter});
+		
+		@media screen and (min-width: 783px) {
+
+			#{$prefix}-col-2 & {
+				width: calc(50% - #{$gutter});
+			}
+			#{$prefix}-col-3 & {
+				width: calc(33.33% - #{$gutter});
+			}
 		}
 	}
 	
