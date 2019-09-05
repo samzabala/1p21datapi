@@ -163,20 +163,20 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
     }
 
     &-type-line .graph-item-text,
-    &-type-pie#{$prefix}-label-style-within .graph-item-text,
     & .legend-item-text,
     & .legend-item-blob {
         stroke-width: 4;
     }
 
-    &-type-pie#{$prefix}-label-style-linked .graph-item-text {
+    &-type-pie#{$prefix}-pi-label-style-linked .graph-item-text,
+    &-type-pie#{$prefix}-pi-label-style-within .graph-item-text {
 
-        stroke-width: 10;
+        stroke-width: 6;
     }
 
 
     &-type-line .graph-item-text,
-    &-type-pie#{$prefix}-label-style-linked .graph-item-text,
+    &-type-pie#{$prefix}-pi-label-style-linked .graph-item-text,
     & .legend-item-text,
     & .legend-item-blob {
         stroke: $color-bg;
@@ -190,8 +190,6 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
         
         &-text {
             fill: $color-white;
-            line-height: 2;
-            font-weight: 700;
 
             &.dark {
                 fill: $color-base;
@@ -200,19 +198,6 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 
         #{$prefix}-type-scatter &-blob {
             stroke-width: 1;
-        }
-            
-
-        #{$prefix}-no-ticks &-text,
-        #{$prefix}-type-pie#{$prefix}-no-legend &-text {
-
-            &-data-0 {
-                font-weight: 700;
-            }
-            &-data-1 {
-                font-weight: 300;
-            }
-
         }
 
         

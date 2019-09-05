@@ -632,23 +632,35 @@
 
 			var shift = '0em';
 
-			if(coordinateAttr == 'y'){
+			if(
+				(
+					args.type !== 'pie'
+				)
+				|| (
+					args.type == 'pie'
+					&& !args.colorLegend
+					&& args.piLabelStyle !== null
+				)
+			){
 
-				if(
-					(
-						args.type !== 'pie'
-						&& (!args.xTicks && !args.yTicks)
-					)
-					|| (
-						args.type == 'pie'
-						&& (
-							!args.colorLegend
+				if(coordinateAttr == 'y'){
+
+					if(
+						(
+							args.type !== 'pie'
+							&& (!args.xTicks && !args.yTicks)
 						)
-					)
-				){
-					shift = (keyKey == 1) ? '.375em' : '-1.5em'
+						|| (
+							args.type == 'pie'
+							&& (
+								!args.colorLegend
+							)
+						)
+					){
+						shift = (keyKey == 1) ? '.375em' : '-1.5em'
+					}
+					
 				}
-				
 			}
 			
 			return shift;
@@ -1717,10 +1729,13 @@
 									});
 
 								if(
-									( !args.xTicks || !args.yTicks )
+									(
+										args.type !== 'pie'
+										&& ( !args.xTicks || !args.yTicks )
+									)
 									|| (
 										args.type == 'pie'
-										&& ( !args.piLabelStyle || !args.colorLegend )
+										&& ( args.piLabelStyle || !args.colorLegend )
 									)
 								){
 
@@ -1758,12 +1773,12 @@
 		// tick inits
 		var renderGraph = function() {
 			// ok do the thing now
-			// console.log(
-			// 	 selector,'-------------------------------------------------------------------',"\n",
-			// 	 'calculated',_,"\n",
-			// 	 'data',_.data,"\n",
-			// 	 'args',args,"\n"
-			// );
+			console.log(
+				 selector,'-------------------------------------------------------------------',"\n",
+				 'calculated',_,"\n",
+				 'data',_.data,"\n",
+				 'args',args,"\n"
+			);
 
 			//generate the graph boi
 
@@ -2059,13 +2074,15 @@
 							.attr('font-size',function(){
 								var toReturn = null;
 
-								if( (
+								if(
+									(
 										args.type !== 'pie'
 										&& !args[ getAxisStringOppo ( getAxisString(keyKey) )+'Ticks']
 									)
 									|| (
 										args.type == 'pie'
 										&& !args.colorLegend
+										&& args.piLabelStyle !== null
 									)
 								){
 								
@@ -2079,6 +2096,29 @@
 
 								return toReturn;
 							}) // @TODO migrate embed css styles to here
+							.attr('font-weight',function(){
+								var toReturn = 700;
+
+								if(
+									(
+										args.type !== 'pie'
+										&& !args[ getAxisStringOppo ( getAxisString(keyKey) )+'Ticks']
+									)
+									|| (
+										args.type == 'pie'
+										&& !args.colorLegend
+										&& args.piLabelStyle !== null
+									)
+								){
+								
+
+									if( keyKey !== 0 ){
+										toReturn = 300;
+									}	
+								}
+
+								return toReturn;
+							})
 							.text(function(dis,i){
 								return _['format_'+ keyKey ]( deepGet(dis,args.key[ keyKey ]) );
 							})

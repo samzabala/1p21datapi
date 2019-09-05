@@ -97,33 +97,25 @@ Edit style.scss instead
     paint-order: stroke;
     stroke-linejoin: round; }
   .data-visualizer-type-line .graph-item-text,
-  .data-visualizer-type-pie.data-visualizer-label-style-within .graph-item-text,
   .data-visualizer .legend-item-text,
   .data-visualizer .legend-item-blob {
     stroke-width: 4; }
-  .data-visualizer-type-pie.data-visualizer-label-style-linked .graph-item-text {
-    stroke-width: 10; }
+  .data-visualizer-type-pie.data-visualizer-pi-label-style-linked .graph-item-text,
+  .data-visualizer-type-pie.data-visualizer-pi-label-style-within .graph-item-text {
+    stroke-width: 6; }
   .data-visualizer-type-line .graph-item-text,
-  .data-visualizer-type-pie.data-visualizer-label-style-linked .graph-item-text,
+  .data-visualizer-type-pie.data-visualizer-pi-label-style-linked .graph-item-text,
   .data-visualizer .legend-item-text,
   .data-visualizer .legend-item-blob {
     stroke: #EEE; }
   .data-visualizer-graph .graph-item-link {
     stroke: #222; }
   .data-visualizer-graph .graph-item-text {
-    fill: #FFF;
-    line-height: 2;
-    font-weight: 700; }
+    fill: #FFF; }
     .data-visualizer-graph .graph-item-text.dark {
       fill: #222; }
   .data-visualizer-type-scatter .data-visualizer-graph .graph-item-blob {
     stroke-width: 1; }
-  .data-visualizer-no-ticks .data-visualizer-graph .graph-item-text-data-0,
-  .data-visualizer-type-pie.data-visualizer-no-legend .data-visualizer-graph .graph-item-text-data-0 {
-    font-weight: 700; }
-  .data-visualizer-no-ticks .data-visualizer-graph .graph-item-text-data-1,
-  .data-visualizer-type-pie.data-visualizer-no-legend .data-visualizer-graph .graph-item-text-data-1 {
-    font-weight: 300; }
   @media only screen and (max-width: 700px) {
     .data-visualizer {
       padding: .5em; } }
