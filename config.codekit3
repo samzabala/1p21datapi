@@ -62,9 +62,9 @@
 		"bl": 0,
 		"ft": 16,
 		"ma": 0,
-		"oA": 1,
+		"oA": 0,
 		"oAP": "/assets/style-min.css",
-		"oF": 1,
+		"oF": 0,
 		"oS": 3
 		},
 	"/fields/acf-cpt.php": {
@@ -158,10 +158,10 @@
 		"hM": 0,
 		"oA": 0,
 		"oAP": "/README.html",
-		"oF": 2,
+		"oF": 0,
 		"oFM": 0,
-		"oS": 1,
-		"pHT": 1,
+		"oS": 0,
+		"pHT": 0,
 		"pME": 1,
 		"rFN": 0,
 		"uCM": 0
@@ -174,8 +174,8 @@
 		"ft": 4,
 		"ma": 0,
 		"oA": 0,
-		"oAP": "/assets/admin.css",
-		"oF": 2,
+		"oAP": "/src/admin.css",
+		"oF": 0,
 		"oS": 0,
 		"uL": 1
 		},
@@ -184,9 +184,9 @@
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
-		"oA": 0,
-		"oAP": "/assets/main.min.js",
-		"oF": 3,
+		"oA": 1,
+		"oAP": "/src/main-min.js",
+		"oF": 0,
 		"sC": 0,
 		"tS": 0
 		},
@@ -198,8 +198,8 @@
 		"ft": 4,
 		"ma": 0,
 		"oA": 0,
-		"oAP": "/assets/style.css",
-		"oF": 2,
+		"oAP": "/src/style.css",
+		"oF": 0,
 		"oS": 0,
 		"uL": 1
 		}
