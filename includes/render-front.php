@@ -22,21 +22,17 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
 	if($data_visual && get_post_status($data_visual['id']) == 'publish') {
 
-	
 		//append this instance as array to the global variable to allow front end manipulation
-			if(array_key_exists($args['id'],$_1p21_dv['present'])) {
-				$_1p21_dv['present'][$args['id']]['front']['instance']++;
-				$data_visual['front']['instance']++;
-			}else{
-				$_1p21_dv['present'][$args['id']] = $data_visual;
+		if(array_key_exists($args['id'],$_1p21_dv['present'])) {
+			$_1p21_dv['present'][$args['id']]['front']['instance']++;
+			$data_visual['front']['instance'] = $_1p21_dv['present'][$args['id']]['front']['instance'];
+		}else{
+			$data_visual['front'] = array(
+				'instance' => 1
+			);
+			$_1p21_dv['present'][$args['id']] = $data_visual;
+		};
 
-				$_1p21_dv['present'][$args['id']]['front'] = array(
-					'instance' => 1
-				);
-				$data_visual['front']['instance'] = 1;
-			};
-
-		
 		$att_prefix = 'data-visualizer';
 		
 		//create unique id for instance to avoid script conflict

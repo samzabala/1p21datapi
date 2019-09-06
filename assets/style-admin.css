@@ -45,9 +45,15 @@
   justify-content: space-between;
   margin-left: -40px; }
 
+._1p21_dv-input.invalid {
+  border-color: #dc3232; }
+
 ._1p21_dv-field {
   margin-left: 40px;
   width: calc(100% - 40px); }
+  ._1p21_dv-field.required label:after {
+    content: "*";
+    color: #dc3232; }
   @media screen and (min-width: 783px) {
     ._1p21_dv-col-2 ._1p21_dv-field {
       width: calc(50% - 40px); }

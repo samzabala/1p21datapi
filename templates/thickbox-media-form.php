@@ -5,14 +5,14 @@
 
 		<h3>Select a Data Visual to add</h3>
 		<div class="_1p21_dv-col-1">
-			<div class="_1p21_dv-field">
+			<div class="_1p21_dv-field required">
 				<label for="_1p21_dv-id">Data Visual</label>	
 
 				<div class="_1p21_dv-input-contatiner">
 
 					<select required name="id" class="_1p21_dv-input" id="_1p21_dv-id">
 						<!-- custom query boi -->
-						<option value="">Select Data Visual..</option>
+						<option value="">Select..</option>
 						<?php
 						$available_dv = new WP_Query(array(
 							'post_type' => 'data-visual',
@@ -44,9 +44,10 @@
 
 				<div class="_1p21_dv-input-contatiner">
 
-					<select required name="align" class="_1p21_dv-input" id="_1p21_dv-align">
+					<select name="align" class="_1p21_dv-input" id="_1p21_dv-align">
 						<!-- custom query boi -->
-						<option value="center" selected>Center</option>
+						<option value="" selected>Select..</option>
+						<option value="center">Center</option>
 						<option value="left">Left</option>
 						<option value="right">Right</option>
 					</select>

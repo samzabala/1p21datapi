@@ -72,9 +72,22 @@ $gutter: 40px;
 		}
 	}
 
+	&-input {
+		&.invalid {
+			border-color: #dc3232;
+		}
+	}
+
 	&-field {
 		margin-left: $gutter;
 		width: calc(100% - #{$gutter});
+
+		&.required {
+			label:after {
+				content:"*";
+				color:#dc3232;
+			}
+		}
 		
 		@media screen and (min-width: 783px) {
 

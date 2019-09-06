@@ -9,6 +9,16 @@
 	"use strict";
 	var _1p21 = window._1p21 || {};
 
+	var runValidation = function(field,isInvalid,alert,console){
+		if( isInvalid ){
+			field.classList.add('invalid');
+			alert(alert)
+			throw new Error (console);
+		}else{
+			field.classList.remove('invalid');
+		}
+	}
+
 	var appendShortcode = function(e,dis){
 		
 		e.stopPropagation();
@@ -16,49 +26,63 @@
 
 		var fields = dis.querySelectorAll('._1p21_dv-input');
 		var inputs = [];
+
+		console.log(fields);
 		//validate
 		fields.forEach(function(field){
+			if( field.value ){
+
+				console.log(field);
 			
-			var parsedValue = (function(){
-				var toReturn = field.value; //a striing
-				switch(field.name) {
-					case 'id':
-						if(!field.value){
-							alert('A Data visualizer is required')
-							throw new Error ('ID was not provided');
-						}else{
-							toReturn = parseInt(field.value)
-						}
-						break;
-					
-					case 'align':
+				var parsedValue = (function(){
+					var toReturn = field.value.toString(), //a striing
+					isInvalid = false,
+					alertString = '',
+					consoleString = '';
 
-							if( field.value !== 'right' && field.value !== 'center' && field.value !== 'left' ) {
-								alert(field.name+ ' has an invalid alignment')
-								throw new Error ('content alignment invalid');
-							}
-					case 'margin':
-					case 'margin_offset':
-					case 'font_size':
-					case 'width':
-					case 'transition':
-					case 'delay':
+					switch(field.name) {
+						case 'id':
+							toReturn = parseInt(field.value);
+							isInvalid = Number.isNaN(toReturn);
+							alertString = 'Invalid data visualizer';
+							consoleString = 'ID was invalid';
+							break;
+						
+						case 'align':
+							isInvalid = ( toReturn !== 'right' && toReturn !== 'center' && toReturn !== 'left' && toReturn !== '' );
+							alertString = field.name+ ' has an invalid alignment';
+							consoleString = 'align is invalid';
+							break;
+
+						case 'margin':
+						case 'margin_offset':
+						case 'font_size':
+						case 'width':
+						case 'transition':
+						case 'delay':
 							toReturn = parseFloat(field.value);
+							isInvalid = Number.isNaN(toReturn);
+							alertString = field.name.replace('_',' ') + ' value is invalid';
+							consoleString = field.name + ' was invalid';
+							break;
 
-							if( Number.isNaN(toReturn) ){
+					}
 
-								alert(field.name+ ' value is invalid')
-								throw new Error (field.name + ' was invalid');
-							}
-						break;
+
+					runValidation(field,isInvalid,alertString,consoleString);
+
+
+					return toReturn;
+				
+				}())
+
+				inputs.push([field.name,parsedValue]);
+			}else{
+				if(field.name == 'id') {
+					alert('A data visual is required')
+					throw new Error ('id was not given');
 
 				}
-				return toReturn;
-			}())
-
-
-			if( field.value ){
-				inputs.push([field.name,parsedValue]);
 			}
 		})
 
