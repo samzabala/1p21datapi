@@ -7,7 +7,8 @@
 .data-visualizer {
   background: #EEE;
   position: relative;
-  padding: 2.5em 1em 1em; }
+  padding: 2.5em 1em 1em;
+  margin-bottom: 1em; }
   .data-visualizer.data-visualizer-initialized, .data-visualizer.no-data {
     padding-top: 1em; }
   .data-visualizer-align-center {
@@ -20,10 +21,13 @@
     display: block; }
   .data-visualizer-title {
     font-size: 1.25em;
-    font-weight: 700; }
+    margin-bottom: .5em;
+    font-weight: 700;
+    line-height: 1.25; }
   .data-visualizer-description {
     opacity: .8;
-    font-size: .875em; }
+    font-size: .875em;
+    line-height: 1.5; }
   .data-visualizer-wrapper:before {
     content: "Loading...";
     position: absolute;
@@ -117,4 +121,4 @@
       fill: #222; }
   @media only screen and (max-width: 700px) {
     .data-visualizer {
-      padding: .5em; } }
+      padding: .25em; } }

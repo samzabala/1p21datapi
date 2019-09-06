@@ -16,7 +16,6 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 		$id = $args['id'];
 		$post_exists = get_post( $id );
 		$post_type = $post_exists->post_type;
-		_1p21_dv_output_arr($post_exists);
 	}
 
 

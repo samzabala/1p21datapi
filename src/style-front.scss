@@ -24,6 +24,7 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 	position:relative;
 	// text-align: center;
 	padding: 2.5em 1em 1em;
+	margin-bottom: 1em;
 
 	&#{$prefix}-initialized,
 	&.no-data{
@@ -52,12 +53,15 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 
 	&-title {
 		font-size: 1.25em;
+		margin-bottom:.5em;
 		font-weight: 700;
+		line-height:1.25;
 	}
 	
 	&-description {
 		opacity: .8;
 		font-size: .875em;
+		line-height:1.5;
 	}
 
 	&-wrapper {
@@ -201,7 +205,7 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 	}
 
 	@media only screen and (max-width: 700px){
-		padding: .5em;
+		padding: .25em;
 	}
 
 }
