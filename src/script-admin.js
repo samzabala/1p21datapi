@@ -1,3 +1,10 @@
+/*!
+* 1point21 Data Vizualiser Version 1.2.0
+* Admin Script
+* DO NOT EDIT min.js
+* edit its corresponding unminified js file in /src instead
+*/
+
 (function(window){
 	"use strict";
 	var _1p21 = window._1p21 || {};
@@ -9,32 +16,46 @@
 
 		var fields = dis.querySelectorAll('._1p21_dv-input');
 		var inputs = [];
-
-		var is_string = ['align'];
-		var is_boolean = [];
-
 		//validate
 		fields.forEach(function(field){
-
+			
 			var parsedValue = (function(){
-				var toReturn = field.value //a striing
-				
+				var toReturn = field.value; //a striing
 				switch(field.name) {
 					case 'id':
-						toReturn = parseInt(field.value)
+						if(!field.value){
+							alert('A Data visualizer is required')
+							throw new Error ('ID was not provided');
+						}else{
+							toReturn = parseInt(field.value)
+						}
 						break;
+					
+					case 'align':
+
+							if( field.value !== 'right' && field.value !== 'center' && field.value !== 'left' ) {
+								alert(field.name+ ' has an invalid alignment')
+								throw new Error ('content alignment invalid');
+							}
 					case 'margin':
 					case 'margin_offset':
 					case 'font_size':
 					case 'width':
 					case 'transition':
 					case 'delay':
-						toReturn = parseFloat(field.value);
+							toReturn = parseFloat(field.value);
+
+							if( Number.isNaN(toReturn) ){
+
+								alert(field.name+ ' value is invalid')
+								throw new Error (field.name + ' was invalid');
+							}
 						break;
 
 				}
 				return toReturn;
 			}())
+
 
 			if( field.value ){
 				inputs.push([field.name,parsedValue]);
@@ -51,10 +72,7 @@
 
 		window.send_to_editor(shortCode);
 
-		console.log(shortCode,wp.editor.getContent());
-
 		tb_remove();
-
 		return false;
 	}
 

@@ -1,7 +1,8 @@
 /*!
-1point21 Data Vizualiser Version 1.2.0
-DO NOT EDIT STYLE.CSS
-Edit style.scss instead
+* 1point21 Data Vizualiser Version 1.2.0
+* Render Styles
+* DO NOT EDIT THIS CSS FILE
+* Edit its corresponding scss file in the src/ folder instead
 */
 .data-visualizer {
   background: #EEE;
