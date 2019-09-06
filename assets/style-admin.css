@@ -73,6 +73,8 @@
     margin-top: 3em; }
     ._1p21_dv-content form .submit {
       margin-top: 2em; }
+  ._1p21_dv-content pre, ._1p21_dv-content code {
+    font-size: inherit; }
   ._1p21_dv-content p {
     font-size: inherit; }
   ._1p21_dv-content h3 {
