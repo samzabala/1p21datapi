@@ -22,7 +22,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <h1 id="shortcode">Shortcode</h1>
 
-<p>You can add a data visualizer using the shortcode <code>dv</code> or <code>data_visalizer</code></p>
+<p>You can add a data visualizer using the shortcode <code>dv</code> or <code>data_visualizer</code></p>
 
 <p>Examples:</p>
 
@@ -53,7 +53,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p><strong>[ Optional | Default: <code>10</code> | type: number ]</strong></p>
 
-<p>gutter to set on graph canvas to compensate spaces for ticks and labels.</p></li>
+<p>gutter to set on graph canvas to compensate space for ticks and labels.</p></li>
 <li><p><strong><code>margin_offset</code></strong></p>
 
 <p><strong>[ Optional | Default: <code>2</code> | type: number ]</strong></p>
@@ -67,7 +67,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p>Note that this setting will also act like an aspect ratio to ensure responsiveness. Size below 600 may not be recommended depending on the number of data to render</p>
 
-<p>if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p></li>
+<p>if graph has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p></li>
 <li><p><strong><code>height</code></strong></p>
 
 <p><strong>[ Optional | Default: <code>600</code> | type: number ]</strong></p>
@@ -76,7 +76,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p>Note that this setting will also act like an aspect ratio to ensure responsiveness. Size below 600 may not be recommended depending on the number of data to render</p>
 
-<p>if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p></li>
+<p>if graph has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p></li>
 <li><p><strong><code>transition</code></strong></p>
 
 <p><strong>[ Optional | Default: <code>1500</code> | type: number ]</strong></p>
@@ -86,14 +86,14 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p><strong>[ Optional | Default: <code>250</code> | type: number ]</strong></p>
 
-<p>delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering</p></li>
+<p>delay of rendering the graph.</p></li>
 <li><p><strong><code>font_size</code></strong></p>
 
 <p><strong>[ Optional | Default: <code>'16px'</code> | type: number / string ]</strong></p>
 
 <p>css base font size to size all text relative to</p>
 
-<p>If given a number, it will be interpreted as to pixels.</p></li>
+<p>If given a number, it will be interpreted as pixels.</p></li>
 </ul>
 
 <h1 id="backendsettings">Backend Settings</h1>
@@ -102,7 +102,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p><strong>[ Optional | Default: <code>''</code> ]</strong></p>
 
-<p>Add a subtilte or description for the data visual</p>
+<p>Add a subtitle or description for the data visual</p>
 
 <h2 id="datasettings">Data Settings</h2>
 
@@ -119,7 +119,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p><strong>[ REQUIRED | options: 'File (csv,tsv)', 'URL', 'Text (JSON code)', 'Rows (UI Field)' ]</strong></p>
 
-<p>Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)</p>
+<p>Type of source on how the data will be imported. (For now, accepted files are json,csv,tsv,dsv)</p>
 
 <p>depending on set option, one of the fields below for data input will be shown.</p>
 
@@ -130,7 +130,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p>Input directly from the media library.</p>
 
-<p><em><strong>Note:</strong> This input is available if <em>Tick Amount</em> is set JSON is not allowed through this method for security</em></p></li>
+<p><em><strong>Note:</strong> JSON is not allowed through this method for security</em></p></li>
 <li><p><strong>URL (url)</strong></p>
 
 <p><strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code>, <code>json</code> | Available when: <em>Source Type</em> is 'URL' ]</strong></p>
@@ -172,7 +172,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 </ul></li>
 <li><p><strong>Source Key</strong></p>
 
-<p><strong>[ Optional | Default: <code>null</code> | Valid file types: Available when: <em>Source Type</em> is 'File (csv,tsv)', 'URL', 'Text (JSON code)' ]</strong></p>
+<p><strong>[ Optional | Default: <code>null</code> | Valid file types: Available when: <em>Source Type</em> is NOT 'Rows (UI Field)' ]</strong></p>
 
 <p>object key to the data to use.</p>
 
@@ -183,36 +183,38 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <h3 id="datakeys"><em>Data Keys</em></h3>
 
+<p><strong>[ Available when: <em>Source Type</em> is NOT 'Rows (UI Field)' ]</strong></p>
+
 <ul>
 <li><p><strong>Name Key</strong></p>
 
-<p><strong>[ REQUIRED | Default: <code>null</code> | Available when: <em>Source Type</em> is 'File (csv,tsv)', 'URL', 'Text (JSON code)' ]</strong></p>
+<p><strong>[ REQUIRED | Default: <code>null</code> ]</strong></p>
 
 <p>Key relative to a datum instance's level to represent the data' name</p></li>
 <li><p><strong>Value Key</strong></p>
 
-<p><strong>[ REQUIRED | Default: <code>null</code> | Available when: <em>Source Type</em> is 'File (csv,tsv)', 'URL', 'Text (JSON code)' ]</strong></p>
+<p><strong>[ REQUIRED | Default: <code>null</code> ]</strong></p>
 
 <p>Key relative to a datum instance's level to represent the data's value</p></li>
 <li><p><strong>Plot Points Area Key</strong></p>
 
-<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Source Type</em> is 'File (csv,tsv)', 'URL', 'Text (JSON code)'; <em>Type</em> is 'Scatter Plot' ]</strong></p>
+<p><strong>[ Optional | Default: <code>null</code>; <em>Type</em> is 'Scatter Plot' ]</strong></p>
 
 <p>Key relative to a datum instance's level to represent the data's value</p></li>
 <li><p><strong>Color Key</strong></p>
 
-<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Source Type</em> is 'File (csv,tsv)', 'URL', 'Text (JSON code)'; <em>Type</em> is NOT 'Pie' ]</strong></p>
+<p><strong>[ Optional | Default: <code>null</code> | <em>Type</em> is NOT 'Pie' ]</strong></p>
 
 <p>Key relative to a datum instance's level to represent the data's value</p></li>
 </ul>
 
 <h3 id="setnamekeyasnumeric"><em>Set Name Key As Numeric?</em></h3>
 
-<p><strong>[ Optional | Default: <code>false</code> | Available when: <em>Source Type</em> is 'File (csv,tsv)', 'URL', 'Text (JSON code)'; <em>Type</em> is NOT 'Pie', NOT 'Bar' ]</strong></p>
+<p><strong>[ Optional | Default: <code>false</code> | <em>Type</em> is 'Line', 'Scatter' ]</strong></p>
 
 <p>Adds numeric capabilities to name data.</p>
 
-<p>_<em><strong>Note:</strong> This input is available if <em>Tick Amount</em> is set If name value is not numeric, this will cause errors and the graph will not render properly</em></p>
+<p>_<em><strong>Note:</strong> If the data for the name data key is not numeric, this will cause errors and the graph will not render properly</em></p>
 
 <h3 id="formatsettings"><em>Format Settings</em></h3>
 
@@ -227,14 +229,14 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p>Character/s to append to the data.</p>
 
-<p><em><strong>Note:</strong> This input is available if <em>Tick Amount</em> is set Input will be translated as a parsed string</em></p></li>
+<p><em><strong>Note:</strong> Input will be translated as a parsed string</em></p></li>
 <li><p><strong>Append</strong></p>
 
 <p><strong>[ Optional | Default: <code>''</code> ]</strong></p>
 
 <p>Character/s to append to the data.</p>
 
-<p><em><strong>Note:</strong> This input is available if <em>Tick Amount</em> is set Input will be translated as a parsed string</em></p></li>
+<p><em><strong>Note:</strong> Input will be translated as a parsed string</em></p></li>
 <li><p><strong>Divider</strong></p>
 
 <p><strong>[ Optional | Default: <code>1</code> | Available for/when: <code>value</code> key; <em>Set Name Key As Numeric?</em> is set to <code>true</code> ]</strong></p>
@@ -244,11 +246,11 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>For example, presenting <code>'100000'</code> as dollar value in thousands as <code>'$100K'</code></p>
 
 <blockquote>
-<p><code>'$'</code> Comes from set <em>Prepend</em></p>
+<p><code>'$'</code> Comes from set <strong>Prepend</strong></p>
 
-<p><code>100000</code> is divided by <code>Divider</code> set to <code>1000</code> to shorten to <code>100</code></p>
+<p><code>100000</code> is divided by <strong>Divider</strong> set to <code>1000</code> to shorten to <code>100</code></p>
 
-<p><code>'K'</code> comes from set <em>Append</em></p>
+<p><code>'K'</code> comes from set <strong>Append</strong></p>
 </blockquote></li>
 <li><p><strong>Advanced</strong></p>
 
@@ -259,7 +261,12 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p>Accepts a string that follows the format for <a href="https://github.com/d3/d3-format#locale_format"><code>d3.format()</code></a></p>
 
-<p>Or a javascript function that passes the <code>data</code> and its <code>index</code></p></li>
+<p>Or a javascript function that passes the <code>data</code> and its <code>index</code></p>
+
+<pre><code>function(data,index) {
+	//format and declare returned formatted data here
+}
+</code></pre></li>
 <li><p><strong>More options will be added soon!</strong></p></li>
 </ul></li>
 </ul>
@@ -278,7 +285,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>Links the data that will be represented along the axis</p></li>
 <li><p><strong>Alignment</strong></p>
 
-<p><strong>[ REQUIRED | Default: <code>Bottom</code> (For X); <code>Left</code> (For Y); | options: <code>Top</code>, <code>Bottom</code>, <code>Left</code>, <code>Right</code> ]</strong></p>
+<p><strong>[ REQUIRED | Default: 'Bottom' (For X); 'Left' (For Y); | options: 'Top', 'Bottom', 'Left', 'Right' ]</strong></p>
 
 <p>Alignment of the axis</p></li>
 <li><p><strong>Use Ticks?</strong></p>
@@ -293,7 +300,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>Text label along the axis</p></li>
 <li><p><strong>Minimum</strong></p>
 
-<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Axis Data</em> is 'Value Data'; <em>Type</em> is 'Scatter Plot', <em>Axis Data</em> is 'Name Data', <em>Set Name Key As Numeric?</em> is <code>true</code>; ]</strong></p>
+<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Axis Data</em> is 'Value Data'; <em>Type</em> is 'Scatter Plot', <em>Axis Data</em> is 'Name Data', <em>Set Name Key As Numeric?</em> is <code>true</code> ]</strong></p>
 
 <p>Minimum value of the axis.</p>
 
@@ -314,11 +321,11 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <ul>
 <li><p><strong>Ticks Amount</strong></p>
 
-<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Use Ticks?</em> is <code>true</code> and <em>Axis Data</em> is 'Value Data' or <em>Type</em> is NOT 'Bar', <em>Axis Data</em> is 'Name Data', <em>Set Name Key As Numeric?</em> is <code>true</code>; ]</strong></p>
+<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Use Ticks?</em> is <code>true</code> and <em>Axis Data</em> is 'Value Data' or <em>Type</em> is NOT 'Bar', <em>Axis Data</em> is 'Name Data', <em>Set Name Key As Numeric?</em> is <code>true</code> ]</strong></p>
 
 <p>Number of ticks to display</p>
 
-<p>Leaving blank will allow the plugin to automatically set the amount based on the data given</p></li>
+<p>Leaving blank will automatically set the amount based on the data given</p></li>
 <li><p><strong>Add Grid</strong></p>
 
 <p><strong>[ Optional | Default: <code>false</code> | Available when: <em>Axis Data</em> is 'Value Data' or <em>Type</em> is NOT 'Bar' ]</strong></p>
@@ -326,11 +333,11 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>Enable grid along the axis</p></li>
 <li><p><strong>Grid Increment</strong></p>
 
-<p><strong>[ Optional | Default: <code>1</code> | Available when: <em>Add Grid?</em> is <code>true</code> and 'Ticks Amount' is NOT <code>null</code>]</strong></p>
+<p><strong>[ Optional | Default: <code>1</code> | Available when: <em>Add Grid?</em> is <code>true</code> and <em>Ticks Amount</em> is NOT <code>null</code> ]</strong></p>
 
 <p>Amount of grid rules each tick mark will be equal to.</p>
 
-<p>_<strong>Note:</strong> This field is available only if <em>Tick Amount</em> is set</p></li>
+<p><em><strong>Note:</strong> This field is available only if <strong>Tick Amount</strong> is set</em></p></li>
 </ul></li>
 </ul>
 
@@ -381,7 +388,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p>If not set, the color of the points will be the same as set <em>Stroke Color</em></p>
 
-<p><em><strong>Note:</strong> If 'Color Palette' has rows, this data will be overriden</em></p></li>
+<p><em><strong>Note:</strong> If <strong>Color Palette</strong> has rows, this data will be overriden</em></p></li>
 <li><p><strong>Size</strong></p>
 
 <p><strong>[ Optional ]</strong></p>
@@ -480,7 +487,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>Adding one color will apply the color to all graph elements</p></li>
 <li><p><strong>Legend</strong></p>
 
-<p><strong>[ Optional | Default: <code>true</code> (when available) | Available when <em>Color Key</em> is set; <em>Type</em> is 'Pie`; <em>Category</em> in <em>Row</em> field has any value ]</strong></p>
+<p><strong>[ Optional | Default: <code>true</code> (when available) | Available when <em>Color Key</em> is set; <em>Type</em> is 'Pie'; <em>Category</em> in <em>Row</em> field has any value ]</strong></p>
 
 <p>Enable legend presentation of data</p></li>
 </ul>
@@ -498,7 +505,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p><strong>[ REQUIRED ]</strong></p>
 
 <p>Accepts arguments of the <a href="#shortcodeparameters">shortcode parameters</a> in array format</p></li>
-<li><p>$echo</p>
+<li><p><strong>$echo</strong></p>
 
 <p><strong>[ Optional | Default: <code>false</code> ]</strong></p>
 

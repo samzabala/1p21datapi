@@ -17,7 +17,7 @@ Author URI: [https://www.1point21interactive.com/](https://www.1point21interacti
 --------------------------
 # Shortcode
 
-You can add a data visualizer using the shortcode `dv` or `data_visalizer`
+You can add a data visualizer using the shortcode `dv` or `data_visualizer`
 
 Examples:
 
@@ -50,7 +50,7 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 
 	**[ Optional | Default: `10` | type: number ]**
 
-	gutter to set on graph canvas to compensate spaces for ticks and labels.
+	gutter to set on graph canvas to compensate space for ticks and labels.
 
 *	**`margin_offset`**
 
@@ -66,7 +66,7 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 
 	Note that this setting will also act like an aspect ratio to ensure responsiveness. Size below 600 may not be recommended depending on the number of data to render
 	
-	if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
+	if graph has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
 
 *	**`height`**
 
@@ -76,7 +76,7 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 
 	Note that this setting will also act like an aspect ratio to ensure responsiveness. Size below 600 may not be recommended depending on the number of data to render
 	
-	if graph spacing has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
+	if graph has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
 
 *	**`transition`**
 
@@ -88,7 +88,7 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 
 	**[ Optional | Default: `250` | type: number ]**
 
-	delay of rendering the graph. useful in case there is a script that needs to load before the graph rendering
+	delay of rendering the graph.
 
 *	**`font_size`**
 
@@ -96,7 +96,7 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 
 	css base font size to size all text relative to
 	
-	If given a number, it will be interpreted as to pixels.
+	If given a number, it will be interpreted as pixels.
 
 # Backend Settings
 
@@ -104,7 +104,7 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 
 **[ Optional | Default: `''` ]**
 
-Add a subtilte or description for the data visual
+Add a subtitle or description for the data visual
 
 ## Data Settings
 
@@ -120,7 +120,7 @@ Type of graph the data will be presented as.
 
 	**[ REQUIRED | options: 'File (csv,tsv)', 'URL', 'Text (JSON code)', 'Rows (UI Field)' ]**
 
-	Type of source on how the data will be imported. (For not accepted files are json,csv,tsv)
+	Type of source on how the data will be imported. (For now, accepted files are json,csv,tsv,dsv)
 
 	depending on set option, one of the fields below for data input will be shown.
 
@@ -130,7 +130,7 @@ Type of graph the data will be presented as.
 
 		Input directly from the media library. 
 
-		_**Note:** This input is available if *Tick Amount* is set JSON is not allowed through this method for security_
+		_**Note:** JSON is not allowed through this method for security_
 	
 	*	**URL (url)**
 
@@ -176,7 +176,7 @@ Type of graph the data will be presented as.
 		
 *	**Source Key**
 
-	**[ Optional | Default: `null` | Valid file types: Available when: *Source Type* is 'File (csv,tsv)', 'URL', 'Text (JSON code)' ]**
+	**[ Optional | Default: `null` | Valid file types: Available when: *Source Type* is NOT 'Rows (UI Field)' ]**
 
 	object key to the data to use.
 
@@ -187,37 +187,39 @@ Type of graph the data will be presented as.
 
 ### *Data Keys*
 
+**[ Available when: *Source Type* is NOT 'Rows (UI Field)' ]**
+
 *	**Name Key**
 
-	**[ REQUIRED | Default: `null` | Available when: *Source Type* is 'File (csv,tsv)', 'URL', 'Text (JSON code)' ]**
+	**[ REQUIRED | Default: `null` ]**
 
 	Key relative to a datum instance's level to represent the data' name
 
 *	**Value Key**
 
-	**[ REQUIRED | Default: `null` | Available when: *Source Type* is 'File (csv,tsv)', 'URL', 'Text (JSON code)' ]**
+	**[ REQUIRED | Default: `null` ]**
 
 	Key relative to a datum instance's level to represent the data's value
 
 *	**Plot Points Area Key**
 
-	**[ Optional | Default: `null` | Available when: *Source Type* is 'File (csv,tsv)', 'URL', 'Text (JSON code)'; *Type* is 'Scatter Plot' ]**
+	**[ Optional | Default: `null`; *Type* is 'Scatter Plot' ]**
 
 	Key relative to a datum instance's level to represent the data's value
 
 *	**Color Key**
 
-	**[ Optional | Default: `null` | Available when: *Source Type* is 'File (csv,tsv)', 'URL', 'Text (JSON code)'; *Type* is NOT 'Pie' ]**
+	**[ Optional | Default: `null` | *Type* is NOT 'Pie' ]**
 
 	Key relative to a datum instance's level to represent the data's value
 
 ### *Set Name Key As Numeric?*
 
-**[ Optional | Default: `false` | Available when: *Source Type* is 'File (csv,tsv)', 'URL', 'Text (JSON code)'; *Type* is NOT 'Pie', NOT 'Bar' ]**
+**[ Optional | Default: `false` | *Type* is 'Line', 'Scatter' ]**
 
 Adds numeric capabilities to name data.
 
-__**Note:** This input is available if *Tick Amount* is set If name value is not numeric, this will cause errors and the graph will not render properly_
+__**Note:** If the data for the name data key is not numeric, this will cause errors and the graph will not render properly_
 
 
 ###	*Format Settings*
@@ -232,7 +234,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 	Character/s to append to the data.
 
-	_**Note:** This input is available if *Tick Amount* is set Input will be translated as a parsed string_
+	_**Note:** Input will be translated as a parsed string_
 
 *	**Append**
 
@@ -240,7 +242,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 	Character/s to append to the data.
 
-	_**Note:** This input is available if *Tick Amount* is set Input will be translated as a parsed string_
+	_**Note:** Input will be translated as a parsed string_
 
 *	**Divider**
 
@@ -250,11 +252,11 @@ These are optional settings to allow reformatting data on the visualizer
 	
 	For example, presenting `'100000'` as dollar value in thousands as `'$100K'`
 
-	> `'$'` Comes from set *Prepend*
+	> `'$'` Comes from set **Prepend**
 	>
-	> `100000` is divided by `Divider` set to `1000` to shorten to `100`
+	> `100000` is divided by **Divider** set to `1000` to shorten to `100`
 	>
-	> `'K'` comes from set *Append*
+	> `'K'` comes from set **Append**
 
 *	**Advanced**
 
@@ -265,6 +267,12 @@ These are optional settings to allow reformatting data on the visualizer
 		Accepts a string that follows the format for [`d3.format()`](https://github.com/d3/d3-format#locale_format)
 
 		Or a javascript function that passes the `data` and its `index`
+
+		```
+		function(data,index) {
+			//format and declare returned formatted data here
+		}
+		```
 
 	*	**More options will be added soon!**
 
@@ -283,7 +291,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 *	**Alignment**
 
-	**[ REQUIRED | Default: `Bottom` (For X); `Left` (For Y); | options: `Top`, `Bottom`, `Left`, `Right` ]**
+	**[ REQUIRED | Default: 'Bottom' (For X); 'Left' (For Y); | options: 'Top', 'Bottom', 'Left', 'Right' ]**
 
 	Alignment of the axis
 
@@ -301,7 +309,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 *	**Minimum**
 
-	**[ Optional | Default: `null` | Available when: *Axis Data* is 'Value Data'; *Type* is 'Scatter Plot', *Axis Data* is 'Name Data', *Set Name Key As Numeric?* is `true`; ]**
+	**[ Optional | Default: `null` | Available when: *Axis Data* is 'Value Data'; *Type* is 'Scatter Plot', *Axis Data* is 'Name Data', *Set Name Key As Numeric?* is `true` ]**
 
 	Minimum value of the axis.
 
@@ -324,11 +332,11 @@ These are optional settings to allow reformatting data on the visualizer
 
 	*	**Ticks Amount**
 
-		**[ Optional | Default: `null` | Available when: *Use Ticks?* is `true` and *Axis Data* is 'Value Data' or *Type* is NOT 'Bar', *Axis Data* is 'Name Data', *Set Name Key As Numeric?* is `true`; ]**
+		**[ Optional | Default: `null` | Available when: *Use Ticks?* is `true` and *Axis Data* is 'Value Data' or *Type* is NOT 'Bar', *Axis Data* is 'Name Data', *Set Name Key As Numeric?* is `true` ]**
 
 		Number of ticks to display
 
-		Leaving blank will allow the plugin to automatically set the amount based on the data given
+		Leaving blank will automatically set the amount based on the data given
 	
 	*	**Add Grid**
 
@@ -338,11 +346,11 @@ These are optional settings to allow reformatting data on the visualizer
 
 	*	**Grid Increment**
 
-		**[ Optional | Default: `1` | Available when: *Add Grid?* is `true` and 'Ticks Amount' is NOT `null`]**
+		**[ Optional | Default: `1` | Available when: *Add Grid?* is `true` and *Ticks Amount* is NOT `null` ]**
 
 		Amount of grid rules each tick mark will be equal to.
 
-		_**Note:** This field is available only if *Tick Amount* is set
+		_**Note:** This field is available only if **Tick Amount** is set_
 
 
 
@@ -397,7 +405,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 		If not set, the color of the points will be the same as set *Stroke Color*
 
-		_**Note:** If 'Color Palette' has rows, this data will be overriden_
+		_**Note:** If **Color Palette** has rows, this data will be overriden_
 
 	*	**Size**
 		
@@ -500,7 +508,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 *	**Legend**
 
-	**[ Optional | Default: `true` (when available) | Available when *Color Key* is set; *Type* is 'Pie`; *Category* in *Row* field has any value ]**
+	**[ Optional | Default: `true` (when available) | Available when *Color Key* is set; *Type* is 'Pie'; *Category* in *Row* field has any value ]**
 
 	Enable legend presentation of data
 
@@ -516,7 +524,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 		Accepts arguments of the [shortcode parameters](#shortcodeparameters) in array format
 
-	*	$echo
+	*	**$echo**
 
 		**[ Optional | Default: `false` ]**
 
@@ -529,7 +537,6 @@ These are optional settings to allow reformatting data on the visualizer
 		
 
 # Settings
-
 
 ### Enable Optimization
 

@@ -66,7 +66,7 @@ function _1p21_dv_options_build_form(){
 	}
 	
 	?>
-	<div class="_1p21-dv-content">
+	<div class="_1p21_dv-content">
 		<h1>Data Visuals Settings</h1>
 		<form method="post" action="options.php"><!-- always use options.php when parsing options with WP -->
 		<?php 
