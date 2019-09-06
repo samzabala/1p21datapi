@@ -67,6 +67,9 @@
   font-size: 1.125em;
   border: 1px solid rgba(0, 0, 0, 0.1);
   background: rgba(255, 255, 255, 0.5); }
+  ._1p21_dv-content .notice {
+    margin-left: 0;
+    margin-right: 0; }
   ._1p21_dv-content h1 {
     line-height: 1.5; }
   ._1p21_dv-content form {
