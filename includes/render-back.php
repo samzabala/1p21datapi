@@ -15,11 +15,14 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 	if( isset($args['id']) ){
 		$id = $args['id'];
 		$post_exists = get_post( $id );
+		$post_type = $post_exists->post_type;
+		_1p21_dv_output_arr($post_exists);
 	}
+
 
 	// dont give shit if boi doesnt even exist
 	
-	if(!isset($id) || !$post_exists) {
+	if(!isset($id) || !$post_exists || $post_type !== 'data-visual') {
 		return false;
 	}else{
 
