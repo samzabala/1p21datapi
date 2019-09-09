@@ -1,7 +1,7 @@
 <!-- DO NOT EDIT OR REMOVE documentation.php as this is compiled from README.md. README.md must be edited instead -->
 # Plugin Name: 1Point21 Data Vizualizer
 
-Plugin URI: [https://github.com/samzabala](https://github.com/samzabala)  
+Plugin URI: [https://github.com/samzabala/1p21datapi](https://github.com/samzabala/1p21datapi)  
 Description: Data visualizer using d3 and svgs  
 Version: 1.2.0  
 Author: 1Point21 Interactive  
