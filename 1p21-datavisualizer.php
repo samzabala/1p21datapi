@@ -75,10 +75,7 @@ if( !post_type_exists('data-visual') ){
 	require_once _1P21_DV_PLUGIN_PATH . 'includes/render-front.php';
 
 }else{
-	add_action( 'admin_notices', function(){
-
-		_1p21_dv_create_admin_error('1p21 Data Vizualizer cannot work. a data-visual post type already exists!');
-	} );
+	_1p21_dv_create_admin_error('1p21 Data Vizualizer cannot work. a data-visual post type already exists!');
 }
 
 

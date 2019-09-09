@@ -3257,7 +3257,7 @@
                 {
                     "param": "post_type",
                     "operator": "==",
-                    "value": "data_visual"
+                    "value": "data-visual"
                 }
             ]
         ],
