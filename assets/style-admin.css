@@ -70,7 +70,9 @@
     margin-left: 0;
     margin-right: 0; }
   ._1p21_dv-content h1 {
-    line-height: 1.5; }
+    line-height: 1.5;
+    font-size: 2em;
+    padding: 0; }
   ._1p21_dv-content form {
     margin-top: 3em; }
     ._1p21_dv-content form .submit {
