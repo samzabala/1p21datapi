@@ -8,7 +8,7 @@ function _1p21_dv_init_cpt(){
 	register_post_type(
 		'data-visual',
 		array(
-			'menu_position' => 10,
+			'menu_position' => 40,
 			'public'		=> false,
 			'show_in_menu'  => true,
 			'show_ui'	   => true,
