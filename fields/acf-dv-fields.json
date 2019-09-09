@@ -1,1368 +1,1368 @@
 [
-	{
-		"key": "group_5d4206c985d00",
-		"title": "Data Visualizer",
-		"fields": [
-			{
-				"ID": 0,
-				"key": "field_5d67f813edf06",
-				"label": "Description",
-				"name": "description",
-				"prefix": "acf",
-				"type": "textarea",
-				"value": null,
-				"menu_order": 0,
-				"instructions": "",
-				"required": 0,
-				"id": "",
-				"class": "",
-				"conditional_logic": 0,
-				"parent": "group_5d4206c985d00",
-				"wrapper": {
-					"width": "",
-					"class": "",
-					"id": ""
-				},
-				"_name": "description",
-				"_prepare": 0,
-				"_valid": 1,
-				"default_value": "",
-				"placeholder": "",
-				"maxlength": "",
-				"rows": 4,
-				"new_lines": ""
-			},
-			{
-				"ID": 0,
-				"key": "field_5d571ad986ab3",
-				"label": "Data Settings",
-				"name": "",
-				"prefix": "acf",
-				"type": "tab",
-				"value": false,
-				"menu_order": 1,
-				"instructions": "",
-				"required": 0,
-				"id": "",
-				"class": "",
-				"conditional_logic": 0,
-				"parent": "group_5d4206c985d00",
-				"wrapper": {
-					"width": "",
-					"class": "",
-					"id": ""
-				},
-				"_name": "",
-				"_prepare": 0,
-				"_valid": 1,
-				"placement": "top",
-				"endpoint": 0
-			},
-			{
-				"ID": 0,
-				"key": "field_5d420a45de26f",
-				"label": "Type",
-				"name": "dv_type",
-				"prefix": "acf",
-				"type": "select",
-				"value": null,
-				"menu_order": 2,
-				"instructions": "",
-				"required": 0,
-				"id": "",
-				"class": "",
-				"conditional_logic": 0,
-				"parent": "group_5d4206c985d00",
-				"wrapper": {
-					"width": "",
-					"class": "",
-					"id": ""
-				},
-				"_name": "dv_type",
-				"_prepare": 0,
-				"_valid": 1,
-				"choices": {
-					"bar": "Bar (Default)",
-					"line": "Line",
-					"pie": "Pie",
-					"scatter": "Scatter Plot"
-				},
-				"default_value": [
-					"bar"
-				],
-				"allow_null": 0,
-				"multiple": 0,
-				"ui": 0,
-				"return_format": "value",
-				"ajax": 0,
-				"placeholder": ""
-			},
-			{
-				"ID": 0,
-				"key": "field_5d571a157030d",
-				"label": "Source",
-				"name": "dv_src",
-				"prefix": "acf",
-				"type": "group",
-				"value": null,
-				"menu_order": 3,
-				"instructions": "",
-				"required": 0,
-				"id": "",
-				"class": "",
-				"conditional_logic": 0,
-				"parent": "group_5d4206c985d00",
-				"wrapper": {
-					"width": "",
-					"class": "",
-					"id": ""
-				},
-				"_name": "dv_src",
-				"_prepare": 0,
-				"_valid": 1,
-				"layout": "block",
-				"sub_fields": [
-					{
-						"ID": 0,
-						"key": "field_5d420de06b6c9",
-						"label": "Source Type",
-						"name": "type",
-						"prefix": "acf",
-						"type": "select",
-						"value": null,
-						"menu_order": 0,
-						"instructions": "Choose how the data should be imported",
-						"required": 1,
-						"id": "",
-						"class": "",
-						"conditional_logic": 0,
-						"parent": "field_5d571a157030d",
-						"wrapper": {
-							"width": "",
-							"class": "",
-							"id": ""
-						},
-						"_name": "type",
-						"_prepare": 0,
-						"_valid": 1,
-						"choices": {
-							"file": "File (csv,tsv)",
-							"url": "URL",
-							"text": "Text (JSON code)",
-							"rows": "Rows (UI Field)"
-						},
-						"default_value": [],
-						"allow_null": 1,
-						"multiple": 0,
-						"ui": 0,
-						"return_format": "value",
-						"ajax": 0,
-						"placeholder": ""
-					},
-					{
-						"ID": 0,
-						"key": "field_5d4206cdde265",
-						"label": "File",
-						"name": "file",
-						"prefix": "acf",
-						"type": "file",
-						"value": null,
-						"menu_order": 1,
-						"instructions": "Must be tsv, csv",
-						"required": 1,
-						"id": "",
-						"class": "",
-						"conditional_logic": [
-							[
-								{
-									"field": "field_5d420de06b6c9",
-									"operator": "==",
-									"value": "file"
-								}
-							]
-						],
-						"parent": "field_5d571a157030d",
-						"wrapper": {
-							"width": "",
-							"class": "",
-							"id": ""
-						},
-						"_name": "file",
-						"_prepare": 0,
-						"_valid": 1,
-						"return_format": "array",
-						"library": "all",
-						"min_size": "",
-						"max_size": "",
-						"mime_types": "csv,tsv"
-					},
-					{
-						"ID": 0,
-						"key": "field_5d447ad169ee3",
-						"label": "Url",
-						"name": "url",
-						"prefix": "acf",
-						"type": "url",
-						"value": null,
-						"menu_order": 2,
-						"instructions": "Url must link directly to data file in either .csv,.json, or .tsv format",
-						"required": 1,
-						"id": "",
-						"class": "",
-						"conditional_logic": [
-							[
-								{
-									"field": "field_5d420de06b6c9",
-									"operator": "==",
-									"value": "url"
-								}
-							]
-						],
-						"parent": "field_5d571a157030d",
-						"wrapper": {
-							"width": "",
-							"class": "",
-							"id": ""
-						},
-						"_name": "url",
-						"_prepare": 0,
-						"_valid": 1,
-						"default_value": "",
-						"placeholder": ""
-					},
-					{
-						"ID": 0,
-						"key": "field_5d420ebe6b6ca",
-						"label": "Text",
-						"name": "text",
-						"prefix": "acf",
-						"type": "textarea",
-						"value": null,
-						"menu_order": 3,
-						"instructions": "input json code",
-						"required": 1,
-						"id": "",
-						"class": "",
-						"conditional_logic": [
-							[
-								{
-									"field": "field_5d420de06b6c9",
-									"operator": "==",
-									"value": "text"
-								}
-							]
-						],
-						"parent": "field_5d571a157030d",
-						"wrapper": {
-							"width": "",
-							"class": "",
-							"id": ""
-						},
-						"_name": "text",
-						"_prepare": 0,
-						"_valid": 1,
-						"default_value": "",
-						"placeholder": "",
-						"maxlength": "",
-						"rows": "",
-						"new_lines": ""
-					},
-					{
-						"ID": 0,
-						"key": "field_5d420719de267",
-						"label": "Rows",
-						"name": "row",
-						"prefix": "acf",
-						"type": "repeater",
-						"value": null,
-						"menu_order": 4,
-						"instructions": "Input a basic data in rows",
-						"required": 0,
-						"id": "",
-						"class": "",
-						"conditional_logic": [
-							[
-								{
-									"field": "field_5d420de06b6c9",
-									"operator": "==",
-									"value": "rows"
-								}
-							]
-						],
-						"parent": "field_5d571a157030d",
-						"wrapper": {
-							"width": "",
-							"class": "",
-							"id": ""
-						},
-						"_name": "row",
-						"_prepare": 0,
-						"_valid": 1,
-						"collapsed": "",
-						"min": 0,
-						"max": 0,
-						"layout": "table",
-						"button_label": "",
-						"sub_fields": [
-							{
-								"ID": 0,
-								"key": "field_5d420962de26e",
-								"label": "Name",
-								"name": "0",
-								"prefix": "acf",
-								"type": "text",
-								"value": null,
-								"menu_order": 0,
-								"instructions": "data that will represent the labels or a separate axis of the data.",
-								"required": 1,
-								"id": "",
-								"class": "",
-								"conditional_logic": 0,
-								"parent": "field_5d420719de267",
-								"wrapper": {
-									"width": "25",
-									"class": "",
-									"id": ""
-								},
-								"_name": "0",
-								"_prepare": 0,
-								"_valid": 1,
-								"default_value": "",
-								"placeholder": "",
-								"prepend": "",
-								"append": "",
-								"maxlength": ""
-							},
-							{
-								"ID": 0,
-								"key": "field_5d42077fde268",
-								"label": "Value",
-								"name": "1",
-								"prefix": "acf",
-								"type": "text",
-								"value": null,
-								"menu_order": 1,
-								"instructions": "data that will represent the labels.",
-								"required": 1,
-								"id": "",
-								"class": "",
-								"conditional_logic": 0,
-								"parent": "field_5d420719de267",
-								"wrapper": {
-									"width": "25",
-									"class": "",
-									"id": ""
-								},
-								"_name": "1",
-								"_prepare": 0,
-								"_valid": 1,
-								"default_value": "",
-								"placeholder": "",
-								"prepend": "",
-								"append": "",
-								"maxlength": ""
-							},
-							{
-								"ID": 0,
-								"key": "field_5d5ef5079216e",
-								"label": "Category",
-								"name": "color",
-								"prefix": "acf",
-								"type": "text",
-								"value": null,
-								"menu_order": 2,
-								"instructions": "data that will represent a color in the color palette. (Only available if data visual is not in a pie chart layout)",
-								"required": 0,
-								"id": "",
-								"class": "",
-								"conditional_logic": [
-									[
-										{
-											"field": "field_5d420a45de26f",
-											"operator": "!=",
-											"value": "pie"
-										}
-									]
-								],
-								"parent": "field_5d420719de267",
-								"wrapper": {
-									"width": "25",
-									"class": "",
-									"id": ""
-								},
-								"_name": "color",
-								"_prepare": 0,
-								"_valid": 1,
-								"default_value": "",
-								"placeholder": "",
-								"prepend": "",
-								"append": "",
-								"maxlength": ""
-							},
-							{
-								"ID": 0,
-								"key": "field_5d5ef6f792170",
-								"label": "Plot Point Area",
-								"name": "area",
-								"prefix": "acf",
-								"type": "text",
-								"value": null,
-								"menu_order": 3,
-								"instructions": "data that will influence the size of the scatter plot data. leaving blank will make all scatter plots the same size",
-								"required": 0,
-								"id": "",
-								"class": "",
-								"conditional_logic": [
-									[
-										{
-											"field": "field_5d420a45de26f",
-											"operator": "==",
-											"value": "scatter"
-										}
-									]
-								],
-								"parent": "field_5d420719de267",
-								"wrapper": {
-									"width": "25",
-									"class": "",
-									"id": ""
-								},
-								"_name": "area",
-								"_prepare": 0,
-								"_valid": 1,
-								"default_value": "",
-								"placeholder": "",
-								"prepend": "",
-								"append": "",
-								"maxlength": ""
-							}
-						]
-					},
-					{
-						"ID": 0,
-						"key": "field_5d4875c085673",
-						"label": "Source Key",
-						"name": "key",
-						"prefix": "acf",
-						"type": "text",
-						"value": null,
-						"menu_order": 5,
-						"instructions": "Fill in the key for the data to use if it is not in the root level",
-						"required": 0,
-						"id": "",
-						"class": "",
-						"conditional_logic": [
-							[
-								{
-									"field": "field_5d420de06b6c9",
-									"operator": "!=",
-									"value": "rows"
-								},
-								{
-									"field": "field_5d420de06b6c9",
-									"operator": "!=empty"
-								}
-							]
-						],
-						"parent": "field_5d571a157030d",
-						"wrapper": {
-							"width": "",
-							"class": "dv-code",
-							"id": ""
-						},
-						"_name": "key",
-						"_prepare": 0,
-						"_valid": 1,
-						"default_value": "",
-						"placeholder": "content.items",
-						"prepend": "data.",
-						"append": "",
-						"maxlength": ""
-					}
-				]
-			},
-			{
-				"ID": 0,
-				"key": "field_5d5702b2b6d93",
-				"label": "Data Keys",
-				"name": "dv_key",
-				"prefix": "acf",
-				"type": "group",
-				"value": null,
-				"menu_order": 4,
-				"instructions": "Fill in the key for the data to use if it is not in the root level",
-				"required": 0,
-				"id": "",
-				"class": "",
-				"conditional_logic": [
-					[
-						{
-							"field": "field_5d420de06b6c9",
-							"operator": "!=",
-							"value": "rows"
-						}
-					]
-				],
-				"parent": "group_5d4206c985d00",
-				"wrapper": {
-					"width": "",
-					"class": "dv-code",
-					"id": ""
-				},
-				"_name": "dv_key",
-				"_prepare": 0,
-				"_valid": 1,
-				"layout": "block",
-				"sub_fields": [
-					{
-						"ID": 0,
-						"key": "field_5d420a6cde270",
-						"label": "Name Key",
-						"name": "0",
-						"prefix": "acf",
-						"type": "text",
-						"value": null,
-						"menu_order": 0,
-						"instructions": "Type in the key relative to the data instance<br>\nKey or column name to represent or name the data",
-						"required": 1,
-						"id": "",
-						"class": "",
-						"conditional_logic": [
-							[
-								{
-									"field": "field_5d420de06b6c9",
-									"operator": "!=",
-									"value": "rows"
-								}
-							]
-						],
-						"parent": "field_5d5702b2b6d93",
-						"wrapper": {
-							"width": "50",
-							"class": "dv-code",
-							"id": ""
-						},
-						"_name": "0",
-						"_prepare": 0,
-						"_valid": 1,
-						"default_value": "",
-						"placeholder": "content",
-						"prepend": "data[0].",
-						"append": "",
-						"maxlength": ""
-					},
-					{
-						"ID": 0,
-						"key": "field_5d420b33de274",
-						"label": "Value Key",
-						"name": "1",
-						"prefix": "acf",
-						"type": "text",
-						"value": null,
-						"menu_order": 1,
-						"instructions": "Type in the key relative to the data instance<br>\nKey or column name of the data that will represent data based on the name key",
-						"required": 1,
-						"id": "",
-						"class": "",
-						"conditional_logic": [
-							[
-								{
-									"field": "field_5d420de06b6c9",
-									"operator": "!=",
-									"value": "rows"
-								}
-							]
-						],
-						"parent": "field_5d5702b2b6d93",
-						"wrapper": {
-							"width": "50",
-							"class": "dv-code",
-							"id": ""
-						},
-						"_name": "1",
-						"_prepare": 0,
-						"_valid": 1,
-						"default_value": "",
-						"placeholder": "content",
-						"prepend": "data[0].",
-						"append": "",
-						"maxlength": ""
-					},
-					{
-						"ID": 0,
-						"key": "field_5d602683abd8f",
-						"label": "Plot Point Area Key",
-						"name": "area",
-						"prefix": "acf",
-						"type": "text",
-						"value": null,
-						"menu_order": 2,
-						"instructions": "data that will influence the size of the scatter plot data. leaving blank will make all scatter plots the same size",
-						"required": 1,
-						"id": "",
-						"class": "",
-						"conditional_logic": [
-							[
-								{
-									"field": "field_5d420a45de26f",
-									"operator": "==",
-									"value": "scatter"
-								}
-							]
-						],
-						"parent": "field_5d5702b2b6d93",
-						"wrapper": {
-							"width": "",
-							"class": "dv-code",
-							"id": ""
-						},
-						"_name": "area",
-						"_prepare": 0,
-						"_valid": 1,
-						"default_value": "",
-						"placeholder": "",
-						"prepend": "data[0].",
-						"append": "",
-						"maxlength": ""
-					},
-					{
-						"ID": 0,
-						"key": "field_5d42ffcf5f464",
-						"label": "Color Key",
-						"name": "color",
-						"prefix": "acf",
-						"type": "text",
-						"value": null,
-						"menu_order": 3,
-						"instructions": "Data key to link color scheme to.<br>\nif layout is set to line, this will be applied to plot points and will override set points color",
-						"required": 0,
-						"id": "",
-						"class": "",
-						"conditional_logic": [
-							[
-								{
-									"field": "field_5d420a45de26f",
-									"operator": "!=",
-									"value": "pie"
-								},
-								{
-									"field": "field_5d420de06b6c9",
-									"operator": "!=",
-									"value": "rows"
-								}
-							]
-						],
-						"parent": "field_5d5702b2b6d93",
-						"wrapper": {
-							"width": "",
-							"class": "dv-code",
-							"id": ""
-						},
-						"_name": "color",
-						"_prepare": 0,
-						"_valid": 1,
-						"default_value": "",
-						"placeholder": "",
-						"prepend": "data[0].",
-						"append": "",
-						"maxlength": ""
-					}
-				]
-			},
-			{
-				"ID": 0,
-				"key": "field_5d55d2e48b9a1",
-				"label": "Set Name Key As Numeric",
-				"name": "dv_name_is_num",
-				"prefix": "acf",
-				"type": "true_false",
-				"value": null,
-				"menu_order": 5,
-				"instructions": "Adds additional numeric capabilities to name data.",
-				"required": 0,
-				"id": "",
-				"class": "",
-				"conditional_logic": [
-					[
-						{
-							"field": "field_5d420a45de26f",
-							"operator": "!=",
-							"value": "bar"
-						},
-						{
-							"field": "field_5d420a45de26f",
-							"operator": "!=",
-							"value": "pie"
-						}
-					]
-				],
-				"parent": "group_5d4206c985d00",
-				"wrapper": {
-					"width": "100",
-					"class": "dv-code",
-					"id": ""
-				},
-				"_name": "dv_name_is_num",
-				"_prepare": 0,
-				"_valid": 1,
-				"message": "Convert name key to an axis of numeric data",
-				"default_value": 0,
-				"ui": 0,
-				"ui_on_text": "",
-				"ui_off_text": ""
-			},
-			{
-				"ID": 0,
-				"key": "field_5d60205502da2",
-				"label": "Format Settings",
-				"name": "dv_format",
-				"prefix": "acf",
-				"type": "group",
-				"value": null,
-				"menu_order": 6,
-				"instructions": "",
-				"required": 0,
-				"id": "",
-				"class": "",
-				"conditional_logic": [
-					[
-						{
-							"field": "field_5d420de06b6c9",
-							"operator": "!=empty"
-						}
-					]
-				],
-				"parent": "group_5d4206c985d00",
-				"wrapper": {
-					"width": "",
-					"class": "",
-					"id": ""
-				},
-				"_name": "dv_format",
-				"_prepare": 0,
-				"_valid": 1,
-				"layout": "block",
-				"sub_fields": [
-					{
-						"ID": 0,
-						"key": "field_5d5c5b3134de0",
-						"label": "Name Settings",
-						"name": "0",
-						"prefix": "acf",
-						"type": "group",
-						"value": null,
-						"menu_order": 0,
-						"instructions": "",
-						"required": 0,
-						"id": "",
-						"class": "",
-						"conditional_logic": 0,
-						"parent": "field_5d60205502da2",
-						"wrapper": {
-							"width": "50",
-							"class": "",
-							"id": ""
-						},
-						"_name": "0",
-						"_prepare": 0,
-						"_valid": 1,
-						"layout": "block",
-						"sub_fields": [
-							{
-								"ID": 0,
-								"key": "field_5d5c5b3134de8",
-								"label": "Prepend",
-								"name": "prepend",
-								"prefix": "acf",
-								"type": "text",
-								"value": null,
-								"menu_order": 0,
-								"instructions": "String of character\/s to prepend to values",
-								"required": 0,
-								"id": "",
-								"class": "",
-								"conditional_logic": 0,
-								"parent": "field_5d5c5b3134de0",
-								"wrapper": {
-									"width": "50",
-									"class": "dv-code",
-									"id": ""
-								},
-								"_name": "prepend",
-								"_prepare": 0,
-								"_valid": 1,
-								"default_value": "",
-								"placeholder": "Est.",
-								"prepend": "",
-								"append": "",
-								"maxlength": ""
-							},
-							{
-								"ID": 0,
-								"key": "field_5d5c5b3134de9",
-								"label": "Append",
-								"name": "append",
-								"prefix": "acf",
-								"type": "text",
-								"value": null,
-								"menu_order": 1,
-								"instructions": "String of character\/s to append to values",
-								"required": 0,
-								"id": "",
-								"class": "",
-								"conditional_logic": 0,
-								"parent": "field_5d5c5b3134de0",
-								"wrapper": {
-									"width": "50",
-									"class": "dv-code",
-									"id": ""
-								},
-								"_name": "append",
-								"_prepare": 0,
-								"_valid": 1,
-								"default_value": "",
-								"placeholder": "Million Dollars",
-								"prepend": "",
-								"append": "",
-								"maxlength": ""
-							},
-							{
-								"ID": 0,
-								"key": "field_5d6021bc02da8",
-								"label": "Divider",
-								"name": "divider",
-								"prefix": "acf",
-								"type": "number",
-								"value": null,
-								"menu_order": 2,
-								"instructions": "Divide numeric data to shorten the value.",
-								"required": 0,
-								"id": "",
-								"class": "",
-								"conditional_logic": [
-									[
-										{
-											"field": "field_5d55d2e48b9a1",
-											"operator": "==",
-											"value": "1"
-										}
-									]
-								],
-								"parent": "field_5d5c5b3134de0",
-								"wrapper": {
-									"width": "",
-									"class": "dv-code",
-									"id": ""
-								},
-								"_name": "divider",
-								"_prepare": 0,
-								"_valid": 1,
-								"default_value": "",
-								"placeholder": 1000,
-								"prepend": "",
-								"append": "",
-								"min": "",
-								"max": "",
-								"step": ".0000000001"
-							},
-							{
-								"ID": 0,
-								"key": "field_5d5c5b3134def",
-								"label": "Advanced",
-								"name": "",
-								"prefix": "acf",
-								"type": "accordion",
-								"value": false,
-								"menu_order": 3,
-								"instructions": "",
-								"required": 0,
-								"id": "",
-								"class": "",
-								"conditional_logic": [
-									[
-										{
-											"field": "field_5d5c5b3134de3",
-											"operator": "==",
-											"value": "1"
-										}
-									]
-								],
-								"parent": "field_5d5c5b3134de0",
-								"wrapper": {
-									"width": "",
-									"class": "",
-									"id": ""
-								},
-								"_name": "",
-								"_prepare": 0,
-								"_valid": 1,
-								"open": 0,
-								"multi_expand": 0,
-								"endpoint": 0
-							},
-							{
-								"ID": 0,
-								"key": "field_5d5c5b3134df0",
-								"label": "Format Parameter",
-								"name": "parameter",
-								"prefix": "acf",
-								"type": "textarea",
-								"value": null,
-								"menu_order": 4,
-								"instructions": "accepts string format or function<br>Reference: <a href=\"https:\/\/github.com\/d3\/d3-format#locale_format\">https:\/\/github.com\/d3\/d3-format#locale_format<\/a><br>Setting this will override prepend,append, and divider settings",
-								"required": 0,
-								"id": "",
-								"class": "",
-								"conditional_logic": 0,
-								"parent": "field_5d5c5b3134de0",
-								"wrapper": {
-									"width": "",
-									"class": "dv-code",
-									"id": ""
-								},
-								"_name": "parameter",
-								"_prepare": 0,
-								"_valid": 1,
-								"default_value": "",
-								"placeholder": "\"~s\" | function(data,index){ return +data; }",
-								"maxlength": "",
-								"rows": 3,
-								"new_lines": ""
-							}
-						]
-					},
-					{
-						"ID": 0,
-						"key": "field_5d5c5c0734df1",
-						"label": "Value Settings",
-						"name": "1",
-						"prefix": "acf",
-						"type": "group",
-						"value": null,
-						"menu_order": 1,
-						"instructions": "",
-						"required": 0,
-						"id": "",
-						"class": "",
-						"conditional_logic": 0,
-						"parent": "field_5d60205502da2",
-						"wrapper": {
-							"width": "50",
-							"class": "",
-							"id": ""
-						},
-						"_name": "1",
-						"_prepare": 0,
-						"_valid": 1,
-						"layout": "block",
-						"sub_fields": [
-							{
-								"ID": 0,
-								"key": "field_5d5c5c0734df3",
-								"label": "Prepend",
-								"name": "prepend",
-								"prefix": "acf",
-								"type": "text",
-								"value": null,
-								"menu_order": 0,
-								"instructions": "String of character\/s to prepend to values",
-								"required": 0,
-								"id": "",
-								"class": "",
-								"conditional_logic": 0,
-								"parent": "field_5d5c5c0734df1",
-								"wrapper": {
-									"width": "50",
-									"class": "dv-code",
-									"id": ""
-								},
-								"_name": "prepend",
-								"_prepare": 0,
-								"_valid": 1,
-								"default_value": "",
-								"placeholder": "$",
-								"prepend": "",
-								"append": "",
-								"maxlength": ""
-							},
-							{
-								"ID": 0,
-								"key": "field_5d5c5c0734df4",
-								"label": "Append",
-								"name": "append",
-								"prefix": "acf",
-								"type": "text",
-								"value": null,
-								"menu_order": 1,
-								"instructions": "String of character\/s to append to values",
-								"required": 0,
-								"id": "",
-								"class": "",
-								"conditional_logic": 0,
-								"parent": "field_5d5c5c0734df1",
-								"wrapper": {
-									"width": "50",
-									"class": "dv-code",
-									"id": ""
-								},
-								"_name": "append",
-								"_prepare": 0,
-								"_valid": 1,
-								"default_value": "",
-								"placeholder": "k",
-								"prepend": "",
-								"append": "",
-								"maxlength": ""
-							},
-							{
-								"ID": 0,
-								"key": "field_5d602592cb28c",
-								"label": "Divider",
-								"name": "divider",
-								"prefix": "acf",
-								"type": "number",
-								"value": null,
-								"menu_order": 2,
-								"instructions": "Divide numeric data to shorten the value.",
-								"required": 0,
-								"id": "",
-								"class": "",
-								"conditional_logic": 0,
-								"parent": "field_5d5c5c0734df1",
-								"wrapper": {
-									"width": "",
-									"class": "dv-code",
-									"id": ""
-								},
-								"_name": "divider",
-								"_prepare": 0,
-								"_valid": 1,
-								"default_value": "",
-								"placeholder": 1000,
-								"prepend": "",
-								"append": "",
-								"min": "",
-								"max": "",
-								"step": ".0000000001"
-							},
-							{
-								"ID": 0,
-								"key": "field_5d5c5c0734df6",
-								"label": "Advanced",
-								"name": "",
-								"prefix": "acf",
-								"type": "accordion",
-								"value": false,
-								"menu_order": 3,
-								"instructions": "",
-								"required": 0,
-								"id": "",
-								"class": "",
-								"conditional_logic": 0,
-								"parent": "field_5d5c5c0734df1",
-								"wrapper": {
-									"width": "",
-									"class": "",
-									"id": ""
-								},
-								"_name": "",
-								"_prepare": 0,
-								"_valid": 1,
-								"open": 0,
-								"multi_expand": 0,
-								"endpoint": 0
-							},
-							{
-								"ID": 0,
-								"key": "field_5d5c5c0734df7",
-								"label": "Format Parameter",
-								"name": "parameter",
-								"prefix": "acf",
-								"type": "textarea",
-								"value": null,
-								"menu_order": 4,
-								"instructions": "accepts string format or function<br>Reference: <a href=\"https:\/\/github.com\/d3\/d3-format#locale_format\">https:\/\/github.com\/d3\/d3-format#locale_format<\/a><br>Setting this will override prepend,append, and divider settings",
-								"required": 0,
-								"id": "",
-								"class": "",
-								"conditional_logic": 0,
-								"parent": "field_5d5c5c0734df1",
-								"wrapper": {
-									"width": "",
-									"class": "dv-code",
-									"id": ""
-								},
-								"_name": "parameter",
-								"_prepare": 0,
-								"_valid": 1,
-								"default_value": "",
-								"placeholder": "\"~s\" | function(data,index){ return +data; }",
-								"maxlength": "",
-								"rows": 3,
-								"new_lines": ""
-							}
-						]
-					},
-					{
-						"ID": 0,
-						"key": "field_5d60209802da3",
-						"label": "Color Settings",
-						"name": "color",
-						"prefix": "acf",
-						"type": "group",
-						"value": null,
-						"menu_order": 2,
-						"instructions": "",
-						"required": 0,
-						"id": "",
-						"class": "",
-						"conditional_logic": [
-							[
-								{
-									"field": "field_5d420a45de26f",
-									"operator": "!=",
-									"value": "pie"
-								},
-								{
-									"field": "field_5d42ffcf5f464",
-									"operator": "!=empty"
-								}
-							],
-							[
-								{
-									"field": "field_5d420a45de26f",
-									"operator": "!=",
-									"value": "pie"
-								},
-								{
-									"field": "field_5d5ef5079216e",
-									"operator": "!=empty"
-								}
-							]
-						],
-						"parent": "field_5d60205502da2",
-						"wrapper": {
-							"width": "",
-							"class": "",
-							"id": ""
-						},
-						"_name": "color",
-						"_prepare": 0,
-						"_valid": 1,
-						"layout": "block",
-						"sub_fields": [
-							{
-								"ID": 0,
-								"key": "field_5d60209802da4",
-								"label": "Prepend",
-								"name": "prepend",
-								"prefix": "acf",
-								"type": "text",
-								"value": null,
-								"menu_order": 0,
-								"instructions": "String of character\/s to prepend to values",
-								"required": 0,
-								"id": "",
-								"class": "",
-								"conditional_logic": 0,
-								"parent": "field_5d60209802da3",
-								"wrapper": {
-									"width": "50",
-									"class": "dv-code",
-									"id": ""
-								},
-								"_name": "prepend",
-								"_prepare": 0,
-								"_valid": 1,
-								"default_value": "",
-								"placeholder": "$",
-								"prepend": "",
-								"append": "",
-								"maxlength": ""
-							},
-							{
-								"ID": 0,
-								"key": "field_5d60209802da5",
-								"label": "Append",
-								"name": "append",
-								"prefix": "acf",
-								"type": "text",
-								"value": null,
-								"menu_order": 1,
-								"instructions": "String of character\/s to append to values",
-								"required": 0,
-								"id": "",
-								"class": "",
-								"conditional_logic": 0,
-								"parent": "field_5d60209802da3",
-								"wrapper": {
-									"width": "50",
-									"class": "dv-code",
-									"id": ""
-								},
-								"_name": "append",
-								"_prepare": 0,
-								"_valid": 1,
-								"default_value": "",
-								"placeholder": "k",
-								"prepend": "",
-								"append": "",
-								"maxlength": ""
-							},
-							{
-								"ID": 0,
-								"key": "field_5d60209802da6",
-								"label": "Advanced",
-								"name": "",
-								"prefix": "acf",
-								"type": "accordion",
-								"value": false,
-								"menu_order": 2,
-								"instructions": "",
-								"required": 0,
-								"id": "",
-								"class": "",
-								"conditional_logic": [
-									[
-										{
-											"field": "field_5d5c5b3134de3",
-											"operator": "==",
-											"value": "1"
-										}
-									]
-								],
-								"parent": "field_5d60209802da3",
-								"wrapper": {
-									"width": "",
-									"class": "",
-									"id": ""
-								},
-								"_name": "",
-								"_prepare": 0,
-								"_valid": 1,
-								"open": 0,
-								"multi_expand": 0,
-								"endpoint": 0
-							},
-							{
-								"ID": 0,
-								"key": "field_5d60209802da7",
-								"label": "Format Parameter",
-								"name": "parameter",
-								"prefix": "acf",
-								"type": "textarea",
-								"value": null,
-								"menu_order": 3,
-								"instructions": "accepts string format or function<br>Reference: <a href=\"https:\/\/github.com\/d3\/d3-format#locale_format\">https:\/\/github.com\/d3\/d3-format#locale_format<\/a><br>Setting this will override prepend,append, and divider settings",
-								"required": 0,
-								"id": "",
-								"class": "",
-								"conditional_logic": 0,
-								"parent": "field_5d60209802da3",
-								"wrapper": {
-									"width": "",
-									"class": "dv-code",
-									"id": ""
-								},
-								"_name": "parameter",
-								"_prepare": 0,
-								"_valid": 1,
-								"default_value": "",
-								"placeholder": "\"~s\" | function(data,index){ return +data; }",
-								"maxlength": "",
-								"rows": 3,
-								"new_lines": ""
-							}
-						]
-					}
-				]
-			},
-			{
-				"ID": 0,
-				"key": "field_5d420abade272",
-				"label": "Graph Settings",
-				"name": "",
-				"prefix": "acf",
-				"type": "tab",
-				"value": false,
-				"menu_order": 7,
-				"instructions": "",
-				"required": 0,
-				"id": "",
-				"class": "",
-				"conditional_logic": 0,
-				"parent": "group_5d4206c985d00",
-				"wrapper": {
-					"width": "",
-					"class": "",
-					"id": ""
-				},
-				"_name": "",
-				"_prepare": 0,
-				"_valid": 1,
-				"placement": "top",
-				"endpoint": 0
-			},
-			{
-				"ID": 0,
-				"key": "field_5d448fef59823",
-				"label": "X Settings",
-				"name": "dv_x",
-				"prefix": "acf",
-				"type": "group",
-				"value": null,
-				"menu_order": 8,
-				"instructions": "",
-				"required": 0,
-				"id": "",
-				"class": "",
-				"conditional_logic": [
-					[
-						{
-							"field": "field_5d420a45de26f",
-							"operator": "==",
-							"value": "bar"
-						}
-					],
-					[
-						{
-							"field": "field_5d420a45de26f",
-							"operator": "==",
-							"value": "line"
-						}
-					],
-					[
-						{
-							"field": "field_5d420a45de26f",
-							"operator": "==",
-							"value": "scatter"
-						}
-					]
-				],
-				"parent": "group_5d4206c985d00",
-				"wrapper": {
-					"width": "50",
-					"class": "",
-					"id": ""
-				},
-				"_name": "dv_x",
-				"_prepare": 0,
-				"_valid": 1,
-				"layout": "block",
-				"sub_fields": [
-					{
-						"ID": 0,
-						"key": "field_5d42110769b59",
-						"label": "Axis Data",
-						"name": "data",
-						"prefix": "acf",
-						"type": "select",
-						"value": null,
-						"menu_order": 0,
-						"instructions": "Data key to represent horizontally",
-						"required": 0,
-						"id": "",
-					    "class": "",
+    {
+        "key": "group_5d4206c985d00",
+        "title": "Data Visualizer",
+        "fields": [
+            {
+                "ID": 0,
+                "key": "field_5d67f813edf06",
+                "label": "Description",
+                "name": "dv_description",
+                "prefix": "acf",
+                "type": "textarea",
+                "value": null,
+                "menu_order": 0,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_description",
+                "_prepare": 0,
+                "_valid": 1,
+                "default_value": "",
+                "placeholder": "",
+                "maxlength": "",
+                "rows": 4,
+                "new_lines": ""
+            },
+            {
+                "ID": 0,
+                "key": "field_5d571ad986ab3",
+                "label": "Data Settings",
+                "name": "",
+                "prefix": "acf",
+                "type": "tab",
+                "value": false,
+                "menu_order": 1,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "",
+                "_prepare": 0,
+                "_valid": 1,
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "ID": 0,
+                "key": "field_5d420a45de26f",
+                "label": "Type",
+                "name": "dv_type",
+                "prefix": "acf",
+                "type": "select",
+                "value": null,
+                "menu_order": 2,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_type",
+                "_prepare": 0,
+                "_valid": 1,
+                "choices": {
+                    "bar": "Bar (Default)",
+                    "line": "Line",
+                    "pie": "Pie",
+                    "scatter": "Scatter Plot"
+                },
+                "default_value": [
+                    "bar"
+                ],
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "value",
+                "ajax": 0,
+                "placeholder": ""
+            },
+            {
+                "ID": 0,
+                "key": "field_5d571a157030d",
+                "label": "Source",
+                "name": "dv_src",
+                "prefix": "acf",
+                "type": "group",
+                "value": null,
+                "menu_order": 3,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_src",
+                "_prepare": 0,
+                "_valid": 1,
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "ID": 0,
+                        "key": "field_5d420de06b6c9",
+                        "label": "Source Type",
+                        "name": "type",
+                        "prefix": "acf",
+                        "type": "select",
+                        "value": null,
+                        "menu_order": 0,
+                        "instructions": "Choose how the data should be imported",
+                        "required": 1,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d571a157030d",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "type",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "choices": {
+                            "file": "File (csv,tsv)",
+                            "url": "URL",
+                            "text": "Text (JSON code)",
+                            "rows": "Rows (UI Field)"
+                        },
+                        "default_value": [],
+                        "allow_null": 1,
+                        "multiple": 0,
+                        "ui": 0,
+                        "return_format": "value",
+                        "ajax": 0,
+                        "placeholder": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d4206cdde265",
+                        "label": "File",
+                        "name": "file",
+                        "prefix": "acf",
+                        "type": "file",
+                        "value": null,
+                        "menu_order": 1,
+                        "instructions": "Must be tsv, csv",
+                        "required": 1,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420de06b6c9",
+                                    "operator": "==",
+                                    "value": "file"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d571a157030d",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "file",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "return_format": "array",
+                        "library": "all",
+                        "min_size": "",
+                        "max_size": "",
+                        "mime_types": "csv,tsv"
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d447ad169ee3",
+                        "label": "Url",
+                        "name": "url",
+                        "prefix": "acf",
+                        "type": "url",
+                        "value": null,
+                        "menu_order": 2,
+                        "instructions": "Url must link directly to data file in either .csv,.json, or .tsv format",
+                        "required": 1,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420de06b6c9",
+                                    "operator": "==",
+                                    "value": "url"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d571a157030d",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "url",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d420ebe6b6ca",
+                        "label": "Text",
+                        "name": "text",
+                        "prefix": "acf",
+                        "type": "textarea",
+                        "value": null,
+                        "menu_order": 3,
+                        "instructions": "input json code",
+                        "required": 1,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420de06b6c9",
+                                    "operator": "==",
+                                    "value": "text"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d571a157030d",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "text",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "maxlength": "",
+                        "rows": "",
+                        "new_lines": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d420719de267",
+                        "label": "Rows",
+                        "name": "row",
+                        "prefix": "acf",
+                        "type": "repeater",
+                        "value": null,
+                        "menu_order": 4,
+                        "instructions": "Input a basic data in rows",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420de06b6c9",
+                                    "operator": "==",
+                                    "value": "rows"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d571a157030d",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "row",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "collapsed": "",
+                        "min": 0,
+                        "max": 0,
+                        "layout": "table",
+                        "button_label": "",
+                        "sub_fields": [
+                            {
+                                "ID": 0,
+                                "key": "field_5d420962de26e",
+                                "label": "Name",
+                                "name": "0",
+                                "prefix": "acf",
+                                "type": "text",
+                                "value": null,
+                                "menu_order": 0,
+                                "instructions": "data that will represent the labels or a separate axis of the data.",
+                                "required": 1,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": 0,
+                                "parent": "field_5d420719de267",
+                                "wrapper": {
+                                    "width": "25",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "_name": "0",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "ID": 0,
+                                "key": "field_5d42077fde268",
+                                "label": "Value",
+                                "name": "1",
+                                "prefix": "acf",
+                                "type": "text",
+                                "value": null,
+                                "menu_order": 1,
+                                "instructions": "data that will represent the labels.",
+                                "required": 1,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": 0,
+                                "parent": "field_5d420719de267",
+                                "wrapper": {
+                                    "width": "25",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "_name": "1",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "ID": 0,
+                                "key": "field_5d5ef5079216e",
+                                "label": "Category",
+                                "name": "color",
+                                "prefix": "acf",
+                                "type": "text",
+                                "value": null,
+                                "menu_order": 2,
+                                "instructions": "data that will represent a color in the color palette. (Only available if data visual is not in a pie chart layout)",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": [
+                                    [
+                                        {
+                                            "field": "field_5d420a45de26f",
+                                            "operator": "!=",
+                                            "value": "pie"
+                                        }
+                                    ]
+                                ],
+                                "parent": "field_5d420719de267",
+                                "wrapper": {
+                                    "width": "25",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "_name": "color",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "ID": 0,
+                                "key": "field_5d5ef6f792170",
+                                "label": "Plot Point Area",
+                                "name": "area",
+                                "prefix": "acf",
+                                "type": "text",
+                                "value": null,
+                                "menu_order": 3,
+                                "instructions": "data that will influence the size of the scatter plot data. leaving blank will make all scatter plots the same size",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": [
+                                    [
+                                        {
+                                            "field": "field_5d420a45de26f",
+                                            "operator": "==",
+                                            "value": "scatter"
+                                        }
+                                    ]
+                                ],
+                                "parent": "field_5d420719de267",
+                                "wrapper": {
+                                    "width": "25",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "_name": "area",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            }
+                        ]
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d4875c085673",
+                        "label": "Source Key",
+                        "name": "key",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 5,
+                        "instructions": "Fill in the key for the data to use if it is not in the root level",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420de06b6c9",
+                                    "operator": "!=",
+                                    "value": "rows"
+                                },
+                                {
+                                    "field": "field_5d420de06b6c9",
+                                    "operator": "!=empty"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d571a157030d",
+                        "wrapper": {
+                            "width": "",
+                            "class": "dv-code",
+                            "id": ""
+                        },
+                        "_name": "key",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "content.items",
+                        "prepend": "data.",
+                        "append": "",
+                        "maxlength": ""
+                    }
+                ]
+            },
+            {
+                "ID": 0,
+                "key": "field_5d5702b2b6d93",
+                "label": "Data Keys",
+                "name": "dv_key",
+                "prefix": "acf",
+                "type": "group",
+                "value": null,
+                "menu_order": 4,
+                "instructions": "Fill in the key for the data to use if it is not in the root level",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420de06b6c9",
+                            "operator": "!=",
+                            "value": "rows"
+                        }
+                    ]
+                ],
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "dv-code",
+                    "id": ""
+                },
+                "_name": "dv_key",
+                "_prepare": 0,
+                "_valid": 1,
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "ID": 0,
+                        "key": "field_5d420a6cde270",
+                        "label": "Name Key",
+                        "name": "0",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 0,
+                        "instructions": "Type in the key relative to the data instance<br>\nKey or column name to represent or name the data",
+                        "required": 1,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420de06b6c9",
+                                    "operator": "!=",
+                                    "value": "rows"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d5702b2b6d93",
+                        "wrapper": {
+                            "width": "50",
+                            "class": "dv-code",
+                            "id": ""
+                        },
+                        "_name": "0",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "content",
+                        "prepend": "data[0].",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d420b33de274",
+                        "label": "Value Key",
+                        "name": "1",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 1,
+                        "instructions": "Type in the key relative to the data instance<br>\nKey or column name of the data that will represent data based on the name key",
+                        "required": 1,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420de06b6c9",
+                                    "operator": "!=",
+                                    "value": "rows"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d5702b2b6d93",
+                        "wrapper": {
+                            "width": "50",
+                            "class": "dv-code",
+                            "id": ""
+                        },
+                        "_name": "1",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "content",
+                        "prepend": "data[0].",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d602683abd8f",
+                        "label": "Plot Point Area Key",
+                        "name": "area",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 2,
+                        "instructions": "data that will influence the size of the scatter plot data. leaving blank will make all scatter plots the same size",
+                        "required": 1,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "scatter"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d5702b2b6d93",
+                        "wrapper": {
+                            "width": "",
+                            "class": "dv-code",
+                            "id": ""
+                        },
+                        "_name": "area",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "data[0].",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d42ffcf5f464",
+                        "label": "Color Key",
+                        "name": "color",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 3,
+                        "instructions": "Data key to link color scheme to.<br>\nif layout is set to line, this will be applied to plot points and will override set points color",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "pie"
+                                },
+                                {
+                                    "field": "field_5d420de06b6c9",
+                                    "operator": "!=",
+                                    "value": "rows"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d5702b2b6d93",
+                        "wrapper": {
+                            "width": "",
+                            "class": "dv-code",
+                            "id": ""
+                        },
+                        "_name": "color",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "data[0].",
+                        "append": "",
+                        "maxlength": ""
+                    }
+                ]
+            },
+            {
+                "ID": 0,
+                "key": "field_5d55d2e48b9a1",
+                "label": "Set Name Key As Numeric",
+                "name": "dv_name_is_num",
+                "prefix": "acf",
+                "type": "true_false",
+                "value": null,
+                "menu_order": 5,
+                "instructions": "Adds additional numeric capabilities to name data.",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420a45de26f",
+                            "operator": "!=",
+                            "value": "bar"
+                        },
+                        {
+                            "field": "field_5d420a45de26f",
+                            "operator": "!=",
+                            "value": "pie"
+                        }
+                    ]
+                ],
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "100",
+                    "class": "dv-code",
+                    "id": ""
+                },
+                "_name": "dv_name_is_num",
+                "_prepare": 0,
+                "_valid": 1,
+                "message": "Convert name key to an axis of numeric data",
+                "default_value": 0,
+                "ui": 0,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "ID": 0,
+                "key": "field_5d60205502da2",
+                "label": "Format Settings",
+                "name": "dv_format",
+                "prefix": "acf",
+                "type": "group",
+                "value": null,
+                "menu_order": 6,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420de06b6c9",
+                            "operator": "!=empty"
+                        }
+                    ]
+                ],
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_format",
+                "_prepare": 0,
+                "_valid": 1,
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "ID": 0,
+                        "key": "field_5d5c5b3134de0",
+                        "label": "Name Settings",
+                        "name": "0",
+                        "prefix": "acf",
+                        "type": "group",
+                        "value": null,
+                        "menu_order": 0,
+                        "instructions": "",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d60205502da2",
+                        "wrapper": {
+                            "width": "50",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "0",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "layout": "block",
+                        "sub_fields": [
+                            {
+                                "ID": 0,
+                                "key": "field_5d5c5b3134de8",
+                                "label": "Prepend",
+                                "name": "prepend",
+                                "prefix": "acf",
+                                "type": "text",
+                                "value": null,
+                                "menu_order": 0,
+                                "instructions": "String of character\/s to prepend to values",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": 0,
+                                "parent": "field_5d5c5b3134de0",
+                                "wrapper": {
+                                    "width": "50",
+                                    "class": "dv-code",
+                                    "id": ""
+                                },
+                                "_name": "prepend",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "default_value": "",
+                                "placeholder": "Est.",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "ID": 0,
+                                "key": "field_5d5c5b3134de9",
+                                "label": "Append",
+                                "name": "append",
+                                "prefix": "acf",
+                                "type": "text",
+                                "value": null,
+                                "menu_order": 1,
+                                "instructions": "String of character\/s to append to values",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": 0,
+                                "parent": "field_5d5c5b3134de0",
+                                "wrapper": {
+                                    "width": "50",
+                                    "class": "dv-code",
+                                    "id": ""
+                                },
+                                "_name": "append",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "default_value": "",
+                                "placeholder": "Million Dollars",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "ID": 0,
+                                "key": "field_5d6021bc02da8",
+                                "label": "Divider",
+                                "name": "divider",
+                                "prefix": "acf",
+                                "type": "number",
+                                "value": null,
+                                "menu_order": 2,
+                                "instructions": "Divide numeric data to shorten the value.",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": [
+                                    [
+                                        {
+                                            "field": "field_5d55d2e48b9a1",
+                                            "operator": "==",
+                                            "value": "1"
+                                        }
+                                    ]
+                                ],
+                                "parent": "field_5d5c5b3134de0",
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "dv-code",
+                                    "id": ""
+                                },
+                                "_name": "divider",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "default_value": "",
+                                "placeholder": 1000,
+                                "prepend": "",
+                                "append": "",
+                                "min": "",
+                                "max": "",
+                                "step": ".0000000001"
+                            },
+                            {
+                                "ID": 0,
+                                "key": "field_5d5c5b3134def",
+                                "label": "Advanced",
+                                "name": "",
+                                "prefix": "acf",
+                                "type": "accordion",
+                                "value": false,
+                                "menu_order": 3,
+                                "instructions": "",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": [
+                                    [
+                                        {
+                                            "field": "field_5d5c5b3134de3",
+                                            "operator": "==",
+                                            "value": "1"
+                                        }
+                                    ]
+                                ],
+                                "parent": "field_5d5c5b3134de0",
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "_name": "",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "open": 0,
+                                "multi_expand": 0,
+                                "endpoint": 0
+                            },
+                            {
+                                "ID": 0,
+                                "key": "field_5d5c5b3134df0",
+                                "label": "Format Parameter",
+                                "name": "parameter",
+                                "prefix": "acf",
+                                "type": "textarea",
+                                "value": null,
+                                "menu_order": 4,
+                                "instructions": "accepts string format or function<br>Reference: <a href=\"https:\/\/github.com\/d3\/d3-format#locale_format\">https:\/\/github.com\/d3\/d3-format#locale_format<\/a><br>Setting this will override prepend,append, and divider settings",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": 0,
+                                "parent": "field_5d5c5b3134de0",
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "dv-code",
+                                    "id": ""
+                                },
+                                "_name": "parameter",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "default_value": "",
+                                "placeholder": "\"~s\" | function(data,index){ return +data; }",
+                                "maxlength": "",
+                                "rows": 3,
+                                "new_lines": ""
+                            }
+                        ]
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d5c5c0734df1",
+                        "label": "Value Settings",
+                        "name": "1",
+                        "prefix": "acf",
+                        "type": "group",
+                        "value": null,
+                        "menu_order": 1,
+                        "instructions": "",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d60205502da2",
+                        "wrapper": {
+                            "width": "50",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "1",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "layout": "block",
+                        "sub_fields": [
+                            {
+                                "ID": 0,
+                                "key": "field_5d5c5c0734df3",
+                                "label": "Prepend",
+                                "name": "prepend",
+                                "prefix": "acf",
+                                "type": "text",
+                                "value": null,
+                                "menu_order": 0,
+                                "instructions": "String of character\/s to prepend to values",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": 0,
+                                "parent": "field_5d5c5c0734df1",
+                                "wrapper": {
+                                    "width": "50",
+                                    "class": "dv-code",
+                                    "id": ""
+                                },
+                                "_name": "prepend",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "default_value": "",
+                                "placeholder": "$",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "ID": 0,
+                                "key": "field_5d5c5c0734df4",
+                                "label": "Append",
+                                "name": "append",
+                                "prefix": "acf",
+                                "type": "text",
+                                "value": null,
+                                "menu_order": 1,
+                                "instructions": "String of character\/s to append to values",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": 0,
+                                "parent": "field_5d5c5c0734df1",
+                                "wrapper": {
+                                    "width": "50",
+                                    "class": "dv-code",
+                                    "id": ""
+                                },
+                                "_name": "append",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "default_value": "",
+                                "placeholder": "k",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "ID": 0,
+                                "key": "field_5d602592cb28c",
+                                "label": "Divider",
+                                "name": "divider",
+                                "prefix": "acf",
+                                "type": "number",
+                                "value": null,
+                                "menu_order": 2,
+                                "instructions": "Divide numeric data to shorten the value.",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": 0,
+                                "parent": "field_5d5c5c0734df1",
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "dv-code",
+                                    "id": ""
+                                },
+                                "_name": "divider",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "default_value": "",
+                                "placeholder": 1000,
+                                "prepend": "",
+                                "append": "",
+                                "min": "",
+                                "max": "",
+                                "step": ".0000000001"
+                            },
+                            {
+                                "ID": 0,
+                                "key": "field_5d5c5c0734df6",
+                                "label": "Advanced",
+                                "name": "",
+                                "prefix": "acf",
+                                "type": "accordion",
+                                "value": false,
+                                "menu_order": 3,
+                                "instructions": "",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": 0,
+                                "parent": "field_5d5c5c0734df1",
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "_name": "",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "open": 0,
+                                "multi_expand": 0,
+                                "endpoint": 0
+                            },
+                            {
+                                "ID": 0,
+                                "key": "field_5d5c5c0734df7",
+                                "label": "Format Parameter",
+                                "name": "parameter",
+                                "prefix": "acf",
+                                "type": "textarea",
+                                "value": null,
+                                "menu_order": 4,
+                                "instructions": "accepts string format or function<br>Reference: <a href=\"https:\/\/github.com\/d3\/d3-format#locale_format\">https:\/\/github.com\/d3\/d3-format#locale_format<\/a><br>Setting this will override prepend,append, and divider settings",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": 0,
+                                "parent": "field_5d5c5c0734df1",
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "dv-code",
+                                    "id": ""
+                                },
+                                "_name": "parameter",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "default_value": "",
+                                "placeholder": "\"~s\" | function(data,index){ return +data; }",
+                                "maxlength": "",
+                                "rows": 3,
+                                "new_lines": ""
+                            }
+                        ]
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5d60209802da3",
+                        "label": "Color Settings",
+                        "name": "color",
+                        "prefix": "acf",
+                        "type": "group",
+                        "value": null,
+                        "menu_order": 2,
+                        "instructions": "",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "pie"
+                                },
+                                {
+                                    "field": "field_5d42ffcf5f464",
+                                    "operator": "!=empty"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "pie"
+                                },
+                                {
+                                    "field": "field_5d5ef5079216e",
+                                    "operator": "!=empty"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d60205502da2",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "color",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "layout": "block",
+                        "sub_fields": [
+                            {
+                                "ID": 0,
+                                "key": "field_5d60209802da4",
+                                "label": "Prepend",
+                                "name": "prepend",
+                                "prefix": "acf",
+                                "type": "text",
+                                "value": null,
+                                "menu_order": 0,
+                                "instructions": "String of character\/s to prepend to values",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": 0,
+                                "parent": "field_5d60209802da3",
+                                "wrapper": {
+                                    "width": "50",
+                                    "class": "dv-code",
+                                    "id": ""
+                                },
+                                "_name": "prepend",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "default_value": "",
+                                "placeholder": "$",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "ID": 0,
+                                "key": "field_5d60209802da5",
+                                "label": "Append",
+                                "name": "append",
+                                "prefix": "acf",
+                                "type": "text",
+                                "value": null,
+                                "menu_order": 1,
+                                "instructions": "String of character\/s to append to values",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": 0,
+                                "parent": "field_5d60209802da3",
+                                "wrapper": {
+                                    "width": "50",
+                                    "class": "dv-code",
+                                    "id": ""
+                                },
+                                "_name": "append",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "default_value": "",
+                                "placeholder": "k",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "ID": 0,
+                                "key": "field_5d60209802da6",
+                                "label": "Advanced",
+                                "name": "",
+                                "prefix": "acf",
+                                "type": "accordion",
+                                "value": false,
+                                "menu_order": 2,
+                                "instructions": "",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": [
+                                    [
+                                        {
+                                            "field": "field_5d5c5b3134de3",
+                                            "operator": "==",
+                                            "value": "1"
+                                        }
+                                    ]
+                                ],
+                                "parent": "field_5d60209802da3",
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "_name": "",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "open": 0,
+                                "multi_expand": 0,
+                                "endpoint": 0
+                            },
+                            {
+                                "ID": 0,
+                                "key": "field_5d60209802da7",
+                                "label": "Format Parameter",
+                                "name": "parameter",
+                                "prefix": "acf",
+                                "type": "textarea",
+                                "value": null,
+                                "menu_order": 3,
+                                "instructions": "accepts string format or function<br>Reference: <a href=\"https:\/\/github.com\/d3\/d3-format#locale_format\">https:\/\/github.com\/d3\/d3-format#locale_format<\/a><br>Setting this will override prepend,append, and divider settings",
+                                "required": 0,
+                                "id": "",
+                                "class": "",
+                                "conditional_logic": 0,
+                                "parent": "field_5d60209802da3",
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "dv-code",
+                                    "id": ""
+                                },
+                                "_name": "parameter",
+                                "_prepare": 0,
+                                "_valid": 1,
+                                "default_value": "",
+                                "placeholder": "\"~s\" | function(data,index){ return +data; }",
+                                "maxlength": "",
+                                "rows": 3,
+                                "new_lines": ""
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": 0,
+                "key": "field_5d420abade272",
+                "label": "Graph Settings",
+                "name": "",
+                "prefix": "acf",
+                "type": "tab",
+                "value": false,
+                "menu_order": 7,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "",
+                "_prepare": 0,
+                "_valid": 1,
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "ID": 0,
+                "key": "field_5d448fef59823",
+                "label": "X Settings",
+                "name": "dv_x",
+                "prefix": "acf",
+                "type": "group",
+                "value": null,
+                "menu_order": 8,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420a45de26f",
+                            "operator": "==",
+                            "value": "bar"
+                        }
+                    ],
+                    [
+                        {
+                            "field": "field_5d420a45de26f",
+                            "operator": "==",
+                            "value": "line"
+                        }
+                    ],
+                    [
+                        {
+                            "field": "field_5d420a45de26f",
+                            "operator": "==",
+                            "value": "scatter"
+                        }
+                    ]
+                ],
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "dv_x",
+                "_prepare": 0,
+                "_valid": 1,
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "ID": 0,
+                        "key": "field_5d42110769b59",
+                        "label": "Axis Data",
+                        "name": "data",
+                        "prefix": "acf",
+                        "type": "select",
+                        "value": null,
+                        "menu_order": 0,
+                        "instructions": "Data key to represent horizontally",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
                         "conditional_logic": 0,
                         "parent": "field_5d448fef59823",
                         "wrapper": {

@@ -61,7 +61,6 @@
       width: calc(33.33% - 40px); } }
 
 ._1p21_dv-content {
-  max-width: 960px;
   padding: 30px 2em;
   margin: 40px auto 0;
   font-size: 1.125em;
@@ -77,7 +76,8 @@
     ._1p21_dv-content form .submit {
       margin-top: 2em; }
   ._1p21_dv-content pre, ._1p21_dv-content code {
-    font-size: inherit; }
+    font-size: inherit;
+    white-space: pre-wrap; }
   ._1p21_dv-content p {
     font-size: inherit; }
   ._1p21_dv-content h3 {

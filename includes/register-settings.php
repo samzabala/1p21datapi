@@ -41,7 +41,13 @@
 
 			
 		// }else{
-			add_submenu_page('edit.php?post_type=data-visual','Data Visualizer Settings', 'Settings','manage_options', '1p21-dv-settings', '_1p21_dv_options_build_form');
+			add_submenu_page(
+				'edit.php?post_type=data-visual',
+				'Data Visualizer Settings',
+				'Settings','manage_options',
+				'1p21-dv-settings',
+				function(){ return _1p21_dv_render_admin_page_template('settings-form.php'); }
+			);
 		// }
 	}
 	add_action( 'admin_menu', '_1p21_dv_options_add_page',11 );
@@ -56,18 +62,6 @@
 			'">' . __('Settings') . '</a>';
 		return $links;
 	}
-
-
-//Draw the form for the page (name must match callback above)
-function _1p21_dv_options_build_form(){
-	
-	if(!current_user_can('manage_options')){
-		wp_die('Begone Thot!');
-	}
-
-	include_once _1P21_DV_PLUGIN_PATH . 'templates/settings-form.php';
-}
-
 
 //validation
 function _1p21_dv_options_validate($input){

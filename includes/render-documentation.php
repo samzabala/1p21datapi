@@ -7,13 +7,16 @@
 //create documentation page + put it in the cpt dropdown
 
 function _1p21_dv_render_documentation(){
+	_1p21_dv_render_admin_page_template('documentation.html');
 	?>
-	<div class="_1p21_dv-content">
-
-		<?php
-		include_once _1P21_DV_PLUGIN_PATH .'/templates/documentation.html';
-
-		?>
+	<div class="wrap">
+		<!-- add empty h2 for errors to output at because wordpress admin is weird -->
+		<h2></h2>
+		<div class="_1p21_dv-content">
+			<?php
+			include_once _1P21_DV_PLUGIN_PATH . 'templates/documentation.html';
+			?>
+		</div>
 	</div>
 	<?php
 };
@@ -26,7 +29,7 @@ function _1p21_dv_add_documentation_link_to_cpt_dropdown(){
 		__('Documentation'),
 		'edit_posts',
 		'1p21-dv-documentation',
-		'_1p21_dv_render_documentation'
+		function(){ return _1p21_dv_render_admin_page_template('documentation.html'); }
 		);
 
 }

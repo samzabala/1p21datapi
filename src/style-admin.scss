@@ -101,7 +101,7 @@ $gutter: 40px;
 	}
 	
 	&-content {
-		max-width: 960px;
+		// max-width: 960px;
 		padding: 30px 2em;
 		margin: 40px auto 0;
 		font-size: 1.125em;
@@ -128,6 +128,8 @@ $gutter: 40px;
 
 		pre,code {
 			font-size: inherit;
+			// word-wrap: break-word;
+			white-space: pre-wrap;
 		}
 
 		p {

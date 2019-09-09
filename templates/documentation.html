@@ -1,6 +1,6 @@
 <!-- DO NOT EDIT OR REMOVE documentation.php as this is compiled from README.md. README.md must be edited instead -->
 
-<h1 id="pluginname:1point21datavizualizer">Plugin Name: 1Point21 Data Vizualizer</h1>
+<h2 id="pluginname:1point21datavizualizer">Plugin Name: 1Point21 Data Vizualizer</h2>
 
 <p>Plugin URI: <a href="https://github.com/samzabala/1p21datapi">https://github.com/samzabala/1p21datapi</a><br />
 Description: Data visualizer using d3 and svgs<br />
@@ -8,7 +8,7 @@ Version: 1.2.0<br />
 Author: 1Point21 Interactive<br />
 Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21interactive.com/</a></p>
 
-<h1 id="tableofcontents">Table of contents</h1>
+<h2 id="tableofcontents">Table of contents</h2>
 
 <ol>
 <li><a href="#shortcode">Shortcode</a></li>
@@ -20,23 +20,23 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <hr />
 
-<h1 id="shortcode">Shortcode</h1>
+<h2 id="shortcode">Shortcode</h2>
 
 <p>You can add a data visualizer using the shortcode <code>dv</code> or <code>data_visualizer</code></p>
 
 <p>Examples:</p>
 
-<h2 id="usingdv">Using <code>dv</code></h2>
+<h3 id="usingdv">Using <code>dv</code></h3>
 
 <p><code>[dv id=666 width=800 height=600]</code></p>
 
-<h2 id="usingdata_visualizer">Using <code>data_visualizer</code></h2>
+<h3 id="usingdata_visualizer">Using <code>data_visualizer</code></h3>
 
 <p><code>[data_visalizer id=666 width=800 height=600]</code></p>
 
 <p><em><strong>Note:</strong> in case</em> <code>dv</code> <em>conflicts with another shortcode, the plugin will output an error in the back end and advise to use</em> <code>data_visualizer</code></p>
 
-<h1 id="shortcodeparameters">Shortcode Parameters</h1>
+<h2 id="shortcodeparameters">Shortcode Parameters</h2>
 
 <ul>
 <li><p><strong><code>id</code></strong></p>
@@ -96,28 +96,28 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>If given a number, it will be interpreted as pixels.</p></li>
 </ul>
 
-<h1 id="backendsettings">Backend Settings</h1>
+<h2 id="backendsettings">Backend Settings</h2>
 
-<h2 id="description">Description</h2>
+<h3 id="description">Description</h3>
 
-<p><strong>[ Optional | Default: <code>''</code> ]</strong></p>
+<p><strong>[ Optional | Default: <code>''</code> | Meta Key : <code>'dv_description'</code> ]</strong></p>
 
 <p>Add a subtitle or description for the data visual</p>
 
-<h2 id="datasettings">Data Settings</h2>
+<h3 id="datasettings">Data Settings</h3>
 
-<h3 id="type"><em>Type</em></h3>
+<h4 id="type"><em>Type</em></h4>
 
-<p><strong>[ REQUIRED | Default: <em>Bar</em> | options: <em>Bar</em>, <em>Line</em>, <em>Pie</em>, <em>Scatter Plot</em> ]</strong></p>
+<p><strong>[ REQUIRED | Default: <em>Bar</em> | Meta Key : <code>'dv_type'</code> | options: <em>Bar</em>, <em>Line</em>, <em>Pie</em>, <em>Scatter Plot</em> ]</strong></p>
 
 <p>Type of graph the data will be presented as.</p>
 
-<h3 id="source"><em>Source</em></h3>
+<h4 id="source"><em>Source</em></h4>
 
 <ul>
 <li><p><strong>Source Type</strong></p>
 
-<p><strong>[ REQUIRED | options: 'File (csv,tsv)', 'URL', 'Text (JSON code)', 'Rows (UI Field)' ]</strong></p>
+<p><strong>[ REQUIRED | Meta Key : <code>'dv_src'</code> | options: 'File (csv,tsv)', 'URL', 'Text (JSON code)', 'Rows (UI Field)' ]</strong></p>
 
 <p>Type of source on how the data will be imported. (For now, accepted files are json,csv,tsv,dsv)</p>
 
@@ -126,53 +126,53 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <ul>
 <li><p><strong>File</strong></p>
 
-<p><strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code> | Available when: <em>Source Type</em> is 'File (csv,tsv)' ]</strong></p>
+<p><strong>[ REQUIRED | Meta Key : <code>'dv_src_file'</code> | Valid file types: <code>csv</code>, <code>tsv</code> | Available when: <em>Source Type</em> is 'File (csv,tsv)' ]</strong></p>
 
 <p>Input directly from the media library.</p>
 
 <p><em><strong>Note:</strong> JSON is not allowed through this method for security</em></p></li>
 <li><p><strong>URL (url)</strong></p>
 
-<p><strong>[ REQUIRED | Valid file types: <code>csv</code>, <code>tsv</code>, <code>json</code> | Available when: <em>Source Type</em> is 'URL' ]</strong></p>
+<p><strong>[ REQUIRED | Meta Key : <code>'dv_src_url'</code> | Valid file types: <code>csv</code>, <code>tsv</code>, <code>json</code> | Available when: <em>Source Type</em> is 'URL' ]</strong></p>
 
 <p>Input data through an external file's url</p></li>
 <li><p><strong>Text (JSON code)</strong></p>
 
-<p><strong>[ REQUIRED | Valid file types: <code>json</code> | Available when: <em>Source Type</em> is 'Text (JSON code)' ]</strong></p>
+<p><strong>[ REQUIRED | Meta Key : <code>'dv_src_text'</code> | Valid file types: <code>json</code> | Available when: <em>Source Type</em> is 'Text (JSON code)' ]</strong></p>
 
 <p>Input through the data in json format through a textbox. recommended for a more customized and controlled data</p></li>
 <li><p><strong>Rows</strong></p>
 
-<p><strong>[ REQUIRED | Valid file types: Available when: <em>Source Type</em> is 'Rows (UI Field)' ]</strong></p>
+<p><strong>[ REQUIRED | Meta Key : <code>'dv_src_row'</code> | Valid file types: Available when: <em>Source Type</em> is 'Rows (UI Field)' ]</strong></p>
 
 <p>Input via acf repeater fields. For each row there are available input fields</p>
 
 <ul>
 <li><p><strong>Name</strong></p>
 
-<p><strong>[ REQUIRED ]</strong></p>
+<p><strong>[ REQUIRED | Meta Key : <code>'dv_src_row_'.$index.'_0'</code> ]</strong></p>
 
 <p>Name for the data</p></li>
 <li><p><strong>Value</strong></p>
 
-<p><strong>[ REQUIRED ]</strong></p>
+<p><strong>[ REQUIRED | Meta Key : <code>'dv_src_row_'.$index.'_1'</code> ]</strong></p>
 
 <p>Value for the data</p></li>
 <li><p><strong>Category</strong></p>
 
-<p><strong>[ Optional | Available when: <em>Type</em> is set to 'Bar', 'Line', 'Scatter Plot' ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_src_row_'.$index.'_color'</code> | Available when: <em>Type</em> is set to 'Bar', 'Line', 'Scatter Plot' ]</strong></p>
 
 <p>Category value to represent the color the data</p></li>
 <li><p><strong>Plot Point Area</strong></p>
 
-<p><strong>[ Optional | Available when: <em>Type</em> is set to 'Scatter Plot' ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_src_row_'.$index.'_area'</code> | Available when: <em>Type</em> is set to 'Scatter Plot' ]</strong></p>
 
 <p>Numeric data value that will influence the size of the scatter plot point</p></li>
 </ul></li>
 </ul></li>
 <li><p><strong>Source Key</strong></p>
 
-<p><strong>[ Optional | Default: <code>null</code> | Valid file types: Available when: <em>Source Type</em> is NOT 'Rows (UI Field)' ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_src_key'</code> | Default: <code>null</code> | Valid file types: Available when: <em>Source Type</em> is NOT 'Rows (UI Field)' ]</strong></p>
 
 <p>object key to the data to use.</p>
 
@@ -181,42 +181,42 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>if there is a value, the data returned from that key will be used</p></li>
 </ul>
 
-<h3 id="datakeys"><em>Data Keys</em></h3>
+<h4 id="datakeys"><em>Data Keys</em></h4>
 
 <p><strong>[ Available when: <em>Source Type</em> is NOT 'Rows (UI Field)' ]</strong></p>
 
 <ul>
 <li><p><strong>Name Key</strong></p>
 
-<p><strong>[ REQUIRED | Default: <code>null</code> ]</strong></p>
+<p><strong>[ REQUIRED | Meta Key : <code>'dv_key_0'</code> | Default: <code>null</code> ]</strong></p>
 
 <p>Key relative to a datum instance's level to represent the data' name</p></li>
 <li><p><strong>Value Key</strong></p>
 
-<p><strong>[ REQUIRED | Default: <code>null</code> ]</strong></p>
+<p><strong>[ REQUIRED | Meta Key : <code>'dv_key_1'</code> | Default: <code>null</code> ]</strong></p>
 
 <p>Key relative to a datum instance's level to represent the data's value</p></li>
 <li><p><strong>Plot Points Area Key</strong></p>
 
-<p><strong>[ Optional | Default: <code>null</code>; <em>Type</em> is 'Scatter Plot' ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_key_area'</code> | Default: <code>null</code> | Available when: <em>Type</em> is 'Scatter Plot' ]</strong></p>
 
 <p>Key relative to a datum instance's level to represent the data's value</p></li>
 <li><p><strong>Color Key</strong></p>
 
-<p><strong>[ Optional | Default: <code>null</code> | <em>Type</em> is NOT 'Pie' ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_key_color'</code> | Default: <code>null</code> | <em>Type</em> is NOT 'Pie' ]</strong></p>
 
 <p>Key relative to a datum instance's level to represent the data's value</p></li>
 </ul>
 
-<h3 id="setnamekeyasnumeric"><em>Set Name Key As Numeric?</em></h3>
+<h4 id="setnamekeyasnumeric"><em>Set Name Key As Numeric?</em></h4>
 
-<p><strong>[ Optional | Default: <code>false</code> | <em>Type</em> is 'Line', 'Scatter' ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_name_is_num'</code> | Default: <code>false</code> | <em>Type</em> is 'Line', 'Scatter' ]</strong></p>
 
 <p>Adds numeric capabilities to name data.</p>
 
 <p>_<em><strong>Note:</strong> If the data for the name data key is not numeric, this will cause errors and the graph will not render properly</em></p>
 
-<h3 id="formatsettings"><em>Format Settings</em></h3>
+<h4 id="formatsettings"><em>Format Settings</em></h4>
 
 <p><strong>[ Optional | Available for: <code>name</code>, <code>value</code>, <code>color</code> <em>keys</em> ]</strong></p>
 
@@ -225,21 +225,21 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <ul>
 <li><p><strong>Prepend</strong></p>
 
-<p><strong>[ Optional | Default: <code>''</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_format_'.$data_key.'_prepend'</code> | Default: <code>''</code> ]</strong></p>
 
 <p>Character/s to append to the data.</p>
 
 <p><em><strong>Note:</strong> Input will be translated as a parsed string</em></p></li>
 <li><p><strong>Append</strong></p>
 
-<p><strong>[ Optional | Default: <code>''</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_format_'.$data_key.'_append'</code> | Default: <code>''</code> ]</strong></p>
 
 <p>Character/s to append to the data.</p>
 
 <p><em><strong>Note:</strong> Input will be translated as a parsed string</em></p></li>
 <li><p><strong>Divider</strong></p>
 
-<p><strong>[ Optional | Default: <code>1</code> | Available for/when: <code>value</code> key; <em>Set Name Key As Numeric?</em> is set to <code>true</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_format_'.$data_key.'_divider'</code> | Default: <code>1</code> | Available for/when: <code>value</code> key; <em>Set Name Key As Numeric?</em> is set to <code>true</code> ]</strong></p>
 
 <p>Amount to divide numeric data by. good for shortening values.</p>
 
@@ -257,7 +257,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <ul>
 <li><p><strong>Format Parameter</strong></p>
 
-<p><strong>[ Optional | Default: <code>null</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_format_'.$data_key.'_parameter'</code> | Default: <code>null</code> ]</strong></p>
 
 <p>Accepts a string that follows the format for <a href="https://github.com/d3/d3-format#locale_format"><code>d3.format()</code></a></p>
 
@@ -271,43 +271,43 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 </ul></li>
 </ul>
 
-<h2 id="graphsettings">Graph Settings</h2>
+<h3 id="graphsettings">Graph Settings</h3>
 
-<h3 id="xandysettings">X and Y Settings</h3>
+<h4 id="xandysettings">X and Y Settings</h4>
 
 <p><strong>[ Optional | Available when: <em>Type</em> is 'Bar','Line','Scatter Plot' ]</strong></p>
 
 <ul>
 <li><p><strong>Axis Data</strong></p>
 
-<p><strong>[ REQUIRED | Default: 'Name Data' (For X); 'Value Data' (For Y); | options: 'Name Data', 'Value Data' ]</strong></p>
+<p><strong>[ REQUIRED | Meta Key : <code>'dv_'.$axis.'_data'</code> | Default: 'Name Data' (For X); 'Value Data' (For Y); | options: 'Name Data', 'Value Data' ]</strong></p>
 
 <p>Links the data that will be represented along the axis</p></li>
 <li><p><strong>Alignment</strong></p>
 
-<p><strong>[ REQUIRED | Default: 'Bottom' (For X); 'Left' (For Y); | options: 'Top', 'Bottom', 'Left', 'Right' ]</strong></p>
+<p><strong>[ REQUIRED | Meta Key : <code>'dv_'.$axis.'_align'</code> | Default: 'Bottom' (For X); 'Left' (For Y); | options: 'Top', 'Bottom', 'Left', 'Right' ]</strong></p>
 
 <p>Alignment of the axis</p></li>
 <li><p><strong>Use Ticks?</strong></p>
 
-<p><strong>[ Optional | Default: <code>false</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_'.$axis.'_ticks'</code> | Default: <code>false</code> ]</strong></p>
 
 <p>Insert ruler along the axis of alignment</p></li>
 <li><p><strong>Label</strong></p>
 
-<p><strong>[ Optional | Default <code>null</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_'.$axis.'_label'</code> | Default <code>null</code> ]</strong></p>
 
 <p>Text label along the axis</p></li>
 <li><p><strong>Minimum</strong></p>
 
-<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Axis Data</em> is 'Value Data'; <em>Type</em> is 'Scatter Plot', <em>Axis Data</em> is 'Name Data', <em>Set Name Key As Numeric?</em> is <code>true</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_'.$axis.'_min'</code> | Default: <code>null</code> | Available when: <em>Axis Data</em> is 'Value Data'; <em>Type</em> is 'Scatter Plot', <em>Axis Data</em> is 'Name Data', <em>Set Name Key As Numeric?</em> is <code>true</code> ]</strong></p>
 
 <p>Minimum value of the axis.</p>
 
 <p>Leaving blank will automatically set the minimum from the smallest value present in data</p></li>
 <li><p><strong>Maximum</strong></p>
 
-<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Axis Data</em> is 'Value Data'; <em>Type</em> is 'Scatter Plot', <em>Axis Data</em> is 'Name Data', <em>Set Name Key As Numeric?</em> is <code>true</code>; ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_'.$axis.'_max'</code> | Default: <code>null</code> | Available when: <em>Axis Data</em> is 'Value Data'; <em>Type</em> is 'Scatter Plot', <em>Axis Data</em> is 'Name Data', <em>Set Name Key As Numeric?</em> is <code>true</code>; ]</strong></p>
 
 <p>Maximum value of the axis.</p>
 
@@ -321,56 +321,56 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <ul>
 <li><p><strong>Ticks Amount</strong></p>
 
-<p><strong>[ Optional | Default: <code>null</code> | Available when: <em>Use Ticks?</em> is <code>true</code> and <em>Axis Data</em> is 'Value Data' or <em>Type</em> is NOT 'Bar', <em>Axis Data</em> is 'Name Data', <em>Set Name Key As Numeric?</em> is <code>true</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_'.$axis.'_ticks_amount'</code> | Default: <code>null</code> | Available when: <em>Use Ticks?</em> is <code>true</code> and <em>Axis Data</em> is 'Value Data' OR <em>Type</em> is NOT 'Bar', <em>Axis Data</em> is 'Name Data', <em>Set Name Key As Numeric?</em> is <code>true</code> OR <em>Type</em> is 'Scatter',<em>Set Name Key As Numeric?</em> is <code>true</code>, <em>Axis Data</em> is NOT 'Value Data' ]</strong></p>
 
 <p>Number of ticks to display</p>
 
 <p>Leaving blank will automatically set the amount based on the data given</p></li>
 <li><p><strong>Add Grid</strong></p>
 
-<p><strong>[ Optional | Default: <code>false</code> | Available when: <em>Axis Data</em> is 'Value Data' or <em>Type</em> is NOT 'Bar' ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_'.$axis.'_grid'</code> | Default: <code>false</code> | Available when: <em>Axis Data</em> is 'Value Data' or <em>Type</em> is NOT 'Bar' ]</strong></p>
 
 <p>Enable grid along the axis</p></li>
 <li><p><strong>Grid Increment</strong></p>
 
-<p><strong>[ Optional | Default: <code>1</code> | Available when: <em>Add Grid?</em> is <code>true</code> and <em>Ticks Amount</em> is NOT <code>null</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_'.$axis.'_increment'</code> | Default: <code>1</code> | Available when: <em>Add Grid?</em> is <code>true</code> and <em>Ticks Amount</em> is NOT <code>null</code> ]</strong></p>
 
 <p>Amount of grid rules each tick mark will be equal to.</p>
 
-<p><em><strong>Note:</strong> This field is available only if <strong>Tick Amount</strong> is set</em></p></li>
+<p><em><strong>Note:</strong> This field is available only if <strong>Tick Amount</strong> is set as the renderer needs a set amount of ticks to calculate the grid rules from</em></p></li>
 </ul></li>
 </ul>
 
-<h3 id="linesettings">Line Settings</h3>
+<h4 id="linesettings">Line Settings</h4>
 
 <p><strong>[ Optional | Available when: <em>Type</em> is 'Line' ]</strong></p>
 
 <ul>
 <li><p><strong>Line Style</strong></p>
 
-<p><strong>[ REQUIRED | Default : 'None' | Available Options: 'None','Curve','Step' ]</strong></p>
+<p><strong>[ REQUIRED | Meta Key : <code>'dv_line_style'</code> | Default : 'None' | Available Options: 'None','Curve','Step' ]</strong></p>
 
 <p>Style of the line graph</p></li>
 <li><p><strong>Stroke Weight</strong></p>
 
-<p><strong>[ Optional | Default : <code>1</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_line_weight'</code> | Default : <code>1</code> ]</strong></p>
 
 <p>Thickness of the line graph stroke</p></li>
 <li><p><strong>Stroke Color</strong></p>
 
-<p><strong>[ Optional | Default : <code>null</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_line_color'</code> | Default : <code>null</code> ]</strong></p>
 
 <p>Color of the line graph</p></li>
 <li><p><strong>Add Plot Points?</strong></p>
 
-<p><strong>[ Optional | Default : <code>false</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_line_points'</code> | Default : <code>false</code> ]</strong></p>
 
 <p>Enable plot points on the line graph</p>
 
 <p>Additional options become available once this is checked</p></li>
 <li><p><strong>Add Area Fill?</strong></p>
 
-<p><strong>[ Optional | Default : <code>false</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_line_fill'</code> | Default : <code>false</code> ]</strong></p>
 
 <p>Enable fill on the line graph</p>
 
@@ -382,7 +382,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <ul>
 <li><p><strong>Points Color</strong></p>
 
-<p><strong>[ Optional ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_line_points_color'</code> ]</strong></p>
 
 <p>Color of plot points</p>
 
@@ -391,7 +391,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p><em><strong>Note:</strong> If <strong>Color Palette</strong> has rows, this data will be overriden</em></p></li>
 <li><p><strong>Size</strong></p>
 
-<p><strong>[ Optional ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_line_points_size'</code> ]</strong></p>
 
 <p>Size of plot points radius</p></li>
 </ul></li>
@@ -402,19 +402,19 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <ul>
 <li><p><strong>Color</strong></p>
 
-<p><strong>[ Optional ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_line_fill_color'</code> ]</strong></p>
 
 <p>Color of the fill</p>
 
 <p>If not set, the fill will be the same as set <em>Stroke Color</em></p></li>
 <li><p><strong>Opacity</strong></p>
 
-<p><strong>[ Optional | Default: <code>.5</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_line_fill_opacity'</code> | Default: <code>.5</code> ]</strong></p>
 
 <p>Opacity of the fill</p></li>
 <li><p><strong>Invert Axis?</strong></p>
 
-<p><strong>[ Optional | Default: <code>false</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_line_fill_invert'</code> | Default: <code>false</code> ]</strong></p>
 
 <p>Whether or not to invert the fill opposite to the alignment of the axis</p></li>
 </ul></li>
@@ -423,7 +423,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <ul>
 <li><p><strong>Dash Array</strong></p>
 
-<p><strong>[ Optional | Default: <code>null</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_line_dash'</code> | Default: <code>null</code> ]</strong></p>
 
 <p>Set dashes on the line graph. The pattern is <code>dash, gap, dash, gap...</code><br></p>
 
@@ -432,53 +432,53 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 </ul></li>
 </ul>
 
-<h3 id="piesettings">Pie Settings</h3>
+<h4 id="piesettings">Pie Settings</h4>
 
 <p><strong>[ Optional | Available when: <em>Type</em> is 'Pie' ]</strong></p>
 
 <ul>
 <li><p><strong>Label Style</strong></p>
 
-<p><strong>[ Optional | Default: <code>false</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_pi_label_style'</code> | Default: <code>false</code> ]</strong></p>
 
 <p>Whether or not to invert the fill opposite to the alignment of the axis</p></li>
 <li><p><strong>Inner Radius</strong></p>
 
-<p><strong>[ Optional | Default: <code>0</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_pi_in_radius'</code> | Default: <code>0</code> ]</strong></p>
 
 <p>Radius of pie hole</p></li>
 </ul>
 
-<h3 id="scatterplotareasettings">Scatter Plot Area Settings</h3>
+<h4 id="scatterplotareasettings">Scatter Plot Area Settings</h4>
 
 <p><strong>[ Optional | Available when: <em>Type</em> is 'Scatter Plot' ]</strong></p>
 
 <ul>
 <li><p><strong>Minimum Radius</strong></p>
 
-<p><strong>[ Optional | Default: <code>10</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_area_min'</code> | Default: <code>10</code> ]</strong></p>
 
 <p>Minimum size of plot points</p></li>
 <li><p><strong>Maximum Radius</strong></p>
 
-<p><strong>[ Optional | Default: <code>50</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_area_max'</code> | Default: <code>50</code> ]</strong></p>
 
 <p>Maximum size of plot points</p></li>
 <li><p><strong>Opacity</strong></p>
 
-<p><strong>[ Optional | Default: <code>.8</code> ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_area_opacity'</code> | Default: <code>.8</code> ]</strong></p>
 
 <p>Opacity of plot points. Recommended to be below .9 as scatter plots will overlap</p></li>
 </ul>
 
-<h3 id="colorsettings">Color Settings</h3>
+<h4 id="colorsettings">Color Settings</h4>
 
 <ul>
 <li><p><strong>Color Palette</strong></p>
 
-<p><strong>[ Optional ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_color_palette'</code>, <code>'dv_color_palette_'.$index.'_color'</code> for each color row ]</strong></p>
 
-<p>Repeater field of colors to use for the data. The color will be used based on the datum instance's index</p>
+<p>Repeater field of colors to use for the data. The color will be used based on the datum instance's index.</p>
 
 <p>If <em>Color Key</em> is not set and there are colors inputted, the colors will be applied based on the <em>Name Key</em> value of the data</p>
 
@@ -487,12 +487,12 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>Adding one color will apply the color to all graph elements</p></li>
 <li><p><strong>Legend</strong></p>
 
-<p><strong>[ Optional | Default: <code>true</code> (when available) | Available when <em>Color Key</em> is set; <em>Type</em> is 'Pie'; <em>Category</em> in <em>Row</em> field has any value ]</strong></p>
+<p><strong>[ Optional | Meta Key : <code>'dv_color_legend'</code> | Default: <code>true</code> (when available) | Available when <em>Color Key</em> is set; <em>Type</em> is 'Pie'; <em>Category</em> in <em>Row</em> field has any value ]</strong></p>
 
 <p>Enable legend presentation of data</p></li>
 </ul>
 
-<h1 id="functions">Functions</h1>
+<h2 id="functions">Functions</h2>
 
 <ul>
 <li><p><strong><code>get_data_visualizer($args = array(),$echo);</code></strong></p>
@@ -516,12 +516,12 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>Function to output an existing data visualizer. Unlike <code>get_data_visualizer()</code> this function does not accept an echo parameter because duh.</p></li>
 </ul>
 
-<h1 id="settings">Settings</h1>
+<h2 id="settings">Settings</h2>
 
-<h3 id="enableoptimization">Enable Optimization</h3>
+<h4 id="enableoptimization">Enable Optimization</h4>
 
 <p>Embeds scripts and stylesheets directly on the markup of the page to optimize performance. May cause script conflicts</p>
 
-<h1 id="troubleshooting">Troubleshooting</h1>
+<h2 id="troubleshooting">Troubleshooting</h2>
 
 <p>Good luck.</p>

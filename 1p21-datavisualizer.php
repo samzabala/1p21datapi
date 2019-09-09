@@ -77,10 +77,7 @@ if( !post_type_exists('data-visual') ){
 }else{
 	add_action( 'admin_notices', function(){
 
-		$class = 'notice notice-error';
-		$message = _e( '1p21 Data Vizualizer cannot work. a data-visual post type already exists!' );
-	
-		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) ); 
+		_1p21_dv_create_admin_error('1p21 Data Vizualizer cannot work. a data-visual post type already exists!');
 	} );
 }
 

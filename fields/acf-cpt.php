@@ -8,7 +8,7 @@ $_1p21_dv_fields_cpt = array(
 		array(
 			'key' => 'field_5d67f813edf06',
 			'label' => 'Description',
-			'name' => 'description',
+			'name' => 'dv_description',
 			'type' => 'textarea',
 			'instructions' => '',
 			'required' => 0,
@@ -1232,6 +1232,28 @@ if layout is set to line, this will be applied to plot points and will override 
 								'value' => '1',
 							),
 						),
+						array(
+							array(
+								'field' => 'field_5d49b51b576ae',
+								'operator' => '==',
+								'value' => '1',
+							),
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'scatter',
+							),
+							array(
+								'field' => 'field_5d55d2e48b9a1',
+								'operator' => '==',
+								'value' => '1',
+							),
+							array(
+								'field' => 'field_5d42110769b59',
+								'operator' => '!=',
+								'value' => '1',
+							),
+						),
 					),
 					'wrapper' => array(
 						'width' => '',
@@ -1635,6 +1657,28 @@ if layout is set to line, this will be applied to plot points and will override 
 							array(
 								'field' => 'field_5d55d2e48b9a1',
 								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d49b81e8a9b1',
+								'operator' => '==',
+								'value' => '1',
+							),
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'scatter',
+							),
+							array(
+								'field' => 'field_5d55d2e48b9a1',
+								'operator' => '==',
+								'value' => '1',
+							),
+							array(
+								'field' => 'field_5d4494e1f5295',
+								'operator' => '!=',
 								'value' => '1',
 							),
 						),
@@ -2342,7 +2386,7 @@ if layout is set to line, this will be applied to plot points and will override 
 			array(
 				'param' => 'post_type',
 				'operator' => '==',
-				'value' => 'data-visual',
+				'value' => 'data_visual',
 			),
 		),
 	),

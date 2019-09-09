@@ -49,6 +49,22 @@ function _1p21_dv_get_file_as_string($filepath) {
 }
 
 
+function _1p21_dv_render_admin_page_template($file_from_template_directory = ''){
+	if($file_from_template_directory !== ''){
+		?>
+		<div class="wrap">
+			<!-- add empty h2 for errors to output at because wordpress admin is weird -->
+			<h2 style="display:none!important;"></h2>
+			<div class="_1p21_dv-content">
+				<?php
+				include_once _1P21_DV_PLUGIN_PATH . 'templates/'.$file_from_template_directory;
+				?>
+			</div>
+		</div>
+		<?php
+	}
+}
+
 
 /*
 deep sub field get but only get the post meta that this fuck actually needs

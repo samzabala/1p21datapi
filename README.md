@@ -1,5 +1,5 @@
 <!-- DO NOT EDIT OR REMOVE documentation.php as this is compiled from README.md. README.md must be edited instead -->
-# Plugin Name: 1Point21 Data Vizualizer
+## Plugin Name: 1Point21 Data Vizualizer
 
 Plugin URI: [https://github.com/samzabala/1p21datapi](https://github.com/samzabala/1p21datapi)  
 Description: Data visualizer using d3 and svgs  
@@ -7,7 +7,7 @@ Version: 1.2.0
 Author: 1Point21 Interactive  
 Author URI: [https://www.1point21interactive.com/](https://www.1point21interactive.com/)
 
-# Table of contents
+## Table of contents
 
 1. [Shortcode](#shortcode)
 2. [Shortcode Parameters](#shortcodeparameters)
@@ -15,23 +15,23 @@ Author URI: [https://www.1point21interactive.com/](https://www.1point21interacti
 4. [Functions](#functions)
 5. [Troubleshooting](#troubleshooting)
 --------------------------
-# Shortcode
+## Shortcode
 
 You can add a data visualizer using the shortcode `dv` or `data_visualizer`
 
 Examples:
 
-##	Using `dv`
+###	Using `dv`
 	
 `[dv id=666 width=800 height=600]`
 	
-##	Using `data_visualizer`
+###	Using `data_visualizer`
 
 `[data_visalizer id=666 width=800 height=600]`
 
 _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will output an error in the back end and advise to use_ `data_visualizer`
 
-# Shortcode Parameters
+## Shortcode Parameters
 
 *	**`id`**
 
@@ -98,27 +98,27 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 	
 	If given a number, it will be interpreted as pixels.
 
-# Backend Settings
+## Backend Settings
 
-## Description
+### Description
 
-**[ Optional | Default: `''` ]**
+**[ Optional | Default: `''` | Meta Key : `'dv_description'` ]**
 
 Add a subtitle or description for the data visual
 
-## Data Settings
+### Data Settings
 
-###	*Type*
+####	*Type*
 
-**[ REQUIRED | Default: *Bar* | options: *Bar*, *Line*, *Pie*, *Scatter Plot* ]**
+**[ REQUIRED | Default: *Bar* | Meta Key : `'dv_type'` | options: *Bar*, *Line*, *Pie*, *Scatter Plot* ]**
 
 Type of graph the data will be presented as.
 
-###	*Source*
+####	*Source*
 
 *	**Source Type**
 
-	**[ REQUIRED | options: 'File (csv,tsv)', 'URL', 'Text (JSON code)', 'Rows (UI Field)' ]**
+	**[ REQUIRED | Meta Key : `'dv_src'` | options: 'File (csv,tsv)', 'URL', 'Text (JSON code)', 'Rows (UI Field)' ]**
 
 	Type of source on how the data will be imported. (For now, accepted files are json,csv,tsv,dsv)
 
@@ -126,7 +126,7 @@ Type of graph the data will be presented as.
 
 	*	**File**
 
-		**[ REQUIRED | Valid file types: `csv`, `tsv` | Available when: *Source Type* is 'File (csv,tsv)' ]**
+		**[ REQUIRED | Meta Key : `'dv_src_file'` | Valid file types: `csv`, `tsv` | Available when: *Source Type* is 'File (csv,tsv)' ]**
 
 		Input directly from the media library. 
 
@@ -134,49 +134,49 @@ Type of graph the data will be presented as.
 	
 	*	**URL (url)**
 
-		**[ REQUIRED | Valid file types: `csv`, `tsv`, `json` | Available when: *Source Type* is 'URL' ]**
+		**[ REQUIRED | Meta Key : `'dv_src_url'` | Valid file types: `csv`, `tsv`, `json` | Available when: *Source Type* is 'URL' ]**
 
 		Input data through an external file's url
 	
 	*	**Text (JSON code)**
 
-		**[ REQUIRED | Valid file types: `json` | Available when: *Source Type* is 'Text (JSON code)' ]**
+		**[ REQUIRED | Meta Key : `'dv_src_text'` | Valid file types: `json` | Available when: *Source Type* is 'Text (JSON code)' ]**
 
 		Input through the data in json format through a textbox. recommended for a more customized and controlled data
 	
 	*	**Rows**
 
-		**[ REQUIRED | Valid file types: Available when: *Source Type* is 'Rows (UI Field)' ]**
+		**[ REQUIRED | Meta Key : `'dv_src_row'` | Valid file types: Available when: *Source Type* is 'Rows (UI Field)' ]**
 
 		Input via acf repeater fields. For each row there are available input fields
 		
 		*	**Name**
 
-			**[ REQUIRED ]**
+			**[ REQUIRED | Meta Key : `'dv_src_row_'.$index.'_0'` ]**
 
 			Name for the data
 		
 		*	**Value**
 
-			**[ REQUIRED ]**
+			**[ REQUIRED | Meta Key : `'dv_src_row_'.$index.'_1'` ]**
 
 			Value for the data
 		
 		*	**Category**
 
-			**[ Optional | Available when: *Type* is set to 'Bar', 'Line', 'Scatter Plot' ]**
+			**[ Optional | Meta Key : `'dv_src_row_'.$index.'_color'` | Available when: *Type* is set to 'Bar', 'Line', 'Scatter Plot' ]**
 
 			Category value to represent the color the data
 		
 		*	**Plot Point Area**
 
-			**[ Optional | Available when: *Type* is set to 'Scatter Plot' ]**
+			**[ Optional | Meta Key : `'dv_src_row_'.$index.'_area'` | Available when: *Type* is set to 'Scatter Plot' ]**
 
 			Numeric data value that will influence the size of the scatter plot point
 		
 *	**Source Key**
 
-	**[ Optional | Default: `null` | Valid file types: Available when: *Source Type* is NOT 'Rows (UI Field)' ]**
+	**[ Optional | Meta Key : `'dv_src_key'` | Default: `null` | Valid file types: Available when: *Source Type* is NOT 'Rows (UI Field)' ]**
 
 	object key to the data to use.
 
@@ -185,44 +185,44 @@ Type of graph the data will be presented as.
 	if there is a value, the data returned from that key will be used
 	
 
-### *Data Keys*
+#### *Data Keys*
 
 **[ Available when: *Source Type* is NOT 'Rows (UI Field)' ]**
 
 *	**Name Key**
 
-	**[ REQUIRED | Default: `null` ]**
+	**[ REQUIRED  | Meta Key : `'dv_key_0'` | Default: `null` ]**
 
 	Key relative to a datum instance's level to represent the data' name
 
 *	**Value Key**
 
-	**[ REQUIRED | Default: `null` ]**
+	**[ REQUIRED  | Meta Key : `'dv_key_1'` | Default: `null` ]**
 
 	Key relative to a datum instance's level to represent the data's value
 
 *	**Plot Points Area Key**
 
-	**[ Optional | Default: `null`; *Type* is 'Scatter Plot' ]**
+	**[ Optional | Meta Key : `'dv_key_area'` | Default: `null` | Available when: *Type* is 'Scatter Plot' ]**
 
 	Key relative to a datum instance's level to represent the data's value
 
 *	**Color Key**
 
-	**[ Optional | Default: `null` | *Type* is NOT 'Pie' ]**
+	**[ Optional | Meta Key : `'dv_key_color'` | Default: `null` | *Type* is NOT 'Pie' ]**
 
 	Key relative to a datum instance's level to represent the data's value
 
-### *Set Name Key As Numeric?*
+#### *Set Name Key As Numeric?*
 
-**[ Optional | Default: `false` | *Type* is 'Line', 'Scatter' ]**
+**[ Optional | Meta Key : `'dv_name_is_num'` | Default: `false` | *Type* is 'Line', 'Scatter' ]**
 
 Adds numeric capabilities to name data.
 
 __**Note:** If the data for the name data key is not numeric, this will cause errors and the graph will not render properly_
 
 
-###	*Format Settings*
+####	*Format Settings*
 
 **[ Optional | Available for: `name`, `value`, `color` *keys* ]**
 
@@ -230,7 +230,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 *	**Prepend**
 
-	**[ Optional | Default: `''` ]**
+	**[ Optional | Meta Key : `'dv_format_'.$data_key.'_prepend'` | Default: `''` ]**
 
 	Character/s to append to the data.
 
@@ -238,7 +238,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 *	**Append**
 
-	**[ Optional | Default: `''` ]**
+	**[ Optional | Meta Key : `'dv_format_'.$data_key.'_append'` | Default: `''` ]**
 
 	Character/s to append to the data.
 
@@ -246,7 +246,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 *	**Divider**
 
-	**[ Optional | Default: `1` | Available for/when: `value` key; *Set Name Key As Numeric?* is set to `true` ]**
+	**[ Optional | Meta Key : `'dv_format_'.$data_key.'_divider'` | Default: `1` | Available for/when: `value` key; *Set Name Key As Numeric?* is set to `true` ]**
 
 	Amount to divide numeric data by. good for shortening values.
 	
@@ -262,7 +262,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 	*	**Format Parameter**
 
-		**[ Optional | Default: `null` ]**
+		**[ Optional | Meta Key : `'dv_format_'.$data_key.'_parameter'` | Default: `null` ]**
 
 		Accepts a string that follows the format for [`d3.format()`](https://github.com/d3/d3-format#locale_format)
 
@@ -277,39 +277,39 @@ These are optional settings to allow reformatting data on the visualizer
 	*	**More options will be added soon!**
 
 
-## Graph Settings
+### Graph Settings
 
-### X and Y Settings
+#### X and Y Settings
 
 **[ Optional | Available when: *Type* is 'Bar','Line','Scatter Plot' ]**
 
 *	**Axis Data**
 
-	**[ REQUIRED | Default: 'Name Data' (For X); 'Value Data' (For Y); | options: 'Name Data', 'Value Data' ]**
+	**[ REQUIRED | Meta Key : `'dv_'.$axis.'_data'` | Default: 'Name Data' (For X); 'Value Data' (For Y); | options: 'Name Data', 'Value Data' ]**
 
 	Links the data that will be represented along the axis
 
 *	**Alignment**
 
-	**[ REQUIRED | Default: 'Bottom' (For X); 'Left' (For Y); | options: 'Top', 'Bottom', 'Left', 'Right' ]**
+	**[ REQUIRED | Meta Key : `'dv_'.$axis.'_align'` | Default: 'Bottom' (For X); 'Left' (For Y); | options: 'Top', 'Bottom', 'Left', 'Right' ]**
 
 	Alignment of the axis
 
 *	**Use Ticks?**
 
-	**[ Optional | Default: `false` ]**
+	**[ Optional | Meta Key : `'dv_'.$axis.'_ticks'` | Default: `false` ]**
 
 	Insert ruler along the axis of alignment
 
 *	**Label**
 
-	**[ Optional | Default `null` ]**
+	**[ Optional | Meta Key : `'dv_'.$axis.'_label'` | Default `null` ]**
 
 	Text label along the axis
 
 *	**Minimum**
 
-	**[ Optional | Default: `null` | Available when: *Axis Data* is 'Value Data'; *Type* is 'Scatter Plot', *Axis Data* is 'Name Data', *Set Name Key As Numeric?* is `true` ]**
+	**[ Optional | Meta Key : `'dv_'.$axis.'_min'` | Default: `null` | Available when: *Axis Data* is 'Value Data'; *Type* is 'Scatter Plot', *Axis Data* is 'Name Data', *Set Name Key As Numeric?* is `true` ]**
 
 	Minimum value of the axis.
 
@@ -318,7 +318,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 *	**Maximum**
 
-	**[ Optional | Default: `null` | Available when: *Axis Data* is 'Value Data'; *Type* is 'Scatter Plot', *Axis Data* is 'Name Data', *Set Name Key As Numeric?* is `true`; ]**
+	**[ Optional | Meta Key : `'dv_'.$axis.'_max'` | Default: `null` | Available when: *Axis Data* is 'Value Data'; *Type* is 'Scatter Plot', *Axis Data* is 'Name Data', *Set Name Key As Numeric?* is `true`; ]**
 
 	Maximum value of the axis.
 
@@ -332,7 +332,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 	*	**Ticks Amount**
 
-		**[ Optional | Default: `null` | Available when: *Use Ticks?* is `true` and *Axis Data* is 'Value Data' or *Type* is NOT 'Bar', *Axis Data* is 'Name Data', *Set Name Key As Numeric?* is `true` ]**
+		**[ Optional | Meta Key : `'dv_'.$axis.'_ticks_amount'` | Default: `null` | Available when: *Use Ticks?* is `true` and *Axis Data* is 'Value Data' OR *Type* is NOT 'Bar', *Axis Data* is 'Name Data', *Set Name Key As Numeric?* is `true` OR *Type* is 'Scatter',*Set Name Key As Numeric?* is `true`, *Axis Data* is NOT 'Value Data' ]**
 
 		Number of ticks to display
 
@@ -340,46 +340,46 @@ These are optional settings to allow reformatting data on the visualizer
 	
 	*	**Add Grid**
 
-		**[ Optional | Default: `false` | Available when: *Axis Data* is 'Value Data' or *Type* is NOT 'Bar' ]**
+		**[ Optional | Meta Key : `'dv_'.$axis.'_grid'` | Default: `false` | Available when: *Axis Data* is 'Value Data' or *Type* is NOT 'Bar' ]**
 
 		Enable grid along the axis
 
 	*	**Grid Increment**
 
-		**[ Optional | Default: `1` | Available when: *Add Grid?* is `true` and *Ticks Amount* is NOT `null` ]**
+		**[ Optional | Meta Key : `'dv_'.$axis.'_increment'` | Default: `1` | Available when: *Add Grid?* is `true` and *Ticks Amount* is NOT `null` ]**
 
 		Amount of grid rules each tick mark will be equal to.
 
-		_**Note:** This field is available only if **Tick Amount** is set_
+		_**Note:** This field is available only if **Tick Amount** is set as the renderer needs a set amount of ticks to calculate the grid rules from_
 
 
 
 
-### Line Settings
+#### Line Settings
 
 **[ Optional | Available when: *Type* is 'Line' ]**
 
 *	**Line Style**
 
-	**[ REQUIRED | Default : 'None' | Available Options: 'None','Curve','Step' ]**
+	**[ REQUIRED | Meta Key : `'dv_line_style'` | Default : 'None' | Available Options: 'None','Curve','Step' ]**
 
 	Style of the line graph
 
 *	**Stroke Weight**
 
-	**[ Optional | Default : `1` ]**
+	**[ Optional | Meta Key : `'dv_line_weight'` | Default : `1` ]**
 
 	Thickness of the line graph stroke
 
 *	**Stroke Color**
 
-	**[ Optional | Default : `null` ]**
+	**[ Optional | Meta Key : `'dv_line_color'` | Default : `null` ]**
 
 	Color of the line graph
 
 *	**Add Plot Points?**
 
-	**[ Optional | Default : `false` ]**
+	**[ Optional | Meta Key : `'dv_line_points'` | Default : `false` ]**
 
 	Enable plot points on the line graph
 
@@ -387,7 +387,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 *	**Add Area Fill?**
 
-	**[ Optional | Default : `false` ]**
+	**[ Optional | Meta Key : `'dv_line_fill'` | Default : `false` ]**
 
 	Enable fill on the line graph
 
@@ -399,7 +399,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 	*	**Points Color**
 		
-		**[ Optional ]**
+		**[ Optional | Meta Key : `'dv_line_points_color'` ]**
 
 		Color of plot points
 
@@ -409,7 +409,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 	*	**Size**
 		
-		**[ Optional ]**
+		**[ Optional | Meta Key : `'dv_line_points_size'` ]**
 
 		Size of plot points radius
 
@@ -420,7 +420,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 	*	**Color**
 
-		**[ Optional ]**
+		**[ Optional | Meta Key : `'dv_line_fill_color'` ]**
 
 		Color of the fill
 
@@ -428,13 +428,13 @@ These are optional settings to allow reformatting data on the visualizer
 
 	*	**Opacity**
 
-		**[ Optional | Default: `.5` ]**
+		**[ Optional | Meta Key : `'dv_line_fill_opacity'` | Default: `.5` ]**
 
 		Opacity of the fill
 
 	*	**Invert Axis?**
 
-		**[ Optional | Default: `false` ]**
+		**[ Optional | Meta Key : `'dv_line_fill_invert'` | Default: `false` ]**
 
 		Whether or not to invert the fill opposite to the alignment of the axis
 
@@ -442,7 +442,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 	*	**Dash Array**
 
-		**[ Optional | Default: `null` ]**
+		**[ Optional | Meta Key : `'dv_line_dash'` | Default: `null` ]**
 
 		Set dashes on the line graph. The pattern is `dash, gap, dash, gap...`<br>
 
@@ -450,55 +450,55 @@ These are optional settings to allow reformatting data on the visualizer
 	
 	*	**More options will be added soon!**
 
-### Pie Settings
+#### Pie Settings
 
 **[ Optional | Available when: *Type* is 'Pie' ]**
 
 *	**Label Style**
 
-	**[ Optional | Default: `false` ]**
+	**[ Optional | Meta Key : `'dv_pi_label_style'` | Default: `false` ]**
 
 	Whether or not to invert the fill opposite to the alignment of the axis
 
 
 *	**Inner Radius**
 
-	**[ Optional | Default: `0` ]**
+	**[ Optional | Meta Key : `'dv_pi_in_radius'` | Default: `0` ]**
 
 	Radius of pie hole
 
 
-### Scatter Plot Area Settings
+#### Scatter Plot Area Settings
 
 **[ Optional | Available when: *Type* is 'Scatter Plot' ]**
 
 *	**Minimum Radius**
 
-	**[ Optional | Default: `10` ]**
+	**[ Optional | Meta Key : `'dv_area_min'` | Default: `10` ]**
 
 	Minimum size of plot points
 
 *	**Maximum Radius**
 
-	**[ Optional | Default: `50` ]**
+	**[ Optional | Meta Key : `'dv_area_max'` | Default: `50` ]**
 
 	Maximum size of plot points
 
 
 *	**Opacity**
 
-	**[ Optional | Default: `.8` ]**
+	**[ Optional | Meta Key : `'dv_area_opacity'` | Default: `.8` ]**
 
 	Opacity of plot points. Recommended to be below .9 as scatter plots will overlap
 
 
-### Color Settings
+#### Color Settings
 
 *	**Color Palette**
 
-	**[ Optional ]**
+	**[ Optional | Meta Key : `'dv_color_palette'`, `'dv_color_palette_'.$index.'_color'` for each color row ]**
 
-	Repeater field of colors to use for the data. The color will be used based on the datum instance's index
+	Repeater field of colors to use for the data. The color will be used based on the datum instance's index. 
 
 	If *Color Key* is not set and there are colors inputted, the colors will be applied based on the *Name Key* value of the data
 
@@ -508,11 +508,11 @@ These are optional settings to allow reformatting data on the visualizer
 
 *	**Legend**
 
-	**[ Optional | Default: `true` (when available) | Available when *Color Key* is set; *Type* is 'Pie'; *Category* in *Row* field has any value ]**
+	**[ Optional | Meta Key : `'dv_color_legend'` | Default: `true` (when available) | Available when *Color Key* is set; *Type* is 'Pie'; *Category* in *Row* field has any value ]**
 
 	Enable legend presentation of data
 
-# Functions
+## Functions
 
 *	**`get_data_visualizer($args = array(),$echo);`**
 
@@ -536,12 +536,12 @@ These are optional settings to allow reformatting data on the visualizer
 	Function to output an existing data visualizer. Unlike `get_data_visualizer()` this function does not accept an echo parameter because duh.
 		
 
-# Settings
+## Settings
 
-### Enable Optimization
+#### Enable Optimization
 
 Embeds scripts and stylesheets directly on the markup of the page to optimize performance. May cause script conflicts
 
-# Troubleshooting
+## Troubleshooting
 
 Good luck.
