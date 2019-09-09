@@ -80,6 +80,12 @@
   ._1p21_dv-content pre, ._1p21_dv-content code {
     font-size: inherit;
     white-space: pre-wrap; }
+  ._1p21_dv-content pre {
+    background: rgba(0, 0, 0, 0.05);
+    padding: 1em; }
+    ._1p21_dv-content pre code {
+      background: none;
+      padding: 0; }
   ._1p21_dv-content p {
     font-size: inherit; }
   ._1p21_dv-content h3 {

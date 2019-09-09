@@ -133,6 +133,15 @@ $gutter: 40px;
 			// word-wrap: break-word;
 			white-space: pre-wrap;
 		}
+		// hahaha what the fuck
+		pre {
+			background: rgba(0,0,0,.05);
+			padding: 1em;
+			code {
+				background: none;
+				padding: 0;
+			}
+		}
 
 		p {
 			font-size: inherit;
