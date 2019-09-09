@@ -180,10 +180,10 @@
 		"oF": 2,
 		"oFM": 0,
 		"oS": 1,
-		"pHT": 1,
+		"pHT": 0,
 		"pME": 0,
 		"rFN": 0,
-		"uCM": 0
+		"uCM": 1
 		},
 	"/src/script-admin.js": {
 		"bF": 0,

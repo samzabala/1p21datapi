@@ -429,7 +429,7 @@ Key or column name of the data that will represent data based on the name key',
 					'name' => 'area',
 					'type' => 'text',
 					'instructions' => 'data that will influence the size of the scatter plot data. leaving blank will make all scatter plots the same size',
-					'required' => 1,
+					'required' => 0,
 					'conditional_logic' => array(
 						array(
 							array(

@@ -598,7 +598,7 @@
                         "value": null,
                         "menu_order": 2,
                         "instructions": "data that will influence the size of the scatter plot data. leaving blank will make all scatter plots the same size",
-                        "required": 1,
+                        "required": 0,
                         "id": "",
                         "class": "",
                         "conditional_logic": [

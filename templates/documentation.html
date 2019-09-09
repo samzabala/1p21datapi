@@ -1,6 +1,6 @@
 <!-- DO NOT EDIT OR REMOVE documentation.php as this is compiled from README.md. README.md must be edited instead -->
 
-<h1 id="1point21datavizualizer">1Point21 Data Vizualizer</h1>
+<h1>1Point21 Data Vizualizer</h1>
 
 <p>Plugin URI: <a href="https://github.com/samzabala/1p21datapi">https://github.com/samzabala/1p21datapi</a><br />
 Description: Data visualizer using d3 and svgs<br />
@@ -8,7 +8,7 @@ Version: 1.2.0<br />
 Author: 1Point21 Interactive<br />
 Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21interactive.com/</a></p>
 
-<h2 id="tableofcontents">Table of contents</h2>
+<h2>Table of contents</h2>
 
 <ol>
 <li><a href="#shortcode">Shortcode</a></li>
@@ -20,23 +20,23 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <hr />
 
-<h2 id="shortcode">Shortcode</h2>
+<h2>Shortcode</h2>
 
 <p>You can add a data visualizer using the shortcode <code>dv</code> or <code>data_visualizer</code></p>
 
 <p>Examples:</p>
 
-<h3 id="usingdv">Using <code>dv</code></h3>
+<h3>Using <code>dv</code></h3>
 
-<p><code>[dv id=666 width=800 height=600]</code></p>
+<p><code>[dv id=666 width=800 height=600]`</code></p>
 
-<h3 id="usingdata_visualizer">Using <code>data_visualizer</code></h3>
+<h3>Using <code>data_visualizer</code></h3>
 
 <p><code>[data_visalizer id=666 width=800 height=600]</code></p>
 
 <p><em><strong>Note:</strong> in case</em> <code>dv</code> <em>conflicts with another shortcode, the plugin will output an error in the back end and advise to use</em> <code>data_visualizer</code></p>
 
-<h2 id="shortcodeparameters">Shortcode Parameters</h2>
+<h2>Shortcode Parameters</h2>
 
 <ul>
 <li><p><strong><code>id</code></strong></p>
@@ -96,23 +96,23 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>If given a number, it will be interpreted as pixels.</p></li>
 </ul>
 
-<h2 id="backendsettings">Backend Settings</h2>
+<h2>Backend Settings</h2>
 
-<h3 id="description">Description</h3>
+<h3>Description</h3>
 
 <p><strong>[ Optional | Default: <code>''</code> | Meta Key : <code>'dv_description'</code> ]</strong></p>
 
 <p>Add a subtitle or description for the data visual</p>
 
-<h3 id="datasettings">Data Settings</h3>
+<h3>Data Settings</h3>
 
-<h4 id="type"><em>Type</em></h4>
+<h4><em>Type</em></h4>
 
 <p><strong>[ REQUIRED | Default: <em>Bar</em> | Meta Key : <code>'dv_type'</code> | options: <em>Bar</em>, <em>Line</em>, <em>Pie</em>, <em>Scatter Plot</em> ]</strong></p>
 
 <p>Type of graph the data will be presented as.</p>
 
-<h4 id="source"><em>Source</em></h4>
+<h4><em>Source</em></h4>
 
 <ul>
 <li><p><strong>Source Type</strong></p>
@@ -181,7 +181,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>if there is a value, the data returned from that key will be used</p></li>
 </ul>
 
-<h4 id="datakeys"><em>Data Keys</em></h4>
+<h4><em>Data Keys</em></h4>
 
 <p><strong>[ Available when: <em>Source Type</em> is NOT 'Rows (UI Field)' ]</strong></p>
 
@@ -208,7 +208,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>Key relative to a datum instance's level to represent the data's value</p></li>
 </ul>
 
-<h4 id="setnamekeyasnumeric"><em>Set Name Key As Numeric?</em></h4>
+<h4><em>Set Name Key As Numeric?</em></h4>
 
 <p><strong>[ Optional | Meta Key : <code>'dv_name_is_num'</code> | Default: <code>false</code> | <em>Type</em> is 'Line', 'Scatter' ]</strong></p>
 
@@ -216,7 +216,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p>_<em><strong>Note:</strong> If the data for the name data key is not numeric, this will cause errors and the graph will not render properly</em></p>
 
-<h4 id="formatsettings"><em>Format Settings</em></h4>
+<h4><em>Format Settings</em></h4>
 
 <p><strong>[ Optional | Available for: <code>name</code>, <code>value</code>, <code>color</code> <em>keys</em> ]</strong></p>
 
@@ -263,17 +263,16 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p>Or a javascript function that passes the <code>data</code> and its <code>index</code></p>
 
-<pre><code>function(data,index) {
-	//format and declare returned formatted data here
-}
-</code></pre></li>
+<p><code>function(data,index) {
+//format and declare returned formatted data here
+}</code></p></li>
 <li><p><strong>More options will be added soon!</strong></p></li>
 </ul></li>
 </ul>
 
-<h3 id="graphsettings">Graph Settings</h3>
+<h3>Graph Settings</h3>
 
-<h4 id="xandysettings">X and Y Settings</h4>
+<h4>X and Y Settings</h4>
 
 <p><strong>[ Optional | Available when: <em>Type</em> is 'Bar','Line','Scatter Plot' ]</strong></p>
 
@@ -341,7 +340,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 </ul></li>
 </ul>
 
-<h4 id="linesettings">Line Settings</h4>
+<h4>Line Settings</h4>
 
 <p><strong>[ Optional | Available when: <em>Type</em> is 'Line' ]</strong></p>
 
@@ -432,7 +431,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 </ul></li>
 </ul>
 
-<h4 id="piesettings">Pie Settings</h4>
+<h4>Pie Settings</h4>
 
 <p><strong>[ Optional | Available when: <em>Type</em> is 'Pie' ]</strong></p>
 
@@ -449,7 +448,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>Radius of pie hole</p></li>
 </ul>
 
-<h4 id="scatterplotareasettings">Scatter Plot Area Settings</h4>
+<h4>Scatter Plot Area Settings</h4>
 
 <p><strong>[ Optional | Available when: <em>Type</em> is 'Scatter Plot' ]</strong></p>
 
@@ -471,7 +470,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>Opacity of plot points. Recommended to be below .9 as scatter plots will overlap</p></li>
 </ul>
 
-<h4 id="colorsettings">Color Settings</h4>
+<h4>Color Settings</h4>
 
 <ul>
 <li><p><strong>Color Palette</strong></p>
@@ -492,7 +491,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>Enable legend presentation of data</p></li>
 </ul>
 
-<h2 id="functions">Functions</h2>
+<h2>Functions</h2>
 
 <ul>
 <li><p><strong><code>get_data_visualizer($args = array(),$echo);</code></strong></p>
@@ -516,12 +515,12 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>Function to output an existing data visualizer. Unlike <code>get_data_visualizer()</code> this function does not accept an echo parameter because duh.</p></li>
 </ul>
 
-<h2 id="settings">Settings</h2>
+<h2>Settings</h2>
 
-<h4 id="enableoptimization">Enable Optimization</h4>
+<h4>Enable Optimization</h4>
 
 <p>Embeds scripts and stylesheets directly on the markup of the page to optimize performance. May cause script conflicts</p>
 
-<h2 id="troubleshooting">Troubleshooting</h2>
+<h2>Troubleshooting</h2>
 
 <p>Good luck.</p>

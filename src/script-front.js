@@ -429,7 +429,7 @@
 				case 0:
 				case 1:
 
-					if(args.nameIsNum || keyKey == 1 || keyKey == 'area'){
+					if(args.nameIsNum == true || keyKey == 1 || keyKey == 'area'){
 
 						var min,max;
 
@@ -544,7 +544,7 @@
 
 				default:
 
-					if(args.nameIsNum ||  keyKey  == 1){
+					if(args.nameIsNum == true ||  keyKey  == 1){
 						if(initial) {
 							
 							dimension = 0;
@@ -875,7 +875,7 @@
 
 			if(args.type !== 'pie') {
 
-				if( args.nameIsNum || keyKey == 1){
+				if( args.nameIsNum == true || keyKey == 1){
 					
 					if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
 						
@@ -1160,9 +1160,8 @@
 				case 0:
 				case 1:
 
-					if(args.nameIsNum || keyKey == 1 || keyKey == 'area' ){
-
-						if(args.nameIsNum && keyKey == 0 && args.type == 'scatter'){
+					if(args.nameIsNum == true || keyKey == 1 || keyKey == 'area' ){
+						if(args.nameIsNum == true && keyKey == 0 && args.type == 'scatter'){
 
 							scale = d3.scaleSymlog()
 								.constant(10)
@@ -1175,6 +1174,7 @@
 						
 					}else{
 						if(args.type == 'line' || args.type == 'scatter'){
+							
 							scale = d3.scalePoint() //scales shit to dimensios
 								.range(_['range_'+keyKey]) // scaled data from available space
 						}else{
@@ -1284,7 +1284,7 @@
 
 					if(args[axisString +'Ticks']){
 
-						if(args.type == 'scatter' && args[axisString+'Data'] == 0 ){
+						if(args.type == 'scatter' && args[axisString+'Data'] == 0 && args.nameIsNum == true ){
 							var tickValues = function(){
 								var values = [],
 									currVal = _.dom_0[0];
@@ -1417,7 +1417,7 @@
 				//sort data 0 so that it doesnt go forward then backward then forward on the graph which is weird
 
 				
-				if(args.nameIsNum){
+				if(args.nameIsNum == true){
 					
 					var sortable = [];
 
@@ -1656,7 +1656,7 @@
 											var divider = args[ 'format' + keyKey.toString().toUpperCase() + 'Divider'],
 												prepend = args[ 'format' + keyKey.toString().toUpperCase() + 'Prepend'],
 												append = args[ 'format' + keyKey.toString().toUpperCase() + 'Append'],
-												dataPossiblyDivided = (keyKey == 1 || args.nameIsNum ) ? (value / divider): value,
+												dataPossiblyDivided = (keyKey == 1 || args.nameIsNum == true ) ? (value / divider): value,
 												formatted = prepend + dataPossiblyDivided + append;
 
 											return formatted;
@@ -1777,12 +1777,12 @@
 		// tick inits
 		var renderGraph = function() {
 			// ok do the thing now
-			// console.log(
-			// 	 selector,'-------------------------------------------------------------------',"\n",
-			// 	 'calculated',_,"\n",
-			// 	 'data',_.data,"\n",
-			// 	 'args',args,"\n"
-			// );
+			console.log(
+				 selector,'-------------------------------------------------------------------',"\n",
+				 'calculated',_,"\n",
+				 'data',_.data,"\n",
+				 'args',args,"\n"
+			);
 
 			//generate the graph boi
 

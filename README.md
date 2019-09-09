@@ -23,11 +23,14 @@ Examples:
 
 ###	Using `dv`
 	
-`[dv id=666 width=800 height=600]`
+```
+[dv id=666 width=800 height=600]`
+```
 	
 ###	Using `data_visualizer`
-
-`[data_visalizer id=666 width=800 height=600]`
+```
+[data_visalizer id=666 width=800 height=600]
+```
 
 _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will output an error in the back end and advise to use_ `data_visualizer`
 

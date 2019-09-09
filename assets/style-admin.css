@@ -79,7 +79,8 @@
       margin-top: 2em; }
   ._1p21_dv-content pre, ._1p21_dv-content code {
     font-size: inherit;
-    white-space: pre-wrap; }
+    white-space: pre-wrap;
+    color: #555; }
   ._1p21_dv-content pre {
     background: rgba(0, 0, 0, 0.05);
     padding: 1em; }

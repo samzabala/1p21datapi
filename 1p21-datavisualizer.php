@@ -84,7 +84,4 @@ if( !post_type_exists('data-visual') ){
 
 	/////test
 
-
-
-
 	// add_action('_1p21_dv_info',function(){ return true; },99);
