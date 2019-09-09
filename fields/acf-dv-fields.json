@@ -1701,6 +1701,28 @@
                                     "operator": "==",
                                     "value": "1"
                                 }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d49b51b576ae",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "scatter"
+                                },
+                                {
+                                    "field": "field_5d55d2e48b9a1",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d42110769b59",
+                                    "operator": "!=",
+                                    "value": "1"
+                                }
                             ]
                         ],
                         "parent": "field_5d448fef59823",
@@ -2215,6 +2237,28 @@
                                 {
                                     "field": "field_5d55d2e48b9a1",
                                     "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d49b81e8a9b1",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "scatter"
+                                },
+                                {
+                                    "field": "field_5d55d2e48b9a1",
+                                    "operator": "==",
+                                    "value": "1"
+                                },
+                                {
+                                    "field": "field_5d4494e1f5295",
+                                    "operator": "!=",
                                     "value": "1"
                                 }
                             ]
@@ -3213,7 +3257,7 @@
                 {
                     "param": "post_type",
                     "operator": "==",
-                    "value": "data-visual"
+                    "value": "data_visual"
                 }
             ]
         ],

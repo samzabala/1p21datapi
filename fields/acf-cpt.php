@@ -2386,7 +2386,7 @@ if layout is set to line, this will be applied to plot points and will override 
 			array(
 				'param' => 'post_type',
 				'operator' => '==',
-				'value' => 'data_visual',
+				'value' => 'data-visual',
 			),
 		),
 	),
