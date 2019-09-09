@@ -106,7 +106,6 @@ function _1p21_dv_options_validate($input){
 	// add_settings_error
 	// https://digwp.com/2016/05/wordpress-admin-notices/
 
-	var_dump($input);
 	foreach($input as $setting=> $value){
 		$input[$setting] = $value ? true : false;
 	}
