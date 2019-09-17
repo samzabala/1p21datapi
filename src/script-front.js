@@ -1562,8 +1562,6 @@
 								.style('bottom','0')
 								.style('right','0')
 								.style('margin','auto')
-								.style('width','100%')
-								.style('height','auto')
 								.attr('version','1.1')
 								.attr('x','0px')
 								.attr('y','0px')
