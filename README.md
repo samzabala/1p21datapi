@@ -24,7 +24,7 @@ Examples:
 ###	Using `dv`
 	
 ```
-[dv id=666 width=800 height=600]`
+[dv id=666 width=800 height=600]
 ```
 	
 ###	Using `data_visualizer`
