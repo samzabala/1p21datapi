@@ -11,6 +11,9 @@
   margin-bottom: 1em; }
   .data-visualizer.data-visualizer-initialized, .data-visualizer.no-data {
     padding-top: 1em; }
+  .data-visualizer-svg {
+    width: 100% !important;
+    height: auto; }
   .data-visualizer-align-center {
     text-align: center; }
   .data-visualizer-align-left {

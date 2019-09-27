@@ -290,25 +290,25 @@
 
 			var padding = args.margin * args.marginOffset * 2;
 
-			// if(args.type !== 'pie'){
+			if(args.type !== 'pie'){
 				
-			// 	// @TODO option to separate padding
-			// 	// if this axis has a label give it more space
-			// 	if( args[getAxisStringOppo(axisString)+'Ticks'] !== false ){
-			// 		padding += args.margin * (args.marginOffset * .25);
+				// @TODO option to separate padding
+				// if this axis has a label give it more space
+				if( args[getAxisStringOppo(axisString)+'Ticks'] !== false ){
+					padding += (args.margin * (args.marginOffset * .25));
 
-			// 		if( args[getAxisStringOppo(axisString)+'Labels'] !== false ){
-			// 			padding += args.margin * (args.marginOffset * .5);
-			// 		}
+					if( args[getAxisStringOppo(axisString)+'Labels'] !== false ){
+						padding += (args.margin * (args.marginOffset * .5));
+					}
 		
-			// 		// x axis with name keys need more space because text is long
-			// 		if( axisString == 'x' && args[getAxisStringOppo(axisString)+'Data'] == 0 ){
-			// 			padding += args.margin * (args.marginOffset * 1.5);
-			// 		}
+					// x axis with name keys need more space because text is long
+					if( axisString == 'x' && args[getAxisStringOppo(axisString)+'Data'] == 0 ){
+						padding +=( args.margin * (args.marginOffset * 1.5));
+					}
 
-			// 	}
+				}
 
-			// }
+			}
 
 			return padding;
 

@@ -31,6 +31,11 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 		padding-top: 1em;
 	}
 
+	&-svg {
+		width:100%!important;
+		height:auto;
+	}
+
 	// * { outline: 1px solid red!important}
 
 	&-align {
