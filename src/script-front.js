@@ -164,7 +164,7 @@
 			//settings
 				width: 600,
 				height:600,
-				margin: 40, // @TODO option to separate this thing
+				margin: [40,40,40,40], // @TODO option to separate this thing // top,left,bottom,right
 				transition: 1500,
 				delay: 250,
 				fontSize: '16px',
@@ -286,6 +286,42 @@
 
 		// set up padding around the graph
 		// @param axisString : duh 
+		var getCanvasPadding = function(axisString){
+
+			var marginObj = {
+				top: null,
+				left: null,
+				bottom: null,
+				right: null,
+			};
+
+			axisMarginIndexes = function()
+
+			var padding = args.margin * args.marginOffset * 2;
+
+			if(args.type !== 'pie'){
+				
+				// @TODO option to separate padding
+				// if this axis has a label give it more space
+				if( args[getAxisStringOppo(axisString)+'Ticks'] !== false ){
+					padding += (args.margin * (args.marginOffset * .25));
+
+					if( args[getAxisStringOppo(axisString)+'Labels'] !== false ){
+						padding += (args.margin * (args.marginOffset * .5));
+					}
+		
+					// x axis with name keys need more space because text is long
+					if( axisString == 'x' && args[getAxisStringOppo(axisString)+'Data'] == 0 ){
+						padding +=( args.margin * (args.marginOffset * 1.5));
+					}
+
+				}
+
+			}
+
+			return marginObj;
+
+		}
 		
 
 		//get nearest power of tenth
@@ -1423,8 +1459,8 @@
 
 					// setup padding and sizes
 					_.legend_size = 30;
-					_.off_x = args.margin;
-					_.off_y = args.margin;
+					_.off_x = getCanvasPadding().top;
+					_.off_y = getCanvasPadding().top;
 					
 					
 					
