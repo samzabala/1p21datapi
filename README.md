@@ -3,7 +3,7 @@
 
 Plugin URI: [https://github.com/samzabala/1p21datapi](https://github.com/samzabala/1p21datapi)  
 Description: Data visualizer using d3 and svgs  
-Version: 1.2.0.1  
+Version: 2.0.0  
 Author: 1Point21 Interactive  
 Author URI: [https://www.1point21interactive.com/](https://www.1point21interactive.com/)
 
@@ -54,12 +54,6 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 	**[ Optional | Default: `10` | type: number ]**
 
 	gutter to set on graph canvas to compensate space for ticks and labels.
-
-*	**`margin_offset`**
-
-	**[ Optional | Default: `2` | type: number ]**
-
-	multiplier of the gutter.
 
 *	**`width`**
 

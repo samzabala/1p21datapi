@@ -60,9 +60,9 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 				//	 }
 				// $render .= "</div>";
 
-						
-			
-			
+			//end wrapper
+			$render .= "</div>";
+
 			//json if applicable
 				if($data_visual['src']['type'] == 'rows' || $data_visual['src']['type'] == 'text'){
 					$render .= "<script id='$wrapper_id-data'  type='application/json' >";
@@ -108,7 +108,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 													if($sub_setting == 'font_size'){
 														
 														if( is_numeric($sub_value) ){
-															$sub_value = $sub_value.'px';
+															$sub_value = '\''.$sub_value.'px\'';
 														}else{
 															$sub_value = json_encode($sub_value);
 														}
@@ -328,9 +328,6 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 				}());
 				</script>";
 
-
-			//end wrapper
-			$render .= "</div>";
 
 
 			// _1p21_dv_output_arr($data_visual);

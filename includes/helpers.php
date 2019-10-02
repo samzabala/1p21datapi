@@ -27,7 +27,7 @@ add_action( 'wp_footer', '_1p21_dv_output_what_the_fuck_is_going_on');
 
 function _1p21_dv_output_arr($args) {
 
-	echo '<div class="content" style="background:#ccc;font-size:10px;padding:1em;margin-bottom:1em;height:400px;overflow:scroll;"><pre>';
+	echo '<div class="content" style="poaition:relative;z-index:9999999!important;background:#ccc;font-size:10px;padding:1em;margin-bottom:1em;height:400px;overflow:scroll;"><pre>';
 	print_r($args);
 	echo '</pre></div>';
 

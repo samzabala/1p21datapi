@@ -1,5 +1,5 @@
 /*!
-* 1point21 Data Vizualiser Version 1.2.0.1
+* 1point21 Data Vizualiser Version 2.0.0
 * Render Script
 * @license yes
 * DO NOT EDIT min.js
@@ -156,14 +156,15 @@
 		//stor variables initiated after sucessful data call + parameter declaration set as something_`axis` so its easier to tell apart which shit is set by hooman and which one javascript sets up for hooman
 		var _ = {};
 
+		_.dv_container = dataContainer;
+
 		//default params for hooman
 		var defaults  = {
 			
 			//settings
 				width: 600,
 				height:600,
-				margin: 10, // @TODO option to separate this thing
-				marginOffset: 2,
+				margin: 40, // @TODO option to separate this thing
 				transition: 1500,
 				delay: 250,
 				fontSize: '16px',
@@ -275,7 +276,6 @@
 		}
 
 
-
 		var getAxisString = function(key){
 			if (key == 0 || key == 1){
 				return (args.xData == key) ? 'x' : 'y'
@@ -286,33 +286,7 @@
 
 		// set up padding around the graph
 		// @param axisString : duh 
-		var getCanvasPadding = function(axisString){
-
-			var padding = args.margin * args.marginOffset * 2;
-
-			if(args.type !== 'pie'){
-				
-				// @TODO option to separate padding
-				// if this axis has a label give it more space
-				if( args[getAxisStringOppo(axisString)+'Ticks'] !== false ){
-					padding += (args.margin * (args.marginOffset * .25));
-
-					if( args[getAxisStringOppo(axisString)+'Labels'] !== false ){
-						padding += (args.margin * (args.marginOffset * .5));
-					}
 		
-					// x axis with name keys need more space because text is long
-					if( axisString == 'x' && args[getAxisStringOppo(axisString)+'Data'] == 0 ){
-						padding +=( args.margin * (args.marginOffset * 1.5));
-					}
-
-				}
-
-			}
-
-			return padding;
-
-		}
 
 		//get nearest power of tenth
 		var getNearest = function(num){
@@ -518,7 +492,7 @@
 
 					}else{
 
-						offset = -(_.transform_X - _.text_offset)
+						offset = -(_.off_x - _.text_offset)
 
 					}
 
@@ -1449,55 +1423,15 @@
 
 					// setup padding and sizes
 					_.legend_size = 30;
-					_.off_x = getCanvasPadding('x');
-					_.off_y = getCanvasPadding('y');
-
-					var shift = {
-						more: 1.5,
-						less: .5
-					};
-
-					_.transform_X = _.off_x,
-					_.transform_Y = _.off_y;
-
-					if(args.type !== 'pie'){
-						//x COORDINATE value @TODO fucking loop na lang
-						switch ( args.yAlign+' '+ ((args.xLabel == null) ? 'empty' : 'has') ){
-							
-							case 'left has':
-								_.transform_X = (_.off_x * shift.more);
-								break;
-
-							case 'right has':
-								_.transform_X = (_.off_x * shift.less);
-								break;
-
-							default:
-								_.transform_X = (_.off_x);
-
-						}
-
-
-						//y COORDINATE value
-						switch ( args.xAlign+' '+ ((args.yLabel == null) ? 'empty' : 'has') ){
-							
-							case 'top has':
-								_.transform_Y = (_.off_y * shift.more);
-								break;
-							
-							case 'bottom has':
-								_.transform_Y = (_.off_y * shift.less);
-								break;
-
-							default:
-								_.transform_Y = (_.off_y);
-
-						}
-
-					}
+					_.off_x = args.margin;
+					_.off_y = args.margin;
+					
+					
 					
 					_.outerWidth = args.width + (_.off_x * 2);
 					_.outerHeight = args.height + (_.off_y * 2);
+
+
 
 
 					d3.select(selector).append('div',':first-child')
@@ -1519,13 +1453,13 @@
 
 					_.heading_sel
 						.style('padding-top', function(){
-							return  ((_.transform_Y / args.height) * 50) + '%'
+							return  ((_.off_y / args.height) * 50) + '%'
 						})
 						.style('padding-left', function(){
-							return  ((_.transform_X / args.width) * 100) + '%'
+							return  ((_.off_x / args.width) * 100) + '%'
 						})
 						.style('padding-right', function(){
-							return  ((_.transform_X / args.width) * 100) + '%'
+							return  ((_.off_x / args.width) * 100) + '%'
 						})
 						.transition(_.duration)
 						.styleTween('opacity',function(){return getInterpolation(0,1)});
@@ -1587,7 +1521,7 @@
 							_.container = _.svg.append('g')
 								.attr('class',prefix+'svg-wrapper')
 								.attr('font-size',args.fontSize)
-								.attr('transform','translate('+ _.transform_X +','+ _.transform_Y +')');
+								.attr('transform','translate('+ _.off_x +','+ _.off_y +')');
 
 							
 							if(args.type == 'pie'){
@@ -1765,8 +1699,6 @@
 			}else{
 				renderError('Data was filtered and all items are invalid for visualizing. check provided data keys and make sure they are correct');
 			}
-
-
 		}
 				
 
@@ -1792,13 +1724,13 @@
 				coordinates.forEach(function(coordinate){
 					if( args[coordinate+'Ticks'] ){
 								
-						_['rule_'+coordinate].transition(_.duration).call( _['axis_'+coordinate])
+						_['rule_'+coordinate].transition().duration(args.duration).call( _['axis_'+coordinate])
 							.attr('font-family',null)
 							.attr('font-size',null);
 	
 						if(args[coordinate+'Grid']){
 							
-							_['rule_grid_'+coordinate].transition(_.duration).call( _['axis_grid_'+coordinate]);
+							_['rule_grid_'+coordinate].transition().duration(args.duration).call( _['axis_grid_'+coordinate]);
 	
 							_['rule_grid_'+coordinate].selectAll('.tick')
 								.attr('class',function(dis,i){
@@ -2308,6 +2240,13 @@
 		}
 
 		
+
+
+
+		window.addEventListener("resize", function(){
+			_.dv_container.innerHTML = '';
+			setTimeout(init(_.data),100);
+		});
 		
 		
 	}
