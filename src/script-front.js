@@ -13,125 +13,139 @@
 
 	var _1p21 = window._1p21 || {};
 
-	// helpful variables
-	var coordinates = ['x','y'],
-
-		//check if the graph item's length is enough for vertical bois idk i'll work on this some more later
-		itemAtts = ['x','y','color','r'],
-		datum_keys = [0,1,'color','area'], 
-
-		//yeeee
-		prefix = 'data-visualizer-', 
-
-		label_size = '.75em',
-
-		error_front = "Sorry, unable to display data.<br> Please check the console for more details",
-
-		//get the length attribute to associate with the axis bro
-		getDimension = function(axisString,opposite){
-
-			return opposite ?  ((axisString == 'x') ? 'height' : 'width') : ((axisString == 'x') ? 'width' : 'height');
-
-		},
-
-		// get the opposite boi for alignmeny purposes
-		getAxisStringOppo = function(axisString) { return (axisString == 'x') ? 'y' : 'x'; },
-
-		//d3 does not support ie 11. kill it
-		isIE = function(){
-			var ua = navigator.userAgent;
-			return ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1
-		};
-
-
-		//string helpers
-			// duh
-			String.prototype.getFileExtension = function() {
-
-				return this.split('.').pop();
-
-			}
-			
-			// convert boi to 
-			String.prototype.getHash = function() {
-
-				var url = this;
-				var type = url.split('#');
-				var hash = type[ (type.length - 1 )] || '';
-
-
-				return hash;
-
-			};
-
-			String.prototype.isValidJSONString = function() {
-
-				try {
-					JSON.parse(this);
-				} catch (e) {
-					return false;
-				}
-
-				return true;
-
-			}
-
-			String.prototype.toCamelCase = function(){
-
-				var str = this;
-
-				return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
-					return index == 0 ? word.toLowerCase() : word.toUpperCase();
-				}).replace(/\s+/g, '');
-
-			}
-
-			//is that bitch boi dark? thank u internet
-			var isDark = function(color) {
-
-				// Variables for red, green, blue values
-				var r, g, b, hsp;
-				
-				// Check the format of the color, HEX or RGB?
-				if(color.match(/^rgb/)) {
-			
-					// If HEX --> store the red, green, blue values in separate variables
-					color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
-					
-					r = color[1];
-					g = color[2];
-					b = color[3];
-				} 
-				else {
-					
-					// If RGB --> Convert it to HEX: http://gist.github.com/983661
-					color = +("0x" + color.slice(1).replace( 
-					color.length < 5 && /./g, '$&$&'));
-			
-					r = color >> 16;
-					g = color >> 8 & 255;
-					b = color & 255;
-				}
-				
-				// HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
-				hsp = Math.sqrt(
-					0.299 * (r * r) +
-					0.587 * (g * g) +
-					0.114 * (b * b)
-				);
-			
-				// Using the HSP value, determine whether the color is light or dark
-				
-				if(hsp>170) { //127.5
-					return false;
-				} else {
-					return true;
-				}
-			}
+	//track present bois
+	_1p21.graphs = {};
 		
 
 	// function that is open to the pooblic. this initiates the speshal boi
-	var dataVisualizer = function(selector,arr){
+	_1p21.dataVisualizer = function(selector,arr){
+
+		/*****************************************************************************
+		 * HELPERS
+		*****************************************************************************/
+	
+			// helpful variables
+			var coordinates = ['x','y'],
+
+				//check if the graph item's length is enough for vertical bois idk i'll work on this some more later
+				itemAtts = ['x','y','color','r'],
+				datum_keys = [0,1,'color','area'], 
+
+				//yeeee
+				prefix = 'data-visualizer-', 
+
+				label_size = '.75em',
+
+				error_front = "Sorry, unable to display data.<br> Please check the console for more details",
+
+				//get the length attribute to associate with the axis bro
+				getDimension = function(axisString,opposite){
+
+					return opposite ?  ((axisString == 'x') ? 'height' : 'width') : ((axisString == 'x') ? 'width' : 'height');
+
+				},
+
+				// get the opposite boi for alignmeny purposes
+				getAxisStringOppo = function(axisString) { return (axisString == 'x') ? 'y' : 'x'; },
+
+				//d3 does not support ie 11. kill it
+				isIE = function(){
+					var ua = navigator.userAgent;
+					return ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1
+				};
+
+
+				//string helpers
+					// duh
+					String.prototype.getFileExtension = function() {
+
+						return this.split('.').pop();
+
+					}
+					
+					// convert boi to 
+					String.prototype.getHash = function() {
+
+						var url = this;
+						var type = url.split('#');
+						var hash = type[ (type.length - 1 )] || '';
+
+
+						return hash;
+
+					};
+
+					String.prototype.isValidJSONString = function() {
+
+						try {
+							JSON.parse(this);
+						} catch (e) {
+							return false;
+						}
+
+						return true;
+
+					}
+
+					String.prototype.toCamelCase = function(){
+
+						var str = this;
+
+						return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
+							return index == 0 ? word.toLowerCase() : word.toUpperCase();
+						}).replace(/\s+/g, '');
+
+					}
+
+					//is that bitch boi dark? thank u internet
+					var isDark = function(color) {
+
+						// Variables for red, green, blue values
+						var r, g, b, hsp;
+						
+						// Check the format of the color, HEX or RGB?
+						if(color.match(/^rgb/)) {
+					
+							// If HEX --> store the red, green, blue values in separate variables
+							color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
+							
+							r = color[1];
+							g = color[2];
+							b = color[3];
+						} 
+						else {
+							
+							// If RGB --> Convert it to HEX: http://gist.github.com/983661
+							color = +("0x" + color.slice(1).replace( 
+							color.length < 5 && /./g, '$&$&'));
+					
+							r = color >> 16;
+							g = color >> 8 & 255;
+							b = color & 255;
+						}
+						
+						// HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
+						hsp = Math.sqrt(
+							0.299 * (r * r) +
+							0.587 * (g * g) +
+							0.114 * (b * b)
+						);
+					
+						// Using the HSP value, determine whether the color is light or dark
+						
+						if(hsp>170) { //127.5
+							return false;
+						} else {
+							return true;
+						}
+					}
+
+
+
+		/*****************************************************************************
+		 * END HELPERS
+		*****************************************************************************/
+
 		
 		// this is where the bitches at
 		var dataContainer = document.querySelector(selector);
@@ -1397,14 +1411,15 @@
 		 * FUNCTION: renderAxisContainers
 		*****************************************************************************/
 
-			//generates lab_coord, rule_coord and axis_coord
+			//generates lab_coord, rule_coord and rule_coord
 			var renderAxisContainers = function(axisString,containerObj,isGrid) {
 
 
 				if( args[axisString+'Ticks']) {
 					isGrid = isGrid || false;
 					var alignString = args[axisString+'Align'],
-						gridString = isGrid ? 'grid_' : '';
+						tickContainer = (isGrid ? 'grid_' : 'rule_')+axisString;
+
 
 					// label
 						if( args[axisString+'Label'] && !isGrid ){
@@ -1433,8 +1448,8 @@
 
 						}
 
-					//ruler
-						_['rule_'+gridString+axisString] = containerObj.append('g')
+					//ruler/grid
+						_[tickContainer] = containerObj.append('g')
 							.attr('class', function(){
 			
 									var contClass = null;
@@ -1477,7 +1492,7 @@
 									transformCoord = '0,0'
 							}
 			
-						_['rule_'+gridString+axisString].attr('transform','translate('+transformCoord+')');
+						_[tickContainer].attr('transform','translate('+transformCoord+')');
 
 				}
 			}
@@ -1609,12 +1624,53 @@
 
 				});
 					
+				// axis + grid
+				if(args.type !== 'pie'){
+
+					coordinates.forEach(function(coordinate){
+						if( args[coordinate+'Ticks'] ){
+							_['rule_'+coordinate+'_axis'] = setAxis(coordinate);
+									
+							_['rule_'+coordinate].transition().duration(args.duration).call( _['rule_'+coordinate+'_axis'] )
+								.attr('font-family',null)
+								.attr('font-size',null);
+		
+							if(args[coordinate+'Grid']){
+							_['grid_'+coordinate+'_axis'] = setAxis(coordinate,true);
+								
+								_['grid_'+coordinate].transition().duration(args.duration).call( _['grid_'+coordinate+'_axis'] );
+									
+								_['grid_'+coordinate].selectAll('g')
+									.classed('grid',true)
+									.filter(function(dis,i){
+										console.log(_['rule_'+coordinate+'_axis'].ticks());
+										//IM HERE FUCKER
+										var isAligned = false;
+										_['rule_'+coordinate].selectAll('g').each(function(tik){
+											//if current looped tik matches dis grid data, add the class boi
+											if(tik == dis){
+												isAligned = true;
+											};
+										})
+		
+										return isAligned;
+		
+									})
+									.classed('tick-aligned',true)
+		
+							}
+		
+						}
+					});
+				}
+					
 
 				if(!(args.type == 'line' && !args.linePoints)){
 
 
-					_.blob = _.container_graph.selectAll(_.graph_item_element +'.'+prefix + 'graph-item graph-item-blob')
+					_.blob = _.container_graph.selectAll(_.graph_item_element +'.'+prefix + 'graph-item.graph-item-blob')
 						.data(_.data,function(dis){
+							console.log(deepGet(dis,args.key[0]));
 							return deepGet(dis,args.key[0])
 						});
 
@@ -1624,6 +1680,7 @@
 						.transition(_.duration)
 						.attr('fill','red')
 						.remove();
+						
 
 					if(
 						(
@@ -1636,7 +1693,7 @@
 						)
 					){
 
-						_.blob_text = _.container_graph.selectAll('text.'+prefix + 'graph-item graph-item-text')
+						_.blob_text = _.container_graph.selectAll('text.'+prefix + 'graph-item.graph-item-text')
 							.data(_.data,function(dis){
 								return deepGet(dis,args.key[0])
 							});
@@ -1650,7 +1707,7 @@
 						
 						if(args.type == 'pie' && args.piLabelStyle == 'linked'){
 
-							_.blob_text_link = _.container_graph.selectAll('polyline.'+prefix + 'graph-item graph-item-link')
+							_.blob_text_link = _.container_graph.selectAll('polyline.'+prefix + 'graph-item.graph-item-link')
 								.data(_.data,function(dis){
 									return deepGet(dis,args.key[0])
 								});
@@ -1665,45 +1722,20 @@
 				}
 
 
-				//generate the graph boi
+				// //generate the graph boi
 
 				if(args.type !== 'pie'){
 					
-					// axis + grid
-					coordinates.forEach(function(coordinate){
-						if( args[coordinate+'Ticks'] ){
-									
-							_['rule_'+coordinate].transition().duration(args.duration).call( setAxis(coordinate) )
-								.attr('font-family',null)
-								.attr('font-size',null);
-		
-							if(args[coordinate+'Grid']){
-								
-								_['rule_grid_'+coordinate].transition().duration(args.duration).call( setAxis(coordinate,true) );
-								_['rule_grid_'+coordinate].selectAll('.tick')
-									.attr('class',function(dis,i){
-										var classString = 'grid';
-										
-										//IM HERE FUCKER
-										_['rule_'+coordinate].selectAll('.tick').each(function(tik){
-											//if current looped tik matches dis grid data, add the class boi
-											(tik == dis) && (classString += ' tick-aligned');
-										})
-		
-										return classString;
-		
-									})
-		
-							}
-		
-						}
-					});
 
 
 					// line graph + fill
 					if(args.type == 'line'){
 						
+							_.container_graph.select('.'+prefix+'line').remove();
+						
 						if(args.lineFill){
+
+							_.container_graph.select('.'+prefix+'fill').remove();
 							
 							_.fill = _.container_graph.append('path')
 							.attr('class',prefix+'fill'+ ((args.lineFillColor !== null || args.lineColor !== null) ? ' has-color' : ' no-color' ))
@@ -1762,11 +1794,13 @@
 								return prefix + 'graph-item graph-item-blob'
 									+ ' '+ 'data-name-'+deepGet(dis,args.key[0]);
 							});
+
+						_.merge_blob = _.blob.merge(_.enter_blob)
 							
 						//coordinates
 						if(args.type !== 'pie'){
 
-							_.blob.merge(_.enter_blob)
+							_.merge_blob
 								.transition(_.duration)
 									.attrTween(
 										((args.type == 'line' || args.type == 'scatter') ? 'cx' : 'x'),
@@ -1793,7 +1827,7 @@
 						//areas and what not
 						if(args.type == 'pie'){
 							
-							_.blob.merge(_.enter_blob)
+							_.merge_blob
 								.transition(_.duration)
 									.attrTween('d',function(dis,i){
 										
@@ -1813,7 +1847,7 @@
 						}
 						
 						if(args.type == 'line' || args.type == 'scatter'){
-							_.blob.merge(_.enter_blob)
+							_.merge_blob
 								.transition(_.duration)
 									.attrTween('r',function(dis,i){
 										return getInterpolation(
@@ -1824,7 +1858,7 @@
 
 
 						}else{
-							_.blob.merge(_.enter_blob)
+							_.merge_blob
 								.transition(_.duration)
 									.attrTween('width',function(dis,i){
 										return getInterpolation(
@@ -1849,20 +1883,20 @@
 									|| args.lineColor
 								)
 							) {
-								_.blob.merge(_.enter_blob)
+								_.merge_blob
 									.attr('fill',function(){
 										return args.linePointsColor || args.lineColor;
 									});
 
 							}
 						}else{
-							_.blob.merge(_.enter_blob)
+							_.merge_blob
 								.attr('fill',function(dis,i){
 									return _.the_color(deepGet(dis,args.key.color));
 								});
 
 								if(args.type == 'scatter'){
-									_.blob.merge(_.enter_blob)
+									_.merge_blob
 										.attr('fill-opacity',args.areaOpacity)
 										.attr('stroke-width',1)
 										.attr('stroke',function(dis,i){
@@ -1890,7 +1924,7 @@
 							})
 
 						
-						_.blob_text_link.merge(_.enter_blob_text_link)
+						_.merge_blob_text_link = _.blob_text_link.merge(_.enter_blob_text_link)
 							.transition(_.duration)
 							.attrTween('stroke-opacity',function(dis,i){
 								
@@ -2030,7 +2064,7 @@
 					};
 
 					//continue fucking with text blob
-					_.blob_text.merge(_.enter_blob_text)
+					_.merge_blob_text = _.blob_text.merge(_.enter_blob_text)
 						.attr('class', function(dis,i){
 							var classString =  prefix + 'graph-item graph-item-text';
 							
@@ -2146,15 +2180,14 @@
 							});
 				}
 
-				// _1p21.graphs = [];
-				// _1p21.graphs.push({data:data,_:_,})
+				_1p21.graphs[selector] = {data:_.data,_:_};
 
 
 
 			}
 
 		/*****************************************************************************
-		 * ENDFUNCTION: init
+		 * ENDFUNCTION: renderGraph
 		*****************************************************************************/
 
 
@@ -2168,10 +2201,12 @@
 			//initialize a good boi
 			var init = function(retrievedData){
 				
+				//add initialized class so we know the boi been fucked na
 				d3.select(selector).classed(prefix+'initialized' ,true )
+
 				_.data = null;
 
-				//element
+				//graph element
 				switch(args.type){
 
 					case 'bar':
@@ -2187,6 +2222,11 @@
 						break;
 
 				}
+
+
+			
+				// relative to 1em supposedly idk
+				_.text_offset = parseFloat(args.fontSize);
 				
 				// heck if src key exists
 				_.data = (function(){
@@ -2200,11 +2240,6 @@
 						return retrievedData
 					}
 				}());
-
-
-			
-			// relative to 1em supposedly idk
-				_.text_offset = parseFloat(args.fontSize);
 
 				
 				//filter data that has null value
@@ -2269,73 +2304,73 @@
 					};
 
 
-						// setup padding and sizes
-						_.legend_size = 30;
-						_.margin = {
-							top:	args.margin[0] || args.margin,
-							left:	args.margin[3] || args.margin[1] ||  args.margin[0] || args.margin,
-							bottom:	args.margin[2] || args.margin[0] || args.margin,
-							right: args.margin[1] || args.margin[0] || args.margin,
-						};
-						
-						
-						
-						_.outerWidth = args.width + _.margin.left + _.margin.right;
-						_.outerHeight = args.height + _.margin.top + _.margin.bottom;
-
-
-
-
-						d3.select(selector).append('div',':first-child')
-							.attr('class',prefix+'heading');
-						
-						_.heading_sel = d3.select(selector).select('div.'+prefix+'heading');
-
-							if(args.title){
-								_.heading_title = _.heading_sel.append('span')
-								.attr('class',prefix+'title')
-								.text(args.title)
-							}
-
-							if(args.description){
-								_.heading_description = _.heading_sel.append('span')
-								.attr('class',prefix+'description')
-								.text(args.description)
-							}
-
-						_.heading_sel
-							.style('padding-top', function(){
-								return  ((_.margin.top / args.height) * 50) + '%'
-							})
-							.style('padding-left', function(){
-								return  ((_.margin.left / args.width) * 100) + '%'
-							})
-							.style('padding-right', function(){
-								return  ((_.margin.right / args.width) * 100) + '%'
-							})
-							.transition(_.duration)
-							.styleTween('opacity',function(){return getInterpolation(0,1)});
+					// setup padding and sizes
+					_.legend_size = 30;
+					_.margin = {
+						top:	args.margin[0] || args.margin,
+						left:	args.margin[3] || args.margin[1] ||  args.margin[0] || args.margin,
+						bottom:	args.margin[2] || args.margin[0] || args.margin,
+						right: args.margin[1] || args.margin[0] || args.margin,
+					};
 					
-						_.canvas = d3.select(selector)
-							.append('div')
-							.attr('class', prefix + 'wrapper')
-							.style('position','relative')
-							.style('padding-bottom',function(){
-								return (( _.outerHeight / _.outerWidth) * 100) + '%';
-							})
-							.style('position','relative');
+					
+					
+					_.outerWidth = args.width + _.margin.left + _.margin.right;
+					_.outerHeight = args.height + _.margin.top + _.margin.bottom;
 
-						var dimensionString = '0 0 '+ _.outerWidth +' ' + _.outerHeight;
-						
-						//check if its scrolled on the place it should be at
-						_.dv_init = false;
-						
-						document.addEventListener('scroll',function(e) {
-							var graphPosition = dataContainer.getBoundingClientRect().top;
-							if(graphPosition < (window.innerHeight * .5) && !_.dv_init) {
-								_.dv_init = true;
-								
-								setTimeout(function(){
+
+
+
+					d3.select(selector).append('div',':first-child')
+						.attr('class',prefix+'heading');
+					
+					_.heading_sel = d3.select(selector).select('div.'+prefix+'heading');
+
+						if(args.title){
+							_.heading_title = _.heading_sel.append('span')
+							.attr('class',prefix+'title')
+							.text(args.title)
+						}
+
+						if(args.description){
+							_.heading_description = _.heading_sel.append('span')
+							.attr('class',prefix+'description')
+							.text(args.description)
+						}
+
+					_.heading_sel
+						.style('padding-top', function(){
+							return  ((_.margin.top / args.height) * 50) + '%'
+						})
+						.style('padding-left', function(){
+							return  ((_.margin.left / args.width) * 100) + '%'
+						})
+						.style('padding-right', function(){
+							return  ((_.margin.right / args.width) * 100) + '%'
+						})
+						.transition(_.duration)
+						.styleTween('opacity',function(){return getInterpolation(0,1)});
+				
+					_.canvas = d3.select(selector)
+						.append('div')
+						.attr('class', prefix + 'wrapper')
+						.style('position','relative')
+						.style('padding-bottom',function(){
+							return (( _.outerHeight / _.outerWidth) * 100) + '%';
+						})
+						.style('position','relative');
+
+					var dimensionString = '0 0 '+ _.outerWidth +' ' + _.outerHeight;
+					
+					//check if its scrolled on the place it should be at
+					_.dv_init = false;
+					
+					document.addEventListener('scroll',function(e) {
+						var graphPosition = dataContainer.getBoundingClientRect().top;
+						if(graphPosition < (window.innerHeight * .5) && !_.dv_init) {
+							_.dv_init = true;
+							
+							setTimeout(function(){
 
 								_.svg = _.canvas.append('svg')
 									.attr('id',selector+'-svg')
@@ -2370,6 +2405,7 @@
 								_.container = _.svg.append('g')
 									.attr('class',prefix+'svg-wrapper')
 									.attr('font-size',args.fontSize)
+									.style('line-height',1)
 									.attr('transform','translate('+ _.margin.left +','+ _.margin.top +')');
 
 								
@@ -2380,7 +2416,6 @@
 					
 										if(args.colorLegend){
 											value -= (value * .25)
-
 										}
 										
 										if( args.piLabelStyle == 'linked' ){
@@ -2392,24 +2427,22 @@
 
 								}else{
 
-									// labels and shit
+									// container for labels
 									_.container_lab = _.container.append('g')
 										.attr('class', prefix + 'label');
 						
-									//axis
+									// container for axis
 									_.container_rule = _.container.append('g')
 										.attr('class', prefix + 'axis')
 										.attr('font-size',label_size);
 										
 									//kung may grid gibo kang grid
-									if(args.xGrid || args.yGrid){
+									if( args.xGrid || args.yGrid ){
 										_.container_grid = _.container.append('g')
 										.attr('class', prefix + 'grid')
 										.attr('font-size',label_size);
 									}
 								}
-
-
 
 
 								//create container for graph
@@ -2434,21 +2467,27 @@
 
 								}
 
-
+								//offset graph for pie because its origin is in the center. right in the heart :'>
 								if(args.type == 'pie'){
 									_.container_graph
 										.attr('transform','translate('+ getPiOrigin('x') +','+ getPiOrigin('y') +')');
 								}
 								
 
+								// scales and shit
 								datum_keys.forEach(function(keyKey){
-									// scales and shit
+
+									//range
 									_['range_'+keyKey] = getRange(keyKey);
+
+									//scale
 									_['the_'+keyKey] = setScale(keyKey);
 
+									//formatting of data on the graph
 									_['format_'+keyKey] = (function(){
 										
 										if(typeof args['format'+keyKey+'Parameter'] === 'function' ) {
+											
 											return args['format'+keyKey+'Parameter']
 
 										}else if( typeof args['format'+keyKey+'Parameter'] === 'string'  ) {
@@ -2497,21 +2536,16 @@
 
 								});
 
-					
+								console
 								renderGraph(_.data);
+								
+
+								window.addEventListener("resize", function(){
+									renderGraph(_.data);
+								});
+								
 							},args.delay);
 
-
-
-
-			
-
-
-
-							window.addEventListener("resize", function(){
-								// _.dv_container.innerHTML = '';
-								setTimeout(renderGraph(_.data),100);
-							});
 						}
 					},true);
 				}else{
@@ -2531,50 +2565,47 @@
 		 * GETREADY TO USE ALL OF THEM FUCKHOLES
 		*****************************************************************************/
 
-			//data is embedded on the page oooooo
-			if(args.srcPath.indexOf(window.location.href) > -1){
-				var jsonSelector = document.getElementById(args.srcPath.getHash()).innerHTML;
-				
-				if(jsonSelector.isValidJSONString()){
+		//data is embedded on the page oooooo
+		if(args.srcPath.indexOf(window.location.href) > -1){
+			var jsonSelector = document.getElementById(args.srcPath.getHash()).innerHTML;
+			
+			if(jsonSelector.isValidJSONString()){
 
-					var dataIsJSON = JSON.parse(jsonSelector);
-					init(dataIsJSON);
-				}else{
-					renderError('Data input may not be valid. Please check and _ the syntax');
-				}
-
-			//o its not ok we normal now
+				var dataIsJSON = JSON.parse(jsonSelector);
+				init(dataIsJSON);
 			}else{
-				switch(args.srcPath.getFileExtension()) {
-					case 'csv':
-					case 'dsv':
-					case 'tsv':
-					case 'xml':
-						d3[args.srcPath.getFileExtension()](args.srcPath,function(d){
-								return d;
-							})
-							.then(init)
-							.catch(function(error){
-								renderError(error,'Data source couldn\'t be requested. Please check console for more details');
-							});
-						break;
-					
-					default:
-						d3.json(args.srcPath,function(d){
-								return d;
-							})
-							.then(init)
-							.catch(function(error){
-								renderError(error,'Data source couldn\'t be requested. Please check console for more details');
-							});
-						break;
-				}
+				renderError('Data input may not be valid. Please check and _ the syntax');
+			}
+
+		//o its not ok we normal now
+		}else{
+			switch(args.srcPath.getFileExtension()) {
+				case 'csv':
+				case 'dsv':
+				case 'tsv':
+				case 'xml':
+					d3[args.srcPath.getFileExtension()](args.srcPath,function(d){
+							return d;
+						})
+						.then(init)
+						.catch(function(error){
+							renderError(error,'Data source couldn\'t be requested. Please check console for more details');
+						});
+					break;
+				
+				default:
+					d3.json(args.srcPath,function(d){
+							return d;
+						})
+						.then(init)
+						.catch(function(error){
+							renderError(error,'Data source couldn\'t be requested. Please check console for more details');
+						});
+					break;
 			}
 		}
+	}
 
-	
-
-	_1p21.dataVisualizer = dataVisualizer;
 	window._1p21 = _1p21;
 	
 }(window,d3));
