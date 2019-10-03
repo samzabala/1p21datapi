@@ -105,14 +105,19 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
 											foreach( $value as $sub_setting => $sub_value ){
 												if( $sub_value != null && !in_array($sub_setting,$not_js_args)) {
-													if($sub_setting == 'font_size'){
-														
-														if( is_numeric($sub_value) ){
-															$sub_value = '\''.$sub_value.'px\'';
-														}else{
-															$sub_value = json_encode($sub_value);
-														}
+
+													switch($sub_setting){
+														case 'font_size':
+															if( is_numeric($sub_value) ){
+																$sub_value = '\''.$sub_value.'px\'';
+															}else{
+																$sub_value = json_encode($sub_value);
+															}
+															break;
+														case 'margin':
+															$sub_value = $sub_value = '['.$sub_value.']';
 													}
+													
 													$render .= _1p21_dv_dashes_to_camel_case($sub_setting).": {$sub_value},\n";
 												}
 											}
@@ -330,7 +335,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
 
 
-			// _1p21_dv_output_arr($data_visual);
+			_1p21_dv_output_arr($data_visual);
 			
 		}else{
 			$render =  '<div class="data-visualizer no-data"><div class="data-visualizer-wrapper fatality">Sorry, the data visual does not exist</div></div>';

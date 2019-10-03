@@ -47,7 +47,15 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
 			$data_visual['settings']['id'] =filter_var($data_visual['settings']['id'],FILTER_VALIDATE_INT);
 
-			$data_visual['settings']['margin'] =filter_var($data_visual['settings']['margin'],FILTER_VALIDATE_INT);
+
+			$data_visual['settings']['margin'] = explode(',',filter_var($data_visual['settings']['margin'],FILTER_SANITIZE_STRING));
+			foreach( $data_visual['settings']['margin'] as $margin){
+				$margin = filter_var($margin,FILTER_VALIDATE_INT);
+			}
+
+			$data_visual['settings']['margin'] = implode(',',$data_visual['settings']['margin']);
+			
+
 
 			if( is_string($data_visual['settings']['font_size']) ){
 				$data_visual['settings']['font_size'] =filter_var($data_visual['settings']['font_size'],FILTER_VALIDATE_REGEXP,
