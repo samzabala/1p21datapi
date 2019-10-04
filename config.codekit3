@@ -17,14 +17,6 @@
 		"oAP": "/.gitignore",
 		"oF": 0
 		},
-	"/1p21-datavisualizer.php": {
-		"cB": 0,
-		"ft": 8192,
-		"hM": 0,
-		"oA": 0,
-		"oAP": "/1p21-datavisualizer.php",
-		"oF": 0
-		},
 	"/assets/d3.v5.min.js": {
 		"bF": 0,
 		"ft": 64,
@@ -35,48 +27,6 @@
 		"oF": 0,
 		"sC": 0,
 		"tS": 0
-		},
-	"/assets/script-admin.min.js": {
-		"bF": 0,
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "/assets/script-admin.min-min.js",
-		"oF": 0,
-		"sC": 0,
-		"tS": 0
-		},
-	"/assets/script-front.min.js": {
-		"bF": 0,
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "/assets/script-front.min-min.js",
-		"oF": 0,
-		"sC": 0,
-		"tS": 0
-		},
-	"/assets/style-admin.css": {
-		"aP": 1,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/assets/style-admin-min.css",
-		"oF": 0,
-		"oS": 3
-		},
-	"/assets/style-front.css": {
-		"aP": 1,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/assets/style-front-min.css",
-		"oF": 0,
-		"oS": 3
 		},
 	"/fields/acf-cpt.php": {
 		"cB": 0,
@@ -94,28 +44,12 @@
 		"oO": 0,
 		"oS": 1
 		},
-	"/includes/helpers.php": {
-		"cB": 0,
-		"ft": 8192,
-		"hM": 0,
-		"oA": 0,
-		"oAP": "/includes/helpers.php",
-		"oF": 0
-		},
 	"/includes/register-cpt.php": {
 		"cB": 0,
 		"ft": 8192,
 		"hM": 0,
 		"oA": 0,
 		"oAP": "/includes/register-cpt.php",
-		"oF": 0
-		},
-	"/includes/register-enqueues.php": {
-		"cB": 0,
-		"ft": 8192,
-		"hM": 0,
-		"oA": 0,
-		"oAP": "/includes/register-enqueues.php",
 		"oF": 0
 		},
 	"/includes/register-fields.php": {
@@ -134,28 +68,12 @@
 		"oAP": "/includes/register-settings.php",
 		"oF": 0
 		},
-	"/includes/render-back.php": {
-		"cB": 0,
-		"ft": 8192,
-		"hM": 0,
-		"oA": 0,
-		"oAP": "/includes/render-back.php",
-		"oF": 0
-		},
 	"/includes/render-documentation.php": {
 		"cB": 0,
 		"ft": 8192,
 		"hM": 0,
 		"oA": 0,
 		"oAP": "/includes/render-documentation.php",
-		"oF": 0
-		},
-	"/includes/render-front.php": {
-		"cB": 0,
-		"ft": 8192,
-		"hM": 0,
-		"oA": 0,
-		"oAP": "/includes/render-front.php",
 		"oF": 0
 		},
 	"/includes/setup-admin.php": {
@@ -166,95 +84,12 @@
 		"oAP": "/includes/setup-admin.php",
 		"oF": 0
 		},
-	"/README.md": {
-		"cB": 0,
-		"cS": 0,
-		"eF": 1,
-		"eL": 1,
-		"ema": 1,
-		"eSQ": 0,
-		"ft": 4096,
-		"hM": 0,
-		"oA": 0,
-		"oAP": "/templates/documentation.html",
-		"oF": 2,
-		"oFM": 0,
-		"oS": 1,
-		"pHT": 0,
-		"pME": 0,
-		"rFN": 0,
-		"uCM": 1
-		},
-	"/src/script-admin.js": {
-		"bF": 0,
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/assets/script-admin.min.js",
-		"oF": 3,
-		"sC": 0,
-		"tS": 0
-		},
-	"/src/script-front.js": {
-		"bF": 0,
-		"ft": 64,
-		"ma": 0,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "/assets/script-front.min.js",
-		"oF": 3,
-		"sC": 0,
-		"tS": 0
-		},
-	"/src/style-admin.scss": {
-		"aP": 0,
-		"bl": 0,
-		"dP": 10,
-		"dS": 0,
-		"ft": 4,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/assets/style-admin.css",
-		"oF": 2,
-		"oS": 0,
-		"uL": 1
-		},
-	"/src/style-front.scss": {
-		"aP": 0,
-		"bl": 0,
-		"dP": 10,
-		"dS": 0,
-		"ft": 4,
-		"ma": 0,
-		"oA": 0,
-		"oAP": "/assets/style-front.css",
-		"oF": 2,
-		"oS": 0,
-		"uL": 1
-		},
-	"/templates/documentation.html": {
-		"cB": 0,
-		"ft": 8192,
-		"hM": 0,
-		"oA": 0,
-		"oAP": "/templates/documentation.html",
-		"oF": 0
-		},
 	"/templates/settings-form.php": {
 		"cB": 0,
 		"ft": 8192,
 		"hM": 0,
 		"oA": 0,
 		"oAP": "/templates/settings-form.php",
-		"oF": 0
-		},
-	"/templates/thickbox-media-form.php": {
-		"cB": 0,
-		"ft": 8192,
-		"hM": 0,
-		"oA": 0,
-		"oAP": "/templates/thickbox-media-form.php",
 		"oF": 0
 		}
 	},
