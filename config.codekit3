@@ -28,6 +28,28 @@
 		"sC": 0,
 		"tS": 0
 		},
+	"/assets/script-admin.min.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/assets/script-admin.min-min.js",
+		"oF": 0,
+		"sC": 0,
+		"tS": 0
+		},
+	"/assets/script-front.min.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/assets/script-front.min-min.js",
+		"oF": 0,
+		"sC": 0,
+		"tS": 0
+		},
 	"/fields/acf-cpt.php": {
 		"cB": 0,
 		"ft": 8192,
@@ -44,12 +66,28 @@
 		"oO": 0,
 		"oS": 1
 		},
+	"/includes/helpers.php": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/includes/helpers.php",
+		"oF": 0
+		},
 	"/includes/register-cpt.php": {
 		"cB": 0,
 		"ft": 8192,
 		"hM": 0,
 		"oA": 0,
 		"oAP": "/includes/register-cpt.php",
+		"oF": 0
+		},
+	"/includes/register-enqueues.php": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/includes/register-enqueues.php",
 		"oF": 0
 		},
 	"/includes/register-fields.php": {
@@ -68,12 +106,28 @@
 		"oAP": "/includes/register-settings.php",
 		"oF": 0
 		},
+	"/includes/render-back.php": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/includes/render-back.php",
+		"oF": 0
+		},
 	"/includes/render-documentation.php": {
 		"cB": 0,
 		"ft": 8192,
 		"hM": 0,
 		"oA": 0,
 		"oAP": "/includes/render-documentation.php",
+		"oF": 0
+		},
+	"/includes/render-front.php": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/includes/render-front.php",
 		"oF": 0
 		},
 	"/includes/setup-admin.php": {
@@ -90,6 +144,14 @@
 		"hM": 0,
 		"oA": 0,
 		"oAP": "/templates/settings-form.php",
+		"oF": 0
+		},
+	"/templates/thickbox-media-form.php": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/templates/thickbox-media-form.php",
 		"oF": 0
 		}
 	},
