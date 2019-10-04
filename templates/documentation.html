@@ -4,7 +4,7 @@
 
 <p>Plugin URI: <a href="https://github.com/samzabala/1p21datapi">https://github.com/samzabala/1p21datapi</a><br />
 Description: Data visualizer using d3 and svgs<br />
-Version: 1.2.0.1<br />
+Version: 2.0.0<br />
 Author: 1Point21 Interactive<br />
 Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21interactive.com/</a></p>
 
@@ -51,14 +51,22 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>alignment of title and description</p></li>
 <li><p><strong><code>margin</code></strong></p>
 
-<p><strong>[ Optional | Default: <code>10</code> | type: number ]</strong></p>
+<p><strong>[ Optional | Default: <code>10</code> | type: number,array ]</strong></p>
 
-<p>gutter to set on graph canvas to compensate space for ticks and labels.</p></li>
-<li><p><strong><code>margin_offset</code></strong></p>
+<p>gutter to set on graph canvas to compensate space for ticks and labels.</p>
 
-<p><strong>[ Optional | Default: <code>2</code> | type: number ]</strong></p>
+<p>For multiple set margins, separate each margin with commas. The sequence of margins must replicate the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin">shorthand css margin property</a></p>
 
-<p>multiplier of the gutter.</p></li>
+<p>eg:</p>
+
+<p>```
+<!-- This will set all sides to 40 -->
+[dv id=666 margin=40]</p>
+
+	<!-- This will set top and bottom sides to 40, and left and right sides to 60 -->
+	[dv id=666 margin=40,60]
+	```
+</li>
 <li><p><strong><code>width</code></strong></p>
 
 <p><strong>[ Optional | Default: <code>600</code> | type: number ]</strong></p>

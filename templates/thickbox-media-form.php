@@ -64,13 +64,6 @@
 					<input type="number" placeholder="10" name="margin" class="_1p21_dv-input" id="_1p21_dv-margin">
 				</div>
 			</div>
-
-			<div class="_1p21_dv-field">
-				<label for="_1p21_dv-margin_offset">Margin Offset</label>	
-				<div class="_1p21_dv-input-contatiner">
-					<input type="number" placeholder="1" name="margin_offset" class="_1p21_dv-input" id="_1p21_dv-margin_offset">
-				</div>
-			</div>
 		</div>
 
 

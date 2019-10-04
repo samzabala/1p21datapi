@@ -3,7 +3,7 @@
 
 Plugin URI: [https://github.com/samzabala/1p21datapi](https://github.com/samzabala/1p21datapi)  
 Description: Data visualizer using d3 and svgs  
-Version: 1.2.0.1  
+Version: 2.0.0  
 Author: 1Point21 Interactive  
 Author URI: [https://www.1point21interactive.com/](https://www.1point21interactive.com/)
 
@@ -51,15 +51,22 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 
 *	**`margin`**
 
-	**[ Optional | Default: `10` | type: number ]**
+	**[ Optional | Default: `10` | type: number,array ]**
 
 	gutter to set on graph canvas to compensate space for ticks and labels.
 
-*	**`margin_offset`**
+	For multiple set margins, separate each margin with commas. The sequence of margins must replicate the [shorthand css margin property](https://developer.mozilla.org/en-US/docs/Web/CSS/margin)
 
-	**[ Optional | Default: `2` | type: number ]**
+	eg:
 
-	multiplier of the gutter.
+	```
+	<!-- This will set all sides to 40 -->
+	[dv id=666 margin=40]
+
+
+	<!-- This will set top and bottom sides to 40, and left and right sides to 60 -->
+	[dv id=666 margin=40,60]
+	```
 
 *	**`width`**
 

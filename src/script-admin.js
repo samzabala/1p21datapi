@@ -1,5 +1,5 @@
 /*!
-* 1point21 Data Vizualiser Version 1.2.0.1
+* 1point21 Data Vizualiser Version 2.0.0
 * Admin Script
 * DO NOT EDIT min.js
 * edit its corresponding unminified js file in /src instead
@@ -55,7 +55,6 @@
 							break;
 
 						case 'margin':
-						case 'margin_offset':
 						case 'font_size':
 						case 'width':
 						case 'transition':

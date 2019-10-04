@@ -3,7 +3,7 @@
 Plugin Name: 1Point21 Data Vizualizer
 Plugin URI: https://github.com/samzabala/1p21datapi
 Description: Data visualizer using d3 and svgs
-Version: 1.2.0.1
+Version: 2.0.0
 Author: 1Point21 Interactive
 Author URI: https://www.1point21interactive.com/
 */
@@ -28,12 +28,16 @@ $_1p21_dv['defaults'] = array(
 		'align' => 'center', // default value is not in js because js doesnt need to use this boi. use it @ shortcode render
 	//js reliant parameters
 		'margin' => null, //spacing necessary within the canvas to avoid cuttong off elements
-		'margin_offset' => null, //multiplier for spacing
-		'font_size' => null,
 		'width' => null, //duh
 		'height' => null, //duh
-		'transition' => null, //duh
-		'delay' => null, //duh
+
+	// advanced
+		// js
+			'font_size' => null,
+			'name_size' => null,
+			'value_size' => null,
+			'transition' => null, //duh
+			'delay' => null, //duh
 );
 
 $_1p21_dv['enqueued'] = false;

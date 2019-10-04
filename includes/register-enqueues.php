@@ -34,31 +34,20 @@
 
 
 	function _1p21_dv_register_enqueue_scripts_admin(){
-
+		// No need to optimize these scripts in the admin. plus it casues errors anyway :\
 		$values = get_option( '_1p21_dv_opts' );
 		
-		if(isset($values['dv_optimize'])){
-			//handles will be dummies now
-			wp_register_style( '1p21-dv-styles-admin', null );
-			wp_register_script( '1p21-dv-script-admin', null,array(),null,true);
-
-		}else{
-			wp_register_style( '1p21-dv-styles-admin', _1P21_DV_PLUGIN_URL . 'assets/style-admin.css',array(),null );
-			wp_register_script( '1p21-dv-script-admin', _1P21_DV_PLUGIN_URL.'assets/script-admin.min.js',array(),false,true,array(),null,true);
-		}
+		
+		wp_register_style( '1p21-dv-styles-admin', _1P21_DV_PLUGIN_URL . 'assets/style-admin.css',array(),null );
+		wp_register_script( '1p21-dv-script-admin', _1P21_DV_PLUGIN_URL.'assets/script-admin.min.js',array(),false,false);
 
 
 		wp_enqueue_style('1p21-dv-styles-admin');
 		wp_enqueue_script('1p21-dv-script-admin');
-		if(isset($values['dv_optimize'])){
 
-			wp_add_inline_style('1p21-dv-styles-admin',_1p21_dv_get_file_as_string(_1P21_DV_PLUGIN_PATH . '/assets/style-admin.css') );
-
-			wp_add_inline_script('1p21-dv-script-admin',_1p21_dv_get_file_as_string(_1P21_DV_PLUGIN_PATH.'/assets/script-admin.min.js') );
-		}
 
 	}
-	add_action( 'admin_enqueue_scripts', '_1p21_dv_register_enqueue_scripts_admin',1 );
+	add_action( 'admin_enqueue_scripts', '_1p21_dv_register_enqueue_scripts_admin');
 
 //add inline
 	//if optimize setting is false, we are able to enqueue scriptsonly when the shortcode is called,
