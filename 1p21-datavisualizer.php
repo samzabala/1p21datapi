@@ -3,7 +3,7 @@
 Plugin Name: 1Point21 Data Vizualizer
 Plugin URI: https://github.com/samzabala/1p21datapi
 Description: Data visualizer using d3 and svgs
-Version: 2.0.0
+Version: 1.2.0.2
 Author: 1Point21 Interactive
 Author URI: https://www.1point21interactive.com/
 */

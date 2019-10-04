@@ -1,5 +1,5 @@
 /*!
-* 1point21 Data Vizualiser Version 2.0.0
+* 1point21 Data Vizualiser Version 1.2.0.2
 * Render Script
 * @license yes
 * DO NOT EDIT min.js
@@ -280,20 +280,20 @@
 
 			
 
-			//2.0.0 new args
+			//1.2.0.2 new args
 				//settings 
 					nameSize: '1.75em',
 					valueSize: '1.75em',
 				//src
 					srcReverse: false,
-					srcStacked: false,
+					srcMultiple: false,
 
 				//bar
 					barDisplayTextOut: false, 
 
 				//kulay
 					colorBackground: '#EEE',
-					colorBy: 'key',
+					colorBy: 'key', //set will influence key.color
 					
 					//advanced
 					colorScheme: null,
