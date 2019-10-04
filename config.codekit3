@@ -63,9 +63,9 @@
 		"bl": 0,
 		"ft": 16,
 		"ma": 0,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "/assets/style-admin-min.css",
-		"oF": 0,
+		"oF": 1,
 		"oS": 3
 		},
 	"/assets/style-front.css": {
@@ -217,7 +217,7 @@
 		"oA": 0,
 		"oAP": "/src/style-admin.css",
 		"oF": 0,
-		"oS": 0,
+		"oS": 3,
 		"uL": 1
 		},
 	"/src/style-front.scss": {
@@ -230,7 +230,7 @@
 		"oA": 0,
 		"oAP": "/src/style-front.css",
 		"oF": 0,
-		"oS": 0,
+		"oS": 3,
 		"uL": 1
 		},
 	"/templates/documentation.html": {
