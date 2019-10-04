@@ -177,6 +177,7 @@
 				transition: 1500,
 				delay: 250,
 				fontSize: '16px',
+				
 
 			// content
 				title:'',
@@ -257,6 +258,8 @@
 					yAppend: '',
 					yDivider: 1,
 
+				//bar
+
 				//line
 					lineStyle: '',
 					lineWeight: 1,
@@ -272,7 +275,34 @@
 				
 				//pi
 					piLabelStyle: null,
-					piInRadius: 0
+					piInRadius: 0,
+
+
+			
+
+			//2.0.0 new args
+				//settings 
+					nameSize: '1.75em',
+					valueSize: '1.75em',
+				//src
+					srcReverse: false,
+					srcStacked: false,
+
+				//bar
+					barDisplayTextOut: false, 
+
+				//kulay
+					colorBackground: '#EEE',
+					colorBy: 'key',
+					
+					//advanced
+					colorScheme: null,
+
+				//tooltip
+					toolTip: false,
+					toolTipContent: null,
+
+				
 		};
 
 		//merge defaults with custom

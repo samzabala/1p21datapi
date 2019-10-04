@@ -28,11 +28,16 @@ $_1p21_dv['defaults'] = array(
 		'align' => 'center', // default value is not in js because js doesnt need to use this boi. use it @ shortcode render
 	//js reliant parameters
 		'margin' => null, //spacing necessary within the canvas to avoid cuttong off elements
-		'font_size' => null,
 		'width' => null, //duh
 		'height' => null, //duh
-		'transition' => null, //duh
-		'delay' => null, //duh
+
+	// advanced
+		// js
+			'font_size' => null,
+			'name_size' => null,
+			'value_size' => null,
+			'transition' => null, //duh
+			'delay' => null, //duh
 );
 
 $_1p21_dv['enqueued'] = false;
