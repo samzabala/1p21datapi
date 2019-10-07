@@ -4,7 +4,7 @@
 		<h2>Add Data Visualiser</h2>
 
 		<h3>Select a Data Visual to add</h3>
-		<div class="_1p21_dv-col-1">
+		<div class="_1p21_dv-col _1p21_dv-col-1">
 			<div class="_1p21_dv-field required">
 				<label for="_1p21_dv-id">Data Visual</label>	
 
@@ -38,7 +38,7 @@
 		</div>
 
 	<h3>Content</h3>
-		<div class="_1p21_dv-col-1">
+		<div class="_1p21_dv-col _1p21_dv-col-1">
 			<div class="_1p21_dv-field">
 				<label for="_1p21_dv-align">Text Align</label>	
 
@@ -57,11 +57,11 @@
 		
 		
 		<h3>Margin Setup</h3>
-		<div class="_1p21_dv-col-2">
+		<div class="_1p21_dv-col _1p21_dv-col-2">
 			<div class="_1p21_dv-field">
 				<label for="_1p21_dv-margin">Margin (px)</label>	
 				<div class="_1p21_dv-input-contatiner">
-					<input type="number" placeholder="10" name="margin" class="_1p21_dv-input" id="_1p21_dv-margin">
+					<input type="text"  placeholder="10,10,10,10" name="margin" class="_1p21_dv-input" id="_1p21_dv-margin">
 				</div>
 			</div>
 		</div>
@@ -69,7 +69,7 @@
 
 		
 		<h3>Sizing</h3>
-		<div class="_1p21_dv-col-2">
+		<div class="_1p21_dv-col _1p21_dv-col-2">
 			<div class="_1p21_dv-field">
 				<label for="_1p21_dv-width">Width (px)</label>	
 				<div class="_1p21_dv-input-contatiner">
@@ -89,7 +89,27 @@
 
 		
 		<h3>Advanced Options</h3>
-		<div class="_1p21_dv-col-3">
+		<div class="_1p21_dv-col _1p21_dv-col-3">
+			<div class="_1p21_dv-field">
+				<label for="_1p21_dv-font_size">Font Size (px)</label>	
+				<div class="_1p21_dv-input-contatiner">
+					<input type="number" placeholder="16" name="font_size" class="_1p21_dv-input" id="_1p21_dv-font_size">
+				</div>
+			</div>
+			<div class="_1p21_dv-field">
+				<label for="_1p21_dv-name_size">Name Size (em)</label>	
+				<div class="_1p21_dv-input-contatiner">
+					<input type="number" placeholder="2.5" name="name_size" class="_1p21_dv-input" id="_1p21_dv-name_size">
+				</div>
+			</div>
+			<div class="_1p21_dv-field">
+				<label for="_1p21_dv-value_size">Value Size (em)</label>	
+				<div class="_1p21_dv-input-contatiner">
+					<input type="number" placeholder="16" name="value_size" class="_1p21_dv-input" id="_1p21_dv-value_size">
+				</div>
+			</div>
+		</div>
+		<div class="_1p21_dv-col _1p21_dv-col-2">
 			<div class="_1p21_dv-field">
 				<label for="_1p21_dv-transition">Transition (milliseconds)</label>	
 				<div class="_1p21_dv-input-contatiner">
@@ -101,13 +121,6 @@
 				<label for="_1p21_dv-delay">Delay (milliseconds)</label>	
 				<div class="_1p21_dv-input-contatiner">
 					<input type="number" placeholder="250" name="delay" class="_1p21_dv-input" id="_1p21_dv-delay">
-				</div>
-			</div>
-
-			<div class="_1p21_dv-field">
-				<label for="_1p21_dv-font_size">Font Size (px)</label>	
-				<div class="_1p21_dv-input-contatiner">
-					<input type="number" placeholder="16" name="font_size" class="_1p21_dv-input" id="_1p21_dv-font_size">
 				</div>
 			</div>
 		</div>

@@ -66,6 +66,10 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 				$data_visual['settings']['font_size'] =filter_var($data_visual['settings']['font_size'],FILTER_VALIDATE_INT);
 			}
 
+
+			$data_visual['settings']['name_size'] =filter_var($data_visual['settings']['name_size'],FILTER_VALIDATE_FLOAT);
+			$data_visual['settings']['value_size'] =filter_var($data_visual['settings']['value_size'],FILTER_VALIDATE_FLOAT);
+
 			$data_visual['settings']['width'] =filter_var($data_visual['settings']['width'],FILTER_VALIDATE_INT);
 			$data_visual['settings']['height'] =filter_var($data_visual['settings']['height'],FILTER_VALIDATE_INT);
 

@@ -110,6 +110,20 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>css base font size to size all text relative to</p>
 
 <p>If given a number, it will be interpreted as pixels.</p></li>
+<li><p><strong><code>name_size</code></strong></p>
+
+<p><strong>[ Optional | Default: <code>.75</code> | type: number ]</strong></p>
+
+<p>Name data&#8217;s relative size to <code>font_size</code> upon display. Will be interpeted as <code>em</code> css unit</p>
+
+<p>This is only visible when both name and data values are set up to display with the graph item</p></li>
+<li><p><strong><code>value_size</code></strong></p>
+
+<p><strong>[ Optional | Default: <code>1.75</code> | type: number ]</strong></p>
+
+<p>Value data&#8217;s relative size to <code>font_size</code> upon display. Will be interpeted as <code>em</code> css unit</p>
+
+<p>This is only visible when both name and data values are set up to display with the graph item</p></li>
 </ul>
 
 <h2 id="backendsettings">Backend Settings</h2>
@@ -127,6 +141,12 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p><strong>[ REQUIRED | Default: <em>Bar</em> | Meta Key : <code>'dv_type'</code> | options: <em>Bar</em>, <em>Line</em>, <em>Pie</em>, <em>Scatter Plot</em> ]</strong></p>
 
 <p>Type of graph the data will be presented as.</p>
+
+<h4 id="multiplegraph"><em>Multiple Graph</em></h4>
+
+<p><strong>[ Optional | Meta Key : <code>'dv_src_multiple'</code> | Default: <code>false</code> | type: boolean ]</strong></p>
+
+<p>Enable mutliple graphs of data groups setup</p>
 
 <h4 id="source"><em>Source</em></h4>
 
@@ -186,9 +206,28 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>Numeric data value that will influence the size of the scatter plot point</p></li>
 </ul></li>
 </ul></li>
+<li><p><strong>Reverse Groups Order</strong></p>
+
+<p><strong>[ Optional | Meta Key : <code>'dv_src_reverse_multiple'</code> | Default: <code>false</code> | type: boolean | Available When: <em>Multiple Graph</em> is <code>true</code> ]</strong></p>
+
+<p>Reverse order of data groups</p></li>
+<li><p><strong>Reverse Data Order</strong></p>
+
+<p><strong>[ Optional | Meta Key : <code>'dv_src_reverse'</code> | Default: <code>false</code> | type: boolean ]</strong></p>
+
+<p>Reverse order of data</p></li>
 <li><p><strong>Source Key</strong></p>
 
 <p><strong>[ Optional | Meta Key : <code>'dv_src_key'</code> | Default: <code>null</code> | Valid file types: Available when: <em>Source Type</em> is NOT &#8216;Rows (UI Field)&#8217; ]</strong></p>
+
+<p>object key to the data to use.</p>
+
+<p>if left blank, data will be taken from the root level</p>
+
+<p>if there is a value, the data returned from that key will be used</p></li>
+<li><p><strong>Multiple Source Key</strong></p>
+
+<p><strong>[ Optional | Meta Key : <code>'dv_src_key_multiple'</code> | Default: <code>null</code> | Valid file types: Available when: <em>Source Type</em> is NOT &#8216;Rows (UI Field)&#8217;, <em>Multiple Graph</em> is <code>true</code> ]</strong></p>
 
 <p>object key to the data to use.</p>
 

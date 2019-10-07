@@ -335,7 +335,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
 
 
-			// _1p21_dv_output_arr($data_visual);
+			_1p21_dv_output_arr($data_visual);
 			
 		}else{
 			$render =  '<div class="data-visualizer no-data"><div class="data-visualizer-wrapper fatality">Sorry, the data visual does not exist</div></div>';
@@ -362,6 +362,7 @@ function _1p21_div_data_visualizer_render($atts = array()){
 
 	
 	wp_enqueue_script( 'd3' );
+	wp_enqueue_script( 'd3-tip' );
 	wp_enqueue_script( '1p21-dv-script-front' );
 	wp_enqueue_style( '1p21-dv-style-front' );
 	

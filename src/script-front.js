@@ -36,7 +36,6 @@
 
 				label_size = '.75em',
 
-				error_front = "Sorry, unable to display data.<br> Please check the console for more details",
 
 				//get the length attribute to associate with the axis bro
 				getDimension = function(axisString,opposite){
@@ -177,6 +176,8 @@
 				transition: 1500,
 				delay: 250,
 				fontSize: '16px',
+				nameSize: .75,
+				valueSize: 1.75,
 				
 
 			// content
@@ -281,12 +282,11 @@
 			
 
 			//2.0.0 new args
-				//settings 
-					nameSize: '1.75em',
-					valueSize: '1.75em',
 				//src
-					srcReverse: false,
 					srcMultiple: false,
+					srcReverse: false,
+					srcReverseMultiple: false,
+					srcKeyMultiple: null,
 
 				//bar
 					barDisplayTextOut: false, 
@@ -313,6 +313,58 @@
 				args[prop] = arr[prop];
 			}
 		}
+
+		/*****************************************************************************
+		 * MAP BOOL PROPERTIES FOR LESS EXTENSIVE LOGICS
+		*****************************************************************************/
+			_.has_both_text_on_blob = (function(){
+
+				if(
+					_.has_text
+					&& (
+						(
+							args.type !== 'pie'
+							&& (args.type !== 'scatter')
+							&& (!args.xTicks && !args.yTicks)
+						)
+						|| (
+							args.type == 'pie'
+							&& !args.colorLegend
+							&& args.piLabelStyle !== null
+						)
+					)
+				){
+					return true;
+				}else{
+					return false;
+				}
+			}());
+
+			_.has_text = (function(){
+				if(
+					(
+						args.type !== 'pie'
+						&& (args.type !== 'scatter')
+						&& ( !args.xTicks || !args.yTicks )
+					)
+					|| (
+						args.type == 'pie'
+						&& ( args.piLabelStyle || !args.colorLegend )
+					)
+				){
+					return true
+				}else{
+					return false;
+				}
+			}())
+
+		/*****************************************************************************
+		 * END MAP BOOL PROPERTIES FOR LESS EXTENSIVE LOGICS
+		*****************************************************************************/
+
+
+
+
 
 		/*****************************************************************************
 		 * FUNCTION: getAxisString
@@ -584,11 +636,11 @@
 
 						if(args[axisString+'Align'] == 'right'){
 
-							offset = args[getDimension(axisString,true)] + (_.margin.right + _.text_offset);
+							offset = args[getDimension(axisString,true)] + (_.margin.right + _.text_base_size);
 
 						}else{
 
-							offset = -(_.margin.left - _.text_offset)
+							offset = -(_.margin.left - _.text_base_size)
 
 						}
 
@@ -765,25 +817,28 @@
 					)
 				){
 
-					if(coordinateAttr == 'y'){
 
-						if(
-							(
-								args.type !== 'pie'
-								&& (!args.xTicks && !args.yTicks)
-							)
-							|| (
-								args.type == 'pie'
-								&& (
-									!args.colorLegend
-								)
-							)
-						){
-							shift = (keyKey == 1) ? '.375em' : '-1.5em'
-						}
-						
+				if(
+					(coordinateAttr == 'y')
+					&& _.has_both_text_on_blob
+				){
+					// calculate height
+					var full_height = _.text_base_size * (args.nameSize + args.valueSize + 2.25) // .5 margin top bottom and between text
+					
+					if( keyKey == 1){
+						// shift = ( ((full_height * -.5) + (args.valueSize * .5) + (_.text_base_size * .5) )  / (_.text_base_size * args.valueSize) ) + 'em'
+
+						shift = ( ((full_height  * -.5) + ( (_.text_base_size * args.valueSize) * .5) + ( _.text_base_size ) )  / (_.text_base_size * args.valueSize) ) + 'em'
+					}else{
+						shift =( ((full_height * .5) - ( (_.text_base_size * args.nameSize) * .5) - ( _.text_base_size ) ) / (_.text_base_size * args.nameSize) ) + 'em'
 					}
+					// shift = (keyKey == 1) ? '.375em' : '-1.5em'
+
+
+					console.log(selector, full_height,keyKey,shift);
 				}
+				
+			}
 				
 				return shift;
 
@@ -844,7 +899,7 @@
 						var value = 0,
 						multiplier = 1;
 
-						if(!(initial && args.type !== 'scatter')){
+						if(!(initial || args.type == 'scatter')){
 
 							if(
 								(
@@ -867,8 +922,8 @@
 							
 
 							if(args[getAxisStringOppo(coordinate)+'Data'] == 0){
-								(coordinate == 'x') ? value = _.text_offset : value = ( ( _.mLength(coordinate,i) / 2 ) );
-								_.mLength(coordinate,i);
+								(coordinate == 'x') ? value = _.text_base_size : value = ( ( _.m_length(coordinate,i) / 2 ) );
+								_.m_length(coordinate,i);
 							}
 
 							value *= multiplier;
@@ -884,7 +939,7 @@
 						var multiplier = 1,
 							value = 0;
 
-						if(!(initial && args.type !== 'scatter')) {
+						if(!(initial || args.type == 'scatter')) {
 
 							if(
 								(
@@ -909,11 +964,11 @@
 								(
 									(
 										args.type == 'bar'
-										&& parseFloat(getBlobSize(coordinate,dis,i)) < _.mLength(coordinate,i)
+										&& parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i)
 									)
 									|| (
 										args.type !== 'bar'
-										&& parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.mLength(coordinate,i))
+										&& parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i))
 									)
 								)
 								&&  keyKey !== 0
@@ -923,7 +978,7 @@
 									value = getBlobSize(coordinate,dis,i);
 
 								}else{
-									value = _.mLength(coordinate,i);
+									value = _.m_length(coordinate,i);
 
 								}
 								
@@ -987,6 +1042,8 @@
 						}
 
 					}
+
+					console.log(args.type,shifter(),shifterOut());
 
 					offset += shifter() + shifterOut();
 					
@@ -1111,7 +1168,7 @@
 							)
 						){
 
-							value = length + _.text_offset;
+							value = length + _.text_base_size;
 
 						} else if(  (args.type == 'pie' && axisString == 'y') ){
 								value = length * .5;
@@ -1613,7 +1670,7 @@
 				d3.select(selector).classed(prefix+'initialized',true);
 				d3.select(selector).append('div')
 				.attr('class',prefix+'wrapper fatality')
-				.html(custom_error_front || error_front);
+				.html(custom_error_front || "Sorry, unable to display data.<br> Please check the console for more details");
 
 
 				throw new Error(console_error);
@@ -1673,7 +1730,7 @@
 								_['grid_'+coordinate].selectAll('g')
 									.classed('grid',true)
 									.filter(function(dis,i){
-										console.log(_['rule_'+coordinate+'_axis'].ticks());
+										
 										//IM HERE FUCKER
 										var isAligned = false;
 										_['rule_'+coordinate].selectAll('g').each(function(tik){
@@ -1700,7 +1757,7 @@
 
 					_.blob = _.container_graph.selectAll(_.graph_item_element +'.'+prefix + 'graph-item.graph-item-blob')
 						.data(_.data,function(dis){
-							console.log(deepGet(dis,args.key[0]));
+							
 							return deepGet(dis,args.key[0])
 						});
 
@@ -1712,16 +1769,7 @@
 						.remove();
 						
 
-					if(
-						(
-							args.type !== 'pie'
-							&& ( !args.xTicks || !args.yTicks )
-						)
-						|| (
-							args.type == 'pie'
-							&& ( args.piLabelStyle || !args.colorLegend )
-						)
-					){
+					if( _.has_text ){
 
 						_.blob_text = _.container_graph.selectAll('text.'+prefix + 'graph-item.graph-item-text')
 							.data(_.data,function(dis){
@@ -1939,7 +1987,7 @@
 					
 				//graph item label if ticks are not set
 				if(
-					_.blob_text
+					_.has_text
 				){
 
 					// pie polyline
@@ -1983,7 +2031,9 @@
 
 					_.enter_blob_text = _.blob_text
 						.enter()
-						.append('text');
+						.append('text')
+						.attr('line-height',1.25)
+						.attr('dominant-baseline','middle');
 
 					if(args.type == 'pie' && args.piLabelStyle == 'within' && args.colorPalette.length > 0){
 						_.enter_blob_text.attr('stroke',function(dis){
@@ -2035,9 +2085,9 @@
 									
 
 										if( keyKey == 0 ){
-											toReturn = '.75em';
+											toReturn = args.nameSize+'em';
 										}else{
-											toReturn = '1.75em';
+											toReturn = args.valueSize+'em';
 										}	
 									}
 
@@ -2082,13 +2132,13 @@
 
 
 					//set a minimum length for graph items to offset its text bois. doesnt matter which data key is on the axis we just want the width or height of the graph item on the given axis
-					_.mLength = function(axisString,i){
+					_.m_length = function(axisString,i){
 						
 						var value = 0;
 
-							length = _.enter_blob_text ? _.enter_blob_text.nodes()[i].getBoundingClientRect()[ getDimension( axisString ) ] : 0
+							length = _.enter_blob_text ? (_.enter_blob_text.nodes()[i].getBoundingClientRect()[ getDimension( axisString ) ] + (_.text_base_size * 2.25)) : 0
 							
-							value = length + _.text_offset;
+							value = length + _.text_base_size;
 
 						return value;
 					};
@@ -2106,11 +2156,11 @@
 										&& (keyKey  == 1)
 										&& (
 											
-											(parseFloat(getBlobSize(getAxisString(keyKey),dis,i,false)) < _.mLength(getAxisString(keyKey),i))
+											(parseFloat(getBlobSize(getAxisString(keyKey),dis,i,false)) < _.m_length(getAxisString(keyKey),i))
 											
 											|| (
 												(args.colorPalette.length > 0)
-												&& (parseFloat(getBlobSize(getAxisString(keyKey),dis,i,false)) >= _.mLength(getAxisString(keyKey),i))
+												&& (parseFloat(getBlobSize(getAxisString(keyKey),dis,i,false)) >= _.m_length(getAxisString(keyKey),i))
 												&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
 											)
 										)
@@ -2256,7 +2306,7 @@
 
 			
 				// relative to 1em supposedly idk
-				_.text_offset = parseFloat(args.fontSize);
+				_.text_base_size = parseFloat(args.fontSize);
 				
 				// heck if src key exists
 				_.data = (function(){
@@ -2336,6 +2386,7 @@
 
 					// setup padding and sizes
 					_.legend_size = 30;
+					
 					_.margin = {
 						top:	args.margin[0] || args.margin,
 						left:	args.margin[3] || args.margin[1] ||  args.margin[0] || args.margin,
@@ -2345,8 +2396,8 @@
 					
 					
 					
-					_.outerWidth = args.width + _.margin.left + _.margin.right;
-					_.outerHeight = args.height + _.margin.top + _.margin.bottom;
+					_.outer_width = args.width + _.margin.left + _.margin.right;
+					_.outer_height = args.height + _.margin.top + _.margin.bottom;
 
 
 
@@ -2373,10 +2424,10 @@
 							return  ((_.margin.top / args.height) * 50) + '%'
 						})
 						.style('padding-left', function(){
-							return  ((_.margin.left / args.width) * 100) + '%'
+							return  ((_.margin.left / _.outer_width) * 100) + '%'
 						})
 						.style('padding-right', function(){
-							return  ((_.margin.right / args.width) * 100) + '%'
+							return  ((_.margin.right / _.outer_width) * 100) + '%'
 						})
 						.transition(_.duration)
 						.styleTween('opacity',function(){return getInterpolation(0,1)});
@@ -2386,11 +2437,11 @@
 						.attr('class', prefix + 'wrapper')
 						.style('position','relative')
 						.style('padding-bottom',function(){
-							return (( _.outerHeight / _.outerWidth) * 100) + '%';
+							return (( _.outer_height / _.outer_width) * 100) + '%';
 						})
 						.style('position','relative');
 
-					var dimensionString = '0 0 '+ _.outerWidth +' ' + _.outerHeight;
+					var dimensionString = '0 0 '+ _.outer_width +' ' + _.outer_height;
 					
 					//check if its scrolled on the place it should be at
 					_.dv_init = false;
@@ -2424,8 +2475,8 @@
 									.attr('viewBox', dimensionString)
 									.attr("preserveAspectRatio", "xMidYMid meet")
 									.attr('xml:space','preserve')
-									.attr('width',_.outerWidth)
-									.attr('height',_.outerHeight)
+									.attr('width',_.outer_width)
+									.attr('height',_.outer_height)
 									;
 
 									
@@ -2495,6 +2546,14 @@
 
 									console.warn(selector+' set canvas width and or height may be too small.\n Tip: The given height and width are not absolute and act more like aspect ratios. svgs are responsive and will shrink along with content.');
 
+								}
+
+								if(
+									(JSON.stringify(args.margin) == JSON.stringify(defaults.margin))
+									&& (args.xLabel || args.yLabel)
+									&& (args.xTicks || args.yTicks)
+								){
+									console.warn(selector+' text overlap is imminent. margins may need to be modified');
 								}
 
 								//offset graph for pie because its origin is in the center. right in the heart :'>
@@ -2569,9 +2628,13 @@
 								console
 								renderGraph(_.data);
 								
+								// _.resize = null;
 
 								window.addEventListener("resize", function(){
-									renderGraph(_.data);
+									// clearTimeout(_.resize);
+									// _.resize = setTimeout(function(){
+										renderGraph(_.data);
+									// },500);
 								});
 								
 							},args.delay);

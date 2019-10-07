@@ -33,6 +33,7 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 
 	&-svg {
 		width:100%!important;
+		max-width:100%;
 		height:auto;
 	}
 

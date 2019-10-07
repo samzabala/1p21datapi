@@ -9,11 +9,11 @@
 	"use strict";
 	var _1p21 = window._1p21 || {};
 
-	var runValidation = function(field,isInvalid,alert,console){
+	var runValidation = function(field,isInvalid,alertString,consoleString){
 		if( isInvalid ){
 			field.classList.add('invalid');
-			alert(alert)
-			throw new Error (console);
+			alert(alertString);
+			throw new Error(consoleString);
 		}else{
 			field.classList.remove('invalid');
 		}
@@ -55,10 +55,31 @@
 							break;
 
 						case 'margin':
+							toReturn = field.value;
+							isInvalid = false;
+							
+							field.value.split(',').forEach(function(margin){
+								if(!isInvalid){
+									var marginParsed = parseFloat(margin);
+									var marginInvalid = Number.isNaN(marginParsed);
+
+									if(marginInvalid){
+										isInvalid = true;
+									}
+								}
+							});
+
+							alertString = 'one or more margin values was invalid. Must be a number';
+							consoleString = field.name + ' was invalid';
+
+							break;
 						case 'font_size':
+						case 'name_size':
+						case 'value_size':
 						case 'width':
 						case 'transition':
 						case 'delay':
+
 							toReturn = parseFloat(field.value);
 							isInvalid = Number.isNaN(toReturn);
 							alertString = field.name.replace('_',' ') + ' value is invalid';
