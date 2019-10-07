@@ -98,11 +98,18 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
 
 		foreach($data_visual['src'] as $property=>$value){
+			if(
+				$property !== 'file'
+				&& $property !== 'url'
+				&& $property !== 'text'
+				&& $property !== 'row'
+				&& $property !== 'row_m'
+			){
 
-			// if($value){
-				$data_src_arr[$property] = $data_visual['src'][$property];
-			// }
-
+				// if($value){
+					$data_src_arr[$property] = $data_visual['src'][$property];
+				// }
+}
 		}
 
 
@@ -181,22 +188,17 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 		}
 
 
-
+		echo !($data_visual['multiple']) ? 'no multi' : 'ya multi';
 
 		// parse and remove itemz we dont need
 
-		//remove based on multiple
-		echo 'yieie';
-
-		if( !isset($data_visual['multiple']) ){
+		//remove based on multipl
+		if( !isset($data_visual['multiple']) ||  !$data_visual['multiple'] ){
 			//src
-			echo 'mayo igdi';
 				unset($data_visual['src']['reverse_multiple']);
 				unset($data_visual['src']['key_multiple']);
+			//
 
-		}else{
-			echo 'buray';
-			var_dump($data_visual['name_is_num']);
 		}
 
 
@@ -208,7 +210,7 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
 		//validate format 
 
-		if( !isset($data_visual['name_is_num']) ){
+		if( isset($data_visual['name_is_num']) ){
 			unset($data_visual['format'][0]['divider']);
 		}
 
