@@ -95,6 +95,17 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
 		//also parse sources. yuckeeee
 		$data_src_arr = array();
+
+
+		foreach($data_visual['src'] as $property=>$value){
+
+			// if($value){
+				$data_src_arr[$property] = $data_visual['src'][$property];
+			// }
+
+		}
+
+
 		$data_src_arr['type'] = $data_visual['src']['type'];
 		$data_src_arr['key'] = $data_visual['src']['key'];
 
@@ -173,6 +184,22 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
 
 		// parse and remove itemz we dont need
+
+		//remove based on multiple
+		echo 'yieie';
+
+		if( !isset($data_visual['multiple']) ){
+			//src
+			echo 'mayo igdi';
+				unset($data_visual['src']['reverse_multiple']);
+				unset($data_visual['src']['key_multiple']);
+
+		}else{
+			echo 'buray';
+			var_dump($data_visual['name_is_num']);
+		}
+
+
 		//remove based on type
 		if($data_visual['type'] !== 'line' && $data_visual['type'] !== 'scatter'){
 			unset($data_visual['name_is_num']);
