@@ -1,5 +1,5 @@
 /*!
-* 1point21 Data Vizualiser Version 2.0.0
+* 1point21 Data Vizualiser Version 1.2.0.2
 * Render Script
 * @license yes
 * DO NOT EDIT min.js
@@ -281,7 +281,7 @@
 
 			
 
-			//2.0.0 new args
+			//1.2.0.2 new args
 				//src
 					srcMultiple: false,
 					srcReverse: false,
@@ -317,14 +317,35 @@
 		/*****************************************************************************
 		 * MAP BOOL PROPERTIES FOR LESS EXTENSIVE LOGICS
 		*****************************************************************************/
+			
+
+			_.has_text = (function(){
+
+				if(
+					(
+						args.type !== 'pie'
+						&& args.type !== 'scatter'
+						&& ( !args.xTicks || !args.yTicks )
+					)
+					|| (
+						args.type == 'pie'
+						&& ( args.piLabelStyle || !args.colorLegend )
+					)
+				){
+					return true
+				}else{
+					return false;
+				}
+
+			}())
+		
 			_.has_both_text_on_blob = (function(){
 
 				if(
 					_.has_text
 					&& (
 						(
-							args.type !== 'pie'
-							&& (args.type !== 'scatter')
+							(args.type !== 'pie')
 							&& (!args.xTicks && !args.yTicks)
 						)
 						|| (
@@ -338,25 +359,11 @@
 				}else{
 					return false;
 				}
+
 			}());
 
-			_.has_text = (function(){
-				if(
-					(
-						args.type !== 'pie'
-						&& (args.type !== 'scatter')
-						&& ( !args.xTicks || !args.yTicks )
-					)
-					|| (
-						args.type == 'pie'
-						&& ( args.piLabelStyle || !args.colorLegend )
-					)
-				){
-					return true
-				}else{
-					return false;
-				}
-			}())
+			//for calculating the height and offset for spacing on text elements by the blob items vertically. value is sum of both sides
+			_.text_padding = 2.25;
 
 		/*****************************************************************************
 		 * END MAP BOOL PROPERTIES FOR LESS EXTENSIVE LOGICS
@@ -806,40 +813,28 @@
 
 				var shift = '0em';
 
-				if(
-					(
-						args.type !== 'pie'
-					)
-					|| (
-						args.type == 'pie'
-						&& !args.colorLegend
-						&& args.piLabelStyle !== null
-					)
-				){
+				if( _.has_both_text_on_blob ){
 
 
-				if(
-					(coordinateAttr == 'y')
-					&& _.has_both_text_on_blob
-				){
-					// calculate height
-					var full_height = _.text_base_size * (args.nameSize + args.valueSize + 2.25) // .5 margin top bottom and between text
-					
-					if( keyKey == 1){
-						// shift = ( ((full_height * -.5) + (args.valueSize * .5) + (_.text_base_size * .5) )  / (_.text_base_size * args.valueSize) ) + 'em'
+					if(
+						(coordinateAttr == 'y')
+						&& _.has_both_text_on_blob
+					){
+						// calculate height
+						var full_height = _.text_base_size * (args.nameSize + args.valueSize + _.text_padding) // .5 margin top bottom and between text
+						
+						if( keyKey == 1){
 
-						shift = ( ((full_height  * -.5) + ( (_.text_base_size * args.valueSize) * .5) + ( _.text_base_size ) )  / (_.text_base_size * args.valueSize) ) + 'em'
-					}else{
-						shift =( ((full_height * .5) - ( (_.text_base_size * args.nameSize) * .5) - ( _.text_base_size ) ) / (_.text_base_size * args.nameSize) ) + 'em'
+							shift = ( ((full_height  * -.5) + ( (_.text_base_size * args.valueSize) * .5) + ( _.text_base_size ) )  / (_.text_base_size * args.valueSize) ) + 'em'
+						}else{
+							shift =( ((full_height * .5) - ( (_.text_base_size * args.nameSize) * .5) - ( _.text_base_size ) ) / (_.text_base_size * args.nameSize) ) + 'em'
+						}
+
 					}
-					// shift = (keyKey == 1) ? '.375em' : '-1.5em'
-
-
-					console.log(selector, full_height,keyKey,shift);
-				}
 				
 			}
 				
+
 				return shift;
 
 			}
@@ -922,8 +917,8 @@
 							
 
 							if(args[getAxisStringOppo(coordinate)+'Data'] == 0){
-								(coordinate == 'x') ? value = _.text_base_size : value = ( ( _.m_length(coordinate,i) / 2 ) );
-								_.m_length(coordinate,i);
+								value = (coordinate == 'x') ?  _.text_base_size : ( ( _.m_length(coordinate,i) / 2 ) );
+								
 							}
 
 							value *= multiplier;
@@ -989,11 +984,9 @@
 						
 						}
 						
-						return value;
+						return value;//
 
 					};
-
-					initial = initial || false;
 
 					if( keyKey  == 0) {
 
@@ -1009,33 +1002,34 @@
 
 							case 'top':
 
-								offset = (initial && args.type !== 'scatter') ? getBlobOrigin(coordinate,dis,i) : getBlobSize(coordinate,dis,i);
+								if(!initial && args.type !== 'scatter'){
+									offset = getBlobSize(coordinate,dis,i)
+								}
 								break;
 
 							case 'right':
 							case 'bottom':
+								if(
+									initial && args.type !== 'scatter'
+									|| (
+										args[getAxisStringOppo(coordinate)+'Align'] == 'right'
+										&& args.type == 'bar'
+									)
+								) {
 
-									if(
-										initial && args.type !== 'scatter'
-										|| (
-											args[getAxisStringOppo(coordinate)+'Align'] == 'right'
-											&& args.type == 'bar'
-										)
-									) {
+									offset = args[getDimension(coordinate)];
 
-										offset = args[getDimension(coordinate)];
+								}else{
 
-									}else{
+									offset = args[getDimension(coordinate)] - getBlobSize(coordinate,dis,i);
+									
+								}
 
-										offset = args[getDimension(coordinate)] - getBlobSize(coordinate,dis,i);
-										
-									}
-
-									break;
+								break;
 
 							case 'left':
 
-								if(args.type !== 'bar') {
+								if(!initial && args.type !== 'bar') {
 									offset = getBlobSize(coordinate,dis,i);
 								}
 
@@ -1043,9 +1037,9 @@
 
 					}
 
-					console.log(args.type,shifter(),shifterOut());
-
 					offset += shifter() + shifterOut();
+
+					(args.type == 'line') && console.log(selector,dis.shittiness,shifter(), shifterOut(),coordinate+': '+offset)
 					
 				}
 				
@@ -1751,7 +1745,7 @@
 					});
 				}
 					
-
+				//blob exit
 				if(!(args.type == 'line' && !args.linePoints)){
 
 
@@ -1767,45 +1761,41 @@
 						.transition(_.duration)
 						.attr('fill','red')
 						.remove();
-						
+				}
 
-					if( _.has_text ){
+				//text exit
+				if( _.has_text ){
 
-						_.blob_text = _.container_graph.selectAll('text.'+prefix + 'graph-item.graph-item-text')
+					_.blob_text = _.container_graph.selectAll('text.'+prefix + 'graph-item.graph-item-text')
+						.data(_.data,function(dis){
+							return deepGet(dis,args.key[0])
+						});
+
+				
+					_.blob_text.exit()
+						.transition(_.duration)
+						.attr('fill','red')
+						.remove();
+					
+					if(args.type == 'pie' && args.piLabelStyle == 'linked'){
+
+						_.blob_text_link = _.container_graph.selectAll('polyline.'+prefix + 'graph-item.graph-item-link')
 							.data(_.data,function(dis){
 								return deepGet(dis,args.key[0])
 							});
 
-
-					
-						_.blob_text.exit()
+						_.blob_text_link.exit()
 							.transition(_.duration)
 							.attr('fill','red')
 							.remove();
-						
-						if(args.type == 'pie' && args.piLabelStyle == 'linked'){
 
-							_.blob_text_link = _.container_graph.selectAll('polyline.'+prefix + 'graph-item.graph-item-link')
-								.data(_.data,function(dis){
-									return deepGet(dis,args.key[0])
-								});
-
-							_.blob_text_link.exit()
-								.transition(_.duration)
-								.attr('fill','red')
-								.remove();
-
-						}
 					}
 				}
 
 
-				// //generate the graph boi
-
+				// //generate the graph bitches
 				if(args.type !== 'pie'){
 					
-
-
 					// line graph + fill
 					if(args.type == 'line'){
 						
@@ -2133,14 +2123,16 @@
 
 					//set a minimum length for graph items to offset its text bois. doesnt matter which data key is on the axis we just want the width or height of the graph item on the given axis
 					_.m_length = function(axisString,i){
-						
-						var value = 0;
 
-							length = _.enter_blob_text ? (_.enter_blob_text.nodes()[i].getBoundingClientRect()[ getDimension( axisString ) ] + (_.text_base_size * 2.25)) : 0
-							
-							value = length + _.text_base_size;
+						if(_.has_text){
+							var value = _.text_base_size * (args.nameSize + args.valueSize + _.text_padding);
 
-						return value;
+							if( getDimension( axisString ) == 'width' ) {
+								value = (_.enter_blob_text.nodes()[i].getBoundingClientRect()[ getDimension( axisString ) ] + _.text_base_size);
+							}
+
+							return value;
+						}
 					};
 
 					//continue fucking with text blob
