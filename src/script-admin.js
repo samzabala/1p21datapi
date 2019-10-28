@@ -1,5 +1,5 @@
 /*!
-* 1point21 Data Vizualiser Version 1.2.0.2
+* 1point21 Data Vizualiser Version 2.0.0
 * Admin Script
 * DO NOT EDIT min.js
 * edit its corresponding unminified js file in /src instead
