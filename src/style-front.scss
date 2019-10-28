@@ -137,7 +137,8 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 	}
 	
 	&-fill.no-color,
-	&-no-palette .graph-item-blob {
+	&-no-palette .graph-item-blob,
+	&-no-palette .legend-item-blob {
 		fill: $color-base;
 	}
 	
@@ -203,8 +204,7 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 
 
 	.legend-item-text,
-	&-graph .graph-item-text,
-	.legend-item-blob {
+	&-graph .graph-item-text,{
 		fill: $color-base;
 	}
 
