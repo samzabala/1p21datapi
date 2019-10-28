@@ -1,7 +1,7 @@
 <?php
 
 /********************************************************************************************
-* Render data
+* Render data. to make an array of the settings that are necessary
 *********************************************************************************************/
 
 /*
@@ -66,10 +66,6 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 				$data_visual['settings']['font_size'] =filter_var($data_visual['settings']['font_size'],FILTER_VALIDATE_INT);
 			}
 
-
-			$data_visual['settings']['name_size'] =filter_var($data_visual['settings']['name_size'],FILTER_VALIDATE_FLOAT);
-			$data_visual['settings']['value_size'] =filter_var($data_visual['settings']['value_size'],FILTER_VALIDATE_FLOAT);
-
 			$data_visual['settings']['width'] =filter_var($data_visual['settings']['width'],FILTER_VALIDATE_INT);
 			$data_visual['settings']['height'] =filter_var($data_visual['settings']['height'],FILTER_VALIDATE_INT);
 
@@ -109,7 +105,7 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 				// if($value){
 					$data_src_arr[$property] = $data_visual['src'][$property];
 				// }
-}
+			}
 		}
 
 
@@ -178,6 +174,7 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 		}
 		
 
+
 			
 		if( $data_visual['type'] !== 'scatter' ){
 			unset($data_visual['key']['area']);
@@ -195,7 +192,7 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 		//remove based on multipl
 		if( !isset($data_visual['multiple']) ||  !$data_visual['multiple'] ){
 			//src
-				unset($data_visual['src']['reverse_multiple']);
+				unset($data_visual['reverse']['multiple']);
 				unset($data_visual['src']['key_multiple']);
 			//
 
@@ -260,6 +257,7 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 			//no data means it fucks with the name. no need for legegends
 			if( !isset($data_visual['key']['color']) || $data_visual['key']['color'] == null){
 				unset($data_visual['color']['legend']);
+				unset($data_visual['reverse']['color']);
 			}
 
 			if($data_visual['type'] !== 'line') {

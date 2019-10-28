@@ -32,9 +32,7 @@
 				datum_keys = [0,1,'color','area'], 
 
 				//yeeee
-				prefix = 'data-visualizer-', 
-
-				label_size = '.75em',
+				prefix = 'data-visualizer-',
 
 
 				//get the length attribute to associate with the axis bro
@@ -158,7 +156,7 @@
 			
 
 			// break;
-			throw new Error('D3 not supported');
+			throw new Error('D3 not supported by browser');
 		}
 
 		//stor variables initiated after sucessful data call + parameter declaration set as something_`axis` so its easier to tell apart which shit is set by hooman and which one javascript sets up for hooman
@@ -176,25 +174,31 @@
 				transition: 1500,
 				delay: 250,
 				fontSize: '16px',
-				nameSize: .75,
-				valueSize: 1.75,
 				
 
 			// content
 				title:'',
 				description:'',
-			//src
+			
+				//src
 				srcType: '',
 				srcPath: '',
 				srcKey: null,
+
+			//text
+				textNameSize: .75,
+				textValueSize: 1.25,
+				textTicksSize: .75,
+				textLegendSize: .75,
+				textOutside: false,
 				
 			// fields
 				type: 'bar',
 				nameIsNum: false,
 
 				//keys
-					key: {
-						0:0,
+				key: {
+					0:0,
 					1: 1,
 					color: null,
 					area: null
@@ -225,6 +229,7 @@
 					areaOpacity: .8,
 		
 				//kulay
+					colorBackground: '#eee',
 					colorPalette : [],
 					colorData: null,
 					colorLegend: false,
@@ -284,8 +289,12 @@
 			//2.0.0 new args
 				//src
 					srcMultiple: false,
-					srcReverse: false,
-					srcReverseMultiple: false,
+					reverse: {
+						0: false,
+						1: false,
+						color: false,
+						multiple: false
+					},
 					srcKeyMultiple: null,
 
 				//bar
@@ -322,14 +331,17 @@
 			_.has_text = (function(){
 
 				if(
-					(
-						args.type !== 'pie'
-						&& args.type !== 'scatter'
-						&& ( !args.xTicks || !args.yTicks )
-					)
-					|| (
-						args.type == 'pie'
-						&& ( args.piLabelStyle || !args.colorLegend )
+					!args.toolTip
+					&& (
+						(
+							args.type !== 'pie'
+							&& args.type !== 'scatter'
+							&& ( !args.xTicks || !args.yTicks )
+						)
+						|| (
+							args.type == 'pie'
+							&& ( args.piLabelStyle || !args.colorLegend )
+						)
 					)
 				){
 					return true
@@ -589,6 +601,17 @@
 
 						}
 
+
+
+						if(args.reverse[keyKey] && keyKey !== 'area') {
+							// dont use .reverse because it's a piece of shit
+							var domainReverse = [];
+							for (var i = domain.length - 1; i >= 0; i--) {
+								domainReverse.push(domain[i]);
+							}
+							domain =  domainReverse;
+						}
+
 						break;
 
 					}
@@ -821,13 +844,13 @@
 						&& _.has_both_text_on_blob
 					){
 						// calculate height
-						var full_height = _.text_base_size * (args.nameSize + args.valueSize + _.text_padding) // .5 margin top bottom and between text
+						var full_height = _.text_base_size * (args.textNameSize + args.textValueSize + _.text_padding) // .5 margin top bottom and between text
 						
 						if( keyKey == 1){
 
-							shift = ( ((full_height  * -.5) + ( (_.text_base_size * args.valueSize) * .5) + ( _.text_base_size ) )  / (_.text_base_size * args.valueSize) ) + 'em'
+							shift = ( ((full_height  * -.5) + ( (_.text_base_size * args.textValueSize) * .5) + ( _.text_base_size ) )  / (_.text_base_size * args.textValueSize) ) + 'em'
 						}else{
-							shift =( ((full_height * .5) - ( (_.text_base_size * args.nameSize) * .5) - ( _.text_base_size ) ) / (_.text_base_size * args.nameSize) ) + 'em'
+							shift =( ((full_height * .5) - ( (_.text_base_size * args.textNameSize) * .5) - ( _.text_base_size ) ) / (_.text_base_size * args.textNameSize) ) + 'em'
 						}
 
 					}
@@ -1038,8 +1061,6 @@
 					}
 
 					offset += shifter() + shifterOut();
-
-					(args.type == 'line') && console.log(selector,dis.shittiness,shifter(), shifterOut(),coordinate+': '+offset)
 					
 				}
 				
@@ -2023,13 +2044,21 @@
 						.enter()
 						.append('text')
 						.attr('line-height',1.25)
-						.attr('dominant-baseline','middle');
+						.attr('dominant-baseline','middle')
+						.attr('stroke',function(dis){
+								if(
+									args.type == 'pie'
+									&& args.piLabelStyle == 'within'
+									&& args.colorPalette.length > 0 
+								){
+									return _.the_color(deepGet(dis,args.key.color))
 
-					if(args.type == 'pie' && args.piLabelStyle == 'within' && args.colorPalette.length > 0){
-						_.enter_blob_text.attr('stroke',function(dis){
-							return _.the_color(deepGet(dis,args.key.color))
-						})
-					}
+								}else if( args.type !== 'bar' && args.type !== 'pie'){
+									return args.colorBackground;
+								}
+						});
+
+					//stroke width
 
 					//append content right away so we can calculate where shit offset
 					[0,1].forEach(function(keyKey){
@@ -2075,9 +2104,9 @@
 									
 
 										if( keyKey == 0 ){
-											toReturn = args.nameSize+'em';
+											toReturn = args.textNameSize+'em';
 										}else{
-											toReturn = args.valueSize+'em';
+											toReturn = args.textValueSize+'em';
 										}	
 									}
 
@@ -2125,7 +2154,7 @@
 					_.m_length = function(axisString,i){
 
 						if(_.has_text){
-							var value = _.text_base_size * (args.nameSize + args.valueSize + _.text_padding);
+							var value = _.text_base_size * (args.textNameSize + args.textValueSize + _.text_padding);
 
 							if( getDimension( axisString ) == 'width' ) {
 								value = (_.enter_blob_text.nodes()[i].getBoundingClientRect()[ getDimension( axisString ) ] + _.text_base_size);
@@ -2140,42 +2169,46 @@
 						.attr('class', function(dis,i){
 							var classString =  prefix + 'graph-item graph-item-text';
 							
-							[0,1].forEach(function(keyKey){
-								
-								if( 
-									(
-										(args.type == 'bar')
-										&& (keyKey  == 1)
-										&& (
-											
-											(parseFloat(getBlobSize(getAxisString(keyKey),dis,i,false)) < _.m_length(getAxisString(keyKey),i))
-											
-											|| (
-												(args.colorPalette.length > 0)
-												&& (parseFloat(getBlobSize(getAxisString(keyKey),dis,i,false)) >= _.m_length(getAxisString(keyKey),i))
-												&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
-											)
+							if( 
+								(
+									(args.type == 'bar')
+									&& (
+										
+										(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) < _.m_length(getAxisString(1),i))
+										&& !isDark(args.colorBackground)
+										
+										|| (
+											(args.colorPalette.length > 0)
+											&& (parseFloat(getBlobSize(getAxisString(1),dis,i,false)) >= _.m_length(getAxisString(1),i))
+											&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
 										)
 									)
-									|| (args.type == 'line' || args.type == 'scatter')
-									|| (
-										args.type == 'pie'
-										&& (
-											(
-												args.piLabelStyle == 'within'
-												&& (args.colorPalette.length > 0)
-												&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
-											)
-											|| (
-												args.piLabelStyle == 'linked'
-											)
+								)
+								|| (
+									(args.type == 'line' || args.type == 'scatter')
+									&& !isDark(args.colorBackground)
+								)
+								|| (
+									args.type == 'pie'
+									&& (
+										(
+											args.piLabelStyle == 'within'
+											&& (args.colorPalette.length > 0)
+											&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
+										)
+										|| (
+											args.piLabelStyle == 'linked'
+											&& !isDark(args.colorBackground)
 										)
 									)
-								){
-									classString +=  ' dark';
-								}
-							});
-							
+								)
+							){
+								classString +=  ' dark';
+							}else{
+
+								classString +=  ' light';
+							}
+
 							return classString;
 						})
 						.transition(_.duration)
@@ -2215,7 +2248,7 @@
 
 					_.container_legend = _.container.append('g')
 						.attr('class',prefix+'legend')
-						.attr('font-size',label_size);
+						.attr('font-size', args.textLegendSize+'em');
 						
 						
 					_.dom_color.forEach(function(key,i){
@@ -2225,8 +2258,8 @@
 
 						_.legend.append('rect')
 						.attr('class','legend-item-blob')
-							.attr('width',_.legend_size * .66)
-							.attr('height',_.legend_size * .66)
+							.attr('width',_.legend_size * .75)
+							.attr('height',_.legend_size * .75)
 							.attr('fill',_.the_color(key) );
 
 						_.legend.append("text")
@@ -2274,7 +2307,10 @@
 			var init = function(retrievedData){
 				
 				//add initialized class so we know the boi been fucked na
-				d3.select(selector).classed(prefix+'initialized' ,true )
+				_.the_container = d3.select(selector);
+				
+				_.the_container.classed(prefix+'initialized'+ ( isDark(args.colorBackground) ? ' '+prefix+'dark' : '' ) ,true )
+					.style('background-color',args.colorBackground)
 
 				_.data = null;
 
@@ -2344,8 +2380,6 @@
 				
 				
 					//sort data 0 so that it doesnt go forward then backward then forward on the graph which is weird
-
-					
 					if(args.nameIsNum == true){
 						
 						var sortable = [];
@@ -2362,6 +2396,8 @@
 
 						_.data = sortable;
 					}
+
+					console.log(selector,_.data);
 					
 
 					// fallback + validate color data
@@ -2377,7 +2413,7 @@
 
 
 					// setup padding and sizes
-					_.legend_size = 30;
+					_.legend_size = (args.textLegendSize * parseFloat(args.fontSize) * 2);
 					
 					_.margin = {
 						top:	args.margin[0] || args.margin,
@@ -2507,13 +2543,13 @@
 									// container for axis
 									_.container_rule = _.container.append('g')
 										.attr('class', prefix + 'axis')
-										.attr('font-size',label_size);
+										.attr('font-size',args.textTicksSize+'em');
 										
 									//kung may grid gibo kang grid
 									if( args.xGrid || args.yGrid ){
 										_.container_grid = _.container.append('g')
 										.attr('class', prefix + 'grid')
-										.attr('font-size',label_size);
+										.attr('font-size',args.textTicksSize+'em');
 									}
 								}
 
@@ -2545,7 +2581,7 @@
 									&& (args.xLabel || args.yLabel)
 									&& (args.xTicks || args.yTicks)
 								){
-									console.warn(selector+' text overlap is imminent. margins may need to be modified');
+									console.debug(selector+' text may overlap. margins may need to be modified');
 								}
 
 								//offset graph for pie because its origin is in the center. right in the heart :'>
@@ -2617,7 +2653,7 @@
 
 								});
 
-								console
+								
 								renderGraph(_.data);
 								
 								// _.resize = null;

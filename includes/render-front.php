@@ -1,6 +1,6 @@
 <?php
 /********************************************************************************************
-* Render markup
+* Render markup. to make that fucking array front end friendly
 *********************************************************************************************/
 
 function _1p21_dv_validate_boolean($value){
@@ -137,8 +137,21 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
 											$parsed_keys_arr_string = implode(',',array_map(
 												function($value,$key){
-													
 													return $key.' :\'' . _1p21_parse_data_key($value) . '\'';
+												},
+												$value,
+												array_keys($value)
+											));
+											$render .= _1p21_dv_dashes_to_camel_case($attribute) .": {{$parsed_keys_arr_string}},\n";
+
+											break;
+
+										case 'reverse':
+
+											$parsed_keys_arr_string = implode(',',array_map(
+												function($value,$key){
+													$parsed_boolean = !$value ? 'false' : 'true';
+													return $key.' : ' . $parsed_boolean;
 												},
 												$value,
 												array_keys($value)
@@ -163,24 +176,37 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 											foreach($value as $sub_setting => $sub_value){
 										
 												//they are all strings
-												
-												if($sub_setting == 'data'){
+
+												switch($sub_setting){
+													case 'data': 
+
+														if($value['type'] == 'rows' || $value['type'] == 'text'){
+															$parsed_src_path = "window.document.location + '#{$wrapper_id}-data'";
+														}else{
+															$parsed_src_path = '\''.$sub_value.'\'';
+
+														}
+									
+														$render .= "srcPath: {$parsed_src_path},\n";
+
+														break;
+
+													case 'multiple':
+														$parsed_value = (!$sub_value) ? 'false' : 'true';
+														$render .= _1p21_dv_dashes_to_camel_case($attribute.'_'.$sub_setting). ": {$parsed_value},\n";
+
+														break;
 													
-													if($value['type'] == 'rows' || $value['type'] == 'text'){
-														$parsed_src_path = "window.document.location + '#{$wrapper_id}-data'";
-													}else{
-														$parsed_src_path = '\''.$sub_value.'\'';
+													case 'key':
 
-													}
-								
-													$render .= "srcPath: {$parsed_src_path},\n";
-												}elseif($sub_setting == 'key'){
+														$parsed_value = _1p21_parse_data_key($sub_value);
+														$render .= _1p21_dv_dashes_to_camel_case($attribute.'_'.$sub_setting). ":'".$parsed_value."',\n";
 
-													$parsed_value = _1p21_parse_data_key($sub_value);
-													$render .= _1p21_dv_dashes_to_camel_case($attribute.'_'.$sub_setting). ":'".$parsed_value."',\n";
+														break;
 
-												}else{
-													$render .= _1p21_dv_dashes_to_camel_case($attribute.'_'.$sub_setting). ":'".$sub_value."',\n";
+													default:
+													
+														$render .= _1p21_dv_dashes_to_camel_case($attribute.'_'.$sub_setting). ":'".$sub_value."',\n";
 												}
 											}
 
@@ -206,8 +232,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 												}
 											}
 											break;
-										
-											
+
 										case 'x':
 										case 'y':
 										case 'color':
@@ -228,18 +253,19 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 												$array_items_are_strings = array();
 
 											switch($attribute){
+												
+
+												case 'x':
+												case 'y':
+													$string_values = array('align','label');
+													$boolean_values = array('ticks','grid');
+													break;
 
 												case 'color':
 													$array_values_from_array = array('palette');
 														$array_items_are_strings = array('palette');
 													$boolean_values = array('legend');
 													$string_values = array('background');
-													break;
-
-												case 'x':
-												case 'y':
-													$string_values = array('align','label');
-													$boolean_values = array('ticks','grid');
 													break;
 
 												case 'line':

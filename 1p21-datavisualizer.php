@@ -36,8 +36,6 @@ $_1p21_dv['defaults'] = array(
 	// advanced
 		// js
 			'font_size' => null,
-			'name_size' => null,
-			'value_size' => null,
 			'transition' => null, //duh
 			'delay' => null, //duh
 );
