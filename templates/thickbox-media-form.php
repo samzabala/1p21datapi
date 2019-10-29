@@ -89,27 +89,14 @@
 
 		
 		<h3>Advanced Options</h3>
-		<div class="_1p21_dv-col _1p21_dv-col-3">
+		<div class="_1p21_dv-col _1p21_dv-col-2">
+
 			<div class="_1p21_dv-field">
 				<label for="_1p21_dv-font_size">Font Size (px)</label>	
 				<div class="_1p21_dv-input-contatiner">
 					<input type="number" placeholder="16" name="font_size" class="_1p21_dv-input" id="_1p21_dv-font_size">
 				</div>
 			</div>
-			<div class="_1p21_dv-field">
-				<label for="_1p21_dv-name_size">Name Size (em)</label>	
-				<div class="_1p21_dv-input-contatiner">
-					<input type="number" placeholder="2.5" name="name_size" class="_1p21_dv-input" id="_1p21_dv-name_size">
-				</div>
-			</div>
-			<div class="_1p21_dv-field">
-				<label for="_1p21_dv-value_size">Value Size (em)</label>	
-				<div class="_1p21_dv-input-contatiner">
-					<input type="number" placeholder="16" name="value_size" class="_1p21_dv-input" id="_1p21_dv-value_size">
-				</div>
-			</div>
-		</div>
-		<div class="_1p21_dv-col _1p21_dv-col-2">
 			<div class="_1p21_dv-field">
 				<label for="_1p21_dv-transition">Transition (milliseconds)</label>	
 				<div class="_1p21_dv-input-contatiner">

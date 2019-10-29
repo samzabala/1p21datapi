@@ -733,7 +733,7 @@ if layout is set to line, this will be applied to plot points and will override 
 					'label' => 'Name Data',
 					'name' => '0',
 					'type' => 'true_false',
-					'instructions' => '',
+					'instructions' => 'Reverse order of name data',
 					'required' => 0,
 					'conditional_logic' => array(
 						array(
@@ -759,7 +759,7 @@ if layout is set to line, this will be applied to plot points and will override 
 					'label' => 'Value Data',
 					'name' => '1',
 					'type' => 'true_false',
-					'instructions' => '',
+					'instructions' => 'Reverse value data',
 					'required' => 0,
 					'conditional_logic' => array(
 						array(
@@ -785,7 +785,7 @@ if layout is set to line, this will be applied to plot points and will override 
 					'label' => 'Color Data',
 					'name' => 'color',
 					'type' => 'true_false',
-					'instructions' => '',
+					'instructions' => 'Reverse order of color category data',
 					'required' => 0,
 					'conditional_logic' => array(
 						array(
@@ -811,7 +811,7 @@ if layout is set to line, this will be applied to plot points and will override 
 					'label' => 'Multiple Data',
 					'name' => 'multiple',
 					'type' => 'true_false',
-					'instructions' => '',
+					'instructions' => 'Reverse order of datasets',
 					'required' => 0,
 					'conditional_logic' => array(
 						array(
@@ -2130,8 +2130,69 @@ if layout is set to line, this will be applied to plot points and will override 
 			),
 		),
 		array(
+			'key' => 'field_5db859fd1cf09',
+			'label' => 'Bar Graph Settings',
+			'name' => 'bar',
+			'type' => 'group',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'layout' => 'block',
+			'sub_fields' => array(
+				array(
+					'key' => 'field_5db747a9181fb',
+					'label' => 'Text Outside of Bar',
+					'name' => 'text_out',
+					'type' => 'true_false',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d49b51b576ae',
+								'operator' => '!=',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'bar',
+							),
+							array(
+								'field' => 'field_5d49b81e8a9b1',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'message' => 'Enabling will favor displaying text outside of graph item',
+					'default_value' => 0,
+					'ui' => 0,
+					'ui_on_text' => '',
+					'ui_off_text' => '',
+				),
+			),
+		),
+		array(
 			'key' => 'field_5d542c9d927b3',
-			'label' => 'Line Settings',
+			'label' => 'Line Graph Settings',
 			'name' => 'dv_line',
 			'type' => 'group',
 			'instructions' => '',
@@ -2467,7 +2528,7 @@ if layout is set to line, this will be applied to plot points and will override 
 		),
 		array(
 			'key' => 'field_5d499f4b8f7aa',
-			'label' => 'Pie Settings',
+			'label' => 'Pie Graph Settings',
 			'name' => 'dv_pi',
 			'type' => 'group',
 			'instructions' => '',
@@ -2977,33 +3038,6 @@ If the graph type is set to pie or the color data key is left blank, the name da
 					'min' => '',
 					'max' => '',
 					'step' => '.01',
-				),
-				array(
-					'key' => 'field_5db747a9181fb',
-					'label' => 'Outside',
-					'name' => 'outside',
-					'type' => 'true_false',
-					'instructions' => '',
-					'required' => 0,
-					'conditional_logic' => array(
-						array(
-							array(
-								'field' => 'field_5d420a45de26f',
-								'operator' => '==',
-								'value' => 'bar',
-							),
-						),
-					),
-					'wrapper' => array(
-						'width' => '',
-						'class' => '',
-						'id' => '',
-					),
-					'message' => 'Enabling will favor displaying text outside of graph item',
-					'default_value' => 0,
-					'ui' => 0,
-					'ui_on_text' => '',
-					'ui_off_text' => '',
 				),
 			),
 		),

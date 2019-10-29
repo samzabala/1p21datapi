@@ -190,7 +190,6 @@
 				textValueSize: 1.25,
 				textTicksSize: .75,
 				textLegendSize: .75,
-				textOutside: false,
 				
 			// fields
 				type: 'bar',
@@ -265,6 +264,7 @@
 					yDivider: 1,
 
 				//bar
+					barTextOut: false,
 
 				//line
 					lineStyle: '',
@@ -298,7 +298,7 @@
 					srcKeyMultiple: null,
 
 				//bar
-					barDisplayTextOut: false, 
+					barTextOut: false, 
 
 				//kulay
 					colorBackground: '#EEE',
@@ -654,11 +654,11 @@
 
 						if(args[axisString+'Align'] == 'bottom'){
 
-							offset = args[getDimension(axisString,true)] + (_.margin.bottom); 
+							offset = args[getDimension(axisString,true)] + (_.margin.bottom * .875); 
 							
 						}else{
 
-							offset = -(_.margin.top);
+							offset = -(_.margin.top * .875);
 
 						}
 
@@ -666,11 +666,11 @@
 
 						if(args[axisString+'Align'] == 'right'){
 
-							offset = args[getDimension(axisString,true)] + (_.margin.right + _.text_base_size);
+							offset = args[getDimension(axisString,true)] + ((_.margin.right * .875) + _.text_base_size);
 
 						}else{
 
-							offset = -(_.margin.left - _.text_base_size)
+							offset = -((_.margin.left * .875) - _.text_base_size)
 
 						}
 
@@ -912,7 +912,7 @@
 					
 				}else{
 
-					// offset by where the coordinates of the ends of the blob and axis alignment is at
+					// offset by where the coordinates of the ends of the blob and axis alignment is at and spaces it by the dimensions of the text bitches
 					var shifter = function(){
 						var value = 0,
 						multiplier = 1;
@@ -921,14 +921,14 @@
 
 							if(
 								(
-									args.type == 'bar' 
+									(args.type == 'bar' && !args.barTextOut)
 									&& (
 										args[getAxisStringOppo(coordinate)+'Align'] == 'top'
 										|| args[getAxisStringOppo(coordinate)+'Align'] == 'right'
 									)
 								)
 								|| (
-									args.type !== 'bar' 
+									!(args.type == 'bar' && !args.barTextOut)
 									&& (
 										args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
 										|| args[getAxisStringOppo(coordinate)+'Align'] == 'right'
@@ -961,14 +961,14 @@
 
 							if(
 								(
-									args.type == 'bar'
+									(args.type == 'bar' && !args.barTextOut)
 									&& (
 										args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
 										|| args[getAxisStringOppo(coordinate)+'Align'] == 'right'
 									)
 								)
 								|| (
-									args.type !== 'bar' 
+									!(args.type == 'bar' && !args.barTextOut)
 									&& (
 										args[getAxisStringOppo(coordinate)+'Align'] == 'top'
 										|| args[getAxisStringOppo(coordinate)+'Align'] == 'left'
@@ -980,28 +980,41 @@
 
 							if(
 								(
-									(
-										args.type == 'bar'
+									( // it out
+										(args.type == 'bar' && !args.barTextOut)
 										&& parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i)
 									)
-									|| (
-										args.type !== 'bar'
+									|| ( //it in
+										!(args.type == 'bar' && !args.barTextOut)
 										&& parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i))
 									)
 								)
 								&&  keyKey !== 0
 							){
-								if( coordinate == 'x'  && args.type !== 'line'){
+								
+
+									if(
+										coordinate == 'x'
+										&& (
+											args.type !== 'line'
+											&& !(
+												args.type == 'bar'
+												&& args.barTextOut
+											)
+										)
+									){
+										
+										value = getBlobSize(coordinate,dis,i);
+
+
+									}else{
+										value = _.m_length(coordinate,i);
+
+										console.log(selector,value);
+									}
 									
-									value = getBlobSize(coordinate,dis,i);
-
-								}else{
-									value = _.m_length(coordinate,i);
-
-								}
 								
 							}
-							
 
 							value *= multiplier;
 						
@@ -1037,6 +1050,7 @@
 									|| (
 										args[getAxisStringOppo(coordinate)+'Align'] == 'right'
 										&& args.type == 'bar'
+										&& !args.barTextOut
 									)
 								) {
 
@@ -1052,15 +1066,21 @@
 
 							case 'left':
 
-								if(!initial && args.type !== 'bar') {
+								if(
+									!initial && 
+									!( args.type == 'bar' && !args.barTextOut )
+								) {
 									offset = getBlobSize(coordinate,dis,i);
 								}
+								break;
 
 						}
 
 					}
 
 					offset += shifter() + shifterOut();
+					// offset += shifterOut();
+					// offset += shifter();
 					
 				}
 				
@@ -1203,7 +1223,9 @@
 						)
 					){
 						offset = args[getDimension(axisString)];
+
 					}else if( (args.type == 'pie' && axisString == 'y') ){
+						
 						offset = args[getDimension(axisString)] * .5;
 					}
 					
@@ -1795,7 +1817,6 @@
 				
 					_.blob_text.exit()
 						.transition(_.duration)
-						.attr('fill','red')
 						.remove();
 					
 					if(args.type == 'pie' && args.piLabelStyle == 'linked'){
@@ -1807,7 +1828,6 @@
 
 						_.blob_text_link.exit()
 							.transition(_.duration)
-							.attr('fill','red')
 							.remove();
 
 					}
@@ -2053,7 +2073,13 @@
 								){
 									return _.the_color(deepGet(dis,args.key.color))
 
-								}else if( args.type !== 'bar' && args.type !== 'pie'){
+								}else if(
+									(args.type !== 'bar' && args.type !== 'pie')
+									|| (
+										args.type == 'pie'
+										&& args.piLabelStyle == 'linked'
+									)
+								){
 									return args.colorBackground;
 								}
 						});
@@ -2174,13 +2200,38 @@
 									(args.type == 'bar')
 									&& (
 										
-										(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) < _.m_length(getAxisString(1),i))
-										&& !isDark(args.colorBackground)
-										
+										(
+											
+											!args.barTextOut
+											&& (
+												( // it out
+													(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) < _.m_length(getAxisString(1),i))
+													&& !isDark(args.colorBackground)
+												)
+												|| ( //it in
+													(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) >= _.m_length(getAxisString(1),i))
+													&& (args.colorPalette.length > 0)
+													&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
+												)
+											)
+										)
 										|| (
-											(args.colorPalette.length > 0)
-											&& (parseFloat(getBlobSize(getAxisString(1),dis,i,false)) >= _.m_length(getAxisString(1),i))
-											&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
+											args.barTextOut == true
+											&& (
+												( // it out
+													(
+														(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) + _.m_length(getAxisString(1),i)) <=  args[getDimension(getAxisString(1))]
+													)
+													&& !isDark(args.colorBackground)
+												)
+												|| ( //it in
+													(
+														(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) + _.m_length(getAxisString(1),i)) > args[getDimension(getAxisString(1))]
+													)
+													&& (args.colorPalette.length > 0)
+													&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
+												)
+											)
 										)
 									)
 								)
@@ -2203,6 +2254,8 @@
 									)
 								)
 							){
+
+
 								classString +=  ' dark';
 							}else{
 
@@ -2260,7 +2313,8 @@
 						.attr('class','legend-item-blob')
 							.attr('width',_.legend_size * .75)
 							.attr('height',_.legend_size * .75)
-							.attr('fill',_.the_color(key) );
+							.attr('fill',_.the_color(key) )
+							.attr('stroke',args.colorBackground);
 
 						_.legend.append("text")
 							.attr('class','legend-item-text')
@@ -2268,6 +2322,7 @@
 							.attr('dominant-baseline','middle')
 							.attr('x',_.legend_size)
 							.attr('y',_.legend_size * .375)
+							.attr('stroke',args.colorBackground);
 							
 						_.legend
 							.attr("transform", "translate(0, " + (i *  _.legend_size) + ")");
@@ -2396,8 +2451,6 @@
 
 						_.data = sortable;
 					}
-
-					console.log(selector,_.data);
 					
 
 					// fallback + validate color data
@@ -2417,11 +2470,13 @@
 					
 					_.margin = {
 						top:	args.margin[0] || args.margin,
-						left:	args.margin[3] || args.margin[1] ||  args.margin[0] || args.margin,
+						right: 	args.margin[1] || args.margin[0] || args.margin,
 						bottom:	args.margin[2] || args.margin[0] || args.margin,
-						right: args.margin[1] || args.margin[0] || args.margin,
+						left:	args.margin[3] || args.margin[1] || args.margin[0] || args.margin,
 					};
 					
+					
+
 					
 					
 					_.outer_width = args.width + _.margin.left + _.margin.right;

@@ -256,9 +256,14 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
 			//no data means it fucks with the name. no need for legegends
 			if( !isset($data_visual['key']['color']) || $data_visual['key']['color'] == null){
-				unset($data_visual['color']['legend']);
+				// unset($data_visual['color']['legend']);
 				unset($data_visual['reverse']['color']);
 			}
+
+			if($data_visual['type'] !== 'bar') {
+				unset($data_visual['bar']);
+			}
+
 
 			if($data_visual['type'] !== 'line') {
 				unset($data_visual['line']);

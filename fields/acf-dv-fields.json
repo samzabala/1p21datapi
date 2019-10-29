@@ -1021,7 +1021,7 @@
                         "type": "true_false",
                         "value": null,
                         "menu_order": 0,
-                        "instructions": "",
+                        "instructions": "Reverse order of name data",
                         "required": 0,
                         "id": "",
                         "class": "",
@@ -1057,7 +1057,7 @@
                         "type": "true_false",
                         "value": null,
                         "menu_order": 1,
-                        "instructions": "",
+                        "instructions": "Reverse value data",
                         "required": 0,
                         "id": "",
                         "class": "",
@@ -1093,7 +1093,7 @@
                         "type": "true_false",
                         "value": null,
                         "menu_order": 2,
-                        "instructions": "",
+                        "instructions": "Reverse order of color category data",
                         "required": 0,
                         "id": "",
                         "class": "",
@@ -1129,7 +1129,7 @@
                         "type": "true_false",
                         "value": null,
                         "menu_order": 3,
-                        "instructions": "",
+                        "instructions": "Reverse order of datasets",
                         "required": 0,
                         "id": "",
                         "class": "",
@@ -2875,13 +2875,94 @@
             },
             {
                 "ID": 0,
-                "key": "field_5d542c9d927b3",
-                "label": "Line Settings",
-                "name": "dv_line",
+                "key": "field_5db859fd1cf09",
+                "label": "Bar Graph Settings",
+                "name": "bar",
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
                 "menu_order": 13,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "bar",
+                "_prepare": 0,
+                "_valid": 1,
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "ID": 0,
+                        "key": "field_5db747a9181fb",
+                        "label": "Text Outside of Bar",
+                        "name": "text_out",
+                        "prefix": "acf",
+                        "type": "true_false",
+                        "value": null,
+                        "menu_order": 0,
+                        "instructions": "",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d49b51b576ae",
+                                    "operator": "!=",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "bar"
+                                },
+                                {
+                                    "field": "field_5d49b81e8a9b1",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5db859fd1cf09",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "text_out",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "message": "Enabling will favor displaying text outside of graph item",
+                        "default_value": 0,
+                        "ui": 0,
+                        "ui_on_text": "",
+                        "ui_off_text": ""
+                    }
+                ]
+            },
+            {
+                "ID": 0,
+                "key": "field_5d542c9d927b3",
+                "label": "Line Graph Settings",
+                "name": "dv_line",
+                "prefix": "acf",
+                "type": "group",
+                "value": null,
+                "menu_order": 14,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -3360,12 +3441,12 @@
             {
                 "ID": 0,
                 "key": "field_5d499f4b8f7aa",
-                "label": "Pie Settings",
+                "label": "Pie Graph Settings",
                 "name": "dv_pi",
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 14,
+                "menu_order": 15,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -3467,7 +3548,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 15,
+                "menu_order": 16,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -3595,7 +3676,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 16,
+                "menu_order": 17,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -3798,7 +3879,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 17,
+                "menu_order": 18,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -4047,43 +4128,6 @@
                         "min": "",
                         "max": "",
                         "step": ".01"
-                    },
-                    {
-                        "ID": 0,
-                        "key": "field_5db747a9181fb",
-                        "label": "Outside",
-                        "name": "outside",
-                        "prefix": "acf",
-                        "type": "true_false",
-                        "value": null,
-                        "menu_order": 4,
-                        "instructions": "",
-                        "required": 0,
-                        "id": "",
-                        "class": "",
-                        "conditional_logic": [
-                            [
-                                {
-                                    "field": "field_5d420a45de26f",
-                                    "operator": "==",
-                                    "value": "bar"
-                                }
-                            ]
-                        ],
-                        "parent": "field_5db74240181f6",
-                        "wrapper": {
-                            "width": "",
-                            "class": "",
-                            "id": ""
-                        },
-                        "_name": "outside",
-                        "_prepare": 0,
-                        "_valid": 1,
-                        "message": "Enabling will favor displaying text outside of graph item",
-                        "default_value": 0,
-                        "ui": 0,
-                        "ui_on_text": "",
-                        "ui_off_text": ""
                     }
                 ]
             },
@@ -4095,7 +4139,7 @@
                 "prefix": "acf",
                 "type": "tab",
                 "value": false,
-                "menu_order": 18,
+                "menu_order": 19,
                 "instructions": "",
                 "required": 0,
                 "id": "",

@@ -115,11 +115,25 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 	&-label{
 		line,
 		path {
-			stroke: $color-neutral;
+			stroke: $color-base;
+			stroke-opacity: .5;
 		}
 		
 		text {
-			fill: $color-neutral;
+			fill: $color-base;
+			stroke-opacity: .5;
+		}
+
+		#{$prefix}-dark & {
+
+		line,
+		path {
+			stroke: $color-bg;
+		}
+		
+		text {
+			fill: $color-bg;
+		}
 		}
 	}
 
@@ -204,7 +218,7 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 
 
 	.legend-item-text,
-	&-graph .graph-item-text,{
+	&-graph .graph-item-text {
 		fill: $color-base;
 	}
 
@@ -220,7 +234,7 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 		&-link {
 			stroke: $color-base;
 
-			#{$prefix}-dark-text & {
+			#{$prefix}-dark & {
 				stroke: $color-white;
 			}
 		}

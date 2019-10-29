@@ -236,6 +236,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 										case 'x':
 										case 'y':
 										case 'color':
+										case 'bar':
 										case 'line':
 										case 'pi':
 										case 'name':
@@ -266,6 +267,10 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 														$array_items_are_strings = array('palette');
 													$boolean_values = array('legend');
 													$string_values = array('background');
+													break;
+												
+												case 'bar':
+													$boolean_values = array('text_out');
 													break;
 
 												case 'line':
