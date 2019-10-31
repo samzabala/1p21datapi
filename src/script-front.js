@@ -2179,7 +2179,7 @@
 					//set a minimum length for graph items to offset its text bois. doesnt matter which data key is on the axis we just want the width or height of the graph item on the given axis
 					_.m_length = function(axisString,i){
 
-						if(_.has_text){
+						if(_.has_text && _.enter_blob_text){
 							var value = _.text_base_size * (args.textNameSize + args.textValueSize + _.text_padding);
 
 							if( getDimension( axisString ) == 'width' ) {
