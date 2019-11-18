@@ -32,11 +32,8 @@
 				datum_keys = [0,1,'color','area'], 
 
 				//yeeee
-				prefix = 'data-visualizer-', 
+				prefix = 'data-visualizer-',
 
-				label_size = '.75em',
-
-				error_front = "Sorry, unable to display data.<br> Please check the console for more details",
 
 				//get the length attribute to associate with the axis bro
 				getDimension = function(axisString,opposite){
@@ -159,7 +156,7 @@
 			
 
 			// break;
-			throw new Error('D3 not supported');
+			throw new Error('D3 not supported by browser');
 		}
 
 		//stor variables initiated after sucessful data call + parameter declaration set as something_`axis` so its easier to tell apart which shit is set by hooman and which one javascript sets up for hooman
@@ -182,18 +179,25 @@
 			// content
 				title:'',
 				description:'',
-			//src
+			
+				//src
 				srcType: '',
 				srcPath: '',
 				srcKey: null,
+
+			//text
+				textNameSize: .75,
+				textValueSize: 1.25,
+				textTicksSize: .75,
+				textLegendSize: .75,
 				
 			// fields
 				type: 'bar',
 				nameIsNum: false,
 
 				//keys
-					key: {
-						0:0,
+				key: {
+					0:0,
 					1: 1,
 					color: null,
 					area: null
@@ -224,6 +228,7 @@
 					areaOpacity: .8,
 		
 				//kulay
+					colorBackground: '#eee',
 					colorPalette : [],
 					colorData: null,
 					colorLegend: false,
@@ -259,6 +264,7 @@
 					yDivider: 1,
 
 				//bar
+					barTextOut: false,
 
 				//line
 					lineStyle: '',
@@ -280,20 +286,23 @@
 
 			
 
-			//1.2.0.2 new args
-				//settings 
-					nameSize: '1.75em',
-					valueSize: '1.75em',
+			//2.0.0 new args
 				//src
-					srcReverse: false,
-					srcStacked: false,
+					srcMultiple: false,
+					reverse: {
+						0: false,
+						1: false,
+						color: false,
+						multiple: false
+					},
+					srcKeyMultiple: null,
 
 				//bar
-					barDisplayTextOut: false, 
+					barTextOut: false, 
 
 				//kulay
 					colorBackground: '#EEE',
-					colorBy: 'key',
+					colorBy: 'key', //set will influence key.color
 					
 					//advanced
 					colorScheme: null,
@@ -313,6 +322,68 @@
 				args[prop] = arr[prop];
 			}
 		}
+
+		/*****************************************************************************
+		 * MAP BOOL PROPERTIES FOR LESS EXTENSIVE LOGICS
+		*****************************************************************************/
+			
+
+			_.has_text = (function(){
+
+				if(
+					!args.toolTip
+					&& (
+						(
+							args.type !== 'pie'
+							&& args.type !== 'scatter'
+							&& ( !args.xTicks || !args.yTicks )
+						)
+						|| (
+							args.type == 'pie'
+							&& ( args.piLabelStyle || !args.colorLegend )
+						)
+					)
+				){
+					return true
+				}else{
+					return false;
+				}
+
+			}())
+		
+			_.has_both_text_on_blob = (function(){
+
+				if(
+					_.has_text
+					&& (
+						(
+							(args.type !== 'pie')
+							&& (!args.xTicks && !args.yTicks)
+						)
+						|| (
+							args.type == 'pie'
+							&& !args.colorLegend
+							&& args.piLabelStyle !== null
+						)
+					)
+				){
+					return true;
+				}else{
+					return false;
+				}
+
+			}());
+
+			//for calculating the height and offset for spacing on text elements by the blob items vertically. value is sum of both sides
+			_.text_padding = 2.25;
+
+		/*****************************************************************************
+		 * END MAP BOOL PROPERTIES FOR LESS EXTENSIVE LOGICS
+		*****************************************************************************/
+
+
+
+
 
 		/*****************************************************************************
 		 * FUNCTION: getAxisString
@@ -530,6 +601,17 @@
 
 						}
 
+
+
+						if(args.reverse[keyKey] && keyKey !== 'area') {
+							// dont use .reverse because it's a piece of shit
+							var domainReverse = [];
+							for (var i = domain.length - 1; i >= 0; i--) {
+								domainReverse.push(domain[i]);
+							}
+							domain =  domainReverse;
+						}
+
 						break;
 
 					}
@@ -572,11 +654,11 @@
 
 						if(args[axisString+'Align'] == 'bottom'){
 
-							offset = args[getDimension(axisString,true)] + (_.margin.bottom); 
+							offset = args[getDimension(axisString,true)] + (_.margin.bottom * .875); 
 							
 						}else{
 
-							offset = -(_.margin.top);
+							offset = -(_.margin.top * .875);
 
 						}
 
@@ -584,11 +666,11 @@
 
 						if(args[axisString+'Align'] == 'right'){
 
-							offset = args[getDimension(axisString,true)] + (_.margin.right + _.text_offset);
+							offset = args[getDimension(axisString,true)] + ((_.margin.right * .875) + _.text_base_size);
 
 						}else{
 
-							offset = -(_.margin.left - _.text_offset)
+							offset = -((_.margin.left * .875) - _.text_base_size)
 
 						}
 
@@ -754,37 +836,28 @@
 
 				var shift = '0em';
 
-				if(
-					(
-						args.type !== 'pie'
-					)
-					|| (
-						args.type == 'pie'
-						&& !args.colorLegend
-						&& args.piLabelStyle !== null
-					)
-				){
+				if( _.has_both_text_on_blob ){
 
-					if(coordinateAttr == 'y'){
 
-						if(
-							(
-								args.type !== 'pie'
-								&& (!args.xTicks && !args.yTicks)
-							)
-							|| (
-								args.type == 'pie'
-								&& (
-									!args.colorLegend
-								)
-							)
-						){
-							shift = (keyKey == 1) ? '.375em' : '-1.5em'
-						}
+					if(
+						(coordinateAttr == 'y')
+						&& _.has_both_text_on_blob
+					){
+						// calculate height
+						var full_height = _.text_base_size * (args.textNameSize + args.textValueSize + _.text_padding) // .5 margin top bottom and between text
 						
+						if( keyKey == 1){
+
+							shift = ( ((full_height  * -.5) + ( (_.text_base_size * args.textValueSize) * .5) + ( _.text_base_size ) )  / (_.text_base_size * args.textValueSize) ) + 'em'
+						}else{
+							shift =( ((full_height * .5) - ( (_.text_base_size * args.textNameSize) * .5) - ( _.text_base_size ) ) / (_.text_base_size * args.textNameSize) ) + 'em'
+						}
+
 					}
-				}
 				
+			}
+				
+
 				return shift;
 
 			}
@@ -839,23 +912,23 @@
 					
 				}else{
 
-					// offset by where the coordinates of the ends of the blob and axis alignment is at
+					// offset by where the coordinates of the ends of the blob and axis alignment is at and spaces it by the dimensions of the text bitches
 					var shifter = function(){
 						var value = 0,
 						multiplier = 1;
 
-						if(!(initial && args.type !== 'scatter')){
+						if(!(initial || args.type == 'scatter')){
 
 							if(
 								(
-									args.type == 'bar' 
+									(args.type == 'bar' && !args.barTextOut)
 									&& (
 										args[getAxisStringOppo(coordinate)+'Align'] == 'top'
 										|| args[getAxisStringOppo(coordinate)+'Align'] == 'right'
 									)
 								)
 								|| (
-									args.type !== 'bar' 
+									!(args.type == 'bar' && !args.barTextOut)
 									&& (
 										args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
 										|| args[getAxisStringOppo(coordinate)+'Align'] == 'right'
@@ -867,8 +940,8 @@
 							
 
 							if(args[getAxisStringOppo(coordinate)+'Data'] == 0){
-								(coordinate == 'x') ? value = _.text_offset : value = ( ( _.mLength(coordinate,i) / 2 ) );
-								_.mLength(coordinate,i);
+								value = (coordinate == 'x') ?  _.text_base_size : ( ( _.m_length(coordinate,i) / 2 ) );
+								
 							}
 
 							value *= multiplier;
@@ -884,18 +957,18 @@
 						var multiplier = 1,
 							value = 0;
 
-						if(!(initial && args.type !== 'scatter')) {
+						if(!(initial || args.type == 'scatter')) {
 
 							if(
 								(
-									args.type == 'bar'
+									(args.type == 'bar' && !args.barTextOut)
 									&& (
 										args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
 										|| args[getAxisStringOppo(coordinate)+'Align'] == 'right'
 									)
 								)
 								|| (
-									args.type !== 'bar' 
+									!(args.type == 'bar' && !args.barTextOut)
 									&& (
 										args[getAxisStringOppo(coordinate)+'Align'] == 'top'
 										|| args[getAxisStringOppo(coordinate)+'Align'] == 'left'
@@ -907,38 +980,49 @@
 
 							if(
 								(
-									(
-										args.type == 'bar'
-										&& parseFloat(getBlobSize(coordinate,dis,i)) < _.mLength(coordinate,i)
+									( // it out
+										(args.type == 'bar' && !args.barTextOut)
+										&& parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i)
 									)
-									|| (
-										args.type !== 'bar'
-										&& parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.mLength(coordinate,i))
+									|| ( //it in
+										!(args.type == 'bar' && !args.barTextOut)
+										&& parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i))
 									)
 								)
 								&&  keyKey !== 0
 							){
-								if( coordinate == 'x'  && args.type !== 'line'){
+								
+
+									if(
+										coordinate == 'x'
+										&& (
+											args.type !== 'line'
+											&& !(
+												args.type == 'bar'
+												&& args.barTextOut
+											)
+										)
+									){
+										
+										value = getBlobSize(coordinate,dis,i);
+
+
+									}else{
+										value = _.m_length(coordinate,i);
+
+										console.log(selector,value);
+									}
 									
-									value = getBlobSize(coordinate,dis,i);
-
-								}else{
-									value = _.mLength(coordinate,i);
-
-								}
 								
 							}
-							
 
 							value *= multiplier;
 						
 						}
 						
-						return value;
+						return value;//
 
 					};
-
-					initial = initial || false;
 
 					if( keyKey  == 0) {
 
@@ -954,41 +1038,49 @@
 
 							case 'top':
 
-								offset = (initial && args.type !== 'scatter') ? getBlobOrigin(coordinate,dis,i) : getBlobSize(coordinate,dis,i);
+								if(!initial && args.type !== 'scatter'){
+									offset = getBlobSize(coordinate,dis,i)
+								}
 								break;
 
 							case 'right':
 							case 'bottom':
+								if(
+									initial && args.type !== 'scatter'
+									|| (
+										args[getAxisStringOppo(coordinate)+'Align'] == 'right'
+										&& args.type == 'bar'
+										&& !args.barTextOut
+									)
+								) {
 
-									if(
-										initial && args.type !== 'scatter'
-										|| (
-											args[getAxisStringOppo(coordinate)+'Align'] == 'right'
-											&& args.type == 'bar'
-										)
-									) {
+									offset = args[getDimension(coordinate)];
 
-										offset = args[getDimension(coordinate)];
+								}else{
 
-									}else{
+									offset = args[getDimension(coordinate)] - getBlobSize(coordinate,dis,i);
+									
+								}
 
-										offset = args[getDimension(coordinate)] - getBlobSize(coordinate,dis,i);
-										
-									}
-
-									break;
+								break;
 
 							case 'left':
 
-								if(args.type !== 'bar') {
+								if(
+									!initial && 
+									!( args.type == 'bar' && !args.barTextOut )
+								) {
 									offset = getBlobSize(coordinate,dis,i);
 								}
+								break;
 
 						}
 
 					}
 
 					offset += shifter() + shifterOut();
+					// offset += shifterOut();
+					// offset += shifter();
 					
 				}
 				
@@ -1111,7 +1203,7 @@
 							)
 						){
 
-							value = length + _.text_offset;
+							value = length + _.text_base_size;
 
 						} else if(  (args.type == 'pie' && axisString == 'y') ){
 								value = length * .5;
@@ -1131,7 +1223,9 @@
 						)
 					){
 						offset = args[getDimension(axisString)];
+
 					}else if( (args.type == 'pie' && axisString == 'y') ){
+						
 						offset = args[getDimension(axisString)] * .5;
 					}
 					
@@ -1613,7 +1707,7 @@
 				d3.select(selector).classed(prefix+'initialized',true);
 				d3.select(selector).append('div')
 				.attr('class',prefix+'wrapper fatality')
-				.html(custom_error_front || error_front);
+				.html(custom_error_front || "Sorry, unable to display data.<br> Please check the console for more details");
 
 
 				throw new Error(console_error);
@@ -1673,7 +1767,7 @@
 								_['grid_'+coordinate].selectAll('g')
 									.classed('grid',true)
 									.filter(function(dis,i){
-										console.log(_['rule_'+coordinate+'_axis'].ticks());
+										
 										//IM HERE FUCKER
 										var isAligned = false;
 										_['rule_'+coordinate].selectAll('g').each(function(tik){
@@ -1694,13 +1788,13 @@
 					});
 				}
 					
-
+				//blob exit
 				if(!(args.type == 'line' && !args.linePoints)){
 
 
 					_.blob = _.container_graph.selectAll(_.graph_item_element +'.'+prefix + 'graph-item.graph-item-blob')
 						.data(_.data,function(dis){
-							console.log(deepGet(dis,args.key[0]));
+							
 							return deepGet(dis,args.key[0])
 						});
 
@@ -1710,54 +1804,39 @@
 						.transition(_.duration)
 						.attr('fill','red')
 						.remove();
-						
+				}
 
-					if(
-						(
-							args.type !== 'pie'
-							&& ( !args.xTicks || !args.yTicks )
-						)
-						|| (
-							args.type == 'pie'
-							&& ( args.piLabelStyle || !args.colorLegend )
-						)
-					){
+				//text exit
+				if( _.has_text ){
 
-						_.blob_text = _.container_graph.selectAll('text.'+prefix + 'graph-item.graph-item-text')
+					_.blob_text = _.container_graph.selectAll('text.'+prefix + 'graph-item.graph-item-text')
+						.data(_.data,function(dis){
+							return deepGet(dis,args.key[0])
+						});
+
+				
+					_.blob_text.exit()
+						.transition(_.duration)
+						.remove();
+					
+					if(args.type == 'pie' && args.piLabelStyle == 'linked'){
+
+						_.blob_text_link = _.container_graph.selectAll('polyline.'+prefix + 'graph-item.graph-item-link')
 							.data(_.data,function(dis){
 								return deepGet(dis,args.key[0])
 							});
 
-
-					
-						_.blob_text.exit()
+						_.blob_text_link.exit()
 							.transition(_.duration)
-							.attr('fill','red')
 							.remove();
-						
-						if(args.type == 'pie' && args.piLabelStyle == 'linked'){
 
-							_.blob_text_link = _.container_graph.selectAll('polyline.'+prefix + 'graph-item.graph-item-link')
-								.data(_.data,function(dis){
-									return deepGet(dis,args.key[0])
-								});
-
-							_.blob_text_link.exit()
-								.transition(_.duration)
-								.attr('fill','red')
-								.remove();
-
-						}
 					}
 				}
 
 
-				// //generate the graph boi
-
+				// //generate the graph bitches
 				if(args.type !== 'pie'){
 					
-
-
 					// line graph + fill
 					if(args.type == 'line'){
 						
@@ -1939,7 +2018,7 @@
 					
 				//graph item label if ticks are not set
 				if(
-					_.blob_text
+					_.has_text
 				){
 
 					// pie polyline
@@ -1983,13 +2062,29 @@
 
 					_.enter_blob_text = _.blob_text
 						.enter()
-						.append('text');
+						.append('text')
+						.attr('line-height',1.25)
+						.attr('dominant-baseline','middle')
+						.attr('stroke',function(dis){
+								if(
+									args.type == 'pie'
+									&& args.piLabelStyle == 'within'
+									&& args.colorPalette.length > 0 
+								){
+									return _.the_color(deepGet(dis,args.key.color))
 
-					if(args.type == 'pie' && args.piLabelStyle == 'within' && args.colorPalette.length > 0){
-						_.enter_blob_text.attr('stroke',function(dis){
-							return _.the_color(deepGet(dis,args.key.color))
-						})
-					}
+								}else if(
+									(args.type !== 'bar' && args.type !== 'pie')
+									|| (
+										args.type == 'pie'
+										&& args.piLabelStyle == 'linked'
+									)
+								){
+									return args.colorBackground;
+								}
+						});
+
+					//stroke width
 
 					//append content right away so we can calculate where shit offset
 					[0,1].forEach(function(keyKey){
@@ -2035,9 +2130,9 @@
 									
 
 										if( keyKey == 0 ){
-											toReturn = '.75em';
+											toReturn = args.textNameSize+'em';
 										}else{
-											toReturn = '1.75em';
+											toReturn = args.textValueSize+'em';
 										}	
 									}
 
@@ -2082,15 +2177,17 @@
 
 
 					//set a minimum length for graph items to offset its text bois. doesnt matter which data key is on the axis we just want the width or height of the graph item on the given axis
-					_.mLength = function(axisString,i){
-						
-						var value = 0;
+					_.m_length = function(axisString,i){
 
-							length = _.enter_blob_text ? _.enter_blob_text.nodes()[i].getBoundingClientRect()[ getDimension( axisString ) ] : 0
-							
-							value = length + _.text_offset;
+						if(_.has_text && _.enter_blob_text){
+							var value = _.text_base_size * (args.textNameSize + args.textValueSize + _.text_padding);
 
-						return value;
+							if( getDimension( axisString ) == 'width' ) {
+								value = (_.enter_blob_text.nodes()[i].getBoundingClientRect()[ getDimension( axisString ) ] + _.text_base_size);
+							}
+
+							return value;
+						}
 					};
 
 					//continue fucking with text blob
@@ -2098,42 +2195,73 @@
 						.attr('class', function(dis,i){
 							var classString =  prefix + 'graph-item graph-item-text';
 							
-							[0,1].forEach(function(keyKey){
-								
-								if( 
-									(
-										(args.type == 'bar')
-										&& (keyKey  == 1)
-										&& (
+							if( 
+								(
+									(args.type == 'bar')
+									&& (
+										
+										(
 											
-											(parseFloat(getBlobSize(getAxisString(keyKey),dis,i,false)) < _.mLength(getAxisString(keyKey),i))
-											
-											|| (
-												(args.colorPalette.length > 0)
-												&& (parseFloat(getBlobSize(getAxisString(keyKey),dis,i,false)) >= _.mLength(getAxisString(keyKey),i))
-												&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
+											!args.barTextOut
+											&& (
+												( // it out
+													(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) < _.m_length(getAxisString(1),i))
+													&& !isDark(args.colorBackground)
+												)
+												|| ( //it in
+													(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) >= _.m_length(getAxisString(1),i))
+													&& (args.colorPalette.length > 0)
+													&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
+												)
+											)
+										)
+										|| (
+											args.barTextOut == true
+											&& (
+												( // it out
+													(
+														(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) + _.m_length(getAxisString(1),i)) <=  args[getDimension(getAxisString(1))]
+													)
+													&& !isDark(args.colorBackground)
+												)
+												|| ( //it in
+													(
+														(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) + _.m_length(getAxisString(1),i)) > args[getDimension(getAxisString(1))]
+													)
+													&& (args.colorPalette.length > 0)
+													&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
+												)
 											)
 										)
 									)
-									|| (args.type == 'line' || args.type == 'scatter')
-									|| (
-										args.type == 'pie'
-										&& (
-											(
-												args.piLabelStyle == 'within'
-												&& (args.colorPalette.length > 0)
-												&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
-											)
-											|| (
-												args.piLabelStyle == 'linked'
-											)
+								)
+								|| (
+									(args.type == 'line' || args.type == 'scatter')
+									&& !isDark(args.colorBackground)
+								)
+								|| (
+									args.type == 'pie'
+									&& (
+										(
+											args.piLabelStyle == 'within'
+											&& (args.colorPalette.length > 0)
+											&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
+										)
+										|| (
+											args.piLabelStyle == 'linked'
+											&& !isDark(args.colorBackground)
 										)
 									)
-								){
-									classString +=  ' dark';
-								}
-							});
-							
+								)
+							){
+
+
+								classString +=  ' dark';
+							}else{
+
+								classString +=  ' light';
+							}
+
 							return classString;
 						})
 						.transition(_.duration)
@@ -2173,7 +2301,7 @@
 
 					_.container_legend = _.container.append('g')
 						.attr('class',prefix+'legend')
-						.attr('font-size',label_size);
+						.attr('font-size', args.textLegendSize+'em');
 						
 						
 					_.dom_color.forEach(function(key,i){
@@ -2183,9 +2311,10 @@
 
 						_.legend.append('rect')
 						.attr('class','legend-item-blob')
-							.attr('width',_.legend_size * .66)
-							.attr('height',_.legend_size * .66)
-							.attr('fill',_.the_color(key) );
+							.attr('width',_.legend_size * .75)
+							.attr('height',_.legend_size * .75)
+							.attr('fill',_.the_color(key) )
+							.attr('stroke',args.colorBackground);
 
 						_.legend.append("text")
 							.attr('class','legend-item-text')
@@ -2193,6 +2322,7 @@
 							.attr('dominant-baseline','middle')
 							.attr('x',_.legend_size)
 							.attr('y',_.legend_size * .375)
+							.attr('stroke',args.colorBackground);
 							
 						_.legend
 							.attr("transform", "translate(0, " + (i *  _.legend_size) + ")");
@@ -2232,7 +2362,10 @@
 			var init = function(retrievedData){
 				
 				//add initialized class so we know the boi been fucked na
-				d3.select(selector).classed(prefix+'initialized' ,true )
+				_.the_container = d3.select(selector);
+				
+				_.the_container.classed(prefix+'initialized'+ ( isDark(args.colorBackground) ? ' '+prefix+'dark' : '' ) ,true )
+					.style('background-color',args.colorBackground)
 
 				_.data = null;
 
@@ -2256,7 +2389,7 @@
 
 			
 				// relative to 1em supposedly idk
-				_.text_offset = parseFloat(args.fontSize);
+				_.text_base_size = parseFloat(args.fontSize);
 				
 				// heck if src key exists
 				_.data = (function(){
@@ -2302,8 +2435,6 @@
 				
 				
 					//sort data 0 so that it doesnt go forward then backward then forward on the graph which is weird
-
-					
 					if(args.nameIsNum == true){
 						
 						var sortable = [];
@@ -2335,18 +2466,21 @@
 
 
 					// setup padding and sizes
-					_.legend_size = 30;
+					_.legend_size = (args.textLegendSize * parseFloat(args.fontSize) * 2);
+					
 					_.margin = {
 						top:	args.margin[0] || args.margin,
-						left:	args.margin[3] || args.margin[1] ||  args.margin[0] || args.margin,
+						right: 	args.margin[1] || args.margin[0] || args.margin,
 						bottom:	args.margin[2] || args.margin[0] || args.margin,
-						right: args.margin[1] || args.margin[0] || args.margin,
+						left:	args.margin[3] || args.margin[1] || args.margin[0] || args.margin,
 					};
 					
 					
+
 					
-					_.outerWidth = args.width + _.margin.left + _.margin.right;
-					_.outerHeight = args.height + _.margin.top + _.margin.bottom;
+					
+					_.outer_width = args.width + _.margin.left + _.margin.right;
+					_.outer_height = args.height + _.margin.top + _.margin.bottom;
 
 
 
@@ -2373,10 +2507,10 @@
 							return  ((_.margin.top / args.height) * 50) + '%'
 						})
 						.style('padding-left', function(){
-							return  ((_.margin.left / args.width) * 100) + '%'
+							return  ((_.margin.left / _.outer_width) * 100) + '%'
 						})
 						.style('padding-right', function(){
-							return  ((_.margin.right / args.width) * 100) + '%'
+							return  ((_.margin.right / _.outer_width) * 100) + '%'
 						})
 						.transition(_.duration)
 						.styleTween('opacity',function(){return getInterpolation(0,1)});
@@ -2386,11 +2520,11 @@
 						.attr('class', prefix + 'wrapper')
 						.style('position','relative')
 						.style('padding-bottom',function(){
-							return (( _.outerHeight / _.outerWidth) * 100) + '%';
+							return (( _.outer_height / _.outer_width) * 100) + '%';
 						})
 						.style('position','relative');
 
-					var dimensionString = '0 0 '+ _.outerWidth +' ' + _.outerHeight;
+					var dimensionString = '0 0 '+ _.outer_width +' ' + _.outer_height;
 					
 					//check if its scrolled on the place it should be at
 					_.dv_init = false;
@@ -2424,8 +2558,8 @@
 									.attr('viewBox', dimensionString)
 									.attr("preserveAspectRatio", "xMidYMid meet")
 									.attr('xml:space','preserve')
-									.attr('width',_.outerWidth)
-									.attr('height',_.outerHeight)
+									.attr('width',_.outer_width)
+									.attr('height',_.outer_height)
 									;
 
 									
@@ -2464,13 +2598,13 @@
 									// container for axis
 									_.container_rule = _.container.append('g')
 										.attr('class', prefix + 'axis')
-										.attr('font-size',label_size);
+										.attr('font-size',args.textTicksSize+'em');
 										
 									//kung may grid gibo kang grid
 									if( args.xGrid || args.yGrid ){
 										_.container_grid = _.container.append('g')
 										.attr('class', prefix + 'grid')
-										.attr('font-size',label_size);
+										.attr('font-size',args.textTicksSize+'em');
 									}
 								}
 
@@ -2495,6 +2629,14 @@
 
 									console.warn(selector+' set canvas width and or height may be too small.\n Tip: The given height and width are not absolute and act more like aspect ratios. svgs are responsive and will shrink along with content.');
 
+								}
+
+								if(
+									(JSON.stringify(args.margin) == JSON.stringify(defaults.margin))
+									&& (args.xLabel || args.yLabel)
+									&& (args.xTicks || args.yTicks)
+								){
+									console.debug(selector+' text may overlap. margins may need to be modified');
 								}
 
 								//offset graph for pie because its origin is in the center. right in the heart :'>
@@ -2566,12 +2708,16 @@
 
 								});
 
-								console
+								
 								renderGraph(_.data);
 								
+								// _.resize = null;
 
 								window.addEventListener("resize", function(){
-									renderGraph(_.data);
+									// clearTimeout(_.resize);
+									// _.resize = setTimeout(function(){
+										renderGraph(_.data);
+									// },500);
 								});
 								
 							},args.delay);

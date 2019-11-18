@@ -1,7 +1,7 @@
 <?php
 
 /********************************************************************************************
-* Render data
+* Render data. to make an array of the settings that are necessary
 *********************************************************************************************/
 
 /*
@@ -91,6 +91,24 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
 		//also parse sources. yuckeeee
 		$data_src_arr = array();
+
+
+		foreach($data_visual['src'] as $property=>$value){
+			if(
+				$property !== 'file'
+				&& $property !== 'url'
+				&& $property !== 'text'
+				&& $property !== 'row'
+				&& $property !== 'row_m'
+			){
+
+				// if($value){
+					$data_src_arr[$property] = $data_visual['src'][$property];
+				// }
+			}
+		}
+
+
 		$data_src_arr['type'] = $data_visual['src']['type'];
 		$data_src_arr['key'] = $data_visual['src']['key'];
 
@@ -156,6 +174,7 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 		}
 		
 
+
 			
 		if( $data_visual['type'] !== 'scatter' ){
 			unset($data_visual['key']['area']);
@@ -166,9 +185,20 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 		}
 
 
-
+		echo !($data_visual['multiple']) ? 'no multi' : 'ya multi';
 
 		// parse and remove itemz we dont need
+
+		//remove based on multipl
+		if( !isset($data_visual['multiple']) ||  !$data_visual['multiple'] ){
+			//src
+				unset($data_visual['reverse']['multiple']);
+				unset($data_visual['src']['key_multiple']);
+			//
+
+		}
+
+
 		//remove based on type
 		if($data_visual['type'] !== 'line' && $data_visual['type'] !== 'scatter'){
 			unset($data_visual['name_is_num']);
@@ -177,7 +207,7 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
 		//validate format 
 
-		if( !isset($data_visual['name_is_num']) ){
+		if( isset($data_visual['name_is_num']) ){
 			unset($data_visual['format'][0]['divider']);
 		}
 
@@ -226,8 +256,14 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
 			//no data means it fucks with the name. no need for legegends
 			if( !isset($data_visual['key']['color']) || $data_visual['key']['color'] == null){
-				unset($data_visual['color']['legend']);
+				// unset($data_visual['color']['legend']);
+				unset($data_visual['reverse']['color']);
 			}
+
+			if($data_visual['type'] !== 'bar') {
+				unset($data_visual['bar']);
+			}
+
 
 			if($data_visual['type'] !== 'line') {
 				unset($data_visual['line']);

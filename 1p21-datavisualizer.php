@@ -24,8 +24,10 @@ $_1p21_dv['present'] = array();
 //default front end displaying related arguments or attributes to each instances
 $_1p21_dv['defaults'] = array(
 	'id' => null, //post id
+
 	//shortcode render reliant parameters
 		'align' => 'center', // default value is not in js because js doesnt need to use this boi. use it @ shortcode render
+	
 	//js reliant parameters
 		'margin' => null, //spacing necessary within the canvas to avoid cuttong off elements
 		'width' => null, //duh
@@ -34,8 +36,6 @@ $_1p21_dv['defaults'] = array(
 	// advanced
 		// js
 			'font_size' => null,
-			'name_size' => null,
-			'value_size' => null,
 			'transition' => null, //duh
 			'delay' => null, //duh
 );

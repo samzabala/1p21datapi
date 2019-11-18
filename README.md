@@ -108,6 +108,22 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 	
 	If given a number, it will be interpreted as pixels.
 
+*	**`name_size`**
+
+	**[ Optional | Default: `.75` | type: number ]**
+
+	Name data's relative size to `font_size` upon display. Will be interpeted as `em` css unit
+
+	This is only visible when both name and data values are set up to display with the graph item
+
+*	**`value_size`**
+
+	**[ Optional | Default: `1.75` | type: number ]**
+
+	Value data's relative size to `font_size` upon display. Will be interpeted as `em` css unit
+
+	This is only visible when both name and data values are set up to display with the graph item
+
 ## Backend Settings
 
 ### Description
@@ -123,6 +139,12 @@ Add a subtitle or description for the data visual
 **[ REQUIRED | Default: *Bar* | Meta Key : `'dv_type'` | options: *Bar*, *Line*, *Pie*, *Scatter Plot* ]**
 
 Type of graph the data will be presented as.
+
+####	*Multiple Graph*
+
+**[ Optional | Meta Key : `'dv_src_multiple'` | Default: `false` | type: boolean ]**
+
+Enable mutliple graphs of data groups setup
 
 ####	*Source*
 
@@ -183,10 +205,34 @@ Type of graph the data will be presented as.
 			**[ Optional | Meta Key : `'dv_src_row_'.$index.'_area'` | Available when: *Type* is set to 'Scatter Plot' ]**
 
 			Numeric data value that will influence the size of the scatter plot point
-		
+
+*	**Reverse Groups Order**
+
+	**[ Optional | Meta Key : `'dv_src_reverse_multiple'` | Default: `false` | type: boolean | Available When: *Multiple Graph* is `true` ]**
+
+	Reverse order of data groups
+
+*	**Reverse Data Order**
+
+	**[ Optional | Meta Key : `'dv_src_reverse'` | Default: `false` | type: boolean ]**
+
+	Reverse order of data
+	
 *	**Source Key**
 
 	**[ Optional | Meta Key : `'dv_src_key'` | Default: `null` | Valid file types: Available when: *Source Type* is NOT 'Rows (UI Field)' ]**
+
+	object key to the data to use.
+
+	if left blank, data will be taken from the root level
+
+	if there is a value, the data returned from that key will be used
+
+
+	
+*	**Multiple Source Key**
+
+	**[ Optional | Meta Key : `'dv_src_key_multiple'` | Default: `null` | Valid file types: Available when: *Source Type* is NOT 'Rows (UI Field)', *Multiple Graph* is `true` ]**
 
 	object key to the data to use.
 

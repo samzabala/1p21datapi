@@ -17,6 +17,25 @@
 		"oAP": "/.gitignore",
 		"oF": 0
 		},
+	"/1p21-datavisualizer.php": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/1p21-datavisualizer.php",
+		"oF": 0
+		},
+	"/assets/d3-tip.min.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/assets/d3-tip.min-min.js",
+		"oF": 0,
+		"sC": 0,
+		"tS": 0
+		},
 	"/assets/d3.v5.min.js": {
 		"bF": 0,
 		"ft": 64,
@@ -49,6 +68,26 @@
 		"oF": 0,
 		"sC": 0,
 		"tS": 0
+		},
+	"/assets/style-admin.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 1,
+		"oAP": "/assets/style-admin-min.css",
+		"oF": 1,
+		"oS": 3
+		},
+	"/assets/style-front.css": {
+		"aP": 1,
+		"bl": 0,
+		"ft": 16,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "/assets/style-front-min.css",
+		"oF": 0,
+		"oS": 3
 		},
 	"/fields/acf-cpt.php": {
 		"cB": 0,
@@ -136,6 +175,89 @@
 		"hM": 0,
 		"oA": 0,
 		"oAP": "/includes/setup-admin.php",
+		"oF": 0
+		},
+	"/README.html": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/README.html",
+		"oF": 0
+		},
+	"/README.md": {
+		"cB": 0,
+		"cS": 0,
+		"eF": 1,
+		"eL": 1,
+		"ema": 1,
+		"eSQ": 1,
+		"ft": 4096,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/README.html",
+		"oF": 0,
+		"oFM": 0,
+		"oS": 0,
+		"pHT": 0,
+		"pME": 1,
+		"rFN": 0,
+		"uCM": 0
+		},
+	"/src/script-admin.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "/assets/script-admin.min.js",
+		"oF": 3,
+		"sC": 0,
+		"tS": 0
+		},
+	"/src/script-front.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "/assets/script-front.min.js",
+		"oF": 3,
+		"sC": 0,
+		"tS": 0
+		},
+	"/src/style-admin.scss": {
+		"aP": 0,
+		"bl": 0,
+		"dP": 10,
+		"dS": 0,
+		"ft": 4,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "/assets/style-admin.css",
+		"oF": 2,
+		"oS": 3,
+		"uL": 1
+		},
+	"/src/style-front.scss": {
+		"aP": 0,
+		"bl": 0,
+		"dP": 10,
+		"dS": 0,
+		"ft": 4,
+		"ma": 0,
+		"oA": 0,
+		"oAP": "/assets/style-front.css",
+		"oF": 2,
+		"oS": 3,
+		"uL": 1
+		},
+	"/templates/documentation.html": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/templates/documentation.html",
 		"oF": 0
 		},
 	"/templates/settings-form.php": {

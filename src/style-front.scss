@@ -25,6 +25,7 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 	// text-align: center;
 	padding: 2.5em 1em 1em;
 	margin-bottom: 1em;
+	color: $color-base;
 
 	&#{$prefix}-initialized,
 	&.no-data{
@@ -33,7 +34,13 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 
 	&-svg {
 		width:100%!important;
+		max-width:100%;
 		height:auto;
+	}
+
+	&-dark {
+
+		color: $color-white;
 	}
 
 	// * { outline: 1px solid red!important}
@@ -108,11 +115,25 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 	&-label{
 		line,
 		path {
-			stroke: $color-neutral;
+			stroke: $color-base;
+			stroke-opacity: .5;
 		}
 		
 		text {
-			fill: $color-neutral;
+			fill: $color-base;
+			stroke-opacity: .5;
+		}
+
+		#{$prefix}-dark & {
+
+		line,
+		path {
+			stroke: $color-bg;
+		}
+		
+		text {
+			fill: $color-bg;
+		}
 		}
 	}
 
@@ -130,12 +151,17 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 	}
 	
 	&-fill.no-color,
-	&-no-palette #{$prefix}-graph-item-blob {
+	&-no-palette .graph-item-blob,
+	&-no-palette .legend-item-blob {
 		fill: $color-base;
 	}
 	
 	&-line.no-color {
 		stroke: $color-base;
+
+		#{$prefix}-dark & {
+			stroke: $color-white;
+		}
 	}
 	
 	&-fill.no-color {
@@ -164,17 +190,16 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 			
 	}
 
-	&-type-line .graph-item-text,
-	&-type-pie .graph-item-text,
-	& .legend-item-text,
-	& .legend-item-blob {
+	.graph-item-text,
+	.legend-item-text,
+	.legend-item-blob {
 		paint-order: stroke;
 		stroke-linejoin: round;
 	}
 
-	&-type-line .graph-item-text,
-	& .legend-item-text,
-	& .legend-item-blob {
+	.graph-item-text,
+	.legend-item-text,
+	.legend-item-blob {
 		stroke-width: 4;
 	}
 
@@ -185,24 +210,42 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 	}
 
 
-	&-type-line .graph-item-text,
-	&-type-pie#{$prefix}-pi-label-style-linked .graph-item-text,
-	& .legend-item-text,
-	& .legend-item-blob {
-		stroke: $color-bg;
+	// &-type-line .graph-item-text,
+	// &-type-pie#{$prefix}-pi-label-style-linked .graph-item-text,
+	// & .legend-item-blob {
+	// 	stroke: $color-bg;
+	// }
+
+
+	.legend-item-text,
+	&-graph .graph-item-text {
+		fill: $color-base;
 	}
+
+	&-dark {
+		.legend-item-text,
+		&-graph .graph-item-text {
+			fill: $color-white;
+		}
+}
 
 	&-graph .graph-item {
 
 		&-link {
 			stroke: $color-base;
+
+			#{$prefix}-dark & {
+				stroke: $color-white;
+			}
 		}
 		
 		&-text {
-			fill: $color-white;
-
 			&.dark {
 				fill: $color-base;
+			}
+
+			&.light {
+				fill: $color-white;
 			}
 		}
 
