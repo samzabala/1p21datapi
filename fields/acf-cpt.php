@@ -2182,7 +2182,7 @@ if layout is set to line, this will be applied to plot points and will override 
 						'class' => '',
 						'id' => '',
 					),
-					'message' => 'Enabling will favor displaying text outside of graph item',
+					'message' => 'Enabling will favor displaying text outside of graph item. uncheck if you want the text to display within the graph shape',
 					'default_value' => 1,
 					'ui' => 0,
 					'ui_on_text' => '',

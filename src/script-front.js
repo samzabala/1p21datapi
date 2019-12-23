@@ -713,7 +713,15 @@
 							
 							}else{
 
-								dimension = _['the_'+ keyKey ]( deepGet( dis, args.key[ keyKey ] ,true ) );
+								if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
+									
+									dimension = args[getDimension(axisString)] - _['the_'+ keyKey]( deepGet(dis, args.key[ keyKey ] ,true) );
+								
+								}else{
+
+									dimension = _['the_'+ keyKey ]( deepGet( dis, args.key[ keyKey ] ,true ) );
+
+								}
 
 							}
 						}else{
@@ -940,7 +948,7 @@
 
 							if(
 								(
-									!(args.type == 'bar' && !args.barTextOut)
+									(args.type !== 'bar' || args.barTextOut)
 									&& (
 										args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
 										|| args[getAxisStringOppo(coordinate)+'Align'] == 'right'
@@ -957,31 +965,27 @@
 								multiplier = -1;
 							}
 
-							console.log(selector,!(args.type == 'bar' && !args.barTextOut));
-
-							if( keyKey !== 0 ){
+							if(
+								keyKey !== 0
+							){
 								//smol boys dont need to shift for areas its... gonna be outside no matter whar
-								if( coordinate == 'x' ){
+								if(
+									coordinate == 'x'
+								){
 
-									if( !(parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i)) ){
-										
-										if(!(args.type == 'bar' && !args.barTextOut)){
-											
+									if( args.type !== 'bar' || args.barTextOut ){
+
+										if( !(parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i)) ){
 											if( (parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i))) ){
 												value = -_.m_length(coordinate,i);
 											}
-										
-										}else{
-											
-											value = _.m_length(coordinate,i);
-										
 										}
 									}
 
 								}else{
 									if(
 										(
-											!(args.type == 'bar' && !args.barTextOut)
+											(args.type !== 'bar' || args.barTextOut)
 											&& (
 												(parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i))
 												|| !(parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i)))	
@@ -1040,6 +1044,7 @@
 							case 'bottom':
 								if(
 									initial && args.type !== 'scatter'
+									|| (!args.barTextOut && args[getAxisStringOppo(coordinate)+'Align'] == 'right')
 								) {
 
 									offset = args[getDimension(coordinate)];
@@ -1054,23 +1059,24 @@
 
 							case 'left':
 
-								if(
-									!initial
-								) {
-									offset = getBlobSize(coordinate,dis,i);
+								if( args.type !== 'bar' || args.barTextOut ){
+
+									if(!initial) {
+										offset = getBlobSize(coordinate,dis,i);
+									}
 								}
+
 								break;
 
 						}
 
 					}
 
-					!initial && console.log(offset,dis.name);
 
+					
 					offset += shiftPad() + shiftArea();
 					// offset += shiftArea();
 					// offset += shiftPad();
-					!initial && console.log(offset,dis.name);
 					
 				}
 				
@@ -1110,7 +1116,7 @@
 
 							}else{
 
-								offset = (args[getDimension(coordinate)] - _['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true )));
+								offset = args[getDimension(coordinate)] - (args[getDimension(coordinate)] - _['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true )));
 
 							}
 
@@ -2181,7 +2187,7 @@
 								value = (_.text_base_size * (args.textNameSize + args.textValueSize + _.text_padding));
 							}
 
-							return value;
+							return parseFloat(value);
 						}
 					};
 
@@ -2189,6 +2195,8 @@
 					_.merge_blob_text = _.blob_text.merge(_.enter_blob_text)
 						.attr('class', function(dis,i){
 							var classString =  prefix + 'graph-item graph-item-text';
+
+							console.log(_.m_length('x',i))
 							
 							if( 
 								(
