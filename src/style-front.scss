@@ -220,6 +220,7 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 	.legend-item-text,
 	&-graph .graph-item-text {
 		fill: $color-base;
+		pointer-events:none;
 	}
 
 	&-dark {

@@ -2183,7 +2183,7 @@ if layout is set to line, this will be applied to plot points and will override 
 						'id' => '',
 					),
 					'message' => 'Enabling will favor displaying text outside of graph item',
-					'default_value' => 0,
+					'default_value' => 1,
 					'ui' => 0,
 					'ui_on_text' => '',
 					'ui_off_text' => '',

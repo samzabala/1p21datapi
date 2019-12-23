@@ -27,8 +27,6 @@
 			// helpful variables
 			var coordinates = ['x','y'],
 
-				//check if the graph item's length is enough for vertical bois idk i'll work on this some more later
-				itemAtts = ['x','y','color','r'],
 				datum_keys = [0,1,'color','area'], 
 
 				//yeeee
@@ -715,15 +713,7 @@
 							
 							}else{
 
-								if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
-									
-									dimension = args[getDimension(axisString)] - _['the_'+ keyKey]( deepGet(dis, args.key[ keyKey ] ,true) );
-								
-								}else{
-
-									dimension = _['the_'+ keyKey ]( deepGet( dis, args.key[ keyKey ] ,true ) );
-
-								}
+								dimension = _['the_'+ keyKey ]( deepGet( dis, args.key[ keyKey ] ,true ) );
 
 							}
 						}else{
@@ -913,38 +903,27 @@
 				}else{
 
 					// offset by where the coordinates of the ends of the blob and axis alignment is at and spaces it by the dimensions of the text bitches
-					var shifter = function(){
+					var shiftPad = function(){
 						var value = 0,
 						multiplier = 1;
 
 						if(!(initial || args.type == 'scatter')){
 
 							if(
-								(
-									(args.type == 'bar' && !args.barTextOut)
-									&& (
-										args[getAxisStringOppo(coordinate)+'Align'] == 'top'
-										|| args[getAxisStringOppo(coordinate)+'Align'] == 'right'
-									)
-								)
-								|| (
-									!(args.type == 'bar' && !args.barTextOut)
-									&& (
-										args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
-										|| args[getAxisStringOppo(coordinate)+'Align'] == 'right'
-									)
-								)
+								
+								args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
+								|| args[getAxisStringOppo(coordinate)+'Align'] == 'right'
 							){
-								multiplier *= -1;
+								multiplier = -1;
 							}
 							
 
-							if(args[getAxisStringOppo(coordinate)+'Data'] == 0){
-								value = (coordinate == 'x') ?  _.text_base_size : ( ( _.m_length(coordinate,i) / 2 ) );
-								
+							if( keyKey !== 0 && coordinate == 'x'){
+								value = ((_.text_padding * .5) * _.text_base_size);
 							}
 
 							value *= multiplier;
+							
 						}
 						
 						return value;
@@ -952,7 +931,7 @@
 					},
 
 					// offset if text is outside of boundaries
-					shifterOut = function(){
+					shiftArea = function(){
 						
 						var multiplier = 1,
 							value = 0;
@@ -961,14 +940,14 @@
 
 							if(
 								(
-									(args.type == 'bar' && !args.barTextOut)
+									!(args.type == 'bar' && !args.barTextOut)
 									&& (
 										args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
 										|| args[getAxisStringOppo(coordinate)+'Align'] == 'right'
 									)
 								)
 								|| (
-									!(args.type == 'bar' && !args.barTextOut)
+									(args.type == 'bar' && !args.barTextOut)
 									&& (
 										args[getAxisStringOppo(coordinate)+'Align'] == 'top'
 										|| args[getAxisStringOppo(coordinate)+'Align'] == 'left'
@@ -978,42 +957,53 @@
 								multiplier = -1;
 							}
 
-							if(
-								(
-									( // it out
-										(args.type == 'bar' && !args.barTextOut)
-										&& parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i)
-									)
-									|| ( //it in
-										!(args.type == 'bar' && !args.barTextOut)
-										&& parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i))
-									)
-								)
-								&&  keyKey !== 0
-							){
-								
+							console.log(selector,!(args.type == 'bar' && !args.barTextOut));
 
+							if( keyKey !== 0 ){
+								//smol boys dont need to shift for areas its... gonna be outside no matter whar
+								if( coordinate == 'x' ){
+
+									if( !(parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i)) ){
+										
+										if(!(args.type == 'bar' && !args.barTextOut)){
+											
+											if( (parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i))) ){
+												value = -_.m_length(coordinate,i);
+											}
+										
+										}else{
+											
+											value = _.m_length(coordinate,i);
+										
+										}
+									}
+
+								}else{
 									if(
-										coordinate == 'x'
-										&& (
-											args.type !== 'line'
-											&& !(
-												args.type == 'bar'
-												&& args.barTextOut
+										(
+											!(args.type == 'bar' && !args.barTextOut)
+											&& (
+												(parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i))
+												|| !(parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i)))	
+											)
+										)
+										|| (
+											(args.type == 'bar' && !args.barTextOut)
+											&& (
+												!(parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i))
+												|| (parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i)))	
 											)
 										)
 									){
-										
-										value = getBlobSize(coordinate,dis,i);
 
+										value = _.m_length(coordinate,i) * .5;
 
 									}else{
-										value = _.m_length(coordinate,i);
 
-										console.log(selector,value);
+										value = _.m_length(coordinate,i) * -.5;
+										
 									}
-									
-								
+								}
 							}
 
 							value *= multiplier;
@@ -1023,6 +1013,9 @@
 						return value;//
 
 					};
+
+
+
 
 					if( keyKey  == 0) {
 
@@ -1047,11 +1040,6 @@
 							case 'bottom':
 								if(
 									initial && args.type !== 'scatter'
-									|| (
-										args[getAxisStringOppo(coordinate)+'Align'] == 'right'
-										&& args.type == 'bar'
-										&& !args.barTextOut
-									)
 								) {
 
 									offset = args[getDimension(coordinate)];
@@ -1067,8 +1055,7 @@
 							case 'left':
 
 								if(
-									!initial && 
-									!( args.type == 'bar' && !args.barTextOut )
+									!initial
 								) {
 									offset = getBlobSize(coordinate,dis,i);
 								}
@@ -1078,9 +1065,12 @@
 
 					}
 
-					offset += shifter() + shifterOut();
-					// offset += shifterOut();
-					// offset += shifter();
+					!initial && console.log(offset,dis.name);
+
+					offset += shiftPad() + shiftArea();
+					// offset += shiftArea();
+					// offset += shiftPad();
+					!initial && console.log(offset,dis.name);
 					
 				}
 				
@@ -1120,7 +1110,7 @@
 
 							}else{
 
-								offset = args[getDimension(coordinate)] - (args[getDimension(coordinate)] - _['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true )));
+								offset = (args[getDimension(coordinate)] - _['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true )));
 
 							}
 
@@ -1789,22 +1779,21 @@
 				}
 					
 				//blob exit
-				if(!(args.type == 'line' && !args.linePoints)){
 
 
-					_.blob = _.container_graph.selectAll(_.graph_item_element +'.'+prefix + 'graph-item.graph-item-blob')
-						.data(_.data,function(dis){
-							
-							return deepGet(dis,args.key[0])
-						});
+				_.blob = _.container_graph.selectAll(_.graph_item_element +'.'+prefix + 'graph-item.graph-item-blob')
+					.data(_.data,function(dis){
+						
+						return deepGet(dis,args.key[0])
+					});
 
 
-				
-					_.blob.exit()
-						.transition(_.duration)
-						.attr('fill','red')
-						.remove();
-				}
+			
+				_.blob.exit()
+					.transition(_.duration)
+					.attr('fill','transparent')
+					.attr('stroke','transparent')
+					.remove();
 
 				//text exit
 				if( _.has_text ){
@@ -1892,9 +1881,7 @@
 				}
 
 				// bars, scatter plots, pizza, points
-				if(
-					!(args.type == 'line' && !args.linePoints)
-				){
+				
 					
 					
 					_.enter_blob = _.blob.enter()
@@ -1965,6 +1952,12 @@
 										);
 									})
 
+							if(args.type == 'line' && !args.linePoints) {
+								_.merge_blob
+									.attr('fill-opacity',0)
+									.attr('stroke-opacity',0);
+							}
+
 
 						}else{
 							_.merge_blob
@@ -2014,7 +2007,6 @@
 								}
 						}
 
-				}
 					
 				//graph item label if ticks are not set
 				if(
@@ -2177,13 +2169,16 @@
 
 
 					//set a minimum length for graph items to offset its text bois. doesnt matter which data key is on the axis we just want the width or height of the graph item on the given axis
+					// add padding for less math i think
 					_.m_length = function(axisString,i){
 
 						if(_.has_text && _.enter_blob_text){
-							var value = _.text_base_size * (args.textNameSize + args.textValueSize + _.text_padding);
+							var value = 0;
 
 							if( getDimension( axisString ) == 'width' ) {
-								value = (_.enter_blob_text.nodes()[i].getBoundingClientRect()[ getDimension( axisString ) ] + _.text_base_size);
+								value = (_.enter_blob_text.nodes()[i].getBBox()[ getDimension( axisString ) ]) + (_.text_padding * _.text_base_size);
+							}else{
+								value = (_.text_base_size * (args.textNameSize + args.textValueSize + _.text_padding));
 							}
 
 							return value;
