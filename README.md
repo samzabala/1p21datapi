@@ -270,7 +270,7 @@ Check or set to true the following you would like to reverse order of
 
 	**[ Optional | Meta Key : `'dv_reverse_1'` | Default: `false` | type: boolean | Available When: *Multiple Graph* is `true` ]**
 
-*	**Reverse Groups Order**
+*	**Reverse Multiple Data Order**
 
 	**[ Optional | Meta Key : `'dv_reverse_multiple'` | Default: `false` | type: boolean | Available When: *Multiple Graph* is `true` ]**
 
@@ -416,6 +416,16 @@ These are optional settings to allow reformatting data on the visualizer
 		_**Note:** This field is available only if **Tick Amount** is set as the renderer needs a set amount of ticks to calculate the grid rules from_
 
 
+
+#### Bar Settings
+
+**[ Optional | Available when: *Type* is 'Bar' ]**
+
+*	**Text outside of Bar**
+
+	**[ REQUIRED | Meta Key : `'dv_bar_text_out'` | Default : 'True' | Available Options: 'None','Curve','Step' ]**
+
+	favors placing text outside of bar instead of inside
 
 
 #### Line Settings
