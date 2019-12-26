@@ -28,6 +28,7 @@ Examples:
 ```
 	
 ###	Using `data_visualizer`
+
 ```
 [data_visalizer id=666 width=800 height=600]
 ```
@@ -59,12 +60,15 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 
 	eg:
 
+	
+	This will set all sides to 40
+
 	```
-	<!-- This will set all sides to 40 -->
 	[dv id=666 margin=40]
+	```
 
-
-	<!-- This will set top and bottom sides to 40, and left and right sides to 60 -->
+	This will set top and bottom sides to 40, and left and right sides to 60
+	```
 	[dv id=666 margin=40,60]
 	```
 
@@ -419,11 +423,18 @@ These are optional settings to allow reformatting data on the visualizer
 
 #### Bar Settings
 
+
 **[ Optional | Available when: *Type* is 'Bar' ]**
+
+*	**Gutter**
+
+	**[ REQUIRED | Meta Key : `'dv_bar_gutter'` | Default : '.1'  ]**
+
+	amount of margin between bars
 
 *	**Text outside of Bar**
 
-	**[ REQUIRED | Meta Key : `'dv_bar_text_out'` | Default : 'True' | Available Options: 'None','Curve','Step' ]**
+	**[ REQUIRED | Meta Key : `'dv_bar_text_out'` | Default : 'True' ]**
 
 	favors placing text outside of bar instead of inside
 

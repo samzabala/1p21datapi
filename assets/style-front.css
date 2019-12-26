@@ -56,22 +56,11 @@
       opacity: 1; }
   .data-visualizer text {
     font-family: inherit !important; }
-  .data-visualizer-axis line,
-  .data-visualizer-axis path, .data-visualizer-grid line,
-  .data-visualizer-grid path, .data-visualizer-label line,
-  .data-visualizer-label path {
-    stroke: #222;
-    stroke-opacity: .5; }
-  .data-visualizer-axis text, .data-visualizer-grid text, .data-visualizer-label text {
-    fill: #222;
-    stroke-opacity: .5; }
-  .data-visualizer-dark .data-visualizer-axis line,
-  .data-visualizer-dark .data-visualizer-axis path, .data-visualizer-dark .data-visualizer-grid line,
-  .data-visualizer-dark .data-visualizer-grid path, .data-visualizer-dark .data-visualizer-label line,
-  .data-visualizer-dark .data-visualizer-label path {
-    stroke: #EEE; }
-  .data-visualizer-dark .data-visualizer-axis text, .data-visualizer-dark .data-visualizer-grid text, .data-visualizer-dark .data-visualizer-label text {
-    fill: #EEE; }
+  .data-visualizer-axis, .data-visualizer-grid, .data-visualizer-label {
+    color: #222;
+    opacity: .5; }
+    .data-visualizer-dark .data-visualizer-axis, .data-visualizer-dark .data-visualizer-grid, .data-visualizer-dark .data-visualizer-label {
+      color: #EEE; }
   .data-visualizer-grid line, .data-visualizer-grid path {
     stroke-opacity: .25; }
   .data-visualizer-grid .tick-aligned line, .data-visualizer-grid .tick-aligned path {

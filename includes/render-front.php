@@ -242,6 +242,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 										case 'name':
 										case 'value':
 										case 'scatter':
+										case 'tooltip':
 
 											$string_values = array();
 											
@@ -390,7 +391,6 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
 function _1p21_div_data_visualizer_render($atts = array()){
 	global $_1p21_dv;
-	$settings = get_option( '_1p21_dv_opts' );
 
 	
 	wp_enqueue_script( 'd3' );

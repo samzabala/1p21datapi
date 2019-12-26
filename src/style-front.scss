@@ -113,27 +113,11 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 	&-axis,
 	&-grid,
 	&-label{
-		line,
-		path {
-			stroke: $color-base;
-			stroke-opacity: .5;
-		}
-		
-		text {
-			fill: $color-base;
-			stroke-opacity: .5;
-		}
+		color: $color-base;
+		opacity:.5;
 
 		#{$prefix}-dark & {
-
-		line,
-		path {
-			stroke: $color-bg;
-		}
-		
-		text {
-			fill: $color-bg;
-		}
+			color: $color-bg;
 		}
 	}
 

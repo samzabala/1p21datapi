@@ -200,7 +200,15 @@
 					color: null,
 					area: null
 				},
-				
+				//reverse
+				reverse: {
+					0: false,
+					1: false,
+					color: false,
+					multiple: false,
+					area:false,
+				},
+
 				//format
 					// name
 						format0Prepend: '',
@@ -263,6 +271,7 @@
 
 				//bar
 					barTextOut: false,
+					barGutter: .1,
 
 				//line
 					lineStyle: '',
@@ -287,26 +296,16 @@
 			//2.0.0 new args
 				//src
 					srcMultiple: false,
-					reverse: {
-						0: false,
-						1: false,
-						color: false,
-						multiple: false
-					},
 					srcKeyMultiple: null,
 
-				//bar
-					barTextOut: false, 
-
 				//kulay
-					colorBackground: '#EEE',
 					colorBy: 'key', //set will influence key.color
 					
 					//advanced
 					colorScheme: null,
 
 				//tooltip
-					toolTip: false,
+					toolTipEnable: false,
 					toolTipContent: null,
 
 				
@@ -601,7 +600,7 @@
 
 
 
-						if(args.reverse[keyKey] && keyKey !== 'area') {
+						if(args.reverse[keyKey]) {
 							// dont use .reverse because it's a piece of shit
 							var domainReverse = [];
 							for (var i = domain.length - 1; i >= 0; i--) {
@@ -1506,8 +1505,8 @@
 
 								scale = d3.scaleBand() //scales shit to dimensios
 									.range(_['range_'+keyKey]) // scaled data from available space
-									.paddingInner(.1) //spacing between
-									.paddingOuter(.1);
+									.paddingInner(args.barGutter) //spacing between
+									.paddingOuter(args.barGutter);
 							}
 						}
 
@@ -1554,6 +1553,7 @@
 								})
 								.attr('font-size', '1em')
 								.attr('text-anchor', 'middle')
+								.attr('fill','currentColor')
 								.attr('opacity',0)
 								.text(args[axisString+'Label']);
 
@@ -2195,8 +2195,6 @@
 					_.merge_blob_text = _.blob_text.merge(_.enter_blob_text)
 						.attr('class', function(dis,i){
 							var classString =  prefix + 'graph-item graph-item-text';
-
-							console.log(_.m_length('x',i))
 							
 							if( 
 								(
@@ -2717,10 +2715,10 @@
 								// _.resize = null;
 
 								window.addEventListener("resize", function(){
-									// clearTimeout(_.resize);
-									// _.resize = setTimeout(function(){
+									clearTimeout(_.resize);
+									_.resize = setTimeout(function(){
 										renderGraph(_.data);
-									// },500);
+									},500);
 								});
 								
 							},args.delay);

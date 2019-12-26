@@ -68,12 +68,14 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p>eg:</p>
 
-<pre><code>&lt;!-- This will set all sides to 40 --&gt;
-[dv id=666 margin=40]
+<p>This will set all sides to 40</p>
 
+<pre><code>[dv id=666 margin=40]
+</code></pre>
 
-&lt;!-- This will set top and bottom sides to 40, and left and right sides to 60 --&gt;
-[dv id=666 margin=40,60]
+<p>This will set top and bottom sides to 40, and left and right sides to 60</p>
+
+<pre><code>[dv id=666 margin=40,60]
 </code></pre></li>
 <li><p><strong><code>width</code></strong></p>
 
@@ -411,11 +413,16 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p><strong>[ Optional | Available when: <em>Type</em> is &#8216;Bar&#8217; ]</strong></p>
 
 <ul>
-<li><strong>Text outside of Bar</strong>
+<li><p><strong>Gutter</strong></p>
 
-<strong>[ REQUIRED | Meta Key : <code>'dv_bar_text_out'</code> | Default : &#8216;True&#8217; | Available Options: &#8216;None&#8217;,&#8216;Curve&#8217;,&#8216;Step&#8217; ]</strong>
+<p><strong>[ REQUIRED | Meta Key : <code>'dv_bar_gutter'</code> | Default : &#8216;.1&#8217; ]</strong></p>
 
-favors placing text outside of bar instead of inside</li>
+<p>amount of margin between bars</p></li>
+<li><p><strong>Text outside of Bar</strong></p>
+
+<p><strong>[ REQUIRED | Meta Key : <code>'dv_bar_text_out'</code> | Default : &#8216;True&#8217; ]</strong></p>
+
+<p>favors placing text outside of bar instead of inside</p></li>
 </ul>
 
 <h4 id="linesettings">Line Settings</h4>
