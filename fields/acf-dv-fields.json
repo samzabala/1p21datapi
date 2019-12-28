@@ -2993,8 +2993,8 @@
                     {
                         "ID": 0,
                         "key": "field_5db747a9181fb",
-                        "label": "Text Outside of Bar",
-                        "name": "text_out",
+                        "label": "Text Within Bar",
+                        "name": "text_within",
                         "prefix": "acf",
                         "type": "true_false",
                         "value": null,
@@ -3035,11 +3035,11 @@
                             "class": "",
                             "id": ""
                         },
-                        "_name": "text_out",
+                        "_name": "text_within",
                         "_prepare": 0,
                         "_valid": 1,
-                        "message": "Enabling will favor displaying text outside of graph item. uncheck if you want the text to display within the graph shape",
-                        "default_value": 1,
+                        "message": "Enabling will favor displaying text inside of graph item. check if you want the text to display within the graph shape",
+                        "default_value": 0,
                         "ui": 0,
                         "ui_on_text": "",
                         "ui_off_text": ""

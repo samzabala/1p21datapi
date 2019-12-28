@@ -87,6 +87,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
 			//script
 				$render .= "<script>
+				//<![CDATA[
 				(function(){
 					document.addEventListener('DOMContentLoaded', function() {
 						_1p21.dataVisualizer('#{$wrapper_id}',{\n";
@@ -364,6 +365,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 						});
 					})
 				}());
+				//]]>
 				</script>";
 
 

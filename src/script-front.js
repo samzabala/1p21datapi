@@ -7,8 +7,9 @@
 */
 
 /* DO NOT TOUCH I DEV ON THIS BOI I ENQUEUE THE MINIFIED ONE ANYWAY  :< */
+
+"use strict";
 (function(window,d3){
-	"use strict";
 
 
 	var _1p21 = window._1p21 || {};
@@ -168,7 +169,7 @@
 			//settings
 				width: 600,
 				height:600,
-				margin: 40, // @TODO option to separate this thing // top,left,bottom,right
+				margin: 40, 
 				transition: 1500,
 				delay: 250,
 				fontSize: '16px',
@@ -270,7 +271,7 @@
 					yDivider: 1,
 
 				//bar
-					barTextOut: false,
+					barTextWithin: false,
 					barGutter: .1,
 
 				//line
@@ -305,8 +306,8 @@
 					colorScheme: null,
 
 				//tooltip
-					toolTipEnable: false,
-					toolTipContent: null,
+					tooltipEnable: false,
+					tooltipContent: null,
 
 				
 		};
@@ -314,7 +315,7 @@
 		//merge defaults with custom
 		var args = defaults;
 		for (var prop in arr) {
-			if(arr.hasOwnProperty(prop)) {
+			if(arr.hasOwnProperty.call(arr,prop)) {
 				// Push each value from `obj` into `extended`
 				args[prop] = arr[prop];
 			}
@@ -323,6 +324,8 @@
 		/*****************************************************************************
 		 * MAP BOOL PROPERTIES FOR LESS EXTENSIVE LOGICS
 		*****************************************************************************/
+
+			_.user_can_debug = document.body.classList.contains('logged-in');
 			
 
 			_.has_text = (function(){
@@ -947,14 +950,14 @@
 
 							if(
 								(
-									(args.type !== 'bar' || args.barTextOut)
+									(args.type !== 'bar' || !args.barTextWithin)
 									&& (
 										args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
 										|| args[getAxisStringOppo(coordinate)+'Align'] == 'right'
 									)
 								)
 								|| (
-									(args.type == 'bar' && !args.barTextOut)
+									(args.type == 'bar' && args.barTextWithin)
 									&& (
 										args[getAxisStringOppo(coordinate)+'Align'] == 'top'
 										|| args[getAxisStringOppo(coordinate)+'Align'] == 'left'
@@ -972,39 +975,36 @@
 									coordinate == 'x'
 								){
 
-									if( args.type !== 'bar' || args.barTextOut ){
-
-										if( !(parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i)) ){
-											if( (parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i))) ){
-												value = -_.m_length(coordinate,i);
-											}
-										}
+									if( 
+										(args.type !== 'bar' || !args.barTextWithin)
+										&& (parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i)) )
+									){
+										value = -_.m_length(coordinate,i);
+									}else if(
+										(args.type == 'bar' && args.barTextWithin)
+										&& (parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i))
+									 ){
+										value = -getBlobSize(coordinate,dis,i);
 									}
 
 								}else{
 									if(
 										(
-											(args.type !== 'bar' || args.barTextOut)
-											&& (
-												(parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i))
-												|| !(parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i)))	
-											)
+											(args.type !== 'bar' || !args.barTextWithin)
+											&& (parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i)) )
 										)
 										|| (
-											(args.type == 'bar' && !args.barTextOut)
-											&& (
-												!(parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i))
-												|| (parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i)))	
-											)
+											(args.type == 'bar' && args.barTextWithin)
+											&& (parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i))
 										)
 									){
 
-										value = _.m_length(coordinate,i) * .5;
-
-									}else{
 
 										value = _.m_length(coordinate,i) * -.5;
 										
+									}else{
+										value = _.m_length(coordinate,i) * .5;
+
 									}
 								}
 							}
@@ -1043,7 +1043,7 @@
 							case 'bottom':
 								if(
 									initial && args.type !== 'scatter'
-									|| (!args.barTextOut && args[getAxisStringOppo(coordinate)+'Align'] == 'right')
+									|| (args.barTextWithin && args[getAxisStringOppo(coordinate)+'Align'] == 'right')
 								) {
 
 									offset = args[getDimension(coordinate)];
@@ -1058,7 +1058,7 @@
 
 							case 'left':
 
-								if( args.type !== 'bar' || args.barTextOut ){
+								if( args.type !== 'bar' ||  !args.barTextWithin ){
 
 									if(!initial) {
 										offset = getBlobSize(coordinate,dis,i);
@@ -1699,14 +1699,22 @@
 		 * FUNCTION: renderError
 		*****************************************************************************/
 
-			var renderError = function(console_error,custom_error_front){
+			var renderError = function(theConsoleError,useThrow){
+				useThrow = useThrow || true;
+				var errorFront = "Sorry, unable to display data." + (  _.user_can_debug ? "<br> Please check the console for more details" : '');
 				d3.select(selector).classed(prefix+'initialized',true);
-				d3.select(selector).append('div')
-				.attr('class',prefix+'wrapper fatality')
-				.html(custom_error_front || "Sorry, unable to display data.<br> Please check the console for more details");
 
+				if(!dataContainer.querySelector('.'+prefix+'wrapper.fatality')){
+					d3.select(selector).append('div')
+						.attr('class',prefix+'wrapper fatality')
+						.html( errorFront );
+				}
 
-				throw new Error(console_error);
+				if(!useThrow) {
+					console.error(theConsoleError);
+				}else{
+					throw new Error(theConsoleError)
+				}
 			}
 
 		/*****************************************************************************
@@ -1726,10 +1734,12 @@
 				_.data = incomingData;
 				// ok do the thing now
 				console.log(
-					selector,'-------------------------------------------------------------------',"\n",
+					"\n",
+					selector,'('+args.title+')','-------------------------------------------------------------------',"\n",
 					'calculated shit',_,"\n",
 					'data',_.data,"\n",
-					'args',args,"\n"
+					'args',args,"\n",
+					"\n"
 				);
 
 				datum_keys.forEach(function(keyKey){
@@ -1751,14 +1761,18 @@
 						if( args[coordinate+'Ticks'] ){
 							_['rule_'+coordinate+'_axis'] = setAxis(coordinate);
 									
-							_['rule_'+coordinate].transition().duration(args.duration).call( _['rule_'+coordinate+'_axis'] )
+							_['rule_'+coordinate]
+								.transition(args.duration)
+								.call( _['rule_'+coordinate+'_axis'] )
 								.attr('font-family',null)
 								.attr('font-size',null);
 		
 							if(args[coordinate+'Grid']){
 							_['grid_'+coordinate+'_axis'] = setAxis(coordinate,true);
 								
-								_['grid_'+coordinate].transition().duration(args.duration).call( _['grid_'+coordinate+'_axis'] );
+								_['grid_'+coordinate]
+									.transition(args.duration)
+									.call( _['grid_'+coordinate+'_axis'] );
 									
 								_['grid_'+coordinate].selectAll('g')
 									.classed('grid',true)
@@ -1784,7 +1798,6 @@
 					});
 				}
 					
-				//blob exit
 
 
 				_.blob = _.container_graph.selectAll(_.graph_item_element +'.'+prefix + 'graph-item.graph-item-blob')
@@ -1795,6 +1808,7 @@
 
 
 			
+				//blob exit
 				_.blob.exit()
 					.transition(_.duration)
 					.attr('fill','transparent')
@@ -1812,6 +1826,8 @@
 				
 					_.blob_text.exit()
 						.transition(_.duration)
+						.attr('fill','transparent')
+						.attr('stroke','transparent')
 						.remove();
 					
 					if(args.type == 'pie' && args.piLabelStyle == 'linked'){
@@ -1823,6 +1839,8 @@
 
 						_.blob_text_link.exit()
 							.transition(_.duration)
+							.attr('fill','transparent')
+							.attr('stroke','transparent')
 							.remove();
 
 					}
@@ -1835,33 +1853,9 @@
 					// line graph + fill
 					if(args.type == 'line'){
 						
-							_.container_graph.select('.'+prefix+'line').remove();
-						
-						if(args.lineFill){
+						_.line = _.container_graph.select('.'+prefix+'line').remove();
 
-							_.container_graph.select('.'+prefix+'fill').remove();
-							
-							_.fill = _.container_graph.append('path')
-							.attr('class',prefix+'fill'+ ((args.lineFillColor !== null || args.lineColor !== null) ? ' has-color' : ' no-color' ))
-							.attr('fill-opacity',args.lineFillOpacity)
-
-							_.fill
-								.transition(_.duration)
-									.attrTween('d',function(){
-										return getInterpolation(
-											getLinePath(true,true),
-											getLinePath(true,false)
-										)
-									});
-
-							if( args.lineFillColor || args.lineColor ) {
-								_.fill
-									.attr('fill', args.lineFillColor || args.lineColor);
-							}
-
-						}
-
-						_.line = _.container_graph.append('path')
+						_.line = _.container_graph.append('path').lower()
 							.attr('class',prefix+'line' + ((args.lineColor !== null) ? ' has-color' : ' no-color' ))
 							.attr('fill','none')
 							.attr('stroke-width',args.lineWeight)
@@ -1880,6 +1874,34 @@
 							if(args.lineColor) {
 								_.line
 									.attr('stroke',args.lineColor)
+							}
+
+						
+						
+							if(args.lineFill){
+
+								_.fill = _.container_graph.select('.'+prefix+'fill').remove();
+								
+								_.fill = _.container_graph.append('path').lower()
+									.attr('class',prefix+'fill'+ ((args.lineFillColor !== null || args.lineColor !== null) ? ' has-color' : ' no-color' ))
+									.attr('fill-opacity',args.lineFillOpacity)
+									;
+	
+								_.fill
+									.transition(_.duration)
+										.attrTween('d',function(){
+											return getInterpolation(
+												getLinePath(true,true),
+												getLinePath(true,false)
+											)
+										})
+									;
+	
+								if( args.lineFillColor || args.lineColor ) {
+									_.fill
+										.attr('fill', args.lineFillColor || args.lineColor);
+								}
+	
 							}
 							
 					}
@@ -1980,6 +2002,13 @@
 											getBlobSize('y',dis,i,false)
 										);
 									})
+						}
+
+						//tooltip
+						if(args.tooltipEnable) {
+							_.merge_blob
+								.on('mouseenter',_.tooltip.show)
+								.on('mouseleave',_.tooltip.hide);
 						}
 						
 						//line  colors
@@ -2135,7 +2164,9 @@
 									}
 
 									return toReturn;
-								}) // @TODO migrate embed css styles to here
+								})
+								.attr('x',getBlobTextBaselineShift('x',keyKey))
+								.attr('y',getBlobTextBaselineShift('y',keyKey))
 								.attr('font-weight',function(){
 									var toReturn = 700;
 
@@ -2163,26 +2194,23 @@
 									return _['format_'+ keyKey ]( deepGet(dis,args.key[ keyKey ]) );
 								})
 
-								
-
-								_['blob_text_'+keyKey]
-									.attr('x',getBlobTextBaselineShift('x',keyKey))
-									.attr('y',getBlobTextBaselineShift('y',keyKey));
-
 						}
 						
 					});
+
+					//continue fucking with text blob
+					_.merge_blob_text = _.blob_text.merge(_.enter_blob_text);
 
 
 					//set a minimum length for graph items to offset its text bois. doesnt matter which data key is on the axis we just want the width or height of the graph item on the given axis
 					// add padding for less math i think
 					_.m_length = function(axisString,i){
 
-						if(_.has_text && _.enter_blob_text){
+						if(_.has_text && _.merge_blob_text){
 							var value = 0;
 
 							if( getDimension( axisString ) == 'width' ) {
-								value = (_.enter_blob_text.nodes()[i].getBBox()[ getDimension( axisString ) ]) + (_.text_padding * _.text_base_size);
+								value = (_.merge_blob_text.nodes()[i].getBBox()[ getDimension( axisString ) ]) + (_.text_padding * _.text_base_size);
 							}else{
 								value = (_.text_base_size * (args.textNameSize + args.textValueSize + _.text_padding));
 							}
@@ -2191,8 +2219,8 @@
 						}
 					};
 
-					//continue fucking with text blob
-					_.merge_blob_text = _.blob_text.merge(_.enter_blob_text)
+
+					_.merge_blob_text
 						.attr('class', function(dis,i){
 							var classString =  prefix + 'graph-item graph-item-text';
 							
@@ -2203,7 +2231,7 @@
 										
 										(
 											
-											!args.barTextOut
+											args.barTextWithin
 											&& (
 												( // it out
 													(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) < _.m_length(getAxisString(1),i))
@@ -2217,7 +2245,7 @@
 											)
 										)
 										|| (
-											args.barTextOut == true
+											!args.barTextWithin
 											&& (
 												( // it out
 													(
@@ -2418,7 +2446,12 @@
 								// _.has[keyKey] = false;
 							toInclude = false;
 
-							console.info(selector +' datum index `'+i+'` was filtered.\ndatum does not have data for the key `'+args.key[keyKey] + '`, which is set as data for `'+keyKey+'`')
+							if(_.user_can_debug){
+
+								var humanForKey = keyKey == 0 ? 'name': keyKey == 1 ? 'value': keyKey;
+								console.warn(selector +' datum index `'+i+'` was filtered.\ndatum does not have data for the key `'+args.key[keyKey] + '`, which is set as the property for `'+humanForKey+'`')
+							}
+
 
 
 						}
@@ -2477,16 +2510,43 @@
 					};
 					
 					
+					//add tooltipcontent function if there is none;
+
+					_.tooltip_html = args.tooltipContent || function(dis,i) {
+
+						var html = '<div class="'+prefix+'tooltip-data">';
+
+						for (var prop in dis) {
+							if (Object.prototype.hasOwnProperty.call(dis, prop)) {
+								//item
+								html += '<div class="'+prefix+'tooltip-data-property">';
+
+									//@TODO speshal
+
+
+									// label
+									html += '<strong class="'+prefix+'tooltip-data-property-label">'+prop+':</strong> ';
+									// content
+									html += '<span class="'+prefix+'tooltip-data-property-content">'+dis[prop]+'</span>';
+								html += '</div>';
+								
+							}
+						}
+
+						html += '</div>';
+
+						return html;
+					}
 
 					
-					
+					//set them dimensions
 					_.outer_width = args.width + _.margin.left + _.margin.right;
 					_.outer_height = args.height + _.margin.top + _.margin.bottom;
 
 
 
 
-					d3.select(selector).append('div',':first-child')
+					d3.select(selector).append('div').lower()
 						.attr('class',prefix+'heading');
 					
 					_.heading_sel = d3.select(selector).select('div.'+prefix+'heading');
@@ -2573,6 +2633,15 @@
 									.style('line-height',1)
 									.attr('transform','translate('+ _.margin.left +','+ _.margin.top +')');
 
+
+								//tooltip
+								if(args.tooltipEnable) {
+									_.tooltip = d3.tip()
+									.attr('class',prefix+'tooltip')
+									.html(_.tooltip_html)
+									_.svg.call(_.tooltip);
+								}
+
 								
 								if(args.type == 'pie'){
 									//radius boi
@@ -2615,29 +2684,33 @@
 									.attr('class',
 										prefix + 'graph'
 									);
-								if(
-									args.width == defaults.width
-									&& args.height == defaults.height
-									&& _.data.length > 9
-								){
+
+								//style warns
+								if(_.user_can_debug){
+									if(
+										args.width == defaults.width
+										&& args.height == defaults.height
+										&& _.data.length > 9
+									){
+										
+										console.warn(selector+' Width and height was not adjusted. graph elements may not fit in the canvas');
 									
-									console.warn(selector+' Width and height was not adjusted. graph elements may not fit in the canvas');
-								
-								}else if(
-									args.width < defaults.width
-									&& args.height < defaults.height
-								){
+									}else if(
+										args.width < defaults.width
+										&& args.height < defaults.height
+									){
 
-									console.warn(selector+' set canvas width and or height may be too small.\n Tip: The given height and width are not absolute and act more like aspect ratios. svgs are responsive and will shrink along with content.');
+										console.warn(selector+' set canvas width and or height may be too small.\n Tip: The given height and width are not absolute and act more like aspect ratios. svgs are responsive and will shrink along with content.');
 
-								}
+									}
 
-								if(
-									(JSON.stringify(args.margin) == JSON.stringify(defaults.margin))
-									&& (args.xLabel || args.yLabel)
-									&& (args.xTicks || args.yTicks)
-								){
-									console.debug(selector+' text may overlap. margins may need to be modified');
+									if(
+										(JSON.stringify(args.margin) == JSON.stringify(defaults.margin))
+										&& (args.xLabel || args.yLabel)
+										&& (args.xTicks || args.yTicks)
+									){
+										console.debug(selector+' text may overlap. margins may need to be modified');
+									}
 								}
 
 								//offset graph for pie because its origin is in the center. right in the heart :'>
@@ -2718,7 +2791,7 @@
 									clearTimeout(_.resize);
 									_.resize = setTimeout(function(){
 										renderGraph(_.data);
-									},500);
+									},100);
 								});
 								
 							},args.delay);
@@ -2751,7 +2824,7 @@
 				var dataIsJSON = JSON.parse(jsonSelector);
 				init(dataIsJSON);
 			}else{
-				renderError('Data input may not be valid. Please check and _ the syntax');
+				renderError('Data input may not be valid. Please check and update the syntax');
 			}
 
 		//o its not ok we normal now
@@ -2766,7 +2839,7 @@
 						})
 						.then(init)
 						.catch(function(error){
-							renderError(error,'Data source couldn\'t be requested. Please check console for more details');
+							renderError(error,false);
 						});
 					break;
 				
@@ -2776,7 +2849,7 @@
 						})
 						.then(init)
 						.catch(function(error){
-							renderError(error,'Data source couldn\'t be requested. Please check console for more details');
+							renderError(error,false);
 						});
 					break;
 			}

@@ -418,11 +418,16 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p><strong>[ REQUIRED | Meta Key : <code>'dv_bar_gutter'</code> | Default : &#8216;.1&#8217; ]</strong></p>
 
 <p>amount of margin between bars</p></li>
-<li><p><strong>Text outside of Bar</strong></p>
+<li><p><strong>Text within Bar</strong></p>
 
 <p><strong>[ REQUIRED | Meta Key : <code>'dv_bar_text_out'</code> | Default : &#8216;True&#8217; ]</strong></p>
 
-<p>favors placing text outside of bar instead of inside</p></li>
+<p>favors placing text inside of bar instead of outside.</p>
+
+<p><strong>NOTE:</strong> if a bar item contains not enough space to place text within it, the text will be placed outside,
+While if this option is not checked, if there&#8217;s not enough space outside of the bar item within the graph&#8217;s space, the text will be displayed within the bar</p>
+
+<p>To override this, either the minimum or the maximum value if the number and maybe name data must be modified to create enough space</p></li>
 </ul>
 
 <h4 id="linesettings">Line Settings</h4>

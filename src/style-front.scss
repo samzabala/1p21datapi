@@ -110,26 +110,29 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 		font-family: inherit!important;
 	}
 
-	&-axis,
-	&-grid,
-	&-label{
-		color: $color-base;
-		opacity:.5;
+	// &-axis,
+	// &-grid,
+	// &-label{
+	// 	color: $color-base;
 
-		#{$prefix}-dark & {
-			color: $color-bg;
-		}
-	}
+	// 	> g {
+	// 		// fill-opacity:.5;
+	// 	}
+
+	// 	#{$prefix}-dark & {
+	// 		color: $color-bg;
+	// 	}
+	// }
 
 	&-grid {
 		
 		line,path {
-			stroke-opacity: .25;
+			// stroke-opacity: .25;
 		}
 
 		.tick-aligned {
 			line,path {
-				stroke-opacity: .625;
+				// stroke-opacity: .625;
 			}
 		}
 	}
@@ -234,6 +237,25 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 			}
 		}
 
+		
+	}
+
+	&-tooltip {
+		background: $color-bg;
+		font: inherit;
+		font-size: 1rem;
+		line-height: 1.5;
+		padding: 1.5em;
+		border-radius: .5em;
+
+		&-data {
+
+			&-property {
+				&:nth-child(n + 2) {
+					margin-top: .5em;
+				}
+			}
+		}
 		
 	}
 

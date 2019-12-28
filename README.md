@@ -68,6 +68,7 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 	```
 
 	This will set top and bottom sides to 40, and left and right sides to 60
+	
 	```
 	[dv id=666 margin=40,60]
 	```
@@ -432,11 +433,16 @@ These are optional settings to allow reformatting data on the visualizer
 
 	amount of margin between bars
 
-*	**Text outside of Bar**
+*	**Text within Bar**
 
 	**[ REQUIRED | Meta Key : `'dv_bar_text_out'` | Default : 'True' ]**
 
-	favors placing text outside of bar instead of inside
+	favors placing text inside of bar instead of outside.
+
+	**NOTE:** if a bar item contains not enough space to place text within it, the text will be placed outside,
+	While if this option is not checked, if there's not enough space outside of the bar item within the graph's space, the text will be displayed within the bar
+
+	To override this, either the minimum or the maximum value if the number and maybe name data must be modified to create enough space
 
 
 #### Line Settings
