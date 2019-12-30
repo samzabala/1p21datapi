@@ -283,10 +283,8 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 		max-width: 80vw!important;
 		pointer-events:none!important;
 		transition:
-			.0625s top ease-out,
-			.0625s left ease-out,
-			.0625s bottom ease-out,
-			.0625s right ease-out,
+			.25s top ease-out,
+			.25s left ease-out,
 			.25s opacity ease-out
 			;
 
