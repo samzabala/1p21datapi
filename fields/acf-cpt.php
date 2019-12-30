@@ -26,7 +26,7 @@ $_1p21_dv_fields_cpt = array(
 		),
 		array(
 			'key' => 'field_5d9baf46f84ac',
-			'label' => 'Source Settings',
+			'label' => 'Step 1: Source Settings',
 			'name' => '',
 			'type' => 'tab',
 			'instructions' => '',
@@ -524,12 +524,43 @@ $_1p21_dv_fields_cpt = array(
 		),
 		array(
 			'key' => 'field_5d571ad986ab3',
-			'label' => 'Data Settings',
+			'label' => 'Step 2: Data Settings',
 			'name' => '',
 			'type' => 'tab',
 			'instructions' => '',
 			'required' => 0,
-			'conditional_logic' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_5d4206cdde265',
+						'operator' => '!=empty',
+					),
+				),
+				array(
+					array(
+						'field' => 'field_5d447ad169ee3',
+						'operator' => '!=empty',
+					),
+				),
+				array(
+					array(
+						'field' => 'field_5d420ebe6b6ca',
+						'operator' => '!=empty',
+					),
+				),
+				array(
+					array(
+						'field' => 'field_5d420719de267',
+						'operator' => '!=empty',
+					),
+				),
+				array(
+					array(
+						'field' => 'field_5d9b96a0d2c06',
+						'operator' => '!=empty',
+					),
+				),
+			),
 			'wrapper' => array(
 				'width' => '',
 				'class' => '',
@@ -698,6 +729,28 @@ if layout is set to line, this will be applied to plot points and will override 
 								'operator' => '==',
 								'value' => 'key',
 							),
+							array(
+								'field' => 'field_5d9b8ffe900c3',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'pie',
+							),
+							array(
+								'field' => 'field_5d420de06b6c9',
+								'operator' => '!=',
+								'value' => 'rows',
+							),
+							array(
+								'field' => 'field_5d9b8ffe900c3',
+								'operator' => '!=',
+								'value' => '1',
+							),
 						),
 					),
 					'wrapper' => array(
@@ -720,7 +773,30 @@ if layout is set to line, this will be applied to plot points and will override 
 			'type' => 'group',
 			'instructions' => '',
 			'required' => 0,
-			'conditional_logic' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_5d420a6cde270',
+						'operator' => '!=empty',
+					),
+					array(
+						'field' => 'field_5d420b33de274',
+						'operator' => '!=empty',
+					),
+				),
+				array(
+					array(
+						'field' => 'field_5d420719de267',
+						'operator' => '!=empty',
+					),
+				),
+				array(
+					array(
+						'field' => 'field_5d9b96a0d2c06',
+						'operator' => '!=empty',
+					),
+				),
+			),
 			'wrapper' => array(
 				'width' => '',
 				'class' => '',
@@ -744,7 +820,7 @@ if layout is set to line, this will be applied to plot points and will override 
 						),
 					),
 					'wrapper' => array(
-						'width' => '',
+						'width' => '50',
 						'class' => '',
 						'id' => '',
 					),
@@ -770,7 +846,7 @@ if layout is set to line, this will be applied to plot points and will override 
 						),
 					),
 					'wrapper' => array(
-						'width' => '',
+						'width' => '50',
 						'class' => '',
 						'id' => '',
 					),
@@ -924,7 +1000,23 @@ if layout is set to line, this will be applied to plot points and will override 
 			'conditional_logic' => array(
 				array(
 					array(
-						'field' => 'field_5d420de06b6c9',
+						'field' => 'field_5d420a6cde270',
+						'operator' => '!=empty',
+					),
+					array(
+						'field' => 'field_5d420b33de274',
+						'operator' => '!=empty',
+					),
+				),
+				array(
+					array(
+						'field' => 'field_5d9b96a0d2c06',
+						'operator' => '!=empty',
+					),
+				),
+				array(
+					array(
+						'field' => 'field_5d420719de267',
 						'operator' => '!=empty',
 					),
 				),
@@ -943,7 +1035,14 @@ if layout is set to line, this will be applied to plot points and will override 
 					'type' => 'group',
 					'instructions' => '',
 					'required' => 0,
-					'conditional_logic' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5d420a6cde270',
+								'operator' => '!=empty',
+							),
+						),
+					),
 					'wrapper' => array(
 						'width' => '50',
 						'class' => '',
@@ -1048,7 +1147,7 @@ if layout is set to line, this will be applied to plot points and will override 
 							'label' => 'Format Parameter',
 							'name' => 'parameter',
 							'type' => 'textarea',
-							'instructions' => 'accepts string format or function<br>Reference: <a href="https://github.com/d3/d3-format#locale_format">https://github.com/d3/d3-format#locale_format</a><br>Setting this will override prepend,append, and divider settings',
+							'instructions' => 'accepts string format or function<br>Reference: <a target="_blank" href="https://github.com/d3/d3-format#locale_format">https://github.com/d3/d3-format#locale_format</a><br>Setting this will override prepend,append, and divider settings',
 							'required' => 0,
 							'conditional_logic' => 0,
 							'wrapper' => array(
@@ -1071,7 +1170,14 @@ if layout is set to line, this will be applied to plot points and will override 
 					'type' => 'group',
 					'instructions' => '',
 					'required' => 0,
-					'conditional_logic' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5d420b33de274',
+								'operator' => '!=empty',
+							),
+						),
+					),
 					'wrapper' => array(
 						'width' => '50',
 						'class' => '',
@@ -1160,7 +1266,7 @@ if layout is set to line, this will be applied to plot points and will override 
 							'label' => 'Format Parameter',
 							'name' => 'parameter',
 							'type' => 'textarea',
-							'instructions' => 'accepts string format or function<br>Reference: <a href="https://github.com/d3/d3-format#locale_format">https://github.com/d3/d3-format#locale_format</a><br>Setting this will override prepend,append, and divider settings',
+							'instructions' => 'accepts string format or function<br>Reference: <a target="_blank" href="https://github.com/d3/d3-format#locale_format">https://github.com/d3/d3-format#locale_format</a><br>Setting this will override prepend,append, and divider settings',
 							'required' => 0,
 							'conditional_logic' => 0,
 							'wrapper' => array(
@@ -1282,7 +1388,7 @@ if layout is set to line, this will be applied to plot points and will override 
 							'label' => 'Format Parameter',
 							'name' => 'parameter',
 							'type' => 'textarea',
-							'instructions' => 'accepts string format or function<br>Reference: <a href="https://github.com/d3/d3-format#locale_format">https://github.com/d3/d3-format#locale_format</a><br>Setting this will override prepend,append, and divider settings',
+							'instructions' => 'accepts string format or function<br>Reference: <a target="_blank" href="https://github.com/d3/d3-format#locale_format">https://github.com/d3/d3-format#locale_format</a><br>Setting this will override prepend,append, and divider settings',
 							'required' => 0,
 							'conditional_logic' => 0,
 							'wrapper' => array(
@@ -1302,12 +1408,40 @@ if layout is set to line, this will be applied to plot points and will override 
 		),
 		array(
 			'key' => 'field_5d420abade272',
-			'label' => 'Graph Settings',
+			'label' => 'Step 3: Graph Settings',
 			'name' => '',
 			'type' => 'tab',
 			'instructions' => '',
 			'required' => 0,
-			'conditional_logic' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_5d420a6cde270',
+						'operator' => '!=empty',
+					),
+					array(
+						'field' => 'field_5d420b33de274',
+						'operator' => '!=empty',
+					),
+					array(
+						'field' => 'field_5d420de06b6c9',
+						'operator' => '!=',
+						'value' => '',
+					),
+				),
+				array(
+					array(
+						'field' => 'field_5d9b96a0d2c06',
+						'operator' => '!=empty',
+					),
+				),
+				array(
+					array(
+						'field' => 'field_5d420719de267',
+						'operator' => '!=empty',
+					),
+				),
+			),
 			'wrapper' => array(
 				'width' => '',
 				'class' => '',
@@ -2582,7 +2716,7 @@ if layout is set to line, this will be applied to plot points and will override 
 					'name' => 'dash',
 					'type' => 'text',
 					'instructions' => 'Set dashes on the line graph. The pattern is `dash, gap, dash, gap...`<br>
-<a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray" >https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray</a>',
+<a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray" >https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray</a>',
 					'required' => 0,
 					'conditional_logic' => 0,
 					'wrapper' => array(
@@ -2794,8 +2928,8 @@ if layout is set to line, this will be applied to plot points and will override 
 					'label' => 'Color Palette',
 					'name' => 'palette',
 					'type' => 'repeater',
-					'instructions' => 'Palette will be applied based on the order of the data.<br>Setting one color will set all graph items to that palette<br>
-If the graph type is set to pie or the color data key is left blank, the name data will be linked to the palette',
+					'instructions' => 'Palette will be applied based on the order of the data.<br>Setting one color will set all graph items to that palette<br><br>
+<strong>If the graph type is set to pie or the color data key is left blank, the name data will be linked to the palette</strong>',
 					'required' => 0,
 					'conditional_logic' => 0,
 					'wrapper' => array(
@@ -3116,7 +3250,7 @@ If the graph type is set to pie or the color data key is left blank, the name da
 		array(
 			'key' => 'field_5e04f33005130',
 			'label' => 'Tooltip Settings',
-			'name' => 'tooltip',
+			'name' => 'dv_tooltip',
 			'type' => 'group',
 			'instructions' => '',
 			'required' => 0,
@@ -3148,13 +3282,121 @@ If the graph type is set to pie or the color data key is left blank, the name da
 					'ui_off_text' => '',
 				),
 				array(
+					'key' => 'field_5e0a6a698bee4',
+					'label' => 'Text Align',
+					'name' => 'text_align',
+					'type' => 'select',
+					'instructions' => 'Aligment of tooltip text',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5e04f36a05131',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '50',
+						'class' => '',
+						'id' => '',
+					),
+					'choices' => array(
+						'left' => 'Left',
+						'right' => 'Right',
+						'center' => 'Center',
+					),
+					'default_value' => array(
+					),
+					'allow_null' => 0,
+					'multiple' => 0,
+					'ui' => 0,
+					'return_format' => 'value',
+					'ajax' => 0,
+					'placeholder' => '',
+				),
+				array(
+					'key' => 'field_5e0a6f90c77da',
+					'label' => 'Width',
+					'name' => 'width',
+					'type' => 'number',
+					'instructions' => 'Set width of the tooltip. Will be interpreted as pixels',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5e04f36a05131',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '50',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => 'px',
+					'min' => '',
+					'max' => '',
+					'step' => '',
+				),
+				array(
+					'key' => 'field_5e0a69798bee3',
+					'label' => 'Direction',
+					'name' => 'direction',
+					'type' => 'select',
+					'instructions' => 'Direction where tooltip will be placed',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5e04f36a05131',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => 'dv-code',
+						'id' => '',
+					),
+					'choices' => array(
+						'n' => 'North (Default)',
+						'e' => 'East',
+						's' => 'South',
+						'w' => 'West',
+					),
+					'default_value' => array(
+					),
+					'allow_null' => 0,
+					'multiple' => 0,
+					'ui' => 0,
+					'return_format' => 'value',
+					'ajax' => 0,
+					'placeholder' => '',
+				),
+				array(
 					'key' => 'field_5e04f3a305133',
 					'label' => 'Advanced',
 					'name' => '',
 					'type' => 'accordion',
 					'instructions' => '',
 					'required' => 0,
-					'conditional_logic' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5e04f36a05131',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+					),
 					'wrapper' => array(
 						'width' => '',
 						'class' => '',
@@ -3165,11 +3407,30 @@ If the graph type is set to pie or the color data key is left blank, the name da
 					'endpoint' => 0,
 				),
 				array(
+					'key' => 'field_5e0a7de4087b5',
+					'label' => 'Direction Parameter',
+					'name' => 'direction_parameter',
+					'type' => 'textarea',
+					'instructions' => 'Function or string that will be used by the <code>d3.tip.direction()</code> method. This will replace the set tooltip direction. View documentation here:<br> <a target="_blank" href="https://github.com/caged/d3-tip/blob/master/docs/positioning-tooltips.md#tipdirection">https://github.com/caged/d3-tip/blob/master/docs/positioning-tooltips.md#tipdirection</a>',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => 'dv-code',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '\'n\' | function(data,index){ return (d.direction == \'north\') ? \'n\' : \'\'; }',
+					'maxlength' => '',
+					'rows' => 3,
+					'new_lines' => '',
+				),
+				array(
 					'key' => 'field_5e04f38c05132',
 					'label' => 'Content',
 					'name' => 'content',
 					'type' => 'textarea',
-					'instructions' => 'Function that returns text or html markup for a graph item',
+					'instructions' => 'Function that will be used by the <code>d3.tip.html()</code> method. View documentation here:<br> <a target="_blank" href="https://github.com/caged/d3-tip/blob/master/docs/initializing-tooltips.md#d3tip">https://github.com/caged/d3-tip/blob/master/docs/initializing-tooltips.md#d3tip</a>',
 					'required' => 0,
 					'conditional_logic' => 0,
 					'wrapper' => array(
@@ -3180,26 +3441,10 @@ If the graph type is set to pie or the color data key is left blank, the name da
 					'default_value' => '',
 					'placeholder' => 'function(data,index){ return +data; }',
 					'maxlength' => '',
-					'rows' => '',
+					'rows' => 3,
 					'new_lines' => '',
 				),
 			),
-		),
-		array(
-			'key' => 'field_5d42ff6a5f461',
-			'label' => 'Advanced',
-			'name' => '',
-			'type' => 'tab',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'placement' => 'top',
-			'endpoint' => 0,
 		),
 	),
 	'location' => array(

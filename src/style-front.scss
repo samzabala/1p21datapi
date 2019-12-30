@@ -18,6 +18,27 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 // $color-base: #444;
 
 
+//mixin
+@function _abs($number) {
+
+	@if $number >= 0 {
+		@return $number;
+	}
+	@return -1*$number;
+	
+}
+
+// square root function using the Babylonian method
+// http://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method
+@function sqrt($square, $tolerance: .001, $estimate: $square/2) {
+	
+	@if _abs($square - $estimate*$estimate) < $tolerance {
+		@return $estimate;
+	}
+	
+	@return sqrt($square, $tolerance, ($estimate + $square/$estimate)/2);
+	
+}
 
 #{$prefix} {
 	background: $color-bg;
@@ -207,7 +228,6 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 	.legend-item-text,
 	&-graph .graph-item-text {
 		fill: $color-base;
-		pointer-events:none;
 	}
 
 	&-dark {
@@ -218,6 +238,11 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 }
 
 	&-graph .graph-item {
+
+		&-link,
+		&-text {
+			pointer-events:none;
+		}
 
 		&-link {
 			stroke: $color-base;
@@ -240,6 +265,11 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 		
 	}
 
+	&-cursor-stalker {
+		fill-opacity:0!important;
+		stroke-opacity:0!important;
+	}
+
 	&-tooltip {
 		background: $color-bg;
 		font: inherit;
@@ -247,6 +277,72 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 		line-height: 1.5;
 		padding: 1.5em;
 		border-radius: .5em;
+		border:1px solid rgba($color-base,.1);
+		box-shadow: 0 5px 5px rgba($color-base,.1);
+		z-index:999999;
+		max-width: 80vw!important;
+		pointer-events:none!important;
+		transition:
+			.0625s top ease-out,
+			.0625s left ease-out,
+			.0625s bottom ease-out,
+			.0625s right ease-out,
+			.25s opacity ease-out
+			;
+
+		&:after {
+			content:"";
+			background: $color-bg;
+			display:block;
+			width: 1.5rem;
+			height: 1.5rem;
+			z-index: -1;
+			position:absolute;
+			margin:auto;
+			border-right: 1px solid rgba($color-base,.1);
+			border-bottom: 1px solid rgba($color-base,.1);
+		}
+
+		&.n {
+			margin-top: calc( #{sqrt((1.5 * 2)) * -.5rem} - 10px );
+			&:after {
+				bottom: -.75rem;
+				right:0;
+				left:0;
+				transform: rotate(45deg);
+			}
+		}
+
+		&.w {
+			margin-left: calc( #{sqrt((1.5 * 2)) * -.5rem} - 2px );
+			&:after {
+				right: -.75rem;
+				top:0;
+				bottom:0;
+				transform: rotate(-45deg);
+			}
+		}
+
+		&.s {
+			margin-top: calc( #{sqrt((1.5 * 2)) * .5rem} - 2px );
+			&:after {
+				top: -.75rem;
+				right:0;
+				left:0;
+				transform: rotate(-135deg);
+			}
+		}
+
+		&.e {
+			margin-left: calc( #{sqrt((1.5 * 2)) * .5rem} - 2px );
+
+			&:after {
+				left: -.75rem;
+				top:0;
+				bottom:0;
+				transform: rotate(135deg);
+			}
+		}
 
 		&-data {
 

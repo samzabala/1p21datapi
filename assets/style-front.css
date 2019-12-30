@@ -112,11 +112,12 @@
     stroke-width: 6; }
   .data-visualizer .legend-item-text,
   .data-visualizer-graph .graph-item-text {
-    fill: #222;
-    pointer-events: none; }
+    fill: #222; }
   .data-visualizer-dark .legend-item-text,
   .data-visualizer-dark-graph .graph-item-text {
     fill: #FFF; }
+  .data-visualizer-graph .graph-item-link, .data-visualizer-graph .graph-item-text {
+    pointer-events: none; }
   .data-visualizer-graph .graph-item-link {
     stroke: #222; }
     .data-visualizer-dark .data-visualizer-graph .graph-item-link {
@@ -125,13 +126,61 @@
     fill: #222; }
   .data-visualizer-graph .graph-item-text.light {
     fill: #FFF; }
+  .data-visualizer-cursor-stalker {
+    fill-opacity: 0 !important;
+    stroke-opacity: 0 !important; }
   .data-visualizer-tooltip {
     background: #EEE;
     font: inherit;
     font-size: 1rem;
     line-height: 1.5;
     padding: 1.5em;
-    border-radius: .5em; }
+    border-radius: .5em;
+    border: 1px solid rgba(34, 34, 34, 0.1);
+    box-shadow: 0 5px 5px rgba(34, 34, 34, 0.1);
+    z-index: 999999;
+    max-width: 80vw !important;
+    pointer-events: none !important;
+    transition: .0625s top ease-out, .0625s left ease-out, .0625s bottom ease-out, .0625s right ease-out, .25s opacity ease-out; }
+    .data-visualizer-tooltip:after {
+      content: "";
+      background: #EEE;
+      display: block;
+      width: 1.5rem;
+      height: 1.5rem;
+      z-index: -1;
+      position: absolute;
+      margin: auto;
+      border-right: 1px solid rgba(34, 34, 34, 0.1);
+      border-bottom: 1px solid rgba(34, 34, 34, 0.1); }
+    .data-visualizer-tooltip.n {
+      margin-top: calc( -0.8660714286rem - 10px); }
+      .data-visualizer-tooltip.n:after {
+        bottom: -.75rem;
+        right: 0;
+        left: 0;
+        transform: rotate(45deg); }
+    .data-visualizer-tooltip.w {
+      margin-left: calc( -0.8660714286rem - 2px); }
+      .data-visualizer-tooltip.w:after {
+        right: -.75rem;
+        top: 0;
+        bottom: 0;
+        transform: rotate(-45deg); }
+    .data-visualizer-tooltip.s {
+      margin-top: calc( 0.8660714286rem - 2px); }
+      .data-visualizer-tooltip.s:after {
+        top: -.75rem;
+        right: 0;
+        left: 0;
+        transform: rotate(-135deg); }
+    .data-visualizer-tooltip.e {
+      margin-left: calc( 0.8660714286rem - 2px); }
+      .data-visualizer-tooltip.e:after {
+        left: -.75rem;
+        top: 0;
+        bottom: 0;
+        transform: rotate(135deg); }
     .data-visualizer-tooltip-data-property:nth-child(n + 2) {
       margin-top: .5em; }
   @media only screen and (max-width: 700px) {

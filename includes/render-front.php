@@ -270,6 +270,11 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 													$boolean_values = array('legend');
 													$string_values = array('background');
 													break;
+
+												case 'tooltip':
+													$string_values = array('text_align','direction');
+													$boolean_values = array('enable');
+													break;
 												
 												case 'bar':
 													$boolean_values = array('text_out');
@@ -367,6 +372,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 				}());
 				//]]>
 				</script>";
+				
 
 			// _1p21_dv_output_arr($data_visual);
 

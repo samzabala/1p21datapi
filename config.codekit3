@@ -177,14 +177,6 @@
 		"oAP": "/includes/setup-admin.php",
 		"oF": 0
 		},
-	"/README.html": {
-		"cB": 0,
-		"ft": 8192,
-		"hM": 0,
-		"oA": 0,
-		"oAP": "/README.html",
-		"oF": 0
-		},
 	"/README.md": {
 		"cB": 0,
 		"cS": 0,
@@ -195,8 +187,8 @@
 		"ft": 4096,
 		"hM": 0,
 		"oA": 0,
-		"oAP": "/README.html",
-		"oF": 0,
+		"oAP": "/templates/documentation.html",
+		"oF": 2,
 		"oFM": 0,
 		"oS": 0,
 		"pHT": 0,
