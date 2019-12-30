@@ -184,9 +184,6 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 			unset($data_visual['key']['color']);
 		}
 
-
-		echo !($data_visual['multiple']) ? 'no multi' : 'ya multi';
-
 		// parse and remove itemz we dont need
 
 		//remove based on multipl

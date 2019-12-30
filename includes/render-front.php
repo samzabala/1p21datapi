@@ -368,9 +368,8 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 				//]]>
 				</script>";
 
+			// _1p21_dv_output_arr($data_visual);
 
-
-			_1p21_dv_output_arr($data_visual);
 			
 		}else{
 			$render =  '<div class="data-visualizer no-data"><div class="data-visualizer-wrapper fatality">Sorry, the data visual does not exist</div></div>';
