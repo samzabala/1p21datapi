@@ -292,6 +292,14 @@
 					piInRadius: 0,
 
 
+				//tooltip
+					tooltipEnable: false,
+					tooltipTextAlign: 'left',
+					tooltipWidth: 'auto',
+					tooltipDirection: 'n',
+					tooltipDirectionParameter: null,
+					tooltipContent: null,
+
 			
 
 			//2.0.0 new args
@@ -304,14 +312,6 @@
 					
 					//advanced
 					colorScheme: null,
-
-				//tooltip
-					tooltipEnable: false,
-					tooltipTextAlign: 'left',
-					tooltipWidth: 'auto',
-					tooltipDirection: 'n',
-					tooltipDirectionParameter: null,
-					tooltipContent: null,
 
 				
 		};
@@ -2118,26 +2118,7 @@
 						.append('text')
 						.attr('line-height',1.25)
 						.attr('dominant-baseline','middle')
-						.attr('stroke',function(dis){
-								if(
-									args.type == 'pie'
-									&& args.piLabelStyle == 'within'
-									&& args.colorPalette.length > 0 
-								){
-									return _.the_color(deepGet(dis,args.key.color))
-
-								}else if(
-									(args.type !== 'bar' && args.type !== 'pie')
-									|| (
-										args.type == 'pie'
-										&& args.piLabelStyle == 'linked'
-									)
-								){
-									return args.colorBackground;
-								}
-						});
-
-					//stroke width
+						;
 
 					//append content right away so we can calculate where shit offset
 					[0,1].forEach(function(keyKey){
@@ -2318,6 +2299,30 @@
 							}
 
 							return classString;
+						})
+						.attr('stroke',function(dis){
+							if(
+								(
+									args.type == 'pie'
+									&& args.piLabelStyle == 'within'
+									&& args.colorPalette.length > 0
+								)
+								// || (
+								// 	args.type == 'bar' 
+								// 	&& args.barTextWithin
+								// ) @TODO this
+							){
+								return _.the_color(deepGet(dis,args.key.color))
+
+							}else if(
+								(args.type !== 'bar' && args.type !== 'pie')
+								|| (
+									args.type == 'pie'
+									&& args.piLabelStyle == 'linked'
+								)
+							){
+								return args.colorBackground;
+							}
 						})
 						.transition(_.duration)
 							.attrTween('transform',function(dis,i){
