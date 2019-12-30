@@ -87,6 +87,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
 			//script
 				$render .= "<script>
+				//<![CDATA[
 				(function(){
 					document.addEventListener('DOMContentLoaded', function() {
 						_1p21.dataVisualizer('#{$wrapper_id}',{\n";
@@ -242,6 +243,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 										case 'name':
 										case 'value':
 										case 'scatter':
+										case 'tooltip':
 
 											$string_values = array();
 											
@@ -363,11 +365,11 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 						});
 					})
 				}());
+				//]]>
 				</script>";
 
+			// _1p21_dv_output_arr($data_visual);
 
-
-			_1p21_dv_output_arr($data_visual);
 			
 		}else{
 			$render =  '<div class="data-visualizer no-data"><div class="data-visualizer-wrapper fatality">Sorry, the data visual does not exist</div></div>';
@@ -390,7 +392,6 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
 function _1p21_div_data_visualizer_render($atts = array()){
 	global $_1p21_dv;
-	$settings = get_option( '_1p21_dv_opts' );
 
 	
 	wp_enqueue_script( 'd3' );

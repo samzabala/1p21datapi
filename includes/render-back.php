@@ -184,9 +184,6 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 			unset($data_visual['key']['color']);
 		}
 
-
-		echo !($data_visual['multiple']) ? 'no multi' : 'ya multi';
-
 		// parse and remove itemz we dont need
 
 		//remove based on multipl
@@ -211,10 +208,12 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 			unset($data_visual['format'][0]['divider']);
 		}
 
+		if ($data_visual['type'] !== 'bar') {
+			unset($data_visual['bar']['text_out']);
+		}
+
 		if ($data_visual['type'] !== 'pie') {
 			unset($data_visual['pi']);
-			unset($data_visual['name']);
-			unset($data_visual['value']);
 
 			$coordinates = ['x','y'];
 

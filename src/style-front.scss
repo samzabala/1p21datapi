@@ -110,32 +110,19 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 		font-family: inherit!important;
 	}
 
-	&-axis,
-	&-grid,
-	&-label{
-		line,
-		path {
-			stroke: $color-base;
-			stroke-opacity: .5;
-		}
-		
-		text {
-			fill: $color-base;
-			stroke-opacity: .5;
-		}
+	// &-axis,
+	// &-grid,
+	// &-label{
+	// 	color: $color-base;
 
-		#{$prefix}-dark & {
+	// 	> g {
+	// 		// fill-opacity:.5;
+	// 	}
 
-		line,
-		path {
-			stroke: $color-bg;
-		}
-		
-		text {
-			fill: $color-bg;
-		}
-		}
-	}
+	// 	#{$prefix}-dark & {
+	// 		color: $color-bg;
+	// 	}
+	// }
 
 	&-grid {
 		
@@ -220,6 +207,7 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 	.legend-item-text,
 	&-graph .graph-item-text {
 		fill: $color-base;
+		pointer-events:none;
 	}
 
 	&-dark {
@@ -249,6 +237,25 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 			}
 		}
 
+		
+	}
+
+	&-tooltip {
+		background: $color-bg;
+		font: inherit;
+		font-size: 1rem;
+		line-height: 1.5;
+		padding: 1.5em;
+		border-radius: .5em;
+
+		&-data {
+
+			&-property {
+				&:nth-child(n + 2) {
+					margin-top: .5em;
+				}
+			}
+		}
 		
 	}
 

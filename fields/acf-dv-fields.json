@@ -1122,13 +1122,66 @@
                     },
                     {
                         "ID": 0,
+                        "key": "field_5e04ee04602d5",
+                        "label": "Area Data",
+                        "name": "area",
+                        "prefix": "acf",
+                        "type": "true_false",
+                        "value": null,
+                        "menu_order": 3,
+                        "instructions": "Reverse order of scatter plot point area data",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "scatter"
+                                },
+                                {
+                                    "field": "field_5d5ef6f792170",
+                                    "operator": "==",
+                                    "value": "scatter"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "scatter"
+                                },
+                                {
+                                    "field": "field_5d602683abd8f",
+                                    "operator": "!=empty"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5db7516bf3aa9",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "area",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "message": "",
+                        "default_value": 0,
+                        "ui": 0,
+                        "ui_on_text": "",
+                        "ui_off_text": ""
+                    },
+                    {
+                        "ID": 0,
                         "key": "field_5d9b9a52b59b3",
                         "label": "Multiple Data",
                         "name": "multiple",
                         "prefix": "acf",
                         "type": "true_false",
                         "value": null,
-                        "menu_order": 3,
+                        "menu_order": 4,
                         "instructions": "Reverse order of datasets",
                         "required": 0,
                         "id": "",
@@ -2162,7 +2215,7 @@
                         "type": "number",
                         "value": null,
                         "menu_order": 7,
-                        "instructions": "number of tick marks along the axis",
+                        "instructions": "number of tick marks along the axis.<br> If this has a value, adding grid increments is an available options",
                         "required": 0,
                         "id": "",
                         "class": "",
@@ -2700,7 +2753,7 @@
                         "type": "number",
                         "value": null,
                         "menu_order": 7,
-                        "instructions": "number of tick marks along the axis",
+                        "instructions": "number of tick marks along the axis.<br> If this has a value, adding grid increments is an available options",
                         "required": 0,
                         "id": "",
                         "class": "",
@@ -2886,7 +2939,15 @@
                 "required": 0,
                 "id": "",
                 "class": "",
-                "conditional_logic": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420a45de26f",
+                            "operator": "==",
+                            "value": "bar"
+                        }
+                    ]
+                ],
                 "parent": "group_5d4206c985d00",
                 "wrapper": {
                     "width": "",
@@ -2900,13 +2961,44 @@
                 "sub_fields": [
                     {
                         "ID": 0,
+                        "key": "field_5e04f58485554",
+                        "label": "Gutter",
+                        "name": "gutter",
+                        "prefix": "acf",
+                        "type": "number",
+                        "value": null,
+                        "menu_order": 0,
+                        "instructions": "space between bars",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5db859fd1cf09",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "gutter",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "min": 0,
+                        "max": 1,
+                        "step": ".01"
+                    },
+                    {
+                        "ID": 0,
                         "key": "field_5db747a9181fb",
-                        "label": "Text Outside of Bar",
-                        "name": "text_out",
+                        "label": "Text Within Bar",
+                        "name": "text_within",
                         "prefix": "acf",
                         "type": "true_false",
                         "value": null,
-                        "menu_order": 0,
+                        "menu_order": 1,
                         "instructions": "",
                         "required": 0,
                         "id": "",
@@ -2943,10 +3035,10 @@
                             "class": "",
                             "id": ""
                         },
-                        "_name": "text_out",
+                        "_name": "text_within",
                         "_prepare": 0,
                         "_valid": 1,
-                        "message": "Enabling will favor displaying text outside of graph item",
+                        "message": "Enabling will favor displaying text inside of graph item. check if you want the text to display within the graph shape",
                         "default_value": 0,
                         "ui": 0,
                         "ui_on_text": "",
@@ -4133,13 +4225,125 @@
             },
             {
                 "ID": 0,
+                "key": "field_5e04f33005130",
+                "label": "Tooltip Settings",
+                "name": "tooltip",
+                "prefix": "acf",
+                "type": "group",
+                "value": null,
+                "menu_order": 19,
+                "instructions": "",
+                "required": 0,
+                "id": "",
+                "class": "",
+                "conditional_logic": 0,
+                "parent": "group_5d4206c985d00",
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "_name": "tooltip",
+                "_prepare": 0,
+                "_valid": 1,
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "ID": 0,
+                        "key": "field_5e04f36a05131",
+                        "label": "Enable",
+                        "name": "enable",
+                        "prefix": "acf",
+                        "type": "true_false",
+                        "value": null,
+                        "menu_order": 0,
+                        "instructions": "Enable tooltip",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5e04f33005130",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "enable",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "message": "Checking will generate a tooltip that contains all the properties represented by the graph item",
+                        "default_value": 0,
+                        "ui": 0,
+                        "ui_on_text": "",
+                        "ui_off_text": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5e04f3a305133",
+                        "label": "Advanced",
+                        "name": "",
+                        "prefix": "acf",
+                        "type": "accordion",
+                        "value": false,
+                        "menu_order": 1,
+                        "instructions": "",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5e04f33005130",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "open": 0,
+                        "multi_expand": 0,
+                        "endpoint": 0
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5e04f38c05132",
+                        "label": "Content",
+                        "name": "content",
+                        "prefix": "acf",
+                        "type": "textarea",
+                        "value": null,
+                        "menu_order": 2,
+                        "instructions": "Function that returns text or html markup for a graph item",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5e04f33005130",
+                        "wrapper": {
+                            "width": "",
+                            "class": "dv-code",
+                            "id": ""
+                        },
+                        "_name": "content",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "function(data,index){ return +data; }",
+                        "maxlength": "",
+                        "rows": "",
+                        "new_lines": ""
+                    }
+                ]
+            },
+            {
+                "ID": 0,
                 "key": "field_5d42ff6a5f461",
                 "label": "Advanced",
                 "name": "",
                 "prefix": "acf",
                 "type": "tab",
                 "value": false,
-                "menu_order": 19,
+                "menu_order": 20,
                 "instructions": "",
                 "required": 0,
                 "id": "",

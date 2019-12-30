@@ -28,6 +28,7 @@ Examples:
 ```
 	
 ###	Using `data_visualizer`
+
 ```
 [data_visalizer id=666 width=800 height=600]
 ```
@@ -59,12 +60,16 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 
 	eg:
 
+	
+	This will set all sides to 40
+
 	```
-	<!-- This will set all sides to 40 -->
 	[dv id=666 margin=40]
+	```
 
-
-	<!-- This will set top and bottom sides to 40, and left and right sides to 60 -->
+	This will set top and bottom sides to 40, and left and right sides to 60
+	
+	```
 	[dv id=666 margin=40,60]
 	```
 
@@ -132,13 +137,7 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 
 Add a subtitle or description for the data visual
 
-### Data Settings
-
-####	*Type*
-
-**[ REQUIRED | Default: *Bar* | Meta Key : `'dv_type'` | options: *Bar*, *Line*, *Pie*, *Scatter Plot* ]**
-
-Type of graph the data will be presented as.
+### Source Settings
 
 ####	*Multiple Graph*
 
@@ -205,18 +204,6 @@ Enable mutliple graphs of data groups setup
 			**[ Optional | Meta Key : `'dv_src_row_'.$index.'_area'` | Available when: *Type* is set to 'Scatter Plot' ]**
 
 			Numeric data value that will influence the size of the scatter plot point
-
-*	**Reverse Groups Order**
-
-	**[ Optional | Meta Key : `'dv_src_reverse_multiple'` | Default: `false` | type: boolean | Available When: *Multiple Graph* is `true` ]**
-
-	Reverse order of data groups
-
-*	**Reverse Data Order**
-
-	**[ Optional | Meta Key : `'dv_src_reverse'` | Default: `false` | type: boolean ]**
-
-	Reverse order of data
 	
 *	**Source Key**
 
@@ -227,8 +214,6 @@ Enable mutliple graphs of data groups setup
 	if left blank, data will be taken from the root level
 
 	if there is a value, the data returned from that key will be used
-
-
 	
 *	**Multiple Source Key**
 
@@ -240,6 +225,13 @@ Enable mutliple graphs of data groups setup
 
 	if there is a value, the data returned from that key will be used
 	
+### Data Settings
+
+####	*Type*
+
+**[ REQUIRED | Default: *Bar* | Meta Key : `'dv_type'` | options: *Bar*, *Line*, *Pie*, *Scatter Plot* ]**
+
+Type of graph the data will be presented as.
 
 #### *Data Keys*
 
@@ -268,6 +260,26 @@ Enable mutliple graphs of data groups setup
 	**[ Optional | Meta Key : `'dv_key_color'` | Default: `null` | *Type* is NOT 'Pie' ]**
 
 	Key relative to a datum instance's level to represent the data's value
+
+
+#### *Reverse Settings*
+
+Check or set to true the following you would like to reverse order of
+
+
+*	**Reverse Name Order**
+
+	**[ Optional | Meta Key : `'dv_reverse_0'` | Default: `false` | type: boolean | Available When: *Multiple Graph* is `true` ]**
+
+*	**Reverse Value Order**
+
+	**[ Optional | Meta Key : `'dv_reverse_1'` | Default: `false` | type: boolean | Available When: *Multiple Graph* is `true` ]**
+
+*	**Reverse Multiple Data Order**
+
+	**[ Optional | Meta Key : `'dv_reverse_multiple'` | Default: `false` | type: boolean | Available When: *Multiple Graph* is `true` ]**
+
+	Reverse order of data groups
 
 #### *Set Name Key As Numeric?*
 
@@ -409,6 +421,28 @@ These are optional settings to allow reformatting data on the visualizer
 		_**Note:** This field is available only if **Tick Amount** is set as the renderer needs a set amount of ticks to calculate the grid rules from_
 
 
+
+#### Bar Settings
+
+
+**[ Optional | Available when: *Type* is 'Bar' ]**
+
+*	**Gutter**
+
+	**[ REQUIRED | Meta Key : `'dv_bar_gutter'` | Default : '.1'  ]**
+
+	amount of margin between bars
+
+*	**Text within Bar**
+
+	**[ REQUIRED | Meta Key : `'dv_bar_text_out'` | Default : 'True' ]**
+
+	favors placing text inside of bar instead of outside.
+
+	**NOTE:** if a bar item contains not enough space to place text within it, the text will be placed outside,
+	While if this option is not checked, if there's not enough space outside of the bar item within the graph's space, the text will be displayed within the bar
+
+	To override this, either the minimum or the maximum value if the number and maybe name data must be modified to create enough space
 
 
 #### Line Settings

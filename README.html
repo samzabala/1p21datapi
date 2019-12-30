@@ -11,7 +11,7 @@
 
 <p>Plugin URI: <a href="https://github.com/samzabala/1p21datapi">https://github.com/samzabala/1p21datapi</a><br />
 Description: Data visualizer using d3 and svgs<br />
-Version: 2.0.0<br />
+Version: 1.2.0.2<br />
 Author: 1Point21 Interactive<br />
 Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21interactive.com/</a></p>
 
@@ -68,12 +68,14 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p>eg:</p>
 
-<pre><code>&lt;!-- This will set all sides to 40 --&gt;
-[dv id=666 margin=40]
+<p>This will set all sides to 40</p>
 
+<pre><code>[dv id=666 margin=40]
+</code></pre>
 
-&lt;!-- This will set top and bottom sides to 40, and left and right sides to 60 --&gt;
-[dv id=666 margin=40,60]
+<p>This will set top and bottom sides to 40, and left and right sides to 60</p>
+
+<pre><code>[dv id=666 margin=40,60]
 </code></pre></li>
 <li><p><strong><code>width</code></strong></p>
 
@@ -134,13 +136,7 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p>Add a subtitle or description for the data visual</p>
 
-<h3 id="datasettings">Data Settings</h3>
-
-<h4 id="type"><em>Type</em></h4>
-
-<p><strong>[ REQUIRED | Default: <em>Bar</em> | Meta Key : <code>'dv_type'</code> | options: <em>Bar</em>, <em>Line</em>, <em>Pie</em>, <em>Scatter Plot</em> ]</strong></p>
-
-<p>Type of graph the data will be presented as.</p>
+<h3 id="sourcesettings">Source Settings</h3>
 
 <h4 id="multiplegraph"><em>Multiple Graph</em></h4>
 
@@ -206,16 +202,6 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p>Numeric data value that will influence the size of the scatter plot point</p></li>
 </ul></li>
 </ul></li>
-<li><p><strong>Reverse Groups Order</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_src_reverse_multiple'</code> | Default: <code>false</code> | type: boolean | Available When: <em>Multiple Graph</em> is <code>true</code> ]</strong></p>
-
-<p>Reverse order of data groups</p></li>
-<li><p><strong>Reverse Data Order</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_src_reverse'</code> | Default: <code>false</code> | type: boolean ]</strong></p>
-
-<p>Reverse order of data</p></li>
 <li><p><strong>Source Key</strong></p>
 
 <p><strong>[ Optional | Meta Key : <code>'dv_src_key'</code> | Default: <code>null</code> | Valid file types: Available when: <em>Source Type</em> is NOT &#8216;Rows (UI Field)&#8217; ]</strong></p>
@@ -235,6 +221,14 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p>if there is a value, the data returned from that key will be used</p></li>
 </ul>
+
+<h3 id="datasettings">Data Settings</h3>
+
+<h4 id="type"><em>Type</em></h4>
+
+<p><strong>[ REQUIRED | Default: <em>Bar</em> | Meta Key : <code>'dv_type'</code> | options: <em>Bar</em>, <em>Line</em>, <em>Pie</em>, <em>Scatter Plot</em> ]</strong></p>
+
+<p>Type of graph the data will be presented as.</p>
 
 <h4 id="datakeys"><em>Data Keys</em></h4>
 
@@ -261,6 +255,24 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 <p><strong>[ Optional | Meta Key : <code>'dv_key_color'</code> | Default: <code>null</code> | <em>Type</em> is NOT &#8216;Pie&#8217; ]</strong></p>
 
 <p>Key relative to a datum instance&#8217;s level to represent the data&#8217;s value</p></li>
+</ul>
+
+<h4 id="reversesettings"><em>Reverse Settings</em></h4>
+
+<p>Check or set to true the following you would like to reverse order of</p>
+
+<ul>
+<li><p><strong>Reverse Name Order</strong></p>
+
+<p><strong>[ Optional | Meta Key : <code>'dv_reverse_0'</code> | Default: <code>false</code> | type: boolean | Available When: <em>Multiple Graph</em> is <code>true</code> ]</strong></p></li>
+<li><p><strong>Reverse Value Order</strong></p>
+
+<p><strong>[ Optional | Meta Key : <code>'dv_reverse_1'</code> | Default: <code>false</code> | type: boolean | Available When: <em>Multiple Graph</em> is <code>true</code> ]</strong></p></li>
+<li><p><strong>Reverse Multiple Data Order</strong></p>
+
+<p><strong>[ Optional | Meta Key : <code>'dv_reverse_multiple'</code> | Default: <code>false</code> | type: boolean | Available When: <em>Multiple Graph</em> is <code>true</code> ]</strong></p>
+
+<p>Reverse order of data groups</p></li>
 </ul>
 
 <h4 id="setnamekeyasnumeric"><em>Set Name Key As Numeric?</em></h4>
@@ -394,6 +406,28 @@ Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21i
 
 <p><em><strong>Note:</strong> This field is available only if <strong>Tick Amount</strong> is set as the renderer needs a set amount of ticks to calculate the grid rules from</em></p></li>
 </ul></li>
+</ul>
+
+<h4 id="barsettings">Bar Settings</h4>
+
+<p><strong>[ Optional | Available when: <em>Type</em> is &#8216;Bar&#8217; ]</strong></p>
+
+<ul>
+<li><p><strong>Gutter</strong></p>
+
+<p><strong>[ REQUIRED | Meta Key : <code>'dv_bar_gutter'</code> | Default : &#8216;.1&#8217; ]</strong></p>
+
+<p>amount of margin between bars</p></li>
+<li><p><strong>Text within Bar</strong></p>
+
+<p><strong>[ REQUIRED | Meta Key : <code>'dv_bar_text_out'</code> | Default : &#8216;True&#8217; ]</strong></p>
+
+<p>favors placing text inside of bar instead of outside.</p>
+
+<p><strong>NOTE:</strong> if a bar item contains not enough space to place text within it, the text will be placed outside,
+While if this option is not checked, if there&#8217;s not enough space outside of the bar item within the graph&#8217;s space, the text will be displayed within the bar</p>
+
+<p>To override this, either the minimum or the maximum value if the number and maybe name data must be modified to create enough space</p></li>
 </ul>
 
 <h4 id="linesettings">Line Settings</h4>

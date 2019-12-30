@@ -118,6 +118,17 @@ $gutter: 40px;
 			font-size: 2em;
 			padding: 0;
 		}
+
+		h1,h2,h3,h4,h5,h6 {
+			code {
+				background: none;
+				color:inherit;
+
+				&:before,&:after {
+					content:"`";
+				}
+			}
+		}
 		
 		form {
 			margin-top: 3em;
