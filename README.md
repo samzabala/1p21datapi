@@ -93,6 +93,15 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 	
 	if graph has small spacing or font sizes look too big, the default canvas just isn't enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.
 
+
+*	**`font_size`**
+
+	**[ Optional | Default: `'16px'` | type: number / string ]**
+
+	css base font size to size all text relative to
+	
+	If given a number, it will be interpreted as pixels.
+
 *	**`transition`**
 
 	**[ Optional | Default: `1500` | type: number ]**
@@ -104,30 +113,6 @@ _**Note:** in case_ `dv` _conflicts with another shortcode, the plugin will outp
 	**[ Optional | Default: `250` | type: number ]**
 
 	delay of rendering the graph.
-
-*	**`font_size`**
-
-	**[ Optional | Default: `'16px'` | type: number / string ]**
-
-	css base font size to size all text relative to
-	
-	If given a number, it will be interpreted as pixels.
-
-*	**`name_size`**
-
-	**[ Optional | Default: `.75` | type: number ]**
-
-	Name data's relative size to `font_size` upon display. Will be interpeted as `em` css unit
-
-	This is only visible when both name and data values are set up to display with the graph item
-
-*	**`value_size`**
-
-	**[ Optional | Default: `1.75` | type: number ]**
-
-	Value data's relative size to `font_size` upon display. Will be interpeted as `em` css unit
-
-	This is only visible when both name and data values are set up to display with the graph item
 
 ## Backend Settings
 
@@ -528,7 +513,7 @@ These are optional settings to allow reformatting data on the visualizer
 
 		Whether or not to invert the fill opposite to the alignment of the axis
 
-*	Advanced
+*	**Advanced**
 
 	*	**Dash Array**
 
@@ -601,6 +586,77 @@ These are optional settings to allow reformatting data on the visualizer
 	**[ Optional | Meta Key : `'dv_color_legend'` | Default: `true` (when available) | Available when *Color Key* is set; *Type* is 'Pie'; *Category* in *Row* field has any value ]**
 
 	Enable legend presentation of data
+
+#### Text Settings 
+
+*	**`dv_text_name_size`**
+
+	**[ Optional | Default: `.75` | type: number ]**
+
+	Name data's relative size to `font_size` upon display. Will be interpeted as `em` css unit
+
+	This is only visible when both name and data values are set up to display with the graph item
+
+*	**`dv_text_value_size`**
+
+	**[ Optional | Default: `1.75` | type: number ]**
+
+	Value data's relative size to `font_size` upon display. Will be interpeted as `em` css unit
+
+	This is only visible when both name and data values are set up to display with the graph item
+
+*	**`dv_text_ticks_size`**
+
+	**[ Optional | Default: `.75` | type: number ]**
+
+	tick rule text's relative size to `font_size` upon display. Will be interpeted as `em` css unit
+
+	This is only visible ticks are enabled
+
+*	**`dv_text_legend_size`**
+
+	**[ Optional | Default: `.75` | type: number ]**
+
+	color legend text's relative size to `font_size` upon display. Will be interpeted as `em` css unit
+
+	This is only visible legends are enabled
+
+
+#### Tooltip Settings
+
+*	**Enable Tooltip**
+
+	**[ Optional | Meta Key : `'dv_tooltip_enable'` | Default: `false` ]**
+
+	Whether or not to add tooltip functionality to your graph. When enabled, the following fields will be available as well
+
+*	**Text Align**
+
+	**[ Optional | Meta Key : `'dv_tooltip_text_align'` | Default: `'left'` ]**
+
+	Alignment of tooltip text
+
+*	**Width**
+
+	**[ Optional | Meta Key : `'dv_tooltip_width'` | Default: `'auto'` ]**
+
+	Set width of tooltip. Note that whatever set value this is, it cannot max out 80vw
+
+*	**Advanced**
+
+	*	**Direction**
+
+		**[ Optional | Meta Key : `'dv_tooltip_direction'` | Default: `'n'` ]**
+
+		Function or string that will be used by the `d3.tip.direction()` method. View documentation [https://github.com/caged/d3-tip/blob/master/docs/positioning-tooltips.md#tipdirection](Here)
+
+
+	*	**Content**
+
+		**[ Optional | Meta Key : `'dv_tooltip_content'` | Default: `null` ]**
+
+		Function that will be used `by the d3.tip.html()` method. View documentation here: [https://github.com/caged/d3-tip/blob/master/docs/initializing-tooltips.md#d3tip](Here)
+
 
 ## Functions
 

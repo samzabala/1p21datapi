@@ -307,6 +307,10 @@
 
 				//tooltip
 					tooltipEnable: false,
+					tooltipTextAlign: 'left',
+					tooltipWidth: 'auto',
+					tooltipDirection: 'n',
+					tooltipDirectionParameter: null,
 					tooltipContent: null,
 
 				
@@ -1624,7 +1628,6 @@
 
 
 
-
 		/*****************************************************************************
 		 * FUNCTION: setAxis
 		*****************************************************************************/
@@ -1689,6 +1692,27 @@
 
 		/*****************************************************************************
 		 * ENDFUNCTION: setAxis
+		*****************************************************************************/
+
+
+
+
+
+		/*****************************************************************************
+		 * FUNCTION: renderCursorStalker
+		*****************************************************************************/
+
+			var renderCursorStalker = function(d3_event){
+
+				return _.tooltip_cursor_stalker 
+					.attr('cx',  ( d3_event.offsetX * ( _.outer_width / _.svg.node().clientWidth ) ) + 'px')
+					.attr('cy',  ( d3_event.offsetY * (  _.outer_height / _.svg.node().clientHeight ) ) + 'px')
+					.node();
+
+			}
+
+		/*****************************************************************************
+		 * ENDFUNCTION: renderCursorStalker
 		*****************************************************************************/
 
 
@@ -2007,7 +2031,9 @@
 						//tooltip
 						if(args.tooltipEnable) {
 							_.merge_blob
-								.on('mouseenter',_.tooltip.show)
+								.on('mousemove',function(dis){
+										_.tooltip.show(dis,renderCursorStalker(d3.event));
+								})
 								.on('mouseleave',_.tooltip.hide);
 						}
 						
@@ -2636,9 +2662,29 @@
 
 								//tooltip
 								if(args.tooltipEnable) {
+
+									
+									_.svg.append('circle')
+										.attr('class',prefix+'cursor-stalker')
+										// .attr('r',10)
+										// // .style('opacity',0)
+										// .attr('fill','red');
+
+									_.tooltip_cursor_stalker = _.svg.select('circle.'+prefix+'cursor-stalker')
+
 									_.tooltip = d3.tip()
-									.attr('class',prefix+'tooltip')
-									.html(_.tooltip_html)
+										.attr('class',prefix+'tooltip')
+										.style('width', function(){
+											if(typeof args.tooltipWidth === 'number'){
+												return parseFloat(args.tooltipWidth) + 'px';
+											}else if(args.tooltipWidth == 'auto'){
+												return args.tooltipWidth;
+											}
+										})
+										.style('text-align',args.tooltipTextAlign)
+										.direction(args.tooltipDirectionParameter || args.tooltipDirection)
+										.html(_.tooltip_html)
+
 									_.svg.call(_.tooltip);
 								}
 

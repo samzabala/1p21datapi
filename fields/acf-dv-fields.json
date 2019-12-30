@@ -35,7 +35,7 @@
             {
                 "ID": 0,
                 "key": "field_5d9baf46f84ac",
-                "label": "Source Settings",
+                "label": "Step 1: Source Settings",
                 "name": "",
                 "prefix": "acf",
                 "type": "tab",
@@ -732,7 +732,7 @@
             {
                 "ID": 0,
                 "key": "field_5d571ad986ab3",
-                "label": "Data Settings",
+                "label": "Step 2: Data Settings",
                 "name": "",
                 "prefix": "acf",
                 "type": "tab",
@@ -742,7 +742,38 @@
                 "required": 0,
                 "id": "",
                 "class": "",
-                "conditional_logic": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d4206cdde265",
+                            "operator": "!=empty"
+                        }
+                    ],
+                    [
+                        {
+                            "field": "field_5d447ad169ee3",
+                            "operator": "!=empty"
+                        }
+                    ],
+                    [
+                        {
+                            "field": "field_5d420ebe6b6ca",
+                            "operator": "!=empty"
+                        }
+                    ],
+                    [
+                        {
+                            "field": "field_5d420719de267",
+                            "operator": "!=empty"
+                        }
+                    ],
+                    [
+                        {
+                            "field": "field_5d9b96a0d2c06",
+                            "operator": "!=empty"
+                        }
+                    ]
+                ],
                 "parent": "group_5d4206c985d00",
                 "wrapper": {
                     "width": "",
@@ -967,6 +998,28 @@
                                     "field": "field_5d9b9853d5bec",
                                     "operator": "==",
                                     "value": "key"
+                                },
+                                {
+                                    "field": "field_5d9b8ffe900c3",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "pie"
+                                },
+                                {
+                                    "field": "field_5d420de06b6c9",
+                                    "operator": "!=",
+                                    "value": "rows"
+                                },
+                                {
+                                    "field": "field_5d9b8ffe900c3",
+                                    "operator": "!=",
+                                    "value": "1"
                                 }
                             ]
                         ],
@@ -1000,7 +1053,30 @@
                 "required": 0,
                 "id": "",
                 "class": "",
-                "conditional_logic": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420a6cde270",
+                            "operator": "!=empty"
+                        },
+                        {
+                            "field": "field_5d420b33de274",
+                            "operator": "!=empty"
+                        }
+                    ],
+                    [
+                        {
+                            "field": "field_5d420719de267",
+                            "operator": "!=empty"
+                        }
+                    ],
+                    [
+                        {
+                            "field": "field_5d9b96a0d2c06",
+                            "operator": "!=empty"
+                        }
+                    ]
+                ],
                 "parent": "group_5d4206c985d00",
                 "wrapper": {
                     "width": "",
@@ -1035,7 +1111,7 @@
                         ],
                         "parent": "field_5db7516bf3aa9",
                         "wrapper": {
-                            "width": "",
+                            "width": "50",
                             "class": "",
                             "id": ""
                         },
@@ -1071,7 +1147,7 @@
                         ],
                         "parent": "field_5db7516bf3aa9",
                         "wrapper": {
-                            "width": "",
+                            "width": "50",
                             "class": "",
                             "id": ""
                         },
@@ -1274,7 +1350,23 @@
                 "conditional_logic": [
                     [
                         {
-                            "field": "field_5d420de06b6c9",
+                            "field": "field_5d420a6cde270",
+                            "operator": "!=empty"
+                        },
+                        {
+                            "field": "field_5d420b33de274",
+                            "operator": "!=empty"
+                        }
+                    ],
+                    [
+                        {
+                            "field": "field_5d9b96a0d2c06",
+                            "operator": "!=empty"
+                        }
+                    ],
+                    [
+                        {
+                            "field": "field_5d420719de267",
                             "operator": "!=empty"
                         }
                     ]
@@ -1303,7 +1395,14 @@
                         "required": 0,
                         "id": "",
                         "class": "",
-                        "conditional_logic": 0,
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420a6cde270",
+                                    "operator": "!=empty"
+                                }
+                            ]
+                        ],
                         "parent": "field_5d60205502da2",
                         "wrapper": {
                             "width": "50",
@@ -1456,7 +1555,7 @@
                                 "type": "textarea",
                                 "value": null,
                                 "menu_order": 4,
-                                "instructions": "accepts string format or function<br>Reference: <a href=\"https:\/\/github.com\/d3\/d3-format#locale_format\">https:\/\/github.com\/d3\/d3-format#locale_format<\/a><br>Setting this will override prepend,append, and divider settings",
+                                "instructions": "accepts string format or function<br>Reference: <a target=\"_blank\" href=\"https:\/\/github.com\/d3\/d3-format#locale_format\">https:\/\/github.com\/d3\/d3-format#locale_format<\/a><br>Setting this will override prepend,append, and divider settings",
                                 "required": 0,
                                 "id": "",
                                 "class": "",
@@ -1491,7 +1590,14 @@
                         "required": 0,
                         "id": "",
                         "class": "",
-                        "conditional_logic": 0,
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420b33de274",
+                                    "operator": "!=empty"
+                                }
+                            ]
+                        ],
                         "parent": "field_5d60205502da2",
                         "wrapper": {
                             "width": "50",
@@ -1628,7 +1734,7 @@
                                 "type": "textarea",
                                 "value": null,
                                 "menu_order": 4,
-                                "instructions": "accepts string format or function<br>Reference: <a href=\"https:\/\/github.com\/d3\/d3-format#locale_format\">https:\/\/github.com\/d3\/d3-format#locale_format<\/a><br>Setting this will override prepend,append, and divider settings",
+                                "instructions": "accepts string format or function<br>Reference: <a target=\"_blank\" href=\"https:\/\/github.com\/d3\/d3-format#locale_format\">https:\/\/github.com\/d3\/d3-format#locale_format<\/a><br>Setting this will override prepend,append, and divider settings",
                                 "required": 0,
                                 "id": "",
                                 "class": "",
@@ -1800,7 +1906,7 @@
                                 "type": "textarea",
                                 "value": null,
                                 "menu_order": 3,
-                                "instructions": "accepts string format or function<br>Reference: <a href=\"https:\/\/github.com\/d3\/d3-format#locale_format\">https:\/\/github.com\/d3\/d3-format#locale_format<\/a><br>Setting this will override prepend,append, and divider settings",
+                                "instructions": "accepts string format or function<br>Reference: <a target=\"_blank\" href=\"https:\/\/github.com\/d3\/d3-format#locale_format\">https:\/\/github.com\/d3\/d3-format#locale_format<\/a><br>Setting this will override prepend,append, and divider settings",
                                 "required": 0,
                                 "id": "",
                                 "class": "",
@@ -1827,7 +1933,7 @@
             {
                 "ID": 0,
                 "key": "field_5d420abade272",
-                "label": "Graph Settings",
+                "label": "Step 3: Graph Settings",
                 "name": "",
                 "prefix": "acf",
                 "type": "tab",
@@ -1837,7 +1943,35 @@
                 "required": 0,
                 "id": "",
                 "class": "",
-                "conditional_logic": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5d420a6cde270",
+                            "operator": "!=empty"
+                        },
+                        {
+                            "field": "field_5d420b33de274",
+                            "operator": "!=empty"
+                        },
+                        {
+                            "field": "field_5d420de06b6c9",
+                            "operator": "!=",
+                            "value": ""
+                        }
+                    ],
+                    [
+                        {
+                            "field": "field_5d9b96a0d2c06",
+                            "operator": "!=empty"
+                        }
+                    ],
+                    [
+                        {
+                            "field": "field_5d420719de267",
+                            "operator": "!=empty"
+                        }
+                    ]
+                ],
                 "parent": "group_5d4206c985d00",
                 "wrapper": {
                     "width": "",
@@ -3508,7 +3642,7 @@
                         "type": "text",
                         "value": null,
                         "menu_order": 13,
-                        "instructions": "Set dashes on the line graph. The pattern is `dash, gap, dash, gap...`<br>\n<a href=\"https:\/\/developer.mozilla.org\/en-US\/docs\/Web\/SVG\/Attribute\/stroke-dasharray\" >https:\/\/developer.mozilla.org\/en-US\/docs\/Web\/SVG\/Attribute\/stroke-dasharray<\/a>",
+                        "instructions": "Set dashes on the line graph. The pattern is `dash, gap, dash, gap...`<br>\n<a target=\"_blank\" href=\"https:\/\/developer.mozilla.org\/en-US\/docs\/Web\/SVG\/Attribute\/stroke-dasharray\" >https:\/\/developer.mozilla.org\/en-US\/docs\/Web\/SVG\/Attribute\/stroke-dasharray<\/a>",
                         "required": 0,
                         "id": "",
                         "class": "",
@@ -3819,7 +3953,7 @@
                         "type": "repeater",
                         "value": null,
                         "menu_order": 1,
-                        "instructions": "Palette will be applied based on the order of the data.<br>Setting one color will set all graph items to that palette<br>\nIf the graph type is set to pie or the color data key is left blank, the name data will be linked to the palette",
+                        "instructions": "Palette will be applied based on the order of the data.<br>Setting one color will set all graph items to that palette<br><br>\n<strong>If the graph type is set to pie or the color data key is left blank, the name data will be linked to the palette<\/strong>",
                         "required": 0,
                         "id": "",
                         "class": "",
@@ -4227,7 +4361,7 @@
                 "ID": 0,
                 "key": "field_5e04f33005130",
                 "label": "Tooltip Settings",
-                "name": "tooltip",
+                "name": "dv_tooltip",
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
@@ -4243,7 +4377,7 @@
                     "class": "",
                     "id": ""
                 },
-                "_name": "tooltip",
+                "_name": "dv_tooltip",
                 "_prepare": 0,
                 "_valid": 1,
                 "layout": "block",
@@ -4279,18 +4413,154 @@
                     },
                     {
                         "ID": 0,
+                        "key": "field_5e0a6a698bee4",
+                        "label": "Text Align",
+                        "name": "text_align",
+                        "prefix": "acf",
+                        "type": "select",
+                        "value": null,
+                        "menu_order": 1,
+                        "instructions": "Aligment of tooltip text",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5e04f36a05131",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5e04f33005130",
+                        "wrapper": {
+                            "width": "50",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "text_align",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "choices": {
+                            "left": "Left",
+                            "right": "Right",
+                            "center": "Center"
+                        },
+                        "default_value": [],
+                        "allow_null": 0,
+                        "multiple": 0,
+                        "ui": 0,
+                        "return_format": "value",
+                        "ajax": 0,
+                        "placeholder": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5e0a6f90c77da",
+                        "label": "Width",
+                        "name": "width",
+                        "prefix": "acf",
+                        "type": "number",
+                        "value": null,
+                        "menu_order": 2,
+                        "instructions": "Set width of the tooltip. Will be interpreted as pixels",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5e04f36a05131",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5e04f33005130",
+                        "wrapper": {
+                            "width": "50",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "width",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "px",
+                        "min": "",
+                        "max": "",
+                        "step": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5e0a69798bee3",
+                        "label": "Direction",
+                        "name": "direction",
+                        "prefix": "acf",
+                        "type": "select",
+                        "value": null,
+                        "menu_order": 3,
+                        "instructions": "Direction where tooltip will be placed",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5e04f36a05131",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5e04f33005130",
+                        "wrapper": {
+                            "width": "",
+                            "class": "dv-code",
+                            "id": ""
+                        },
+                        "_name": "direction",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "choices": {
+                            "n": "North (Default)",
+                            "e": "East",
+                            "s": "South",
+                            "w": "West"
+                        },
+                        "default_value": [],
+                        "allow_null": 0,
+                        "multiple": 0,
+                        "ui": 0,
+                        "return_format": "value",
+                        "ajax": 0,
+                        "placeholder": ""
+                    },
+                    {
+                        "ID": 0,
                         "key": "field_5e04f3a305133",
                         "label": "Advanced",
                         "name": "",
                         "prefix": "acf",
                         "type": "accordion",
                         "value": false,
-                        "menu_order": 1,
+                        "menu_order": 4,
                         "instructions": "",
                         "required": 0,
                         "id": "",
                         "class": "",
-                        "conditional_logic": 0,
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5e04f36a05131",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ]
+                        ],
                         "parent": "field_5e04f33005130",
                         "wrapper": {
                             "width": "",
@@ -4306,14 +4576,43 @@
                     },
                     {
                         "ID": 0,
+                        "key": "field_5e0a7de4087b5",
+                        "label": "Direction Parameter",
+                        "name": "direction_parameter",
+                        "prefix": "acf",
+                        "type": "textarea",
+                        "value": null,
+                        "menu_order": 5,
+                        "instructions": "Function or string that will be used by the <code>d3.tip.direction()<\/code> method. This will replace the set tooltip direction. View documentation here:<br> <a target=\"_blank\" href=\"https:\/\/github.com\/caged\/d3-tip\/blob\/master\/docs\/positioning-tooltips.md#tipdirection\">https:\/\/github.com\/caged\/d3-tip\/blob\/master\/docs\/positioning-tooltips.md#tipdirection<\/a>",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5e04f33005130",
+                        "wrapper": {
+                            "width": "",
+                            "class": "dv-code",
+                            "id": ""
+                        },
+                        "_name": "direction_parameter",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "'n' | function(data,index){ return (d.direction == 'north') ? 'n' : ''; }",
+                        "maxlength": "",
+                        "rows": 3,
+                        "new_lines": ""
+                    },
+                    {
+                        "ID": 0,
                         "key": "field_5e04f38c05132",
                         "label": "Content",
                         "name": "content",
                         "prefix": "acf",
                         "type": "textarea",
                         "value": null,
-                        "menu_order": 2,
-                        "instructions": "Function that returns text or html markup for a graph item",
+                        "menu_order": 6,
+                        "instructions": "Function that will be used by the <code>d3.tip.html()<\/code> method. View documentation here:<br> <a target=\"_blank\" href=\"https:\/\/github.com\/caged\/d3-tip\/blob\/master\/docs\/initializing-tooltips.md#d3tip\">https:\/\/github.com\/caged\/d3-tip\/blob\/master\/docs\/initializing-tooltips.md#d3tip<\/a>",
                         "required": 0,
                         "id": "",
                         "class": "",
@@ -4330,36 +4629,10 @@
                         "default_value": "",
                         "placeholder": "function(data,index){ return +data; }",
                         "maxlength": "",
-                        "rows": "",
+                        "rows": 3,
                         "new_lines": ""
                     }
                 ]
-            },
-            {
-                "ID": 0,
-                "key": "field_5d42ff6a5f461",
-                "label": "Advanced",
-                "name": "",
-                "prefix": "acf",
-                "type": "tab",
-                "value": false,
-                "menu_order": 20,
-                "instructions": "",
-                "required": 0,
-                "id": "",
-                "class": "",
-                "conditional_logic": 0,
-                "parent": "group_5d4206c985d00",
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "_name": "",
-                "_prepare": 0,
-                "_valid": 1,
-                "placement": "top",
-                "endpoint": 0
             }
         ],
         "location": [

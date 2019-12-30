@@ -287,6 +287,11 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 		
 		$data_visual['color']['palette'] = $data_palette_arr;
 
+		//validate tooltip
+		if(!($data_visual['tooltip']['enable'])){
+			unset($data_visual['tooltip']);
+		}
+
 
 		return $data_visual;
 		// return $data_visual;
