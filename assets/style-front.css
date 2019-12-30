@@ -56,6 +56,10 @@
       opacity: 1; }
   .data-visualizer text {
     font-family: inherit !important; }
+  .data-visualizer-grid line, .data-visualizer-grid path {
+    stroke-opacity: .25; }
+  .data-visualizer-grid .tick-aligned line, .data-visualizer-grid .tick-aligned path {
+    stroke-opacity: .625; }
   .data-visualizer-fill.no-color,
   .data-visualizer-no-palette .graph-item-blob,
   .data-visualizer-no-palette .legend-item-blob {

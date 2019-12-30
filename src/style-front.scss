@@ -127,12 +127,12 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 	&-grid {
 		
 		line,path {
-			// stroke-opacity: .25;
+			stroke-opacity: .25;
 		}
 
 		.tick-aligned {
 			line,path {
-				// stroke-opacity: .625;
+				stroke-opacity: .625;
 			}
 		}
 	}
