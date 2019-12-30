@@ -42,7 +42,7 @@
 				},
 
 				// get the opposite boi for alignmeny purposes
-				getAxisStringOppo = function(axisString) { return (axisString == 'x') ? 'y' : 'x'; },
+				getAxisStringOppoFromAxisString = function(axisString) { return (axisString == 'x') ? 'y' : 'x'; },
 
 				//d3 does not support ie 11. kill it
 				isIE = function(){
@@ -507,8 +507,8 @@
 					case 1:
 						
 						if(
-							args[ getAxisStringOppo( getAxisString(key)) + 'Align'] == 'top'
-							|| args[getAxisStringOppo( getAxisString(key))+'Align'] == 'left'
+							args[ getAxisStringOppoFromAxisString( getAxisString(key)) + 'Align'] == 'top'
+							|| args[getAxisStringOppoFromAxisString( getAxisString(key))+'Align'] == 'left'
 						) {
 							range = [ 0, args[ getDimension(getAxisString(key)) ] ];
 						}else{
@@ -701,7 +701,7 @@
 			var getBlobSize = function(axisString,dis,i,initial) {
 
 				var keyKey  =  args[axisString+'Data'],
-					oppositeAxisAlignment = args[ getAxisStringOppo(axisString)+'Align'],
+					oppositeAxisAlignment = args[ getAxisStringOppoFromAxisString(axisString)+'Align'],
 					dimension = 20;
 					initial = initial || false;
 
@@ -809,8 +809,8 @@
 					coordinates.forEach(function(coordinate){
 
 						if(
-							args[ getAxisStringOppo(coordinate)+'Data'] == 0
-							&& args[ getAxisStringOppo(coordinate)+'Align'] == 'right'
+							args[ getAxisStringOppoFromAxisString(coordinate)+'Data'] == 0
+							&& args[ getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'right'
 						){
 							anchor = 'end';
 						}
@@ -925,8 +925,8 @@
 
 							if(
 								
-								args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
-								|| args[getAxisStringOppo(coordinate)+'Align'] == 'right'
+								args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'bottom'
+								|| args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'right'
 							){
 								multiplier = -1;
 							}
@@ -956,15 +956,15 @@
 								(
 									(args.type !== 'bar' || !args.barTextWithin)
 									&& (
-										args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
-										|| args[getAxisStringOppo(coordinate)+'Align'] == 'right'
+										args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'bottom'
+										|| args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'right'
 									)
 								)
 								|| (
 									(args.type == 'bar' && args.barTextWithin)
 									&& (
-										args[getAxisStringOppo(coordinate)+'Align'] == 'top'
-										|| args[getAxisStringOppo(coordinate)+'Align'] == 'left'
+										args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'top'
+										|| args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'left'
 									)
 								)
 							){
@@ -1034,7 +1034,7 @@
 
 					}else{
 						
-						switch(args[getAxisStringOppo(coordinate)+'Align']){
+						switch(args[getAxisStringOppoFromAxisString(coordinate)+'Align']){
 
 							case 'top':
 
@@ -1047,7 +1047,7 @@
 							case 'bottom':
 								if(
 									initial && args.type !== 'scatter'
-									|| (args.barTextWithin && args[getAxisStringOppo(coordinate)+'Align'] == 'right')
+									|| (args.barTextWithin && args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'right')
 								) {
 
 									offset = args[getDimension(coordinate)];
@@ -1102,7 +1102,7 @@
 			var getBlobOrigin = function(coordinate,dis,i,initial){
 				// same here.. could be the same probably
 				var keyKey =  args[ coordinate+'Data'],
-					oppositeAxisAlignment = args[ getAxisStringOppo(coordinate)+'Align'],
+					oppositeAxisAlignment = args[ getAxisStringOppoFromAxisString(coordinate)+'Align'],
 					offset = 0;
 
 					initial = initial || false;
@@ -1184,8 +1184,8 @@
 							|| 
 							(
 								args.type !== 'pie'
-								&& args[getAxisStringOppo(axisString)+'Align'] == 'left'
-								|| args[getAxisStringOppo(axisString)+'Align'] == 'top'
+								&& args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'left'
+								|| args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'top'
 							)
 						){
 							multiplier = -1;
@@ -1197,8 +1197,8 @@
 							|| 
 							(
 								args.type !== 'pie'
-								&& args[getAxisStringOppo(axisString)+'Align'] == 'left'
-								|| args[getAxisStringOppo(axisString)+'Align'] == 'top'
+								&& args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'left'
+								|| args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'top'
 							)
 						){
 
@@ -1217,8 +1217,8 @@
 						|| 
 						(
 							args.type !== 'pie'
-							&& args[getAxisStringOppo(axisString)+'Align'] == 'left'
-							|| args[getAxisStringOppo(axisString)+'Align'] == 'top'
+							&& args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'left'
+							|| args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'top'
 						)
 					){
 						offset = args[getDimension(axisString)];
@@ -1271,8 +1271,8 @@
 					//name coord, value coord, fill coordinate
 					var aCord = { //default is top
 						name: axisToFill, //x
-						value: getAxisStringOppo(axisToFill)+1, //y
-						fill: getAxisStringOppo(axisToFill)+0 //initial of data name is the bottom of the fill
+						value: getAxisStringOppoFromAxisString(axisToFill)+1, //y
+						fill: getAxisStringOppoFromAxisString(axisToFill)+0 //initial of data name is the bottom of the fill
 					};
 					
 					var multiplier = (function(){
@@ -1291,10 +1291,10 @@
 							return getBlobOrigin(axisToFill,dis,i,initial); 
 						})
 						[aCord.value](function(dis,i){
-							return getBlobOrigin(getAxisStringOppo(axisToFill),dis,i,initial);
+							return getBlobOrigin(getAxisStringOppoFromAxisString(axisToFill),dis,i,initial);
 						})
 						[aCord.fill](function(dis,i){
-							return getBlobOrigin( getAxisStringOppo(axisToFill),dis,i,true) + (multiplier * args[getDimension(axisToFill)]);
+							return getBlobOrigin( getAxisStringOppoFromAxisString(axisToFill),dis,i,true) + (multiplier * args[getDimension(axisToFill)]);
 						});
 
 				}else{
@@ -2153,7 +2153,7 @@
 									if(
 										(
 											args.type !== 'pie'
-											&& !args[ getAxisStringOppo ( getAxisString(keyKey) )+'Ticks']
+											&& !args[ getAxisStringOppoFromAxisString ( getAxisString(keyKey) )+'Ticks']
 										)
 										|| (
 											args.type == 'pie'
@@ -2180,7 +2180,7 @@
 									if(
 										(
 											args.type !== 'pie'
-											&& !args[ getAxisStringOppo ( getAxisString(keyKey) )+'Ticks']
+											&& !args[ getAxisStringOppoFromAxisString ( getAxisString(keyKey) )+'Ticks']
 										)
 										|| (
 											args.type == 'pie'
@@ -2300,17 +2300,28 @@
 
 							return classString;
 						})
-						.attr('stroke',function(dis){
+						.attr('stroke',function(dis,i){
 							if(
 								(
 									args.type == 'pie'
 									&& args.piLabelStyle == 'within'
 									&& args.colorPalette.length > 0
 								)
-								// || (
-								// 	args.type == 'bar' 
-								// 	&& args.barTextWithin
-								// ) @TODO this
+
+								|| (
+									args.type == 'bar' 
+
+									&& (
+										(
+											!args.barTextWithin
+											&& (parseFloat(getBlobSize(getAxisString(1),dis,i)) >= (args[getDimension(getAxisString(1),true)] - _.m_length(getAxisString(1),i)) )
+										)
+										|| (
+											args.barTextWithin
+											&& (parseFloat(getBlobSize(getAxisString(1),dis,i)) >= _.m_length(getAxisString(1),i))
+										) //@TODO this
+									)
+								)
 							){
 								return _.the_color(deepGet(dis,args.key.color))
 
