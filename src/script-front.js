@@ -1256,7 +1256,7 @@
 						var theString = 'curveLinear';
 						switch(args.lineStyle){
 							case 'step':
-								theString = 'curveStepAfter'
+								theString = 'curveStepBefore'
 								break;
 							case 'curve':
 									theString = 'curveMonotone'+(axisToFill).toUpperCase()

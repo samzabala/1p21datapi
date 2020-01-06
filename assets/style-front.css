@@ -141,7 +141,7 @@
     z-index: 999999;
     max-width: 80vw !important;
     pointer-events: none !important;
-    transition: .25s top ease-out, .25s left ease-out, .25s opacity ease-out; }
+    transition: .0625s top ease-out, .0625s left ease-out, .0625s opacity ease-out; }
     .data-visualizer-tooltip:after {
       content: "";
       background: #EEE;
