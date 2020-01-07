@@ -179,10 +179,11 @@
 				title:'',
 				description:'',
 			
-				//src
+			//src
 				srcType: '',
 				srcPath: '',
 				srcKey: null,
+				srcMultiple: false,
 
 			//text
 				textNameSize: .75,
@@ -304,7 +305,6 @@
 
 			//2.0.0 new args
 				//src
-					srcMultiple: false,
 					srcKeyMultiple: null,
 
 				//kulay

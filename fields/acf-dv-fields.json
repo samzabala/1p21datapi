@@ -60,42 +60,13 @@
             },
             {
                 "ID": 0,
-                "key": "field_5d9b8ffe900c3",
-                "label": "Multiple Graph",
-                "name": "dv_multiple",
-                "prefix": "acf",
-                "type": "true_false",
-                "value": null,
-                "menu_order": 2,
-                "instructions": "",
-                "required": 0,
-                "id": "",
-                "class": "",
-                "conditional_logic": 0,
-                "parent": "group_5d4206c985d00",
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "_name": "dv_multiple",
-                "_prepare": 0,
-                "_valid": 1,
-                "message": "Enabling will modify setup to multiple data groups",
-                "default_value": 0,
-                "ui": 0,
-                "ui_on_text": "",
-                "ui_off_text": ""
-            },
-            {
-                "ID": 0,
                 "key": "field_5d571a157030d",
                 "label": "Source",
                 "name": "dv_src",
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 3,
+                "menu_order": 2,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -114,13 +85,42 @@
                 "sub_fields": [
                     {
                         "ID": 0,
+                        "key": "field_5d9b8ffe900c3",
+                        "label": "Multiple Graph",
+                        "name": "multiple",
+                        "prefix": "acf",
+                        "type": "true_false",
+                        "value": null,
+                        "menu_order": 0,
+                        "instructions": "",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": 0,
+                        "parent": "field_5d571a157030d",
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "_name": "multiple",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "message": "Enabling will modify setup to multiple data groups",
+                        "default_value": 0,
+                        "ui": 0,
+                        "ui_on_text": "",
+                        "ui_off_text": ""
+                    },
+                    {
+                        "ID": 0,
                         "key": "field_5d420de06b6c9",
                         "label": "Source Type",
                         "name": "type",
                         "prefix": "acf",
                         "type": "select",
                         "value": null,
-                        "menu_order": 0,
+                        "menu_order": 1,
                         "instructions": "Choose how the data should be imported",
                         "required": 1,
                         "id": "",
@@ -157,7 +157,7 @@
                         "prefix": "acf",
                         "type": "file",
                         "value": null,
-                        "menu_order": 1,
+                        "menu_order": 2,
                         "instructions": "Must be tsv, csv",
                         "required": 1,
                         "id": "",
@@ -194,7 +194,7 @@
                         "prefix": "acf",
                         "type": "url",
                         "value": null,
-                        "menu_order": 2,
+                        "menu_order": 3,
                         "instructions": "Url must link directly to data file in either .csv,.json, or .tsv format",
                         "required": 1,
                         "id": "",
@@ -228,7 +228,7 @@
                         "prefix": "acf",
                         "type": "textarea",
                         "value": null,
-                        "menu_order": 3,
+                        "menu_order": 4,
                         "instructions": "input json code",
                         "required": 1,
                         "id": "",
@@ -265,7 +265,7 @@
                         "prefix": "acf",
                         "type": "repeater",
                         "value": null,
-                        "menu_order": 4,
+                        "menu_order": 5,
                         "instructions": "Input a basic data in rows",
                         "required": 1,
                         "id": "",
@@ -441,7 +441,7 @@
                         "prefix": "acf",
                         "type": "repeater",
                         "value": null,
-                        "menu_order": 5,
+                        "menu_order": 6,
                         "instructions": "Input multiple sets of basic data in rows",
                         "required": 1,
                         "id": "",
@@ -648,7 +648,7 @@
                         "prefix": "acf",
                         "type": "text",
                         "value": null,
-                        "menu_order": 6,
+                        "menu_order": 7,
                         "instructions": "Fill in the key for the data to use if it is not in the root level",
                         "required": 0,
                         "id": "",
@@ -680,52 +680,6 @@
                         "prepend": "data.",
                         "append": "",
                         "maxlength": ""
-                    },
-                    {
-                        "ID": 0,
-                        "key": "field_5d9b913d900c4",
-                        "label": "Multiple Source Key",
-                        "name": "key_multiple",
-                        "prefix": "acf",
-                        "type": "text",
-                        "value": null,
-                        "menu_order": 7,
-                        "instructions": "Fill in the key for multiple data groups relative to the source key to use if they are not in the root level",
-                        "required": 0,
-                        "id": "",
-                        "class": "",
-                        "conditional_logic": [
-                            [
-                                {
-                                    "field": "field_5d9b8ffe900c3",
-                                    "operator": "==",
-                                    "value": "1"
-                                },
-                                {
-                                    "field": "field_5d420de06b6c9",
-                                    "operator": "!=empty"
-                                },
-                                {
-                                    "field": "field_5d420de06b6c9",
-                                    "operator": "!=",
-                                    "value": "rows"
-                                }
-                            ]
-                        ],
-                        "parent": "field_5d571a157030d",
-                        "wrapper": {
-                            "width": "",
-                            "class": "",
-                            "id": ""
-                        },
-                        "_name": "key_multiple",
-                        "_prepare": 0,
-                        "_valid": 1,
-                        "default_value": "",
-                        "placeholder": "groups",
-                        "prepend": "data.",
-                        "append": "",
-                        "maxlength": ""
                     }
                 ]
             },
@@ -737,7 +691,7 @@
                 "prefix": "acf",
                 "type": "tab",
                 "value": false,
-                "menu_order": 4,
+                "menu_order": 3,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -794,7 +748,7 @@
                 "prefix": "acf",
                 "type": "select",
                 "value": null,
-                "menu_order": 5,
+                "menu_order": 4,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -833,7 +787,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 6,
+                "menu_order": 5,
                 "instructions": "Fill in the key for the data to use if it is not in the root level",
                 "required": 0,
                 "id": "",
@@ -1048,7 +1002,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 7,
+                "menu_order": 6,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -1107,6 +1061,18 @@
                                     "field": "field_5d420a6cde270",
                                     "operator": "!=empty"
                                 }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420719de267",
+                                    "operator": "!=empty"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d9b96a0d2c06",
+                                    "operator": "!=empty"
+                                }
                             ]
                         ],
                         "parent": "field_5db7516bf3aa9",
@@ -1143,6 +1109,18 @@
                                     "field": "field_5d420b33de274",
                                     "operator": "!=empty"
                                 }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420719de267",
+                                    "operator": "!=empty"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d9b96a0d2c06",
+                                    "operator": "!=empty"
+                                }
                             ]
                         ],
                         "parent": "field_5db7516bf3aa9",
@@ -1177,6 +1155,18 @@
                             [
                                 {
                                     "field": "field_5d42ffcf5f464",
+                                    "operator": "!=empty"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420719de267",
+                                    "operator": "!=empty"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d9b96a0d2c06",
                                     "operator": "!=empty"
                                 }
                             ]
@@ -1217,9 +1207,8 @@
                                     "value": "scatter"
                                 },
                                 {
-                                    "field": "field_5d5ef6f792170",
-                                    "operator": "==",
-                                    "value": "scatter"
+                                    "field": "field_5d420719de267",
+                                    "operator": "!=empty"
                                 }
                             ],
                             [
@@ -1230,6 +1219,17 @@
                                 },
                                 {
                                     "field": "field_5d602683abd8f",
+                                    "operator": "!=empty"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "==",
+                                    "value": "scatter"
+                                },
+                                {
+                                    "field": "field_5d9b96a0d2c06",
                                     "operator": "!=empty"
                                 }
                             ]
@@ -1300,7 +1300,7 @@
                 "prefix": "acf",
                 "type": "true_false",
                 "value": null,
-                "menu_order": 8,
+                "menu_order": 7,
                 "instructions": "Adds additional numeric capabilities to name data.",
                 "required": 0,
                 "id": "",
@@ -1342,7 +1342,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 9,
+                "menu_order": 8,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -1399,6 +1399,18 @@
                             [
                                 {
                                     "field": "field_5d420a6cde270",
+                                    "operator": "!=empty"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420719de267",
+                                    "operator": "!=empty"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d9b96a0d2c06",
                                     "operator": "!=empty"
                                 }
                             ]
@@ -1596,6 +1608,18 @@
                                     "field": "field_5d420b33de274",
                                     "operator": "!=empty"
                                 }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420719de267",
+                                    "operator": "!=empty"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d9b96a0d2c06",
+                                    "operator": "!=empty"
+                                }
                             ]
                         ],
                         "parent": "field_5d60205502da2",
@@ -1788,7 +1812,18 @@
                                     "value": "pie"
                                 },
                                 {
-                                    "field": "field_5d5ef5079216e",
+                                    "field": "field_5d420719de267",
+                                    "operator": "!=empty"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_5d420a45de26f",
+                                    "operator": "!=",
+                                    "value": "pie"
+                                },
+                                {
+                                    "field": "field_5d9b96a0d2c06",
                                     "operator": "!=empty"
                                 }
                             ]
@@ -1938,7 +1973,7 @@
                 "prefix": "acf",
                 "type": "tab",
                 "value": false,
-                "menu_order": 10,
+                "menu_order": 9,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -1992,7 +2027,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 11,
+                "menu_order": 10,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -2530,7 +2565,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 12,
+                "menu_order": 11,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -3068,7 +3103,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 13,
+                "menu_order": 12,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -3188,7 +3223,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 14,
+                "menu_order": 13,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -3672,7 +3707,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 15,
+                "menu_order": 14,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -3774,7 +3809,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 16,
+                "menu_order": 15,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -3902,7 +3937,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 17,
+                "menu_order": 16,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -4105,7 +4140,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 18,
+                "menu_order": 17,
                 "instructions": "",
                 "required": 0,
                 "id": "",
@@ -4365,7 +4400,7 @@
                 "prefix": "acf",
                 "type": "group",
                 "value": null,
-                "menu_order": 19,
+                "menu_order": 18,
                 "instructions": "",
                 "required": 0,
                 "id": "",

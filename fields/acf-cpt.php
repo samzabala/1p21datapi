@@ -41,25 +41,6 @@ $_1p21_dv_fields_cpt = array(
 			'endpoint' => 0,
 		),
 		array(
-			'key' => 'field_5d9b8ffe900c3',
-			'label' => 'Multiple Graph',
-			'name' => 'dv_multiple',
-			'type' => 'true_false',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'message' => 'Enabling will modify setup to multiple data groups',
-			'default_value' => 0,
-			'ui' => 0,
-			'ui_on_text' => '',
-			'ui_off_text' => '',
-		),
-		array(
 			'key' => 'field_5d571a157030d',
 			'label' => 'Source',
 			'name' => 'dv_src',
@@ -74,6 +55,25 @@ $_1p21_dv_fields_cpt = array(
 			),
 			'layout' => 'block',
 			'sub_fields' => array(
+				array(
+					'key' => 'field_5d9b8ffe900c3',
+					'label' => 'Multiple Graph',
+					'name' => 'multiple',
+					'type' => 'true_false',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'message' => 'Enabling will modify setup to multiple data groups',
+					'default_value' => 0,
+					'ui' => 0,
+					'ui_on_text' => '',
+					'ui_off_text' => '',
+				),
 				array(
 					'key' => 'field_5d420de06b6c9',
 					'label' => 'Source Type',
@@ -484,42 +484,6 @@ $_1p21_dv_fields_cpt = array(
 					'append' => '',
 					'maxlength' => '',
 				),
-				array(
-					'key' => 'field_5d9b913d900c4',
-					'label' => 'Multiple Source Key',
-					'name' => 'key_multiple',
-					'type' => 'text',
-					'instructions' => 'Fill in the key for multiple data groups relative to the source key to use if they are not in the root level',
-					'required' => 0,
-					'conditional_logic' => array(
-						array(
-							array(
-								'field' => 'field_5d9b8ffe900c3',
-								'operator' => '==',
-								'value' => '1',
-							),
-							array(
-								'field' => 'field_5d420de06b6c9',
-								'operator' => '!=empty',
-							),
-							array(
-								'field' => 'field_5d420de06b6c9',
-								'operator' => '!=',
-								'value' => 'rows',
-							),
-						),
-					),
-					'wrapper' => array(
-						'width' => '',
-						'class' => '',
-						'id' => '',
-					),
-					'default_value' => '',
-					'placeholder' => 'groups',
-					'prepend' => 'data.',
-					'append' => '',
-					'maxlength' => '',
-				),
 			),
 		),
 		array(
@@ -818,6 +782,18 @@ if layout is set to line, this will be applied to plot points and will override 
 								'operator' => '!=empty',
 							),
 						),
+						array(
+							array(
+								'field' => 'field_5d420719de267',
+								'operator' => '!=empty',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d9b96a0d2c06',
+								'operator' => '!=empty',
+							),
+						),
 					),
 					'wrapper' => array(
 						'width' => '50',
@@ -844,6 +820,18 @@ if layout is set to line, this will be applied to plot points and will override 
 								'operator' => '!=empty',
 							),
 						),
+						array(
+							array(
+								'field' => 'field_5d420719de267',
+								'operator' => '!=empty',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d9b96a0d2c06',
+								'operator' => '!=empty',
+							),
+						),
 					),
 					'wrapper' => array(
 						'width' => '50',
@@ -867,6 +855,18 @@ if layout is set to line, this will be applied to plot points and will override 
 						array(
 							array(
 								'field' => 'field_5d42ffcf5f464',
+								'operator' => '!=empty',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420719de267',
+								'operator' => '!=empty',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d9b96a0d2c06',
 								'operator' => '!=empty',
 							),
 						),
@@ -897,9 +897,8 @@ if layout is set to line, this will be applied to plot points and will override 
 								'value' => 'scatter',
 							),
 							array(
-								'field' => 'field_5d5ef6f792170',
-								'operator' => '==',
-								'value' => 'scatter',
+								'field' => 'field_5d420719de267',
+								'operator' => '!=empty',
 							),
 						),
 						array(
@@ -910,6 +909,17 @@ if layout is set to line, this will be applied to plot points and will override 
 							),
 							array(
 								'field' => 'field_5d602683abd8f',
+								'operator' => '!=empty',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '==',
+								'value' => 'scatter',
+							),
+							array(
+								'field' => 'field_5d9b96a0d2c06',
 								'operator' => '!=empty',
 							),
 						),
@@ -1039,6 +1049,18 @@ if layout is set to line, this will be applied to plot points and will override 
 						array(
 							array(
 								'field' => 'field_5d420a6cde270',
+								'operator' => '!=empty',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420719de267',
+								'operator' => '!=empty',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d9b96a0d2c06',
 								'operator' => '!=empty',
 							),
 						),
@@ -1177,6 +1199,18 @@ if layout is set to line, this will be applied to plot points and will override 
 								'operator' => '!=empty',
 							),
 						),
+						array(
+							array(
+								'field' => 'field_5d420719de267',
+								'operator' => '!=empty',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d9b96a0d2c06',
+								'operator' => '!=empty',
+							),
+						),
 					),
 					'wrapper' => array(
 						'width' => '50',
@@ -1308,7 +1342,18 @@ if layout is set to line, this will be applied to plot points and will override 
 								'value' => 'pie',
 							),
 							array(
-								'field' => 'field_5d5ef5079216e',
+								'field' => 'field_5d420719de267',
+								'operator' => '!=empty',
+							),
+						),
+						array(
+							array(
+								'field' => 'field_5d420a45de26f',
+								'operator' => '!=',
+								'value' => 'pie',
+							),
+							array(
+								'field' => 'field_5d9b96a0d2c06',
 								'operator' => '!=empty',
 							),
 						),

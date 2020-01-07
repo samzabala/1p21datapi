@@ -161,7 +161,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
 											break;
 
-										
+											
 										case 'name_is_num':
 
 
@@ -268,7 +268,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 													$array_values_from_array = array('palette');
 														$array_items_are_strings = array('palette');
 													$boolean_values = array('legend');
-													$string_values = array('background');
+													$string_values = array('background','by');
 													break;
 
 												case 'tooltip':
@@ -374,7 +374,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 				</script>";
 				
 
-			// _1p21_dv_output_arr($data_visual);
+			_1p21_dv_output_arr($data_visual);
 
 			
 		}else{
