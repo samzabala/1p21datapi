@@ -2565,9 +2565,16 @@
 
 									//@TODO speshal
 
+									//loop each set keys
 
-									// label
-									html += '<strong class="'+prefix+'tooltip-data-property-label">'+prop+':</strong> ';
+									// if key and format use format
+
+									//set hasoutputted bool == tru
+
+									if(args.srcType !== 'row'){
+										// label
+										html += '<strong class="'+prefix+'tooltip-data-property-label">'+prop+':</strong> ';
+									}
 									// content
 									html += '<span class="'+prefix+'tooltip-data-property-content">'+dis[prop]+'</span>';
 								html += '</div>';
