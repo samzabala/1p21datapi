@@ -1682,7 +1682,7 @@
 					}else {
 						axisToReturn
 							.tickFormat(function(dis,i){
-								return _['format_'+ args[axisString+'Data'] ](dis)
+								return _['format_'+ args[axisString+'Data'] ](deepGet(dis,args[axisString+'Data']))
 							})
 					}
 				}
@@ -2560,24 +2560,36 @@
 
 						for (var prop in dis) {
 							if (Object.prototype.hasOwnProperty.call(dis, prop)) {
-								//item
-								html += '<div class="'+prefix+'tooltip-data-property">';
+								var propIsOutputted = false;
 
-									//@TODO speshal
+								
+									html += '<div class="'+prefix+'tooltip-data-property">';
 
-									//loop each set keys
-
-									// if key and format use format
-
-									//set hasoutputted bool == tru
-
-									if(args.srcType !== 'row'){
 										// label
-										html += '<strong class="'+prefix+'tooltip-data-property-label">'+prop+':</strong> ';
-									}
-									// content
-									html += '<span class="'+prefix+'tooltip-data-property-content">'+dis[prop]+'</span>';
-								html += '</div>';
+										if(args.srcType !== 'row'){
+											html += '<strong class="'+prefix+'tooltip-data-property-label">'+prop+':</strong> ';
+										}
+
+
+								
+										datum_keys.forEach(function(keyKey){
+											
+											if( args.key[keyKey] == prop && _['format_'+keyKey] && propIsOutputted == false ){
+												html += '<span class="'+prefix+'tooltip-data-property-content">'+ _['format_'+ keyKey ] (deepGet(dis,args.key[ keyKey ]) ) +'</span>';
+												propIsOutputted = true;
+											}
+
+										});
+
+										if(propIsOutputted == false) {
+
+											// content
+											html += '<span class="'+prefix+'tooltip-data-property-content">'+dis[prop]+'</span>';
+
+										}
+									
+									
+									html += '</div>';
 								
 							}
 						}
