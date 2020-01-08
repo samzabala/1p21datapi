@@ -199,6 +199,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 														break;
 													
 													case 'key':
+													case 'multiple_key':
 
 														$parsed_value = _1p21_parse_data_key($sub_value);
 														$render .= _1p21_dv_dashes_to_camel_case($attribute.'_'.$sub_setting). ":'".$parsed_value."',\n";

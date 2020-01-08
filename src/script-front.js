@@ -184,6 +184,7 @@
 				srcPath: '',
 				srcKey: null,
 				srcMultiple: false,
+				srcMultipleKey: '',
 
 			//text
 				textNameSize: .75,
@@ -226,9 +227,9 @@
 						format1Divider: 1,
 					
 					// color
-						format1Prepend: '',
-						format1Append: '',
-						format1Parameter: null,
+						formatcolorPrepend: '',
+						formatcolorAppend: '',
+						formatcolorParameter: null,
 		
 				//kulay
 					areaMin: 10,
@@ -304,8 +305,6 @@
 			
 
 			//2.0.0 new args
-				//src
-					srcKeyMultiple: null,
 
 				//kulay
 					colorBy: 'key', //set will influence key.color
@@ -1628,6 +1627,88 @@
 
 
 
+
+		/*****************************************************************************
+		 * FUNCTION: setData
+		*****************************************************************************/
+
+			var setData = function(dataToParse){
+
+				var toReturn = null;
+				
+				// heck if src key exists
+				toReturn = (function(){
+					if (args.srcKey) {
+						if(deepGet(dataToParse,args.srcKey)){
+							return deepGet(dataToParse,args.srcKey);
+						}else{
+							renderError(selector+' provided source key is invalid');
+						}
+					}else{
+						return dataToParse
+					}
+				}());
+
+				
+				//filter data that has null value
+				toReturn = toReturn.filter(function(dis,i){
+
+					var toInclude = true;
+
+
+					datum_keys.forEach(function(keyKey){
+
+						if(args.key[keyKey] && deepGet(dis,args.key[keyKey]) == null) {
+								// _.has[keyKey] = false;
+							toInclude = false;
+
+							if(_.user_can_debug){
+
+								var humanForKey = keyKey == 0 ? 'name': keyKey == 1 ? 'value': keyKey;
+								console.warn(selector +' datum index `'+i+'` was filtered.\ndatum does not have data for the key `'+args.key[keyKey] + '`, which is set as the property for `'+humanForKey+'`')
+							}
+
+
+
+						}
+						
+					});
+
+					if(toInclude){
+						return dis;
+					}
+
+				});	
+			
+				//sort data 0 so that it doesnt go forward then backward then forward on the graph which is weird
+				if(args.nameIsNum == true){
+					
+					var sortable = [];
+
+					for(var i = 0 ;i < toReturn.length; i++){
+						if(toReturn[i]){
+							sortable.push(toReturn[i]);
+						}
+					}
+					
+					sortable.sort(function(a, b) {
+						return deepGet(a,args.key[0],true) - deepGet(b,args.key[0],true);
+					});
+
+					toReturn = sortable;
+				}
+
+				return toReturn;
+
+			}
+
+		/*****************************************************************************
+		 * ENDFUNCTION: setData
+		*****************************************************************************/
+
+
+
+
 		/*****************************************************************************
 		 * FUNCTION: setAxis
 		*****************************************************************************/
@@ -1682,7 +1763,7 @@
 					}else {
 						axisToReturn
 							.tickFormat(function(dis,i){
-								return _['format_'+ args[axisString+'Data'] ](deepGet(dis,args[axisString+'Data']))
+								return _['format_'+ args[axisString+'Data'] ](dis)
 							})
 					}
 				}
@@ -1755,13 +1836,12 @@
 
 			// fuck these bois up. pass data again in case changing data is a future feature
 			var renderGraph = function(incomingData) {
-				_.data = incomingData;
 				// ok do the thing now
 				console.log(
 					"\n",
 					selector,'('+args.title+')','-------------------------------------------------------------------',"\n",
 					'calculated shit',_,"\n",
-					'data',_.data,"\n",
+					'data',incomingData,"\n",
 					'args',args,"\n",
 					"\n"
 				);
@@ -1769,7 +1849,7 @@
 				datum_keys.forEach(function(keyKey){
 
 					//get domain
-					_['dom_'+keyKey] = getDomain(keyKey,_.data);
+					_['dom_'+keyKey] = getDomain(keyKey,incomingData);
 
 					//set that fucker
 					if(_['the_'+keyKey] && _['dom_'+keyKey]) {
@@ -1825,7 +1905,7 @@
 
 
 				_.blob = _.container_graph.selectAll(_.graph_item_element +'.'+prefix + 'graph-item.graph-item-blob')
-					.data(_.data,function(dis){
+					.data(incomingData,function(dis){
 						
 						return deepGet(dis,args.key[0])
 					});
@@ -1843,7 +1923,7 @@
 				if( _.has_text ){
 
 					_.blob_text = _.container_graph.selectAll('text.'+prefix + 'graph-item.graph-item-text')
-						.data(_.data,function(dis){
+						.data(incomingData,function(dis){
 							return deepGet(dis,args.key[0])
 						});
 
@@ -1857,7 +1937,7 @@
 					if(args.type == 'pie' && args.piLabelStyle == 'linked'){
 
 						_.blob_text_link = _.container_graph.selectAll('polyline.'+prefix + 'graph-item.graph-item-link')
-							.data(_.data,function(dis){
+							.data(incomingData,function(dis){
 								return deepGet(dis,args.key[0])
 							});
 
@@ -2411,8 +2491,6 @@
 							});
 				}
 
-				_1p21.graphs[selector] = {data:_.data,_:_};
-
 
 
 			}
@@ -2461,73 +2539,23 @@
 			
 				// relative to 1em supposedly idk
 				_.text_base_size = parseFloat(args.fontSize);
-				
-				// heck if src key exists
-				_.data = (function(){
-					if (args.srcKey) {
-						if(deepGet(retrievedData,args.srcKey)){
-							return deepGet(retrievedData,args.srcKey);
-						}else{
-							renderError(selector+' provided source key is invalid');
-						}
-					}else{
-						return retrievedData
-					}
-				}());
+
+				if(args.srcMultiple == true) {
+					_.data = d3.stratify(retrievedData)
+						.parentId(function(dis){
+							return dis[args.srcMultipleKey]
+						});
+				}else{
+					_.data  = setData(retrievedData);
+				}
+
+				console.log(selector,_.data);
 
 				
-				//filter data that has null value
-				_.data = _.data.filter(function(dis,i){
-
-					var toInclude = true;
-
-
-					datum_keys.forEach(function(keyKey){
-
-						if(args.key[keyKey] && deepGet(dis,args.key[keyKey]) == null) {
-								// _.has[keyKey] = false;
-							toInclude = false;
-
-							if(_.user_can_debug){
-
-								var humanForKey = keyKey == 0 ? 'name': keyKey == 1 ? 'value': keyKey;
-								console.warn(selector +' datum index `'+i+'` was filtered.\ndatum does not have data for the key `'+args.key[keyKey] + '`, which is set as the property for `'+humanForKey+'`')
-							}
-
-
-
-						}
-						
-					});
-
-					if(toInclude){
-						return dis;
-					}
-
-				});
+				
 
 
 				if(_.data.length > 0 ){
-				
-				
-					//sort data 0 so that it doesnt go forward then backward then forward on the graph which is weird
-					if(args.nameIsNum == true){
-						
-						var sortable = [];
-
-						for(var i = 0 ;i < _.data.length; i++){
-							if(_.data[i]){
-								sortable.push(_.data[i]);
-							}
-						}
-						
-						sortable.sort(function(a, b) {
-							return deepGet(a,args.key[0],true) - deepGet(b,args.key[0],true);
-						});
-
-						_.data = sortable;
-					}
-					
 
 					// fallback + validate color data
 					// if color data key aint set put in name
@@ -2562,6 +2590,8 @@
 							if (Object.prototype.hasOwnProperty.call(dis, prop)) {
 								var propIsOutputted = false;
 
+								if(typeof dis[prop] !== 'object'){
+
 								
 									html += '<div class="'+prefix+'tooltip-data-property">';
 
@@ -2574,7 +2604,12 @@
 								
 										datum_keys.forEach(function(keyKey){
 											
-											if( args.key[keyKey] == prop && _['format_'+keyKey] && propIsOutputted == false ){
+											if(
+												args.key[keyKey]
+												&& args.key[keyKey].lastIndexOf(prop)  > -1
+												&& _['format_'+keyKey]
+												&& propIsOutputted == false
+											){
 												html += '<span class="'+prefix+'tooltip-data-property-content">'+ _['format_'+ keyKey ] (deepGet(dis,args.key[ keyKey ]) ) +'</span>';
 												propIsOutputted = true;
 											}
@@ -2590,6 +2625,8 @@
 									
 									
 									html += '</div>';
+								
+								}
 								
 							}
 						}
@@ -2723,6 +2760,8 @@
 									_.svg.call(_.tooltip);
 								}
 
+								//@TODO multiple here
+
 								
 								if(args.type == 'pie'){
 									//radius boi
@@ -2801,77 +2840,89 @@
 								}
 								
 
-								// scales and shit
-								datum_keys.forEach(function(keyKey){
+								if(args.srcMultiple){
 
-									//range
-									_['range_'+keyKey] = getRange(keyKey);
+								}else{
 
-									//scale
-									_['the_'+keyKey] = setScale(keyKey);
 
-									//formatting of data on the graph
-									_['format_'+keyKey] = (function(){
-										
-										if(typeof args['format'+keyKey+'Parameter'] === 'function' ) {
+									// scales and shit
+									datum_keys.forEach(function(keyKey){
+
+										//range
+										_['range_'+keyKey] = getRange(keyKey);
+
+										//scale
+										_['the_'+keyKey] = setScale(keyKey);
+
+										//formatting of data on the graph
+										_['format_'+keyKey] = (function(){
 											
-											return args['format'+keyKey+'Parameter']
+											if(typeof args['format'+keyKey+'Parameter'] === 'function' ) {
+												
+												return args['format'+keyKey+'Parameter']
 
-										}else if( typeof args['format'+keyKey+'Parameter'] === 'string'  ) {
-											
-											return function(value){
-												return d3.format(args['format'+keyKey+'Parameter'])(value)
+											}else if( typeof args['format'+keyKey+'Parameter'] === 'string'  ) {
+												
+												return function(value){
+													return d3.format(args['format'+keyKey+'Parameter'])(value)
+												}
+
+											}else{
+												
+												return function(value){
+
+													var divider = args[ 'format' + keyKey.toString().toUpperCase() + 'Divider'],
+														prepend = args[ 'format' + keyKey.toString().toUpperCase() + 'Prepend'],
+														append = args[ 'format' + keyKey.toString().toUpperCase() + 'Append'],
+														dataPossiblyDivided = (keyKey == 1 || args.nameIsNum == true ) ? (value / divider): value,
+														formatted = prepend + dataPossiblyDivided + append;
+
+													return formatted;
+												}
 											}
+										}());
 
-										}else{
+										switch(keyKey){
+
+											case 0:
+											case 1:
+
+												renderAxisContainers(getAxisString(keyKey),_.container_rule)
+												
+												if(args[getAxisString(keyKey)+'Grid']) {
+													renderAxisContainers(getAxisString(keyKey),_.container_grid,true)
+												}
+
+											case 'color':
+												//colors kung meron
+												if(args.colorPalette.length) {
+													break;
+												}
+												
+											default:
+												
 											
-											return function(value){
-
-												var divider = args[ 'format' + keyKey.toString().toUpperCase() + 'Divider'],
-													prepend = args[ 'format' + keyKey.toString().toUpperCase() + 'Prepend'],
-													append = args[ 'format' + keyKey.toString().toUpperCase() + 'Append'],
-													dataPossiblyDivided = (keyKey == 1 || args.nameIsNum == true ) ? (value / divider): value,
-													formatted = prepend + dataPossiblyDivided + append;
-
-												return formatted;
-											}
 										}
-									}());
-
-									switch(keyKey){
-
-										case 0:
-										case 1:
-
-											renderAxisContainers(getAxisString(keyKey),_.container_rule)
-											
-											if(args[getAxisString(keyKey)+'Grid']) {
-												renderAxisContainers(getAxisString(keyKey),_.container_grid,true)
-											}
-
-										case 'color':
-											//colors kung meron
-											if(args.colorPalette.length) {
-												break;
-											}
-											
-										default:
-											
-										
-									}
 
 
-								});
+									});
 
-								
-								renderGraph(_.data);
+									
+									renderGraph(_.data);
+								}
 								
 								// _.resize = null;
+
+								_1p21.graphs[selector] = {data:_.data,_:_};
 
 								window.addEventListener("resize", function(){
 									clearTimeout(_.resize);
 									_.resize = setTimeout(function(){
-										renderGraph(_.data);
+										if(args.srcMultiple){
+
+										}else{
+											renderGraph(_.data);
+										}
 									},100);
 								});
 								
@@ -2880,7 +2931,7 @@
 						}
 					},true);
 				}else{
-					renderError('Data was filtered and all items are invalid for visualizing. check provided data keys and make sure they are correct');
+					renderError('Data for '+selector+' was filtered and all items are invalid for visualizing. check provided data keys and make sure they are correct');
 				}
 			}
 

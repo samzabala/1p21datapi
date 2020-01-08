@@ -92,7 +92,7 @@
                         "type": "true_false",
                         "value": null,
                         "menu_order": 0,
-                        "instructions": "",
+                        "instructions": "Multiple data must be set up as an array to avoid errors",
                         "required": 0,
                         "id": "",
                         "class": "",
@@ -679,6 +679,52 @@
                         "placeholder": "content.items",
                         "prepend": "data.",
                         "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "ID": 0,
+                        "key": "field_5e16134b0d13c",
+                        "label": "Children Data Key",
+                        "name": "multiple_key",
+                        "prefix": "acf",
+                        "type": "text",
+                        "value": null,
+                        "menu_order": 8,
+                        "instructions": "Object property key to where an array of subdata can be found<br>\nAll instances of sublevel data arrays must share this key to be generated in the graph",
+                        "required": 0,
+                        "id": "",
+                        "class": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_5d420de06b6c9",
+                                    "operator": "!=",
+                                    "value": "rows"
+                                },
+                                {
+                                    "field": "field_5d420de06b6c9",
+                                    "operator": "!=empty"
+                                },
+                                {
+                                    "field": "field_5d9b8ffe900c3",
+                                    "operator": "==",
+                                    "value": "1"
+                                }
+                            ]
+                        ],
+                        "parent": "field_5d571a157030d",
+                        "wrapper": {
+                            "width": "",
+                            "class": "dv-code",
+                            "id": ""
+                        },
+                        "_name": "multiple_key",
+                        "_prepare": 0,
+                        "_valid": 1,
+                        "default_value": "",
+                        "placeholder": "subdata",
+                        "prepend": "[...].data.",
+                        "append": "[0]",
                         "maxlength": ""
                     }
                 ]

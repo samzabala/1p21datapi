@@ -187,10 +187,10 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 		// parse and remove itemz we dont need
 
 		//remove based on multipl
-		if( !isset($data_visual['multiple']) ||  !$data_visual['multiple'] ){
+		if( !isset($data_visual['src']['multiple']) ){
 			//src
 				unset($data_visual['reverse']['multiple']);
-				unset($data_visual['src']['key_multiple']);
+				unset($data_visual['src']['multiple_key']);
 			//
 
 		}

@@ -60,7 +60,7 @@ $_1p21_dv_fields_cpt = array(
 					'label' => 'Multiple Graph',
 					'name' => 'multiple',
 					'type' => 'true_false',
-					'instructions' => '',
+					'instructions' => 'Multiple data must be set up as an array to avoid errors',
 					'required' => 0,
 					'conditional_logic' => 0,
 					'wrapper' => array(
@@ -482,6 +482,43 @@ $_1p21_dv_fields_cpt = array(
 					'placeholder' => 'content.items',
 					'prepend' => 'data.',
 					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5e16134b0d13c',
+					'label' => 'Children Data Key',
+					'name' => 'multiple_key',
+					'type' => 'text',
+					'instructions' => 'Object property key to where an array of subdata can be found<br>
+All instances of sublevel data arrays must share this key to be generated in the graph',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5d420de06b6c9',
+								'operator' => '!=',
+								'value' => 'rows',
+							),
+							array(
+								'field' => 'field_5d420de06b6c9',
+								'operator' => '!=empty',
+							),
+							array(
+								'field' => 'field_5d9b8ffe900c3',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => 'dv-code',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => 'subdata',
+					'prepend' => '[...].data.',
+					'append' => '[0]',
 					'maxlength' => '',
 				),
 			),
