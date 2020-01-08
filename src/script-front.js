@@ -2913,7 +2913,7 @@
 								
 								// _.resize = null;
 
-								_1p21.graphs[selector] = {data:_.data,_:_};
+								_1p21.graphs[selector] = {data:_.data,calcuated:_};
 
 								window.addEventListener("resize", function(){
 									clearTimeout(_.resize);
