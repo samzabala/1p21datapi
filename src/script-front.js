@@ -2541,10 +2541,10 @@
 				_.text_base_size = parseFloat(args.fontSize);
 
 				if(args.srcMultiple == true) {
-					_.data = d3.stratify(retrievedData)
-						.parentId(function(dis){
-							return dis[args.srcMultipleKey]
-						});
+					// _.data = d3.stratify(retrievedData)
+					// 	.parentId(function(dis){
+					// 		return dis[args.srcMultipleKey]
+					// 	});
 				}else{
 					_.data  = setData(retrievedData);
 				}

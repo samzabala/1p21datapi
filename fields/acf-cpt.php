@@ -458,7 +458,7 @@ $_1p21_dv_fields_cpt = array(
 					'label' => 'Source Key',
 					'name' => 'key',
 					'type' => 'text',
-					'instructions' => 'Fill in the key for the data to use if it is not in the root level',
+					'instructions' => 'Fill in the key for the data to use if it is not in the root level<br> If Multiple setup is enabled, fill in the path to the array of multiple data',
 					'required' => 0,
 					'conditional_logic' => array(
 						array(
@@ -489,8 +489,7 @@ $_1p21_dv_fields_cpt = array(
 					'label' => 'Children Data Key',
 					'name' => 'multiple_key',
 					'type' => 'text',
-					'instructions' => 'Object property key to where an array of subdata can be found<br>
-All instances of sublevel data arrays must share this key to be generated in the graph',
+					'instructions' => 'DEPRECATE THIS SHIET',
 					'required' => 0,
 					'conditional_logic' => array(
 						array(
