@@ -691,3 +691,8 @@ Embeds scripts and stylesheets directly on the markup of the page to optimize pe
 ## Troubleshooting
 
 Good luck.
+
+
+# For Sam's Eyes only
+[] shortcode modal admin weak
+[] align labels opts
