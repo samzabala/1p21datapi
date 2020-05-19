@@ -11,6 +11,7 @@
 		return $mimes;
 	}
 	add_filter('upload_mimes', '_1p21_dv_allow_file_types');
+	add_filter('mime_types', '_1p21_dv_allow_file_types');
 
 ////////////// EDIT PAGE SHIT
 
