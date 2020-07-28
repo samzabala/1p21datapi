@@ -241,6 +241,39 @@
 		"sC": 0,
 		"tS": 0
 		},
+	"/src/script-front.bu.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/src/script-front.bu.min.js",
+		"oF": 0,
+		"sC": 0,
+		"tS": 0
+		},
+	"/src/script-front.bu.multiple.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/src/script-front.bu.multiple.min.js",
+		"oF": 0,
+		"sC": 0,
+		"tS": 0
+		},
+	"/src/script-front.bu.old.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/src/script-front.bu.old.min.js",
+		"oF": 0,
+		"sC": 0,
+		"tS": 0
+		},
 	"/src/script-front.js": {
 		"bF": 0,
 		"ft": 64,

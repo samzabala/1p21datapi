@@ -59,7 +59,7 @@
   .data-visualizer-grid line, .data-visualizer-grid path {
     stroke-opacity: .25; }
   .data-visualizer-grid .tick-aligned line, .data-visualizer-grid .tick-aligned path {
-    stroke-opacity: .625; }
+    stroke-opacity: .5; }
   .data-visualizer-fill.no-color, .data-visualizer-no-palette .graph-item-blob, .data-visualizer-no-palette .legend-item-blob {
     fill: #222; }
   .data-visualizer-line.no-color {

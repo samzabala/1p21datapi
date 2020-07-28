@@ -9,15 +9,15 @@
 /* DO NOT TOUCH I DEV ON THIS BOI I ENQUEUE THE MINIFIED ONE ANYWAY  :< */
 
 "use strict";
-(function(window,d3){
+((window,d3)=>{
 
-	var _1p21 = window._1p21 || {};
+	const _1p21 = window._1p21 || {};
 
 	//track present bois
 	_1p21.graphs = {};
 		
 	// function that is open to the pooblic. this initiates the speshal boi
-	_1p21.dataVisualizer = function(selector,arr){
+	_1p21.dataVisualizer = (selector,arr)=>{
 
 		/*****************************************************************************
 		 * HELPERS
@@ -35,43 +35,47 @@
 				// @param obj : duh 
 				// @param keystring : hooman provided object key string that is hopefully correct 
 				// @param isNum : if the data is a number
-				deepGet = function (obj,keyString, isNum) {
-
-					var splitString = keyString.toString().split('.');
+				deepGet = (obj,keyString, isNum)=>{
 					isNum = isNum || false;
 
-					//remove empty instances because they just mess with the loop
-					splitString.forEach(function(key,i){
-						(key == '') && splitString.splice(i, 1);
-					});
+					let splitString = keyString.toString().split('.');
+						//remove empty instances because they just mess with the loop
+						splitString.forEach((key,i)=>{
+							(key == '') && splitString.splice(i, 1);
+						});
+	
+				
+	
+					const
+						multiIndex = (obj,is)=> {
+		
+							var toReturn = null;
+		
+							if(is.length){
+								toReturn = multiIndex(obj[is[0]],is.slice(1));
 
-					function multiIndex(obj,is) {
-
-						var toReturn = null;
-
-						if(is.length){
-							toReturn = multiIndex(obj[is[0]],is.slice(1))
-						}else{
-							toReturn = ( isNum == true ) ? parseFloat(obj) : obj;
-						}
-
-						return toReturn;
-					}
-
-					var value = multiIndex(obj,splitString);
+							}else{
+								toReturn = ( isNum == true ) ? parseFloat(obj) : obj;
+							}
+		
+							return toReturn;
+						},
+						value = multiIndex(obj,splitString);
 					
+	
 					if(isNum == true && isNaN(value)){
-						console.warn(selector+' data with the key source of `'+keyString+ '` was passed as numeric but is not.' )
+						console.warn(`${selector} data with the key source of '${keyString}' was passed as numeric but is not.` )
 					}
 
 					return value;
 				},
 
 				//merge defaults with custom
-				deepValidate = function(defaults,arr){
+				deepValidate = (defaults,arr) => {
 
-					var args = defaults;
-					Object.keys(arr).forEach(function(prop,i){
+					const args = defaults;
+
+					Object.keys(arr).forEach((prop,i)=>{
 
 						//ha?
 						if(prop == 'key' || prop == 'reverse'){
@@ -88,55 +92,67 @@
 				},
 
 				//get the length attribute to associate with the axis bro
-				getDimension = function(axisString,opposite){
+				getDimension = (axisString,opposite)=>{
 					return opposite
-					? ((axisString == 'x') ? 'height' : 'width')
-					: ((axisString == 'x') ? 'width' : 'height');
+					? (
+						(axisString == 'x')
+						? 'height'
+						: 'width'
+					)
+					: (
+						(axisString == 'x')
+						? 'width' 
+						: 'height'
+					);
 				},
 
 				// get the opposite boi for alignmeny purposes
-				getAxisStringOppoFromAxisString = function(axisString) { return (axisString == 'x') ? 'y' : 'x'; },
+				getOppoAxis = (axisString)=>{
+					return (axisString == 'x') ? 'y' : 'x';
+				},
 
 				//d3 does not support ie 11. kill it
-				isIE = function(){
-					var ua = navigator.userAgent;
+				isIE = () => {
+					const ua = navigator.userAgent;
 					return ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1
 				},
 
 				//string helpers
 					// duh
-					strGetFileExtension = function(str) {
+					strGetFileExtension = (str)=>{
 						return str.split('.').pop();
 					},
 					
 					// convert boi to 
-					strGetHash = function(str) {
-						var url = str;
-						var type = url.split('#');
-						var hash = type[ (type.length - 1 )] || '';
+					strGetHash = (str)=>{
+						const url = str;
+						const type = url.split('#');
+						const hash = type[ (type.length - 1 )] || '';
 						return hash;
 					},
 
-					strIsValidJSONString = function(str) {
+					strIsValidJSONString = (str)=>{
 						try {
 							JSON.parse(str);
+
 						} catch (e) {
 							return false;
 						}
+
 						return true;
 					},
 
-					strToCamelCase = function(str){
-						return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
+					strToCamelCase = (str)=>{
+						return str.replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index)=> {
 							return index == 0 ? word.toLowerCase() : word.toUpperCase();
 						}).replace(/\s+/g, '');
 					},
 
 					//is that bitch boi dark? thank u internet
-					isDark = function(color) {
+					isDark = (color)=>{
 
 						// Variables for red, green, blue values
-						var r, g, b, hsp;
+						let r, g, b, hsp;
 						
 						// Check the format of the color, HEX or RGB?
 						if(color.match(/^rgb/)) {
@@ -145,8 +161,8 @@
 							r = color[1];
 							g = color[2];
 							b = color[3];
-						} 
-						else {
+
+						} else {
 							// If RGB --> Convert it to HEX: http://gist.github.com/983661
 							color = +("0x" + color.slice(1).replace( 
 							color.length < 5 && /./g, '$&$&'));
@@ -157,14 +173,15 @@
 						
 						// HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
 						hsp = Math.sqrt(
-							0.299 * (r * r) +
-							0.587 * (g * g) +
-							0.114 * (b * b)
+							0.299 * (r * r)
+							+ 0.587 * (g * g)
+							+ 0.114 * (b * b)
 						);
 					
 						// Using the HSP value, determine whether the color is light or dark
 						if(hsp>170) { //127.5
 							return false;
+
 						} else {
 							return true;
 						}
@@ -177,11 +194,12 @@
 		*****************************************************************************/
 
 		// this is where the bitches at
-		var dataContainer = document.querySelector(selector);
+		const dataContainer = document.querySelector(selector);
 		
 		if(isIE()){
-			var error =  document.createElement('div')
-			error.className = prefix+'wrapper fatality';
+			const error =  document.createElement('div');
+
+			error.className = `${prefix}wrapper fatality`;
 			error.innerHTML = 'Sorry, this graphic needs D3 to render the data but your browser does not support it.<br><br> Newer versions of Chrome, Edge, Firefox and Safari are recommended. <br><br>See <em><a target="_blank" rel="nofollow" href="https://d3-wiki.readthedocs.io/zh_CN/master/Home/#browser-platform-support">the official wiki</a></em> for more information';
 
 			dataContainer.appendChild(error);
@@ -189,12 +207,12 @@
 		}
 
 		//stor variables initiated after sucessful data call + parameter declaration set as something_`axis` so its easier to tell apart which shit is set by hooman and which one javascript sets up for hooman
-		var _ = {};
+		const _ = {};
 
 		_.dv_container = dataContainer;
 
 		//default params for hooman
-		var defaults  = {
+		const defaults  = {
 			//settings
 				width: 600,
 				height:600,
@@ -329,13 +347,15 @@
 				tooltipContent: null,
 
 			//2.0.0 new args. not implemented yet
+				// multiple
+					multipleDisplay: 'overlay', // dropdown, slider,movie
 				//kulay
 					colorBy: 'key', //set will influence key.color
 				//advanced
 					colorScheme: null,
 		};
 		
-		var args = deepValidate(defaults,arr);
+		const args = deepValidate(defaults,arr);
 
 		/*****************************************************************************
 		 * MAP BOOL PROPERTIES FOR LESS EXTENSIVE LOGICS
@@ -368,7 +388,7 @@
 			};
 			
 
-			_.has_text = (function(){
+			_.has_text = (() => {
 
 				if(
 					!args.toolTip
@@ -395,9 +415,9 @@
 					return false;
 				}
 
-			}())
+			})();
 		
-			_.has_both_text_on_blob = (function(){
+			_.has_both_text_on_blob = (() => {
 
 				if(
 					_.has_text
@@ -422,7 +442,7 @@
 					return false;
 				}
 
-			}());
+			})();
 
 			//for calculating the height and offset for spacing on text elements by the blob items vertically. value is sum of both sides
 			_.text_padding = 2.25;
@@ -439,7 +459,7 @@
 		 * FUNCTION: getAxisString
 		*****************************************************************************/
 
-			var getAxisString = function(key){
+			const getAxisString = (key)=>{
 
 				if (key == 0 || key == 1){
 					return (args.xData == key) ? 'x' : 'y'
@@ -463,7 +483,7 @@
 		*****************************************************************************/
 
 			//get nearest power of tenth
-			var getNearest = function(num){
+			const getNearest = (num)=>{
 
 				if(num > 10){
 					return Math.pow(10, num.toString().length - 1) * 10;
@@ -488,13 +508,13 @@
 
 			//set range of the bois
 			// @param itemAtt : duh
-			var getRange = function(key){
+			const getRange = (key)=>{
 
-				var range = [];
+				let range = [];
 
 				switch(key){
 					case 'color':
-						range = args[key+'Palette'];
+						range = args[`${key}Palette`];
 						break;
 
 					case 'area':
@@ -503,10 +523,9 @@
 
 					case 0:
 					case 1:
-
 						if(
-							args[ getAxisStringOppoFromAxisString( getAxisString(key)) + 'Align'] == 'top'
-							|| args[getAxisStringOppoFromAxisString( getAxisString(key))+'Align'] == 'left'
+							args[ `${getOppoAxis( getAxisString(key))}Align` ] == 'top'
+							|| args[ `${getOppoAxis( getAxisString(key))}Align` ] == 'left'
 						) {
 							range = [ 0, args[ getDimension(getAxisString(key)) ] ];
 
@@ -533,25 +552,25 @@
 			//set domain of the bois
 			// @param itemAtt : duh
 			// @param dat : ooh boi
-			var getDomain = function(keyKey,dat,dataGroupKey){
+			const getDomain = (keyKey,dat,dataGroupKey)=>{
 				dataGroupKey = dataGroupKey || '';
 
-				// @TODO get deep into the anals of this for multiple data setup
-				var domain = [],
-					keyString = args.key[ keyKey ],
+				const keyString = args.key[ keyKey ],
+					pushToDom = (d)=> {
+						if(!domain.includes(deepGet(d, keyString ))){
+							domain.push(deepGet(d, keyString ));
+						}
+					};
 
-				pushToDom = function(d) {
-					if(!domain.includes(deepGet(d, keyString ))){
-						domain.push(deepGet(d, keyString ));
-					}
-				};
+				// @TODO get deep into the anals of this for multiple data setup
+				let domain = [];
 
 				if(keyString){
 					switch(keyKey){
 						case 'color':
-								dat.forEach(function(dis){
+								dat.forEach((dis)=>{
 									if(args.srcMultiple ) {
-										dis.value.forEach(function(dit){
+										dis.value.forEach((dit)=>{
 											pushToDom(dit);
 										})
 									}else{
@@ -563,33 +582,46 @@
 						case 'area':
 						case 0:
 						case 1:
-							if(args.nameIsNum == true || keyKey == 1 || keyKey == 'area'){
-								var min,max;
+							if(
+								args.nameIsNum == true
+								|| keyKey == 1
+								|| keyKey == 'area'
+							){
+								let min,max;
 								//min
-									if(args[getAxisString(keyKey) + 'Min'] !== null && keyKey !== 'area'){
-										min = args[getAxisString(keyKey) + 'Min'];
+									if(
+										args[`${getAxisString(keyKey)}Min`] !== null
+										&& keyKey !== 'area'
+									){
+										min = args[`${getAxisString(keyKey)}Min`];
+
 									}else{
-										min = d3.min(dat,function(dis){
+										min = d3.min(dat,(dis)=>{
 											if(args.srcMultiple){
-												return d3.min(dis.value,function(dit){
+												return d3.min(dis.value,(dit)=>{
 													return deepGet(dit, keyString, true);
-												}) 
+												});
+
 											}else{
 												return deepGet(dis, keyString, true);
 											}
 										});
 									}
-								//max
 
-									if(args[getAxisString(keyKey) + 'Max'] !== null && keyKey !== 'area'){
-										max = args[getAxisString(keyKey) + 'Max']
+								//max
+									if(
+										args[`${getAxisString(keyKey)}Max`] !== null
+										&& keyKey !== 'area'
+									){
+										max = args[`${getAxisString(keyKey)}Max`]
 
 									}else{
-										max = d3.max(dat,function(dis){
+										max = d3.max(dat,(dis)=>{
 											if(args.srcMultiple){
-												return d3.max(dis.value,function(dit){
+												return d3.max(dis.value,(dit)=>{
 													return deepGet(dit, keyString, true);
-												}) 
+												});
+
 											}else{
 												return deepGet(dis, keyString, true);
 											}
@@ -600,7 +632,7 @@
 
 								//if it a scatter plot we get nereast
 								if(_.is_type('scatter') && keyKey == 0){
-									var newMin = getNearest(min),
+									const newMin = getNearest(min),
 										newMax = getNearest(max);
 									domain = [newMin,newMax];
 								}
@@ -608,21 +640,24 @@
 							}else{
 
 								if(args.srcMultiple){
-									if(dataGroupKey !== '' && dis.key == dataGroupKey) {
-										domain = dat[dataGroupKey].value.map(function(dit){
+									if(
+										dataGroupKey !== ''
+										&& dis.key == dataGroupKey
+									) {
+										domain = dat[dataGroupKey].value.map((dit)=>{
 											return deepGet(dit, keyString, false);
-										})
+										});
 
 									}else{
-										dat.forEach(function(dis){
-											dis.value.forEach(function(dit){
+										dat.forEach((dis)=>{
+											dis.value.forEach((dit)=>{
 												pushToDom(dit);
 											})
 										});
 									}
 
 								}else{
-									domain = dat.map(function(dis){
+									domain = dat.map((dis)=>{
 										return deepGet(dis, keyString, false);
 									});
 								}
@@ -630,10 +665,12 @@
 
 							if(args.reverse[keyKey]) {
 								// dont use .reverse because it's a piece of shit
-								var domainReverse = [];
-								for (var i = domain.length - 1; i >= 0; i--) {
+								const domainReverse = [];
+
+								for (let i = domain.length - 1; i >= 0; i--) {
 									domainReverse.push(domain[i]);
 								}
+
 								domain =  domainReverse;
 							}
 
@@ -657,8 +694,8 @@
 		*****************************************************************************/
 
 			//AXIS STRING AND AXIS POSITION COORDINATES ARE VERY DIFFERENT THINGS U DUMB FUCK
-			var getLabelOrigin = function(coordinateAttribute,axisString){ 
-				var offset = 0;
+			const getLabelOrigin = (coordinateAttribute,axisString)=>{ 
+				let offset = 0;
 				//x
 					if(coordinateAttribute == 'x'){
 						if(axisString == 'x'){
@@ -670,18 +707,26 @@
 				//y
 					}else{
 						if(axisString == 'x'){
-							if(args[axisString+'Align'] == 'bottom'){
-								offset = args[getDimension(axisString,true)] + (_.margin.bottom * .875);
+							if(args[`${axisString}Align`] == 'bottom'){
+								offset = args[getDimension(axisString,true)]
+								+ (_.margin.bottom * .875);
 
 							}else{
 								offset = -(_.margin.top * .875);
 							}
 						}else if(axisString == 'y'){
-							if(args[axisString+'Align'] == 'right'){
-								offset = args[getDimension(axisString,true)] + ((_.margin.right * .875) + _.text_base_size);
+							if(args[`${axisString}Align`] == 'right'){
+								offset = args[getDimension(axisString,true)]
+									+ (
+										(_.margin.right * .875)
+										+ _.text_base_size
+									);
 
 							}else{
-								offset = -((_.margin.left * .875) - _.text_base_size)
+								offset = -(
+									(_.margin.left * .875)
+									- _.text_base_size
+								)
 							}
 						};
 					}
@@ -702,12 +747,14 @@
 		*****************************************************************************/
 
 			//width,height or radius boi
-			var getBlobSize = function(axisString,dis,i,initial) {
+			const getBlobSize = (axisString,dis,i,initial)=>{
+				initial = initial || false;
 
-				var keyKey  =  args[axisString+'Data'],
-					oppositeAxisAlignment = args[ getAxisStringOppoFromAxisString(axisString)+'Align'],
-					dimension = 20;
-					initial = initial || false;
+				const
+					keyKey  =  args[`${axisString}Data`],
+					oppositeAxisAlignment = args[`${getOppoAxis(axisString)}Align`];
+
+				let dimension = 20;
 
 				switch(args.type) {
 					case 'pie': //eehhhh
@@ -719,16 +766,24 @@
 								dimension = 0;
 
 							}else{
-								if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
-									dimension = args[getDimension(axisString)] - _['the_'+ keyKey]( deepGet(dis, args.key[ keyKey ] ,true) );
+								if(
+									oppositeAxisAlignment == 'right'
+									|| oppositeAxisAlignment == 'bottom'
+								){
+									dimension = args[getDimension(axisString)]
+										- _[`the_${keyKey}`](
+											deepGet(dis, args.key[ keyKey ] ,true)
+										);
 
 								}else{
-									dimension = _['the_'+ keyKey ]( deepGet( dis, args.key[ keyKey ] ,true ) );
+									dimension = _[`the_${keyKey}`](
+										deepGet( dis, args.key[ keyKey ] ,true )
+									);
 								}
 							}
 
 						}else{
-							dimension = _[ 'the_'+ keyKey ].bandwidth()
+							dimension = _[`the_${keyKey}`].bandwidth()
 						}
 
 						if(dimension < 0 ){
@@ -752,10 +807,10 @@
 		*****************************************************************************/
 
 			//duh 
-			var getBlobRadius = function(dis,i,initial){
+			const getBlobRadius = (dis,i,initial)=>{
 				initial = initial || false;
 
-				var radius = initial ? 0 : 2;
+				let radius = initial ? 0 : 2;
 
 				if(!initial){
 					if(_.is_type('line')){
@@ -784,9 +839,9 @@
 		*****************************************************************************/
 
 			//more confusion
-			var getBlobTextAnchor = function(dis,i){
+			const getBlobTextAnchor = (dis,i)=>{
 				
-				var anchor = 'middle';
+				let anchor = 'middle';
 
 				if(_.is_type('pie')){
 					//halat garo may magigibo akoo kani
@@ -796,10 +851,10 @@
 						anchor = 'start';
 					}
 
-					coordinates.forEach(function(coordinate){
+					coordinates.forEach((coordinate)=>{
 						if(
-							args[ getAxisStringOppoFromAxisString(coordinate)+'Data'] == 0
-							&& args[ getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'right'
+							args[`${getOppoAxis(coordinate)}Data`] == 0
+							&& args[`${getOppoAxis(coordinate)}Align`] == 'right'
 						){
 							anchor = 'end';
 						}
@@ -822,22 +877,43 @@
 		*****************************************************************************/
 
 			//pls do not ask me po this broke my brain i will not likely know what just happened
-			var getBlobTextBaselineShift = function(coordinateAttr,keyKey){
+			const getBlobTextBaselineShift = (coordinateAttr,keyKey)=>{
 
-				var shift = 0;
+				let shift = 0;
 
 				if( _.has_both_text_on_blob ){
 					if(
 						coordinateAttr == 'y'
 						&& _.has_both_text_on_blob
 					){
-						var full_height = _.text_base_size * (args.textNameSize + args.textValueSize + _.text_padding) // .5 margin top bottom and between text
+						const
+							full_height =
+								_.text_base_size
+								* (
+									args.textNameSize
+									+ args.textValueSize
+									+ _.text_padding
+								) // .5 margin top bottom and between text
 						
 						if( keyKey == 1){
-							shift = ( ((full_height  * -.5) + ( (_.text_base_size * args.textValueSize) * .5) + ( _.text_base_size ) )  / (_.text_base_size * args.textValueSize) );
+							shift = (
+								(
+									(full_height  * -.5)
+									+ ( (_.text_base_size * args.textValueSize) * .5)
+									+ ( _.text_base_size )
+								)
+								/ (_.text_base_size * args.textValueSize)
+							);
 
 						}else{
-							shift =( ((full_height * .5) - ( (_.text_base_size * args.textNameSize) * .5) - ( _.text_base_size ) ) / (_.text_base_size * args.textNameSize) );
+							shift = (
+								(
+									(full_height * .5)
+									- ( (_.text_base_size * args.textNameSize) * .5)
+									- ( _.text_base_size )
+								)
+								/ (_.text_base_size * args.textNameSize)
+							);
 						}
 					}
 				}
@@ -858,21 +934,20 @@
 		*****************************************************************************/
 
 
-			var getBlobTextOrigin = function(coordinate,dis,i,initial){
-
+			const getBlobTextOrigin = (coordinate,dis,i,initial)=>{
 				initial = initial || false;
 				//coordinate is influenced by the axis right now so this is the only time coordinate and axis is one and the same. i think... do not trust me on this
 				
-				var keyKey =  args[ coordinate+'Data'],
-					offset = 0;
+				const keyKey =  args[`${coordinate}Data`];
+				let offset = 0;
 				
 				if(_.is_type('pie')){
-					var customInitial = (function(){
+					const customInitial = (() => {
 							return (args.piLabelStyle == 'linked') ?  false : initial;
-						}()),
-						multiplier = (function(){
+						})(),
+						multiplier = (() => {
 
-							var toReturn = 0;
+							let toReturn = 0;
 
 							if(args.piLabelStyle == 'linked'){
 								toReturn =  initial ? 1 : 2.5;
@@ -884,22 +959,22 @@
 							}
 
 							return toReturn;
-						}()),
+						})(),
 						calcWithInnerRadius = args.piLabelStyle == 'linked' ? false : true,
 						orArr =  getArcPath( getPiData(i) ,calcWithInnerRadius,'centroid',multiplier,customInitial);
 						offset = ( coordinate =='x') ? orArr[0] : orArr[1];
 
 				}else{
 					// offset by where the coordinates of the ends of the blob and axis alignment is at and spaces it by the dimensions of the text bitches
-					var shiftPad = function(){
+					const shiftPad = () => {
 
-						var value = 0,
-						multiplier = 1;
+						let value = 0,
+							multiplier = 1;
 
 						if(!(initial || _.is_type('scatter'))){
 							if(
-								args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'bottom'
-								|| args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'right'
+								args[`${getOppoAxis(coordinate)}Align`] == 'bottom'
+								|| args[`${getOppoAxis(coordinate)}Align`] == 'right'
 							){
 								multiplier = -1;
 							}
@@ -915,8 +990,8 @@
 					},
 
 					// offset if text is outside of boundaries
-					shiftArea = function(){
-						var multiplier = 1,
+					shiftArea = () => {
+						let multiplier = 1,
 							value = 0;
 
 						if(!(initial || _.is_type('scatter'))) {
@@ -924,15 +999,15 @@
 								(
 									(_.is_type(['line','scatter']) || !args.barTextWithin)
 									&& (
-										args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'bottom'
-										|| args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'right'
+										args[`${getOppoAxis(coordinate)}Align`] == 'bottom'
+										|| args[`${getOppoAxis(coordinate)}Align`] == 'right'
 									)
 								)
 								|| (
 									(_.is_type('bar') && args.barTextWithin)
 									&& (
-										args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'top'
-										|| args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'left'
+										args[`${getOppoAxis(coordinate)}Align`] == 'top'
+										|| args[`${getOppoAxis(coordinate)}Align`] == 'left'
 									)
 								)
 							){
@@ -949,13 +1024,19 @@
 
 									if( 
 										(_.is_type(['line','scatter']) || !args.barTextWithin)
-										&& (parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i)) )
+										&& (
+											parseFloat(getBlobSize(coordinate,dis,i))
+											>= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i))
+										)
 									){
 										value = -_.m_length(coordinate,i);
 
 									}else if(
 										(_.is_type('bar') && args.barTextWithin)
-										&& (parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i))
+										&& (
+											parseFloat(getBlobSize(coordinate,dis,i))
+											< _.m_length(coordinate,i)
+										)
 									){
 										value = -getBlobSize(coordinate,dis,i);
 									}
@@ -964,11 +1045,17 @@
 									if(
 										(
 											(_.is_type(['line','scatter']) || !args.barTextWithin)
-											&& (parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i)) )
+											&& (
+												parseFloat(getBlobSize(coordinate,dis,i))
+												>= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i))
+											)
 										)
 										|| (
 											(_.is_type('bar') && args.barTextWithin)
-											&& (parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i))
+											&& (
+												parseFloat(getBlobSize(coordinate,dis,i))
+												< _.m_length(coordinate,i)
+											)
 										)
 									){
 										value = _.m_length(coordinate,i) * -.5;
@@ -994,7 +1081,7 @@
 						}
 
 					}else{
-						switch(args[getAxisStringOppoFromAxisString(coordinate)+'Align']){
+						switch(args[getOppoAxis(coordinate)+'Align']){
 							case 'top':
 								if(!initial && _.is_type(['bar','line'])){
 									offset = getBlobSize(coordinate,dis,i)
@@ -1005,7 +1092,7 @@
 							case 'bottom':
 								if(
 									initial && _.is_type(['bar','line'])
-									|| (args.barTextWithin && args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'right')
+									|| (args.barTextWithin && args[getOppoAxis(coordinate)+'Align'] == 'right')
 								) {
 									offset = args[getDimension(coordinate)];
 
@@ -1046,13 +1133,14 @@
 		 * FUNCTION: getBlobOrigin
 		*****************************************************************************/
 
-		var getBlobOrigin = function(coordinate,dis,i,initial){
+		const getBlobOrigin = (coordinate,dis,i,initial)=>{
+			initial = initial || false;
 
 			// same here.. could be the same probably
-			var keyKey =  args[ coordinate+'Data'],
-				oppositeAxisAlignment = args[ getAxisStringOppoFromAxisString(coordinate)+'Align'],
-				offset = 0;
-				initial = initial || false;
+			const keyKey =  args[ coordinate+'Data'],
+				oppositeAxisAlignment = args[ getOppoAxis(coordinate)+'Align'];
+
+			let offset = 0;
 
 				if(_.is_type(['bar','line','scatter'])) {
 					if( args.nameIsNum == true || keyKey == 1){
@@ -1101,16 +1189,16 @@
 		 * FUNCTION: getLegendOrigin
 		*****************************************************************************/
 			
-			var getLegendOrigin = function(axisString){
+			const getLegendOrigin = (axisString)=>{
 
 				if( _.container_legend ){
-					var offset = 0,
+					let offset = 0,
 						length = axisString == 'x'
 							? _.container_legend.nodes()[0].getBoundingClientRect()[getDimension(axisString)]
 							: (_.legend_size * _.dom_color.length), // .8
 					
-					shifter = function(){
-						var value = 0,
+					shifter = () => {
+						let value = 0,
 							multiplier = 1;
 
 						//multiplier
@@ -1118,8 +1206,8 @@
 							_.is_type(['pie'])
 							|| (
 								_.is_type(['bar','line','scatter'])
-								&& args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'left'
-								|| args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'top'
+								&& args[getOppoAxis(axisString)+'Align'] == 'left'
+								|| args[getOppoAxis(axisString)+'Align'] == 'top'
 							)
 						){
 							multiplier = -1;
@@ -1130,8 +1218,8 @@
 							(_.is_type(['pie']) && axisString == 'x')
 							|| (
 								_.is_type(['bar','line','scatter'])
-								&& args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'left'
-								|| args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'top'
+								&& args[getOppoAxis(axisString)+'Align'] == 'left'
+								|| args[getOppoAxis(axisString)+'Align'] == 'top'
 							)
 						){
 							value = length + _.text_base_size;
@@ -1148,8 +1236,8 @@
 						|| 
 						(
 							_.is_type(['bar','line','scatter'])
-							&& args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'left'
-							|| args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'top'
+							&& args[getOppoAxis(axisString)+'Align'] == 'left'
+							|| args[getOppoAxis(axisString)+'Align'] == 'top'
 						)
 					){
 						offset = args[getDimension(axisString)];
@@ -1174,12 +1262,12 @@
 		 * FUNCTION: getLinePath
 		*****************************************************************************/
 
-			var getLinePath = function(isArea,initial){
+			const getLinePath = (isArea,initial)=>{
 
-				var pathInitiator = isArea ? 'area' : 'line',
+				const pathInitiator = isArea ? 'area' : 'line',
 					axisToFill = ( args.xData == 0 )  ? 'x' : 'y',
-					pathStyle = (function(){
-						var theString = 'curveLinear';
+					pathStyle = (() => {
+						const theString = 'curveLinear';
 						switch(args.lineStyle){
 							case 'step':
 								theString = 'curveStepBefore'
@@ -1189,40 +1277,40 @@
 									break;
 						}
 						return theString
-					}()),
+					})(),
 					
 					path = d3[pathInitiator]();
 
 				if(pathInitiator == 'area') {
 
 					//name coord, value coord, fill coordinate
-					var aCord = { //default is top
+					const aCord = { //default is top
 						name: axisToFill, //x
-						value: getAxisStringOppoFromAxisString(axisToFill)+1, //y
-						fill: getAxisStringOppoFromAxisString(axisToFill)+0 //initial of data name is the bottom of the fill
+						value: getOppoAxis(axisToFill)+1, //y
+						fill: getOppoAxis(axisToFill)+0 //initial of data name is the bottom of the fill
 					};
 					
 					
 					path
-						[aCord.name](function(dis,i){
+						[aCord.name]((dis,i)=>{
 							return getBlobOrigin(axisToFill,dis,i,initial); 
 						})
-						[aCord.value](function(dis,i){
-							return getBlobOrigin(getAxisStringOppoFromAxisString(axisToFill),dis,i,initial);
+						[aCord.value]((dis,i)=>{
+							return getBlobOrigin(getOppoAxis(axisToFill),dis,i,initial);
 						})
-						[aCord.fill](function(dis,i){
+						[aCord.fill]((dis,i)=>{
 							return (
-								args[ axisToFill + 'Align' ]  == 'bottom'
-								|| args[ axisToFill + 'Align' ]  == 'right'
+								args[`${axisToFill}Align` ]  == 'bottom'
+								|| args[`${axisToFill}Align` ]  == 'right'
 							) ? args[getDimension(axisToFill)] : 0;
 						});
 
 				}else{
 					path
-						.x(function(dis,i){
+						.x((dis,i)=>{
 							return getBlobOrigin('x',dis,i,initial);
 						})
-						.y(function(dis,i){
+						.y((dis,i)=>{
 							return getBlobOrigin('y',dis,i,initial);
 						});
 
@@ -1247,31 +1335,31 @@
 		 * FUNCTION: getArcPath
 		*****************************************************************************/
 
-			var getArcPath = function(disPi,calcWithInnerRadius,subMethod,outerRadiusMultiplier,initial){
+			const getArcPath = (disPi,calcWithInnerRadius,subMethod,outerRadiusMultiplier,initial)=>{
 				outerRadiusMultiplier = outerRadiusMultiplier || 1;
 				subMethod = subMethod || '';
 				calcWithInnerRadius = calcWithInnerRadius || false;
 				initial = initial || false;
 
-				var innerRadius = (function(){
-					var toReturn = 0;
+				const innerRadius = (() => {
+					let toReturn = 0;
 
 					if( calcWithInnerRadius ){
 						toReturn = _.pi_radius * args.piInRadius;
 					}
 
 					return toReturn;
-				}()),
+				})(),
 
-				outerRadius = (function(){
-					var toReturn = 0;
+				outerRadius = (() => {
+					let toReturn = 0;
 
 					if(!initial || ( initial && (outerRadiusMultiplier <=1 ) && calcWithInnerRadius == false )){
 						toReturn = _.pi_radius * outerRadiusMultiplier;
 					}
 
 					return toReturn;
-				}()),
+				})(),
 
 				path = d3.arc()
 					.outerRadius( outerRadius )
@@ -1299,11 +1387,11 @@
 		 * FUNCTION: getPiData
 		*****************************************************************************/
 
-			var getPiData = function(i){
+			const getPiData = (i)=>{
 
-				var pie =  d3.pie()
+				const pie =  d3.pie()
 					.sort(null)
-					.value(function(dis,i){
+					.value((dis,i)=>{
 						return deepGet(dis,args.key[1],true)
 					});
 
@@ -1322,8 +1410,8 @@
 		 * FUNCTION: getPiOrigin
 		*****************************************************************************/
 
-			var getPiOrigin = function(axisString){
-				var offset = 0;
+			const getPiOrigin = (axisString)=>{
+				let offset = 0;
 
 				if(args.colorLegend && axisString =='x'){
 					offset = args[getDimension(axisString)] * .375;
@@ -1347,7 +1435,7 @@
 		 * FUNCTION: getMidAngle
 		*****************************************************************************/
 
-			var getMidAngle = function(disPi){
+			const getMidAngle = (disPi)=>{
 				return disPi.startAngle + (disPi.endAngle - disPi.startAngle)/2;
 			}
 
@@ -1363,16 +1451,16 @@
 		 * FUNCTION: getInterpolation
 		*****************************************************************************/
 
-			var getInterpolation = function(start,end,fn,d3fn){
-				fn = fn || function(value,start,end){ return value; };
+			const getInterpolation = (start,end,fn,d3fn)=>{
+				fn = fn || ((value,start,end)=>{ return value; });
 				d3fn = d3fn || 'interpolate';
 
-				var i = d3[d3fn](start,end);
+				const i = d3[d3fn](start,end);
 
-				return function(t) {
-					var interVal = i(t);
+				return ((t)=>{
+					const interVal = i(t);
 					return fn(interVal,start,end);
-				}
+				})
 			}
 
 		/*****************************************************************************
@@ -1387,9 +1475,9 @@
 		 * FUNCTION: setScale
 		*****************************************************************************/
 
-			var setScale = function(keyKey){
+			const setScale = (keyKey)=>{
 				
-				var scale;
+				let scale;
 
 				switch(keyKey){
 
@@ -1445,23 +1533,23 @@
 		*****************************************************************************/
 
 			//generates lab_coord, rule_coord and rule_coord
-			var renderAxisContainers = function(axisString,containerObj,isGrid) {
+			const renderAxisContainers = (axisString,containerObj,isGrid)=>{
 
 				if( args[axisString+'Ticks']) {
 					isGrid = isGrid || false;
 
-					var alignString = args[axisString+'Align'],
+					const alignString = args[axisString+'Align'],
 						tickContainer = (isGrid ? 'grid_' : 'rule_')+axisString;
 
 					// label
 						if( args[axisString+'Label'] && !isGrid ){
 							
 							_['lab_'+axisString] = _.container_lab.append('text')
-								.attr('class', prefix + 'label-'+axisString)
-								.attr('y', function(){
+								.attr('class',`${prefix}label-${axisString}`)
+								.attr('y',() => {
 									return getLabelOrigin('y',axisString);
 								})
-								.attr('x', function(){
+								.attr('x',() => {
 									return getLabelOrigin('x',axisString);
 								})
 								.attr('font-size', '1em')
@@ -1482,21 +1570,17 @@
 
 					//ruler/grid
 						_[tickContainer] = containerObj.append('g')
-							.attr('class', function(){
+							.attr('class', () => {
 
-									var contClass = null;
+									let contClass = null;
 			
 									if(isGrid){
 										contClass =
-											prefix
-											+ 'grid-'+axisString
-											+ ' grid-increment-' + args[axisString+'GridIncrement'];
+											`${prefix}grid-${axisString} grid-increment-${args[axisString+'GridIncrement']}`;
 										
 									}else{
 										contClass =
-											prefix
-											+ 'axis-'+axisString+' '
-											+ prefix +'axis-align-'+alignString;
+											`${prefix}axis-${axisString} ${prefix}axis-align-${alignString}`;
 									}
 			
 									return contClass;
@@ -1505,7 +1589,7 @@
 			
 							);
 			
-							var transformCoord = '';
+							let transformCoord = '';
 						
 							switch( axisString+' '+alignString ) {
 								case 'x bottom':
@@ -1536,13 +1620,12 @@
 		 * FUNCTION: setData
 		*****************************************************************************/
 
-			var setData = function(dataToParse){
-
-				var toReturn = null;
+			const setData = (dataToParse)=>{
 				
 				// heck if src key exists
-				toReturn = (function(){
+				let toReturn = (() => {
 					if (args.srcKey) {
+						console.log(dataToParse,args.srcKey)
 						if(deepGet(dataToParse,args.srcKey)){
 							return deepGet(dataToParse,args.srcKey);
 						}else{
@@ -1552,21 +1635,51 @@
 					}else{
 						return dataToParse
 					}
-				}());
+				})();
+
+				// convert to single level
+				if(args.srcMultiple == true && args.srcPreNest) {
+
+						const arrPreNest = [],
+							appendParentProp = (parentKey)=>{
+							//add parent key to proops
+							toReturn[parentKey].forEach(function(dis,i){
+								toReturn[parentKey][i]._parent = parentKey;
+								arrPreNest.push(toReturn[parentKey][i]);
+							});
+						}
+
+						//if they are array
+						if(Object.prototype.toString.call(toReturn) === '[object Array]'){
+
+							toReturn.forEach((par,key)=>{
+								appendParentProp(key);
+							})
+
+						//if they are kwan have keys
+						}else{
+							Object.keys(toReturn).forEach((key)=>{
+								//add parent key to proops
+								appendParentProp(key);
+							})
+						}
+
+					toReturn = arrPreNest;
+				}
 
 				
 				//filter data that has null value
-				toReturn = toReturn.filter(function(dis,i){
+				toReturn = toReturn.filter((dis,i)=>{
 
-					var toInclude = true;
+					const toInclude = true;
 
-					datum_keys.forEach(function(keyKey){
+					datum_keys.forEach((keyKey)=>{
 						if(args.key[keyKey] && deepGet(dis,args.key[keyKey]) == null) {
 								// _.has[keyKey] = false;
 							toInclude = false;
 							if(_.user_can_debug){
-								var humanForKey = keyKey == 0 ? 'name': keyKey == 1 ? 'value': keyKey;
-								console.warn(selector +' datum index `'+i+'` was filtered.\ndatum does not have data for the key `'+args.key[keyKey] + '`, which is set as the property for `'+humanForKey+'`')
+								const humanForKey = keyKey == 0 ? 'name': keyKey == 1 ? 'value': keyKey;
+								console.warn(`${selector} datum index '${i}' was filtered.\ndatum does not have data for the key '${args.key[keyKey]}', which is set as the property for '${humanForKey}'`)
 							}
 						}
 					});
@@ -1580,22 +1693,38 @@
 				//sort data 0 so that it doesnt go forward then backward then forward on the graph which is weird
 				if(args.nameIsNum == true){
 					
-					var sortable = [];
+					const sortable = [];
 
-					for(var i = 0 ;i < toReturn.length; i++){
+					for(let i = 0 ;i < toReturn.length; i++){
 						if(toReturn[i]){
 							sortable.push(toReturn[i]);
 						}
 					}
 					
-					sortable.sort(function(a, b) {
+					sortable.sort((a, b)=>{
 						return deepGet(a,args.key[0],true) - deepGet(b,args.key[0],true);
 					});
 
 					toReturn = sortable;
 				}
 
-				return toReturn;
+
+				_.data_flat = toReturn;
+
+				//nest it
+				if(args.srcMultiple == true) {
+
+					toReturn = d3.nest()
+						.key((dis)=>{
+							return dis[args.key['multiple']]
+						})
+						.rollup((v)=>{
+							return v;
+						})
+						.entries( toReturn );
+				}
+
+				_.data = toReturn;
 			}
 
 		/*****************************************************************************
@@ -1609,16 +1738,16 @@
 		 * FUNCTION: setAxis
 		*****************************************************************************/
 
-			var setAxis = function(axisString,isGrid){
+			const setAxis = (axisString,isGrid)=>{
 				isGrid = isGrid || false;
 				
-				var axisKey = 'Axis '+ args[axisString+'Align'];
+				const axisKey = 'Axis '+ args[axisString+'Align'];
 				var	axisToReturn = d3[strToCamelCase(axisKey)](_['the_'+ args[axisString+'Data']]);
 
 				if(args[axisString +'Ticks']){
 					if(_.is_type(['scatter']) && args[axisString+'Data'] == 0 && args.nameIsNum == true ){
-						var tickValues = function(){
-							var values = [],
+						const tickValues = () => {
+							const values = [],
 								currVal = getDomain(0,_.data)[0];
 							do{
 								values.push(currVal);
@@ -1634,7 +1763,7 @@
 
 					if(args[axisString +'TicksAmount']){
 						
-						var ticksAmount = function(){
+						const ticksAmount = () => {
 							if( isGrid && args[axisString +'TicksAmount']  ){
 								return args[axisString +'TicksAmount'] * args[axisString +'GridIncrement'];
 
@@ -1653,7 +1782,7 @@
 
 					}else {
 						axisToReturn
-							.tickFormat(function(dis,i){
+							.tickFormat((dis,i)=>{
 								return _['format_'+ args[axisString+'Data'] ](dis)
 							})
 					}
@@ -1674,10 +1803,20 @@
 		 * FUNCTION: renderCursorStalker
 		*****************************************************************************/
 
-			var renderCursorStalker = function(d3_event){
+			const renderCursorStalker = (d3_event)=>{
 				return _.tooltip_cursor_stalker 
-					.attr('cx',  ( d3_event.offsetX * ( _.outer_width / _.svg.node().clientWidth ) ) + 'px')
-					.attr('cy',  ( d3_event.offsetY * (  _.outer_height / _.svg.node().clientHeight ) ) + 'px')
+					.attr('cx',
+						`${(
+							d3_event.offsetX
+							* ( _.outer_width / _.svg.node().clientWidth )
+						)}px`
+					)
+					.attr('cy',
+						`${(
+							d3_event.offsetY
+							* (  _.outer_height / _.svg.node().clientHeight )
+						)}px`
+					)
 					.node();
 			}
 
@@ -1690,13 +1829,50 @@
 
 
 		/*****************************************************************************
+		 * FUNCTION: renderTextWrap
+		*****************************************************************************/
+
+			const renderTextWrap = (text,width)=>{
+				text.each(() => { //or use basic bitch function
+					const text = d3.select(this),
+						words = text.text().split(/\s+/).reverse()
+						;
+					let word,
+						line = [],
+						lineNumber = 0,
+						lineHeight = 1.1, // ems
+						y = text.attr("y"),c
+						dy = parseFloat(text.attr("dy")),
+						tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+					while (word = words.pop()) {
+					  line.push(word);
+					  tspan.text(line.join(" "));
+					  if (tspan.node().getComputedTextLength() > width) {
+						line.pop();
+						tspan.text(line.join(" "));
+						line = [word];
+						tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+					  }
+					}
+				});
+			}
+
+		/*****************************************************************************
+		 * ENDFUNCTION: renderTextWrap
+		*****************************************************************************/
+
+
+
+
+
+		/*****************************************************************************
 		 * FUNCTION: renderError
 		*****************************************************************************/
 
-			var renderError = function(theConsoleError,useThrow){
+			const renderError = (theConsoleError,useThrow)=>{
 				useThrow = useThrow || true;
 
-				var errorFront = "Sorry, unable to display data." + (  _.user_can_debug ? "<br> Please check the console for more details" : '');
+				const errorFront = "Sorry, unable to display data." + (  _.user_can_debug ? "<br> Please check the console for more details" : '');
 
 				d3.select(selector).classed(prefix+'initialized',true);
 
@@ -1727,7 +1903,7 @@
 		*****************************************************************************/
 
 			// fuck these bois up. pass data again in case changing data is a future feature
-			var renderGraph = function(incomingData) {
+			const renderGraph = (incomingData)=> {
 				// ok do the thing now
 				_.user_can_debug && console.log(
 					"\n",
@@ -1739,7 +1915,7 @@
 				)
 				;
 
-				datum_keys.forEach(function(keyKey){
+				datum_keys.forEach((keyKey)=>{
 
 					//get domain
 					_['dom_'+keyKey] = getDomain(keyKey,incomingData);
@@ -1753,7 +1929,7 @@
 					
 				// axis + grid
 					if(_.is_type(['bar','line','scatter'])){
-						coordinates.forEach(function(coordinate){
+						coordinates.forEach((coordinate)=>{
 							if( args[coordinate+'Ticks'] ){
 								_['rule_'+coordinate+'_axis'] = setAxis(coordinate);
 										
@@ -1772,11 +1948,11 @@
 										
 									_['grid_'+coordinate].selectAll('g')
 										.classed('grid',true)
-										.filter(function(dis,i){
+										.filter((dis,i)=>{
 
 											//IM HERE FUCKER
-											var isAligned = false;
-											_['rule_'+coordinate].selectAll('g').each(function(tik){
+											let isAligned = false;
+											_['rule_'+coordinate].selectAll('g').each((tik)=>{
 												//if current looped tik matches dis grid data, add the class boi
 												if(tik == dis){
 													isAligned = true;
@@ -1800,7 +1976,7 @@
 						if(_.is_type('line')){
 							if(args.lineFill){
 								_.fill = _.container_graph.selectAll('.'+prefix+'fill')
-									.data([incomingData],function(dis){
+									.data([incomingData],(dis)=>{
 										return deepGet(dis,args.key[0])
 									});
 
@@ -1822,7 +1998,7 @@
 
 									_.merge_fill = _.fill.merge(_.enter_fill)
 										.transition(args.transition) //DO NOT
-											.attrTween('d',function(){
+											.attrTween('d',() => {
 												return getInterpolation(
 													getLinePath(true,true),
 													getLinePath(true,false)
@@ -1833,7 +2009,7 @@
 							}
 							
 							_.line = _.container_graph.selectAll('.'+prefix+'line')
-								.data([incomingData],function(dis){
+								.data([incomingData],(dis)=>{
 									return deepGet(dis,args.key[0])
 								});
 
@@ -1844,7 +2020,7 @@
 
 								_.enter_line = _.line.enter()
 									.append('path')
-									.attr('class',prefix+'line' + ((args.lineColor !== null) ? ' has-color' : ' no-color' ))
+									.attr('class',`${prefix}line ${((args.lineColor !== null) ? ' has-color' : ' no-color' )}`)
 									.attr('fill','none')
 									.attr('stroke-width',args.lineWeight)
 									.attr('stroke-linejoin','round')
@@ -1861,7 +2037,7 @@
 
 								_.merge_line = _.line.merge(_.enter_line)
 									.transition(args.transition) //DO NOT
-										.attrTween('d',function(){
+										.attrTween('d',() => {
 											return getInterpolation(
 												getLinePath(false,true),
 												getLinePath(false,false)
@@ -1874,8 +2050,8 @@
 					}
 
 				//graph item : bars, scatter plots, pizza, points	
-					_.blob = _.container_graph.selectAll(_.graph_item_element +'.'+prefix + 'graph-item.graph-item-blob')
-						.data(incomingData,function(dis){
+					_.blob = _.container_graph.selectAll(`${_.graph_item_element}.${prefix}graph-item.graph-item-blob`)
+						.data(incomingData,(dis)=>{
 							return deepGet(dis,args.key[0])
 						});
 
@@ -1889,9 +2065,8 @@
 					//enter
 						_.enter_blob = _.blob.enter()
 							.append(_.graph_item_element)
-								.attr('class', function(dis){
-									return prefix + 'graph-item graph-item-blob'
-										+ ' '+ 'data-name-'+deepGet(dis,args.key[0]);
+								.attr('class', (dis)=>{
+									return `${prefix}graph-item graph-item-blob data-name-${deepGet(dis,args.key[0])}`
 								})
 								;
 
@@ -1899,13 +2074,13 @@
 									_.enter_blob
 										.attr(
 											(_.is_type(['line','scatter']) ? 'cx' : 'x'),
-											function(dis,i){
+											(dis,i)=>{
 												return getBlobOrigin('x',dis,i,true);
 											}
 										)
 										.attr(
 											(_.is_type(['line','scatter']) ? 'cy' : 'y'),
-											function(dis,i){
+											(dis,i)=>{
 												return getBlobOrigin('y',dis,i,true);
 											}
 										)
@@ -1913,7 +2088,7 @@
 										
 										if(_.is_type(['line','scatter'])){
 											_.enter_blob
-												.attr('r',function(dis,i){
+												.attr('r',(dis,i)=>{
 													return getBlobRadius(dis,i,true);
 												})
 												;
@@ -1921,10 +2096,10 @@
 				
 										}else if(_.is_type('bar')){
 											_.enter_blob
-												.attr('width',function(dis,i){
+												.attr('width',(dis,i)=>{
 													return getBlobSize('x',dis,i,true)
 												}) // _ width
-												.attr('height',function(dis,i){
+												.attr('height',(dis,i)=>{
 													return getBlobSize('y',dis,i,true)
 												})
 												;
@@ -1942,13 +2117,13 @@
 									.transition(_.duration)
 										.attr(
 											(_.is_type(['line','scatter']) ? 'cx' : 'x'),
-											function(dis,i){
+											(dis,i)=>{
 												return getBlobOrigin('x',dis,i,false);
 											}
 										)
 										.attr(
 											(_.is_type(['line','scatter']) ? 'cy' : 'y'),
-											function(dis,i){
+											(dis,i)=>{
 												return getBlobOrigin('y',dis,i,false);
 											}
 										)
@@ -1960,13 +2135,13 @@
 								_.merge_blob
 									.transition(args.transition) //DO NOT
 										.attrTween('d',function(dis,i){
-											this._current = this._current || getPiData(i);
-											let theCurrent = this._current;
+											dis._current = dis._current || getPiData(i);
+											let theCurrent = dis._current;
 											
 											return getInterpolation(
 												theCurrent.endAngle,
 												theCurrent.startAngle,
-												function(value){
+												(value)=>{
 													theCurrent.startAngle = value;
 													return getArcPath(theCurrent,true);
 												}
@@ -1977,7 +2152,7 @@
 							if(_.is_type(['line','scatter'])){
 								_.merge_blob
 									.transition(_.duration)
-										.attr('r',function(dis,i){
+										.attr('r',(dis,i)=>{
 											return getBlobRadius(dis,i,false)
 										})
 										;
@@ -1992,10 +2167,10 @@
 							if(_.is_type('bar')){
 								_.merge_blob
 									.transition(_.duration)
-										.attr('width',function(dis,i){
+										.attr('width',(dis,i)=>{
 											return getBlobSize('x',dis,i,false)
 										}) // _ width
-										.attr('height',function(dis,i){
+										.attr('height',(dis,i)=>{
 											return getBlobSize('y',dis,i,false)
 										})
 										;
@@ -2004,7 +2179,7 @@
 							//tooltip
 							if(args.tooltipEnable) {
 								_.merge_blob
-									.on('mousemove',function(dis){
+									.on('mousemove',(dis)=>{
 											_.tooltip.show(dis,renderCursorStalker(d3.event));
 									})
 									.on('mouseleave',_.tooltip.hide);
@@ -2020,14 +2195,14 @@
 									)
 								) {
 									_.merge_blob
-										.attr('fill',function(){
+										.attr('fill',() => {
 											return args.linePointsColor || args.lineColor;
 										});
 
 								}
 							}else{
 								_.merge_blob
-									.attr('fill',function(dis,i){
+									.attr('fill',(dis,i)=>{
 										return _.the_color(deepGet(dis,args.key.color));
 									});
 
@@ -2035,7 +2210,7 @@
 										_.merge_blob
 											.attr('fill-opacity',args.areaOpacity)
 											.attr('stroke-width',1)
-											.attr('stroke',function(dis,i){
+											.attr('stroke',(dis,i)=>{
 												return _.the_color(deepGet(dis,args.key.color));
 											})
 									}
@@ -2048,8 +2223,8 @@
 						//polyline 
 						if(_.is_type('pie') && args.piLabelStyle == 'linked'){
 
-							_.blob_text_link = _.container_graph.selectAll('polyline.'+prefix + 'graph-item.graph-item-link')
-								.data(incomingData,function(dis){
+							_.blob_text_link = _.container_graph.selectAll(`polyline.${prefix}graph-item.graph-item-link`)
+								.data(incomingData,(dis)=>{
 									return deepGet(dis,args.key[0])
 								});
 
@@ -2063,9 +2238,8 @@
 									_.enter_blob_text_link = _.blob_text_link
 										.enter()
 										.append('polyline')
-										.attr('class',function(dis){
-											return prefix+'graph-item graph-item-link' 
-												+ ' '+ 'data-name-'+deepGet(dis,args.key[0]);
+										.attr('class',(dis)=>{
+											return `${prefix}graph-item graph-item-link data-name-${deepGet(dis,args.key[0])}`;
 										})
 										.attr('stroke-opacity',.75)
 										.attr('opacity',1)
@@ -2074,10 +2248,9 @@
 								// merge
 									_.merge_blob_text_link = _.blob_text_link.merge(_.enter_blob_text_link)
 										.transition(_.duration)
-										.attrTween('points',function(dis,i){
-											
+										.attrTween('points',(dis,i)=>{
 											//in pie, initial means it starts at zero but we dont want that so dont set the initial to true
-											var start = [
+											const start = [
 													getArcPath(getPiData(i),true,'centroid',1,false), //first coord is centroid of our pie boi
 													getArcPath(getPiData(i),true,'centroid',1,false), // second is outer radius.
 												],
@@ -2087,16 +2260,13 @@
 													getArcPath(getPiData(i),false,'centroid',2.25,false),
 												];
 
-											return getInterpolation(
-												start,
-												end
-											)
+											return getInterpolation(start,end);
 										});
 
 						}
 
-						_.blob_text = _.container_graph.selectAll('text.'+prefix + 'graph-item.graph-item-text')
-							.data(incomingData,function(dis){
+						_.blob_text = _.container_graph.selectAll(`text.${prefix}graph-item.graph-item-text`)
+							.data(incomingData,(dis)=>{
 								return deepGet(dis,args.key[0])
 							});
 
@@ -2112,19 +2282,15 @@
 										.append('text')
 										.attr('line-height',1.25)
 										.attr('dominant-baseline','middle')
-										.attr('transform',function(dis,i){
-											var dataToUse = _.is_type('pie') ? getPiData(i) : dis;
-											return 'translate('
-													+getBlobTextOrigin('x',dataToUse,i,true)
-													+','
-													+getBlobTextOrigin('y',dataToUse,i,true)
-												+')';
+										.attr('transform',(dis,i)=>{
+											const dataToUse = _.is_type('pie') ? getPiData(i) : dis;
+											return `translate( ${getBlobTextOrigin('x',dataToUse,i,true)} , ${getBlobTextOrigin('y',dataToUse,i,true)} )`;
 										})
 										.style('opacity','0')
 										;
 
 									//append content right away so we can calculate where shit offset
-									[0,1].forEach(function(keyKey){
+									[0,1].forEach((keyKey)=>{
 
 										if(
 											(
@@ -2142,21 +2308,21 @@
 
 											_['blob_text_'+keyKey] = _.enter_blob_text.append('tspan')
 
-												.attr('class', function(dis){
-													return 'graph-item-text-data-'+keyKey
-														+ ' '+ 'data-name-'+deepGet(dis,args.key[0]);
+												.attr('class', (dis)=>{
+													return `${prefix}graph-item-text-data-${keyKey} data-name-${deepGet(dis,args.key[0])}`
 												} )
 												.attr('dominant-baseline','middle')
-												.attr('text-anchor',function(dis,i){
+												.attr('text-anchor',(dis,i)=>{
 													return getBlobTextAnchor(dis,i);
 												})
-												.attr('font-size',function(){
-													var toReturn = null;
+												.attr('font-size',() => {
+
+													let toReturn = null;
 
 													if(
 														(
 															_.is_type(['bar','line','scatter'])
-															&& !args[ getAxisStringOppoFromAxisString ( getAxisString(keyKey) )+'Ticks']
+															&& !args[ getOppoAxis ( getAxisString(keyKey) )+'Ticks']
 														)
 														|| (
 															_.is_type('pie')
@@ -2164,10 +2330,9 @@
 															&& args.piLabelStyle !== null
 														)
 													){
-													
-
 														if( keyKey == 0 ){
 															toReturn = args.textNameSize+'em';
+
 														}else{
 															toReturn = args.textValueSize+'em';
 														}	
@@ -2177,13 +2342,13 @@
 												})
 												.attr('x',getBlobTextBaselineShift('x',keyKey))
 												.attr('y',getBlobTextBaselineShift('y',keyKey))
-												.attr('font-weight',function(){
-													var toReturn = 700;
+												.attr('font-weight',() => {
+													let toReturn = 700;
 
 													if(
 														(
 															_.is_type(['bar','line','scatter'])
-															&& !args[ getAxisStringOppoFromAxisString ( getAxisString(keyKey) )+'Ticks']
+															&& !args[ getOppoAxis ( getAxisString(keyKey) )+'Ticks']
 														)
 														|| (
 															_.is_type('pie')
@@ -2191,8 +2356,6 @@
 															&& args.piLabelStyle !== null
 														)
 													){
-													
-
 														if( keyKey !== 0 ){
 															toReturn = 300;
 														}	
@@ -2200,7 +2363,7 @@
 
 													return toReturn;
 												})
-												.text(function(dis,i){
+												.text((dis,i)=>{
 													return _['format_'+ keyKey ]( deepGet(dis,args.key[ keyKey ]) );
 												})
 
@@ -2214,15 +2377,28 @@
 									//commercial break
 										//set a minimum length for graph items to offset its text bois. doesnt matter which data key is on the axis we just want the width or height of the graph item on the given axis
 										// add padding for less math i think
-										_.m_length = function(axisString,i){
+										_.m_length = (axisString,i)=>{
 
 											if(_.has_text && _.merge_blob_text){
-												var value = 0;
+												let value = 0;
 
 												if( getDimension( axisString ) == 'width' ) {
-													value = (_.merge_blob_text.nodes()[i].getBBox()[ getDimension( axisString ) ]) + (_.text_padding * _.text_base_size);
+													value = (
+														_.merge_blob_text.nodes()[i]
+															.getBBox()[ getDimension( axisString ) ]
+													) + (
+														_.text_padding
+														* _.text_base_size
+													);
 												}else{
-													value = (_.text_base_size * (args.textNameSize + args.textValueSize + _.text_padding));
+													value = (
+														_.text_base_size
+														* (
+															args.textNameSize
+															+ args.textValueSize
+															+ _.text_padding
+														)
+													);
 												}
 
 												return parseFloat(value);
@@ -2231,24 +2407,28 @@
 
 
 									_.merge_blob_text
-										.attr('class', function(dis,i){
-											var classString =  prefix + 'graph-item graph-item-text';
+										.attr('class', (dis,i)=>{
+											let classString =  `${prefix}graph-item graph-item-text`;
 											
 											if( 
 												(
 													_.is_type('bar')
 													&& (
-														
 														(
-															
 															args.barTextWithin
 															&& (
 																( // it out
-																	(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) < _.m_length(getAxisString(1),i))
+																	(
+																		parseFloat(getBlobSize(getAxisString(1),dis,i,false))
+																		< _.m_length(getAxisString(1),i)
+																	)
 																	&& !isDark(args.colorBackground)
 																)
 																|| ( //it in
-																	(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) >= _.m_length(getAxisString(1),i))
+																	(
+																		parseFloat(getBlobSize(getAxisString(1),dis,i,false))
+																		>= _.m_length(getAxisString(1),i)
+																	)
 																	&& (args.colorPalette.length > 0)
 																	&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
 																)
@@ -2259,13 +2439,19 @@
 															&& (
 																( // it out
 																	(
-																		(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) + _.m_length(getAxisString(1),i)) <=  args[getDimension(getAxisString(1))]
+																		(
+																			parseFloat(getBlobSize(getAxisString(1),dis,i,false))
+																			+ _.m_length(getAxisString(1),i)
+																		) <=  args[getDimension(getAxisString(1))]
 																	)
 																	&& !isDark(args.colorBackground)
 																)
 																|| ( //it in
 																	(
-																		(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) + _.m_length(getAxisString(1),i)) > args[getDimension(getAxisString(1))]
+																		(
+																			parseFloat(getBlobSize(getAxisString(1),dis,i,false))
+																			+ _.m_length(getAxisString(1),i)
+																		) > args[getDimension(getAxisString(1))]
 																	)
 																	&& (args.colorPalette.length > 0)
 																	&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
@@ -2301,25 +2487,30 @@
 
 											return classString;
 										})
-										.attr('stroke',function(dis,i){
+										.attr('stroke',(dis,i)=>{
 											if(
 												(
 													_.is_type('pie')
 													&& args.piLabelStyle == 'within'
 													&& args.colorPalette.length > 0
 												)
-
 												|| (
 													_.is_type('bar')
 
 													&& (
 														(
 															!args.barTextWithin
-															&& (parseFloat(getBlobSize(getAxisString(1),dis,i)) >= (args[getDimension(getAxisString(1),true)] - _.m_length(getAxisString(1),i)) )
+															&& (
+																parseFloat(getBlobSize(getAxisString(1),dis,i))
+																>= (args[getDimension(getAxisString(1),true)] - _.m_length(getAxisString(1),i))
+															)
 														)
 														|| (
 															args.barTextWithin
-															&& (parseFloat(getBlobSize(getAxisString(1),dis,i)) >= _.m_length(getAxisString(1),i))
+															&& (
+																parseFloat(getBlobSize(getAxisString(1),dis,i))
+																>= _.m_length(getAxisString(1),i)
+															)
 														) //@TODO this
 													)
 												)
@@ -2337,13 +2528,9 @@
 											}
 										})
 										.transition(_.duration)
-											.attr('transform',function(dis,i){
-												var dataToUse = _.is_type('pie') ? getPiData(i) : dis;
-												return 'translate('
-														+getBlobTextOrigin('x',dataToUse,i,false)
-														+','
-														+getBlobTextOrigin('y',dataToUse,i,false)
-													+')';
+											.attr('transform',(dis,i)=>{
+												const dataToUse = _.is_type('pie') ? getPiData(i) : dis;
+												return `translate( ${getBlobTextOrigin('x',dataToUse,i,false)} , ${getBlobTextOrigin('y',dataToUse,i,false)} )`;
 											})
 											.style('opacity',1);
 
@@ -2352,12 +2539,6 @@
 
 				//legends boi
 				if(args.colorLegend){
-
-
-					_.container_legend = _.container.append('g')
-						.attr('class',prefix+'legend')
-						.attr('font-size', args.textLegendSize+'em');
-
 
 						_.legend = _.container_legend.selectAll('g.'+ prefix+'legend-item')
 							.data(_.dom_color);
@@ -2371,7 +2552,8 @@
 							_.enter_legend = _.legend
 								.enter()
 								.append('g')
-								.attr('class',prefix+'legend-item');
+								.attr('class',prefix+'legend-item')
+								.style('opacity','0');
 
 							_.enter_legend
 								.transition(_.duration)
@@ -2381,39 +2563,32 @@
 								.attr('class','legend-item-blob')
 								.attr('width',_.legend_size * .75)
 								.attr('height',_.legend_size * .75)
-								.attr('fill', function(dis,i){
+								.attr('fill', (dis,i)=>{
 									_.the_color(dis);
-								} )
+								})
 								.attr('stroke',args.colorBackground);
 
 							_.enter_legend.append("text")
 								.attr('class','legend-item-text')
-								.text(function(dis){
-									return dis
+								.text((dis)=>{
+									return dis;
 								})
 								.attr('dominant-baseline','middle')
-								.attr('x', function(dis,i){
-									return _.legend_size;
-								})
-								.attr('y', function(dis,i){
-									return _.legend_size * .375;
-								})
+								.attr('x', _.legend_size )
+								.attr('y', _.legend_size * .375)
 								.attr('stroke',args.colorBackground);
 
 							_.merge_legend = _.legend.merge(_.enter_legend)
 								
 							_.merge_legend
-								.attr('transform', function(dis,i){
-									return 'translate(0, ' + (i *  _.legend_size) + ')'
+								.transition(_.duration)
+								.attr('transform', (dis,i)=>{
+									return `translate(0, ${i *  _.legend_size})`;
 								});
 
 
 					_.container_legend
-						.attr('transform','translate('+getLegendOrigin('x')+','+getLegendOrigin('y')+')')
-						.transition(_.duration)
-							.styleTween('opacity',function(){
-								return getInterpolation(0,1);
-							});
+						.attr('transform',`translate( ${getLegendOrigin('x')} , ${getLegendOrigin('y')} )`)
 				}
 
 
@@ -2433,12 +2608,12 @@
 		*****************************************************************************/
 
 			//initialize a good boi
-			var init = function(retrievedData){
+			const init = (retrievedData) => {
 				
 				//add initialized class so we know the boi been fucked na
 				_.the_container = d3.select(selector);
 				
-				_.the_container.classed(prefix+'initialized'+ ( isDark(args.colorBackground) ? ' '+prefix+'dark' : '' ) ,true )
+				_.the_container.classed(`${prefix}initialized ${( isDark(args.colorBackground) ? `${prefix}dark` : '' )}` ,true )
 					.style('background-color',args.colorBackground)
 
 				_.data = null;
@@ -2464,23 +2639,17 @@
 			
 				// relative to 1em supposedly idk
 				_.text_base_size = parseFloat(args.fontSize);
+				
+				setData(retrievedData); 
+					
 
-				if(args.srcMultiple == true) {
-					// _.data = d3.stratify(retrievedData)
-					// 	.parentId(function(dis){
-					// 		return dis[args.srcMultipleKey]
-					// 	});
-				}else{
-					_.data  = setData(retrievedData);
-				}
-
-				// console.log(selector,_.data);
+				console.log(args.title,_.data);
 
 				
 				
 
 
-				if(_.data.length > 0 ){
+				if( _.data.length > 0 ){
 
 					// fallback + validate color data
 					// if color data key aint set put in name
@@ -2535,59 +2704,61 @@
 					
 					//add tooltipcontent function if there is none;
 
-					_.tooltip_html = args.tooltipContent || function(dis,i) {
-
-						var html = '<div class="'+prefix+'tooltip-data">';
-
-						for (var prop in dis) {
-							if (Object.prototype.hasOwnProperty.call(dis, prop)) {
-								var propIsOutputted = false;
-
-								if(typeof dis[prop] !== 'object'){
-
-								
-									html += '<div class="'+prefix+'tooltip-data-property">';
-
-										// label
-										if(args.srcType !== 'row'){
-											html += '<strong class="'+prefix+'tooltip-data-property-label">'+prop+':</strong> ';
-										}
+					_.tooltip_html = args.tooltipContent
+						|| ((dis,i)=>{
 
 
-								
-										datum_keys.forEach(function(keyKey){
-											
-											if(
-												args.key[keyKey]
-												&& args.key[keyKey].lastIndexOf(prop)  > -1
-												&& _['format_'+keyKey]
-												&& propIsOutputted == false
-											){
-												html += '<span class="'+prefix+'tooltip-data-property-content">'+ _['format_'+ keyKey ] (deepGet(dis,args.key[ keyKey ]) ) +'</span>';
-												propIsOutputted = true;
+							const html = `<div class="${prefix}tooltip-data">`;
+
+							for (let prop in dis) {
+								if (Object.prototype.hasOwnProperty.call(dis, prop)) {
+									const propIsOutputted = false;
+
+									if(typeof dis[prop] !== 'object'){
+
+									
+										html += `<div class="${prefix}tooltip-data-property">`;
+
+											// label
+											if(args.srcType !== 'row'){
+												html += `<strong class="${prefix}tooltip-data-property-label">${prop}:</strong> `;
 											}
 
-										});
 
-										if(propIsOutputted == false) {
-
-											// content
-											html += '<span class="'+prefix+'tooltip-data-property-content">'+dis[prop]+'</span>';
-
-										}
 									
+											datum_keys.forEach((keyKey)=>{
+												
+												if(
+													args.key[keyKey]
+													&& args.key[keyKey].lastIndexOf(prop)  > -1
+													&& _[`format_${keyKey}`]
+													&& propIsOutputted == false
+												){
+													html += `<span class="${prefix}tooltip-data-property-content">${_[`format_${keyKey}`] (deepGet(dis,args.key[ keyKey ]) )} </span>`;
+													propIsOutputted = true;
+												}
+
+											});
+
+											if(propIsOutputted == false) {
+
+												// content
+												html += `<span class="${prefix}tooltip-data-property-content">${dis[prop]}</span>`;
+
+											}
+										
+										
+										html += '</div>';
 									
-									html += '</div>';
-								
+									}
+									
 								}
-								
 							}
-						}
 
-						html += '</div>';
+							html += '</div>';
 
-						return html;
-					}
+							return html;
+						});
 
 					
 					//set them dimensions
@@ -2598,58 +2769,58 @@
 
 
 					d3.select(selector).append('div').lower()
-						.attr('class',prefix+'heading');
+						.attr('class',`${prefix}heading`);
 					
-					_.heading_sel = d3.select(selector).select('div.'+prefix+'heading');
+					_.heading_sel = d3.select(selector).select(`div.${prefix}heading`);
 
 						if(args.title){
 							_.heading_title = _.heading_sel.append('span')
-							.attr('class',prefix+'title')
+							.attr('class',`${prefix}title`)
 							.text(args.title)
 						}
 
 						if(args.description){
 							_.heading_description = _.heading_sel.append('span')
-							.attr('class',prefix+'description')
+							.attr('class',`${prefix}description`)
 							.text(args.description)
 						}
 
 					_.heading_sel
-						.style('padding-top', function(){
-							return  ((_.margin.top / args.height) * 50) + '%'
+						.style('padding-top', () => {
+							`${(_.margin.top / args.height) * 50}%`
 						})
-						.style('padding-left', function(){
-							return  ((_.margin.left / _.outer_width) * 100) + '%'
+						.style('padding-left', () => {
+							`${(_.margin.left / _.outer_width) * 100}%`
 						})
-						.style('padding-right', function(){
-							return  ((_.margin.right / _.outer_width) * 100) + '%'
+						.style('padding-right', () => {
+							`${(_.margin.right / _.outer_width) * 100}%`
 						})
 						.transition(_.duration)
-						.styleTween('opacity',function(){return getInterpolation(0,1)});
+						.styleTween('opacity',() => {getInterpolation(0,1)});
 				
 					_.canvas = d3.select(selector)
 						.append('div')
-						.attr('class', prefix + 'wrapper')
+						.attr('class', `${prefix}wrapper`)
 						.style('position','relative')
-						.style('padding-bottom',function(){
-							return (( _.outer_height / _.outer_width) * 100) + '%';
+						.style('padding-bottom',() => {
+							return `${(( _.outer_height / _.outer_width) * 100)}%`;
 						})
 						.style('position','relative');
 
-					var dimensionString = '0 0 '+ _.outer_width +' ' + _.outer_height;
+					const dimensionString = `0 0 ${_.outer_width} ${_.outer_height}`;
 					
 					//check if its scrolled on the place it should be at
 					_.dv_init = false;
 					
-					document.addEventListener('scroll',function(e) {
-						var graphPosition = dataContainer.getBoundingClientRect().top;
+					document.addEventListener('scroll',(e)=>{
+						const graphPosition = dataContainer.getBoundingClientRect().top;
 						if(graphPosition < (window.innerHeight * .5) && !_.dv_init) {
 							_.dv_init = true;
 							
-							setTimeout(function(){
+							setTimeout(() => {
 
 								_.svg = _.canvas.append('svg')
-									.attr('id',selector+'-svg')
+									.attr('id',`${selector}-svg`)
 									.style('position','absolute')
 									.style('top','0')
 									.style('left','0')
@@ -2660,15 +2831,44 @@
 									.attr('x','0px')
 									.attr('y','0px')
 									.attr('class',
-										prefix + 'svg'
-										+ ' ' + prefix + 'type-' + args.type
-										+ ' ' + prefix + ( (args.colorPalette.length > 0 || args.linePointsColor !== null || args.lineColor !== null) ?  'has' : 'no' ) + '-palette'
-										+ ' ' + prefix + ((_.is_type('pie') && !args.xTicks && !args.yTicks) ? 'no' : 'has') + '-ticks'
-										+ ' ' + prefix + ((args.colorLegend ) ? 'has' : 'no') + '-legend'
-										+ ((_.is_type('pie') && args.piLabelStyle !== null) ? ' ' + prefix +'pi-label-style-'+args.piLabelStyle : ' '+prefix+'no-label')
+										`${prefix}svg`
+
+										+ ` ${prefix}type-${args.type}`
+										
+										+ ` ${prefix}${(
+												(
+													args.colorPalette.length > 0
+													|| args.linePointsColor !== null
+													|| args.lineColor !== null
+												)
+													? 'has'
+													: 'no' 
+											)}-palette`
+
+										+ ` ${prefix}${(
+												(
+													_.is_type('pie')
+													&& !args.xTicks
+													&& !args.yTicks
+												)
+													? 'no'
+													: 'has'
+											)}-ticks`
+
+										+ ` ${prefix}${(
+												(args.colorLegend )
+													? 'no'
+													: 'has'
+											)}-legend`
+											
+										+ ` ${(
+												(_.is_type('pie') && args.piLabelStyle !== null)
+													? ` ${prefix}pi-label-style-${args.piLabelStyle}`
+													: ` ${prefix}no-label`
+											)}`
 									)
 									.attr('viewBox', dimensionString)
-									.attr("preserveAspectRatio", "xMidYMid meet")
+									.attr('preserveAspectRatio', 'xMidYMid meet')
 									.attr('xml:space','preserve')
 									.attr('width',_.outer_width)
 									.attr('height',_.outer_height)
@@ -2676,13 +2876,15 @@
 
 									
 								//duration
-								_.duration = _.svg.transition().duration( args.transition ).ease(d3.easeLinear);
+								_.duration = _.svg.transition()
+									.duration( args.transition )
+									.ease(d3.easeLinear);
 									
 								_.container = _.svg.append('g')
-									.attr('class',prefix+'svg-wrapper')
+									.attr('class',`${prefix}svg-wrapper`)
 									.attr('font-size',args.fontSize)
 									.style('line-height',1)
-									.attr('transform','translate('+ _.margin.left +','+ _.margin.top +')');
+									.attr('transform',`translate( ${_.margin.left} , ${_.margin.top} )`);
 
 
 								//tooltip
@@ -2695,13 +2897,13 @@
 										// // .style('opacity',0)
 										// .attr('fill','red');
 
-									_.tooltip_cursor_stalker = _.svg.select('circle.'+prefix+'cursor-stalker')
+									_.tooltip_cursor_stalker = _.svg.select(`circle.${prefix}cursor-stalker`)
 
 									_.tooltip = d3.tip()
 										.attr('class',prefix+'tooltip')
-										.style('width', function(){
+										.style('width', () => {
 											if(typeof args.tooltipWidth === 'number'){
-												return parseFloat(args.tooltipWidth) + 'px';
+												return `${parseFloat(args.tooltipWidth)}px`;
 											}else if(args.tooltipWidth == 'auto'){
 												return args.tooltipWidth;
 											}
@@ -2718,8 +2920,8 @@
 								
 								if(_.is_type('pie')){
 									//radius boi
-									_.pi_radius = (function(){
-										var value = Math.min((args.width * .5),(args.height * .5));
+									_.pi_radius = (() => {
+										let value = Math.min((args.width * .5),(args.height * .5));
 					
 										if(args.colorLegend){
 											value -= (value * .25)
@@ -2730,7 +2932,7 @@
 										}
 					
 										return value;
-									}());
+									})();
 
 								}else{
 
@@ -2791,6 +2993,12 @@
 									_.container_graph
 										.attr('transform','translate('+ getPiOrigin('x') +','+ getPiOrigin('y') +')');
 								}
+
+								if(args.colorLegend){
+									_.container_legend = _.container.append('g')
+										.attr('class',prefix+'legend')
+										.attr('font-size', args.textLegendSize+'em');
+								}
 								
 
 								if(args.srcMultiple){
@@ -2799,7 +3007,7 @@
 
 
 									// scales and shit
-									datum_keys.forEach(function(keyKey){
+									datum_keys.forEach((keyKey)=>{
 
 										//range
 										_['range_'+keyKey] = getRange(keyKey);
@@ -2808,32 +3016,32 @@
 										_['the_'+keyKey] = setScale(keyKey);
 
 										//formatting of data on the graph
-										_['format_'+keyKey] = (function(){
+										_['format_'+keyKey] = (() => {
 											
 											if(typeof args['format'+keyKey+'Parameter'] === 'function' ) {
-												
 												return args['format'+keyKey+'Parameter']
 
-											}else if( typeof args['format'+keyKey+'Parameter'] === 'string'  ) {
-												
-												return function(value){
+											}else if( typeof args['format'+keyKey+'Parameter'] === 'string' ) {
+												return ((value)=>{
 													return d3.format(args['format'+keyKey+'Parameter'])(value)
-												}
+												})
 
 											}else{
-												
-												return function(value){
-
-													var divider = args[ 'format' + keyKey.toString().toUpperCase() + 'Divider'],
-														prepend = args[ 'format' + keyKey.toString().toUpperCase() + 'Prepend'],
-														append = args[ 'format' + keyKey.toString().toUpperCase() + 'Append'],
-														dataPossiblyDivided = (keyKey == 1 || args.nameIsNum == true ) ? (value / divider): value,
+												return ((value)=>{
+													const
+														divider = args[ `format${keyKey.toString().toUpperCase()}Divider`],
+														prepend = args[ `format${keyKey.toString().toUpperCase()}Prepend`],
+														append = args[ `format${keyKey.toString().toUpperCase()}Append`],
+														dataPossiblyDivided = 
+															(keyKey == 1 || args.nameIsNum == true )
+																? (value / divider)
+																: value,
 														formatted = prepend + dataPossiblyDivided + append;
 
 													return formatted;
-												}
+												})
 											}
-										}());
+										})();
 
 										switch(keyKey){
 
@@ -2868,9 +3076,9 @@
 
 								_1p21.graphs[selector] = {data:_.data,calcuated:_};
 
-								window.addEventListener("resize", function(){
+								window.addEventListener("resize", () => {
 									clearTimeout(_.resize);
-									_.resize = setTimeout(function(){
+									_.resize = setTimeout(() => {
 										if(args.srcMultiple){
 
 										}else{
@@ -2900,15 +3108,15 @@
 		 * GETREADY TO USE ALL OF THEM FUCKHOLES
 		*****************************************************************************/
 
-		window.addEventListener('DOMContentLoaded',function(){
+		window.addEventListener('DOMContentLoaded',() => {
 
 			//data is embedded on the page oooooo
 			if(args.srcPath.indexOf(window.location.href) > -1){
-				var jsonSelector = document.getElementById(strGetHash(args.srcPath)).innerHTML;
+				const jsonSelector = document.getElementById(strGetHash(args.srcPath)).innerHTML;
 				
 				if( strIsValidJSONString(jsonSelector) ){
 
-					var dataIsJSON = JSON.parse(jsonSelector);
+					const dataIsJSON = JSON.parse(jsonSelector);
 					init(dataIsJSON);
 				}else{
 					renderError('Data input may not be valid. Please check and update the syntax');
@@ -2921,21 +3129,21 @@
 					case 'dsv':
 					case 'tsv':
 					case 'xml':
-						d3[ strGetFileExtension(args.srcPath)](args.srcPath,function(d){
+						d3[ strGetFileExtension(args.srcPath)](args.srcPath,(d)=>{
 								return d;
 							})
 							.then(init)
-							.catch(function(error){
+							.catch((error)=>{
 								renderError(error,false);
 							});
 						break;
 					
 					default:
-						d3.json(args.srcPath,function(d){
+						d3.json(args.srcPath,(d)=>{
 								return d;
 							})
 							.then(init)
-							.catch(function(error){
+							.catch((error)=>{
 								renderError(error,false);
 							});
 						break;
@@ -2949,4 +3157,4 @@
 
 	window._1p21 = _1p21;
 	
-}(window,d3));
+})(window,d3);
