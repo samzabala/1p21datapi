@@ -179,6 +179,7 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 	@for $i from 2 through length($palette) {
 
 
+		&-no-palette#{$prefix}-type-bar,
 		&-no-palette#{$prefix}-type-pie,
 		&-no-palette#{$prefix}-has-legend {
 

@@ -61,7 +61,10 @@ function _1p21_dv_load_acf(){
 add_action('acf/init', '_1p21_dv_load_acf');
 
 
-//validate name and value input
+
+/********************************************************************************************
+validate name and value input
+*********************************************************************************************/
 function _1p21_dv_validate_x_and_y_data($valid,$value,$field,$input){
 	if( !$valid ) {
 		return $valid;
@@ -82,4 +85,32 @@ function _1p21_dv_validate_x_and_y_data($valid,$value,$field,$input){
 }
 add_filter('acf/validate_value/key=field_5d42110769b59', '_1p21_dv_validate_x_and_y_data', 10, 4);
 add_filter('acf/validate_value/key=field_5d4494e1f5295', '_1p21_dv_validate_x_and_y_data', 10, 4);
+
+
+
+/********************************************************************************************
+populate valid multiple layouts based on graph type
+*********************************************************************************************/
+function _1p21_dv_load_multiple_display($field){
+
+		$layouts = array(
+			'0' => 'Select Display',
+			'overlap' => 'Overlap',
+			'slider' => 'Slider',
+		);
+
+
+		//erase old bois
+		$field['choices'] = array();
+
+		foreach( $layouts as $id => $description){
+			$value = $id;
+			$label = $description;
+
+			$field['choices'][ $value ] = $label;
+		}
+
+		return $field;
+}
+add_filter('acf/load_field/key=field_5ed02cf258c30', '_1p21_dv_load_multiple_display', 10, 4);
 

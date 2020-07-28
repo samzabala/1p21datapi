@@ -75,6 +75,33 @@ $_1p21_dv_fields_cpt = array(
 					'ui_off_text' => '',
 				),
 				array(
+					'key' => 'field_5ec843d2d2132',
+					'label' => 'Data is pre-nested',
+					'name' => 'pre_nest',
+					'type' => 'true_false',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5d9b8ffe900c3',
+								'operator' => '==',
+								'value' => '1',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'message' => 'Graph may not display properly if data is already nested. Check this if the multiple graph data is not displaying properly',
+					'default_value' => 0,
+					'ui' => 0,
+					'ui_on_text' => '',
+					'ui_off_text' => '',
+				),
+				array(
 					'key' => 'field_5d420de06b6c9',
 					'label' => 'Source Type',
 					'name' => 'type',
@@ -484,42 +511,6 @@ $_1p21_dv_fields_cpt = array(
 					'append' => '',
 					'maxlength' => '',
 				),
-				array(
-					'key' => 'field_5e16134b0d13c',
-					'label' => 'Children Data Key',
-					'name' => 'multiple_key',
-					'type' => 'text',
-					'instructions' => 'DEPRECATE THIS SHIET',
-					'required' => 0,
-					'conditional_logic' => array(
-						array(
-							array(
-								'field' => 'field_5d420de06b6c9',
-								'operator' => '!=',
-								'value' => 'rows',
-							),
-							array(
-								'field' => 'field_5d420de06b6c9',
-								'operator' => '!=empty',
-							),
-							array(
-								'field' => 'field_5d9b8ffe900c3',
-								'operator' => '==',
-								'value' => '1',
-							),
-						),
-					),
-					'wrapper' => array(
-						'width' => '',
-						'class' => 'dv-code',
-						'id' => '',
-					),
-					'default_value' => '',
-					'placeholder' => 'subdata',
-					'prepend' => '[...].data.',
-					'append' => '[0]',
-					'maxlength' => '',
-				),
 			),
 		),
 		array(
@@ -621,6 +612,38 @@ $_1p21_dv_fields_cpt = array(
 			),
 			'layout' => 'block',
 			'sub_fields' => array(
+				array(
+					'key' => 'field_5ec8464400a18',
+					'label' => 'Multiple Key',
+					'name' => 'multiple',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 1,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5d9b8ffe900c3',
+								'operator' => '==',
+								'value' => '1',
+							),
+							array(
+								'field' => 'field_5ec843d2d2132',
+								'operator' => '!=',
+								'value' => '1',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
 				array(
 					'key' => 'field_5d420a6cde270',
 					'label' => 'Name Key',
@@ -1530,6 +1553,38 @@ if layout is set to line, this will be applied to plot points and will override 
 			),
 			'placement' => 'top',
 			'endpoint' => 0,
+		),
+		array(
+			'key' => 'field_5ed02cf258c30',
+			'label' => 'Multiple Display',
+			'name' => 'multiple_display',
+			'type' => 'select',
+			'instructions' => '',
+			'required' => 1,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_5d9b8ffe900c3',
+						'operator' => '==',
+						'value' => '1',
+					),
+				),
+			),
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'choices' => array(
+			),
+			'default_value' => array(
+			),
+			'allow_null' => 0,
+			'multiple' => 0,
+			'ui' => 0,
+			'return_format' => 'value',
+			'ajax' => 0,
+			'placeholder' => '',
 		),
 		array(
 			'key' => 'field_5d448fef59823',
@@ -2544,7 +2599,7 @@ if layout is set to line, this will be applied to plot points and will override 
 					'placeholder' => '',
 					'prepend' => '',
 					'append' => '',
-					'min' => '',
+					'min' => 0,
 					'max' => '',
 					'step' => '.1',
 				),
@@ -2850,12 +2905,10 @@ if layout is set to line, this will be applied to plot points and will override 
 						'id' => '',
 					),
 					'choices' => array(
-						'' => 'None',
 						'linked' => 'Linked',
 						'within' => 'Within',
 					),
-					'default_value' => array(
-					),
+					'default_value' => 'linked',
 					'allow_null' => 0,
 					'multiple' => 0,
 					'ui' => 0,

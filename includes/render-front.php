@@ -197,6 +197,12 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 														$render .= _1p21_dv_dashes_to_camel_case($attribute.'_'.$sub_setting). ": {$parsed_value},\n";
 
 														break;
+
+													case 'pre_nest':
+														$parsed_value = (!$sub_value) ? 'false' : 'true';
+														$render .= _1p21_dv_dashes_to_camel_case($attribute.'_'.$sub_setting). ": {$parsed_value},\n";
+
+														break;
 													
 													case 'key':
 													case 'multiple_key':
@@ -375,7 +381,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 				</script>";
 				
 
-			//_1p21_dv_output_arr($data_visual);
+			_1p21_dv_output_arr($data_visual);
 
 			
 		}else{
