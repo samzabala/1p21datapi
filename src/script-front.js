@@ -1194,7 +1194,7 @@
 				if( _.container_legend ){
 					let offset = 0,
 						length = axisString == 'x'
-							? _.container_legend.nodes()[0].getBoundingClientRect()[getDimension(axisString)]
+							? _.container_legend_merge.nodes()[0].getBoundingClientRect()[getDimension(axisString)]
 							: (_.legend_size * _.dom_color.length), // .8
 					
 					shifter = () => {
@@ -1926,6 +1926,66 @@
 						;
 					}
 				});
+
+				/*
+
+				_.fill = _.container_graph.selectAll('.'+prefix+'fill')
+				.data([incomingData],(dis)=>{
+					return deepGet(dis,args.key[0])
+				});
+				
+				_.fill_enter = _.fill.enter()
+					.append('path')
+					.attr('class',prefix+'fill'+ ((args.lineFillColor !== null || args.lineColor !== null) ? ' has-color' : ' no-color' ))
+					.attr('fill-opacity',args.lineFillOpacity)
+					;
+
+					if( args.lineFillColor || args.lineColor ) {
+						_.fill_enter
+							.attr('fill', args.lineFillColor || args.lineColor);
+					}
+
+				_.fill_merge = _.fill.merge(_.fill_enter)
+					.transition(args.transition) //DO NOT
+						.attrTween('d',() => {
+							return getInterpolation(
+								getLinePath(true,true),
+								getLinePath(true,false)
+							)
+						})
+					;
+
+					*/
+
+				//containers
+					//create container for graph
+					_.container_graph = _.container.selectAll(`g.${prefix}graph`)
+						.data([incomingData],(dis)=>{
+							return deepGet(dis,args.key[0])
+						})
+						;
+
+					//exit
+						_.container_graph.exit()
+							.transition(_.duration)
+							.style('opacity',0)
+							.remove();
+
+						//enter
+						_.container_graph_enter = _.container_graph.enter()
+							.append('g')
+							.attr('class',
+								prefix + 'graph'
+							)
+							.transition(_.duration)
+							.styleTween('opacity',() => {getInterpolation(0,1)});
+							;
+
+							//offset graph for pie because its origin is in the center. right in the heart :'>
+							if(_.is_type('pie')){
+								_.container_graph_enter
+									.attr('transform','translate('+ getPiOrigin('x') +','+ getPiOrigin('y') +')');
+							}
 					
 				// axis + grid
 					if(_.is_type(['bar','line','scatter'])){
@@ -1980,23 +2040,23 @@
 										return deepGet(dis,args.key[0])
 									});
 
-									_.fill_exit = _.fill.exit()
+									_.fill.exit()
 										.transition(_.duration)
 										.style('opacity',0)
 										.remove();
 									
-									_.enter_fill = _.fill.enter()
+									_.fill_enter = _.fill.enter()
 										.append('path')
 										.attr('class',prefix+'fill'+ ((args.lineFillColor !== null || args.lineColor !== null) ? ' has-color' : ' no-color' ))
 										.attr('fill-opacity',args.lineFillOpacity)
 										;
 
 										if( args.lineFillColor || args.lineColor ) {
-											_.enter_fill
+											_.fill_enter
 												.attr('fill', args.lineFillColor || args.lineColor);
 										}
 
-									_.merge_fill = _.fill.merge(_.enter_fill)
+									_.fill_merge = _.fill.merge(_.fill_enter)
 										.transition(args.transition) //DO NOT
 											.attrTween('d',() => {
 												return getInterpolation(
@@ -2013,12 +2073,12 @@
 									return deepGet(dis,args.key[0])
 								});
 
-								_.line_exit = _.line.exit()
+								_.line.exit()
 									.transition(_.duration)
 									.style('opacity',0)
 									.remove();
 
-								_.enter_line = _.line.enter()
+								_.line_enter = _.line.enter()
 									.append('path')
 									.attr('class',`${prefix}line ${((args.lineColor !== null) ? ' has-color' : ' no-color' )}`)
 									.attr('fill','none')
@@ -2031,11 +2091,11 @@
 
 
 									if(args.lineColor) {
-										_.enter_line
+										_.line_enter
 											.attr('stroke',args.lineColor)
 									}
 
-								_.merge_line = _.line.merge(_.enter_line)
+								_.line_merge = _.line.merge(_.line_enter)
 									.transition(args.transition) //DO NOT
 										.attrTween('d',() => {
 											return getInterpolation(
@@ -2063,7 +2123,7 @@
 							.remove();
 
 					//enter
-						_.enter_blob = _.blob.enter()
+						_.blob_enter = _.blob.enter()
 							.append(_.graph_item_element)
 								.attr('class', (dis)=>{
 									return `${prefix}graph-item graph-item-blob data-name-${deepGet(dis,args.key[0])}`
@@ -2071,7 +2131,7 @@
 								;
 
 								if(_.is_type(['bar','line','scatter'])){
-									_.enter_blob
+									_.blob_enter
 										.attr(
 											(_.is_type(['line','scatter']) ? 'cx' : 'x'),
 											(dis,i)=>{
@@ -2087,7 +2147,7 @@
 										;
 										
 										if(_.is_type(['line','scatter'])){
-											_.enter_blob
+											_.blob_enter
 												.attr('r',(dis,i)=>{
 													return getBlobRadius(dis,i,true);
 												})
@@ -2095,7 +2155,7 @@
 				
 				
 										}else if(_.is_type('bar')){
-											_.enter_blob
+											_.blob_enter
 												.attr('width',(dis,i)=>{
 													return getBlobSize('x',dis,i,true)
 												}) // _ width
@@ -2109,11 +2169,11 @@
 							
 
 					//merge
-						_.merge_blob = _.blob.merge(_.enter_blob)
+						_.blob_merge = _.blob.merge(_.blob_enter)
 								
 							//coordinates
 							if(_.is_type(['bar','line','scatter'])){
-								_.merge_blob
+								_.blob_merge
 									.transition(_.duration)
 										.attr(
 											(_.is_type(['line','scatter']) ? 'cx' : 'x'),
@@ -2132,7 +2192,7 @@
 
 							//areas and what not
 							if(_.is_type('pie')){
-								_.merge_blob
+								_.blob_merge
 									.transition(args.transition) //DO NOT
 										.attrTween('d',function(dis,i){
 											dis._current = dis._current || getPiData(i);
@@ -2150,7 +2210,7 @@
 							}
 							
 							if(_.is_type(['line','scatter'])){
-								_.merge_blob
+								_.blob_merge
 									.transition(_.duration)
 										.attr('r',(dis,i)=>{
 											return getBlobRadius(dis,i,false)
@@ -2158,14 +2218,14 @@
 										;
 
 								if(_.is_type('line') && !args.linePoints) {
-									_.merge_blob
+									_.blob_merge
 										.attr('fill-opacity',0)
 										.attr('stroke-opacity',0);
 								}
 							}
 							
 							if(_.is_type('bar')){
-								_.merge_blob
+								_.blob_merge
 									.transition(_.duration)
 										.attr('width',(dis,i)=>{
 											return getBlobSize('x',dis,i,false)
@@ -2178,7 +2238,7 @@
 
 							//tooltip
 							if(args.tooltipEnable) {
-								_.merge_blob
+								_.blob_merge
 									.on('mousemove',(dis)=>{
 											_.tooltip.show(dis,renderCursorStalker(d3.event));
 									})
@@ -2194,20 +2254,20 @@
 										|| args.lineColor
 									)
 								) {
-									_.merge_blob
+									_.blob_merge
 										.attr('fill',() => {
 											return args.linePointsColor || args.lineColor;
 										});
 
 								}
 							}else{
-								_.merge_blob
+								_.blob_merge
 									.attr('fill',(dis,i)=>{
 										return _.the_color(deepGet(dis,args.key.color));
 									});
 
 									if(_.is_type('scatter')){
-										_.merge_blob
+										_.blob_merge
 											.attr('fill-opacity',args.areaOpacity)
 											.attr('stroke-width',1)
 											.attr('stroke',(dis,i)=>{
@@ -2235,7 +2295,7 @@
 										.remove();
 								
 								// enter
-									_.enter_blob_text_link = _.blob_text_link
+									_.blob_text_link_exit = _.blob_text_link
 										.enter()
 										.append('polyline')
 										.attr('class',(dis)=>{
@@ -2246,7 +2306,7 @@
 										;
 
 								// merge
-									_.merge_blob_text_link = _.blob_text_link.merge(_.enter_blob_text_link)
+									_.blob_text_link_merge = _.blob_text_link.merge(_.blob_text_link_exit)
 										.transition(_.duration)
 										.attrTween('points',(dis,i)=>{
 											//in pie, initial means it starts at zero but we dont want that so dont set the initial to true
@@ -2277,7 +2337,7 @@
 										.remove();
 										
 								// enter
-									_.enter_blob_text = _.blob_text
+									_.blob_text_enter = _.blob_text
 										.enter()
 										.append('text')
 										.attr('line-height',1.25)
@@ -2306,7 +2366,7 @@
 											)
 										){
 
-											_['blob_text_'+keyKey] = _.enter_blob_text.append('tspan')
+											_['blob_text_'+keyKey] = _.blob_text_enter.append('tspan')
 
 												.attr('class', (dis)=>{
 													return `${prefix}graph-item-text-data-${keyKey} data-name-${deepGet(dis,args.key[0])}`
@@ -2372,19 +2432,19 @@
 									});
 
 								// merge
-									_.merge_blob_text = _.blob_text.merge(_.enter_blob_text);
+									_.blob_text_merge = _.blob_text.merge(_.blob_text_enter);
 
 									//commercial break
 										//set a minimum length for graph items to offset its text bois. doesnt matter which data key is on the axis we just want the width or height of the graph item on the given axis
 										// add padding for less math i think
 										_.m_length = (axisString,i)=>{
 
-											if(_.has_text && _.merge_blob_text){
+											if(_.has_text && _.blob_text_merge){
 												let value = 0;
 
 												if( getDimension( axisString ) == 'width' ) {
 													value = (
-														_.merge_blob_text.nodes()[i]
+														_.blob_text_merge.nodes()[i]
 															.getBBox()[ getDimension( axisString ) ]
 													) + (
 														_.text_padding
@@ -2406,7 +2466,7 @@
 										};
 
 
-									_.merge_blob_text
+									_.blob_text_merge
 										.attr('class', (dis,i)=>{
 											let classString =  `${prefix}graph-item graph-item-text`;
 											
@@ -2540,54 +2600,80 @@
 				//legends boi
 				if(args.colorLegend){
 
-						_.legend = _.container_legend.selectAll('g.'+ prefix+'legend-item')
-							.data(_.dom_color);
+					//create container for legends
+					_.container_legend = _.container.selectAll(`g.${prefix}legend`)
+						.data([incomingData],(dis)=>{
+							return deepGet(dis,args.key[0])
+						})
+						;
 
-							_.exit_legend = _.legend
-								.exit()
-								.transition(_.duration)
-								.style('opacity','0')
-								.remove();
+					//exit
+						_.container_legend.exit()
+							.transition(_.duration)
+							.style('opacity',0)
+							.remove();
 
-							_.enter_legend = _.legend
-								.enter()
-								.append('g')
-								.attr('class',prefix+'legend-item')
-								.style('opacity','0');
+						//enter
+						_.container_legend_enter = _.container_legend.enter()
+							.append('g')
+							.attr('class',
+								prefix + 'legend'
+							)
+							.attr('font-size', args.textLegendSize+'em')
+							.transition(_.duration)
+							.styleTween('opacity',() => {getInterpolation(0,1)});
+							;
 
-							_.enter_legend
-								.transition(_.duration)
-								.style('opacity','1')
+						//items
+							_.legend = _.container_legend.selectAll('g.'+ prefix+'legend-item')
+								.data(_.dom_color);
 
-							_.enter_legend.append('rect')
-								.attr('class','legend-item-blob')
-								.attr('width',_.legend_size * .75)
-								.attr('height',_.legend_size * .75)
-								.attr('fill', (dis,i)=>{
-									_.the_color(dis);
-								})
-								.attr('stroke',args.colorBackground);
+								_.legend.exit()
+									.transition(_.duration)
+									.style('opacity','0')
+									.remove();
 
-							_.enter_legend.append("text")
-								.attr('class','legend-item-text')
-								.text((dis)=>{
-									return dis;
-								})
-								.attr('dominant-baseline','middle')
-								.attr('x', _.legend_size )
-								.attr('y', _.legend_size * .375)
-								.attr('stroke',args.colorBackground);
+								_.legend_enter = _.legend
+									.enter()
+									.append('g')
+									.attr('class',prefix+'legend-item')
+									.style('opacity','0');
 
-							_.merge_legend = _.legend.merge(_.enter_legend)
-								
-							_.merge_legend
-								.transition(_.duration)
-								.attr('transform', (dis,i)=>{
-									return `translate(0, ${i *  _.legend_size})`;
-								});
+								_.legend_enter
+									.transition(_.duration)
+									.style('opacity','1')
+
+								_.legend_enter.append('rect')
+									.attr('class','legend-item-blob')
+									.attr('width',_.legend_size * .75)
+									.attr('height',_.legend_size * .75)
+									.attr('fill', (dis,i)=>{
+										_.the_color(dis);
+									})
+									.attr('stroke',args.colorBackground);
+
+								_.legend_enter.append("text")
+									.attr('class','legend-item-text')
+									.text((dis)=>{
+										return dis;
+									})
+									.attr('dominant-baseline','middle')
+									.attr('x', _.legend_size )
+									.attr('y', _.legend_size * .375)
+									.attr('stroke',args.colorBackground);
+
+								_.legend_merge = _.legend.merge(_.legend_enter)
+									
+								_.legend_merge
+									.transition(_.duration)
+									.attr('transform', (dis,i)=>{
+										return `translate(0, ${i *  _.legend_size})`;
+									});
 
 
-					_.container_legend
+					_.container_legend_merge = _.container_legend.merge(_.container_legend_enter);
+
+					_.container_legend_merge
 						.attr('transform',`translate( ${getLegendOrigin('x')} , ${getLegendOrigin('y')} )`)
 				}
 
@@ -2953,13 +3039,6 @@
 									}
 								}
 
-
-								//create container for graph
-								_.container_graph = _.container.insert('g')
-									.attr('class',
-										prefix + 'graph'
-									);
-
 								//style warns
 								if(_.user_can_debug){
 									if(
@@ -2988,17 +3067,6 @@
 									}
 								}
 
-								//offset graph for pie because its origin is in the center. right in the heart :'>
-								if(_.is_type('pie')){
-									_.container_graph
-										.attr('transform','translate('+ getPiOrigin('x') +','+ getPiOrigin('y') +')');
-								}
-
-								if(args.colorLegend){
-									_.container_legend = _.container.append('g')
-										.attr('class',prefix+'legend')
-										.attr('font-size', args.textLegendSize+'em');
-								}
 								
 
 								if(args.srcMultiple){
