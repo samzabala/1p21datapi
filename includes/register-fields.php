@@ -28,30 +28,46 @@ function _1p21_dv_load_acf(){
 		
 		if( $fields_cpt_mod > $json_mod and function_exists('acf_get_local_fields') and is_admin() ){
 
-			//update json on changes
-			$groups = acf_get_local_field_groups($_1p21_dv_fields_cpt['key']); //taken from files mentioned above
+			//put bois here
 			$json = [];
 
-			foreach ($groups as $group) {
-				// Fetch the fields for the given group key
-				$fields = acf_get_local_fields($group['key']);
+			//give each boi spotlight
+			foreach($_1p21_dv_fields_fields as $arr) {
 
-				// Remove unecessary key value pair with key "ID"
-				unset($group['ID']);
 
-				// Add the fields as an array to the group
-				$group['fields'] = $fields;
+				// $key = $arr['key'];
 
-				// Add this group to the main array
-				$json[] = $group;
+				// $group = acf_get_local_field_group($key);
+				// $fields = acf_get_local_fields($key);
+
+				// 	unset($group['ID']);
+	
+				// 	// Add the fields as an array to the group because getting field group doesnt append the fields it has?? what the fook?
+				// 	$group['fields'] = $fields;
+	
+					// Add this group to the array going to be jsonified
+
+
+
+
+				$to_json = $arr;
+				if(isset($to_json['ID'])):
+					unset($to_json['ID']);
+				endif;
+
+				// $json[] = $group;
+				$json[] = $to_json;
+
 			}
 
+			//boop
 			$json = json_encode($json, JSON_PRETTY_PRINT);
 
 			// Write output to file for easy import into ACF.
-			// The file must be writable by the server process. In this case, the file is located in
-			// the current theme directory.
+			// The file must be writable by the server process.
 			$file =  _1P21_DV_PLUGIN_PATH . 'fields/acf-dv-fields.json';
+
+			//pootpoot
 			file_put_contents($file, $json );
 		}
 	}
