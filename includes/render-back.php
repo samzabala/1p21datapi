@@ -14,14 +14,15 @@ function _1p21_dv_parse_row_data($data = array(), $multiple_key = null){
 	$to_return = array();
 
 
+
 	foreach( $data as $i=>$row ){
 		$to_return[$i][0] = $row[0];
 		$to_return[$i][1] = $row[1];
 
 
 		if( 
-			!empty($data_visual['color']['palette'])
-			&& $data_visual['type'] !== 'pie'
+			!empty($data['color']['palette'])
+			&& $data['type'] !== 'pie'
 			&& isset($to_return[$i]['color'])
 		) {
 
@@ -32,7 +33,7 @@ function _1p21_dv_parse_row_data($data = array(), $multiple_key = null){
 			$to_return[$i]['color'] = $row['color'];
 		}
 
-		if(  $data_visual['src']['type'] == 'scatter' && $to_return[$i]['area'] ) {
+		if(  $data['src']['type'] == 'scatter' && $to_return[$i]['area'] ) {
 			if($validation_src_scatter_row_exists == false){
 				$validation_src_scatter_row_exists = true;
 			}
@@ -118,7 +119,7 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 		
 		$retrieved_dv_post_meta = _1p21_dv_deep_sub_fields(array(
 			'id' => $id,
-			'fields' => $_1p21_dv_fields_cpt['fields'],
+			'fields' => $_1p21_dv_fields_groups['single_post']['fields'],
 		));
 
 		// fields that make the bby

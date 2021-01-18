@@ -1,10 +1,10 @@
 /*!
-* 1point21 Data Vizualiser Version 1.2.0.2
+* 1point21 Data Vizualiser Version 1.2.1
 * Render Styles
 * DO NOT EDIT THIS CSS FILE
 * Edit its corresponding scss file in the src/ folder instead
 */
-$prefix: '.data-visualizer';
+$prefix: '.dv';
 $color-bg: #EEE;
 $color-base: #222;
 $color-neutral: #888;
@@ -61,7 +61,11 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 
 	&-dark {
 
-		color: $color-white;
+		fill: currentColor;
+	}
+
+	&-light {
+		fill: $color-white
 	}
 
 	// * { outline: 1px solid red!important}
@@ -238,7 +242,7 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 		}
 }
 
-	&-graph .graph-item {
+	.graph-item {
 
 		&-link,
 		&-text {

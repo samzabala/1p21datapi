@@ -48,13 +48,38 @@
 			"name": "Andrew",
 			"age": "9",
 			"shittiness": "420"
+		},
+		{
+			"name": "Emily",
+			"age": "10",
+			"shittiness": "3"
+		},
+		{
+			"name": "Richard",
+			"age": "11",
+			"shittiness": "777"
 		}
 	],
 
 	"thot" : [
 		{
-			"name": "Emily",
+			"name": "Tony",
+			"age": "12",
+			"shittiness": "69"
+		},
+		{
+			"name": "Jessica",
+			"age": "15",
+			"shittiness": "666"
+		},
+		{
+			"name": "Andrew",
 			"age": "10",
+			"shittiness": "420"
+		},
+		{
+			"name": "Emily",
+			"age": "9",
 			"shittiness": "3"
 		},
 		{

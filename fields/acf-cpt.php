@@ -1,7 +1,7 @@
 <?php
 //only fields that exist here will be passed down to the data visual object or array or whatever that way shits secure
 // also whenever this is updated, when the admin page is viewed after update, the json file of fields is updated as well so if the dev of this plugin needs to fix the fields she can do so by importing the fields on aDIFFERENT TEST WORDPRESS SITE so it doesnt conflict with the site that the plugin is installed on
-$_1p21_dv_fields_fields = array(
+$_1p21_dv_fields_groups = array(
 	'single_post' => array(
 		'key' => 'group_5d4206c985d00',
 		'title' => 'Data Visualizer',
@@ -2728,7 +2728,7 @@ $_1p21_dv_fields_fields = array(
 					),
 					array(
 						'key' => 'field_5d558a53931b4',
-						'label' => 'Area Settings',
+						'label' => 'Fill Settings',
 						'name' => '',
 						'type' => 'accordion',
 						'instructions' => '',

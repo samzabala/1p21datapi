@@ -1,5 +1,5 @@
 /*!
-* 1point21 Data Vizualiser Version 1.2.0.2
+* 1point21 Data Vizualiser Version 1.2.1
 * Render Script
 * @license yes
 * DO NOT EDIT min.js
@@ -8,194 +8,202 @@
 
 /* DO NOT TOUCH I DEV ON THIS BOI I ENQUEUE THE MINIFIED ONE ANYWAY  :< */
 
+/*
+
+TODO:
+pie does not display a wHOLE PIE
+duisplay types for multiple
+- compare
+- slider
+- overlap
+- one
+*/
+
 "use strict";
-(function(window,d3){
 
 
-	var _1p21 = window._1p21 || {};
+
+
+
+
+((window,d3)=>{
+
+	const _1p21 = window._1p21 || {};
 
 	//track present bois
 	_1p21.graphs = {};
 		
-
 	// function that is open to the pooblic. this initiates the speshal boi
-	_1p21.dataVisualizer = function(selector,arr){
+	_1p21.dataVisualizer = (selector,arr)=>{
 
 		/*****************************************************************************
 		 * HELPERS
 		*****************************************************************************/
-	
-			// helpful variables
-			var coordinates = ['x','y'],
 
-				datum_keys = [0,1,'color','area'], 
+			const
+				//sana 2d lang
+					coordinates = ['x','y'],
+
+				//kwan has scales domains and shit
+					datum_keys = [0,1,'color','area'], 
 
 				//yeeee
-				prefix = 'data-visualizer-',
+					prefix = 'dv-',
 
 				// get data but with aility to get down deep because we never know where the fuck the date will be at
 				// @param obj : duh 
 				// @param keystring : hooman provided object key string that is hopefully correct 
-				// @param isNum : if the data is a number 
-				deepGet = function (obj,keyString, isNum) {
-					
-					var splitString = keyString.toString().split('.');
-					isNum = isNum || false;
+				// @param isNum : if the data is a number
+					deepGet = (obj,keyString, isNum) => {
+						isNum = isNum || false;
 
-					//remove empty instances because they just mess with the loop
-					splitString.forEach(function(key,i){
+						let splitString = keyString.toString().split('.');
 
-						(key == '') && splitString.splice(i, 1);
-
-					})
-
-					function multiIndex(obj,is) {
-
-						var toReturn = null;
-
-						if(is.length){
-							toReturn = multiIndex(obj[is[0]],is.slice(1))
-						}else{
-							toReturn = ( isNum == true ) ? parseFloat(obj) : obj;
-
-
-						}
-
-						return toReturn;
-					}
-
-					var value = multiIndex(obj,splitString);
-					
-
-					if(isNum == true && isNaN(value)){
-
-						console.warn(selector+' data with the key source of `'+keyString+ '` was passed as numeric but is not.' )
-					}
-					return value;
-
-				},
-
-
-				//merge defaults with custom
-				deepValidate = function(defaults,arr){
-
-					var args = defaults;
-					for (var prop in arr) {
-						//ha?
-						if(Object.prototype.toString.call(arr[prop]) == '[object Object]'){
-							args[prop] = deepValidate(args[prop],arr[prop]);
-
-						}else if(arr.hasOwnProperty.call(arr,prop)) {
-							// Push each value from `obj` into `extended`
-							args[prop] = arr[prop];
-						}
-					}
-
-					return args;
-				},
-
-
-				//get the length attribute to associate with the axis bro
-				getDimension = function(axisString,opposite){
-
-					return opposite ?  ((axisString == 'x') ? 'height' : 'width') : ((axisString == 'x') ? 'width' : 'height');
-
-				},
-
-				// get the opposite boi for alignmeny purposes
-				getAxisStringOppoFromAxisString = function(axisString) { return (axisString == 'x') ? 'y' : 'x'; },
-
-				//d3 does not support ie 11. kill it
-				isIE = function(){
-					var ua = navigator.userAgent;
-					return ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1
-				};
-
-
-				//string helpers
-					// duh
-					String.prototype.getFileExtension = function() {
-
-						return this.split('.').pop();
-
-					}
-					
-					// convert boi to 
-					String.prototype.getHash = function() {
-
-						var url = this;
-						var type = url.split('#');
-						var hash = type[ (type.length - 1 )] || '';
-
-
-						return hash;
-
-					};
-
-					String.prototype.isValidJSONString = function() {
-
-						try {
-							JSON.parse(this);
-						} catch (e) {
-							return false;
-						}
-
-						return true;
-
-					}
-
-					String.prototype.toCamelCase = function(){
-
-						var str = this;
-
-						return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
-							return index == 0 ? word.toLowerCase() : word.toUpperCase();
-						}).replace(/\s+/g, '');
-
-					}
-
-					//is that bitch boi dark? thank u internet
-					var isDark = function(color) {
-
-						// Variables for red, green, blue values
-						var r, g, b, hsp;
-						
-						// Check the format of the color, HEX or RGB?
-						if(color.match(/^rgb/)) {
-					
-							// If HEX --> store the red, green, blue values in separate variables
-							color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
+						//remove empty instances because they just mess with the loop
+						splitString.forEach((key,i)=>{
+							(key == '') && splitString.splice(i, 1);
+						});
 							
-							r = color[1];
-							g = color[2];
-							b = color[3];
-						} 
-						else {
+						const
+							multiIndex = (obj,is) => {
+			
+								var toReturn = null;
+			
+								if(is.length){
+									toReturn = multiIndex(obj[is[0]],is.slice(1));
+
+								}else{
+									toReturn = ( isNum == true ) ? parseFloat(obj) : obj;
+								}
+			
+								return toReturn;
+							},
+
+							value = multiIndex(obj,splitString);
+						
+						if(isNum == true && isNaN(value)){
+							console.warn(`${selector} data with the key source of '${keyString}' was passed as numeric but is not.` )
+						}
+
+						return value;
+					},
+
+					//merge defaults with custom
+						deepValidate = (defaults,arr) => {
+							const args = defaults;
+
+							Object.keys(arr).forEach((prop,i)=>{
+								//ha?
+								if(prop == 'key' || prop == 'reverse'){
+								// if(Object.prototype.toString.call(arr[prop]) == '[object Object]'){
+									args[prop] = deepValidate(args[prop],arr[prop]);
+
+								}else if(arr.hasOwnProperty.call(arr,prop)) {
+									// Push each value from `obj` into `extended`
+									args[prop] = arr[prop];
+								}
+							}); 
+
+							return args;
+						},
+
+					//get the length attribute to associate with the axis bro
+						getDimension = (axisString,opposite) => {
+							return opposite
+							? (
+								(axisString == 'x')
+								? 'height'
+								: 'width'
+							)
+							: (
+								(axisString == 'x')
+								? 'width' 
+								: 'height'
+							);
+						},
+
+					// get the opposite boi for alignmeny purposes
+						getOppoAxis = (axisString)=>{
+							return (axisString == 'x') ? 'y' : 'x';
+						},
+
+					//d3 does not support ie 11. kill it
+						isIE = () => {
+							const ua = navigator.userAgent;
+							return ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1
+						},
+
+					//string helpers
+						// duh
+							strGetFileExtension = (str)=>{
+								return str.split('.').pop();
+							},
+						
+						// convert boi to 
+							strGetHash = (str)=>{
+								const url = str;
+								const type = url.split('#');
+								const hash = type[ (type.length - 1 )] || '';
+								return hash;
+							},
+						
+						// is dis json enough for u?
+							strIsValidJSONString = (str)=>{
+								try {
+									JSON.parse(str);
+
+								} catch (e) {
+									return false;
+								}
+
+								return true;
+							},
+
+						//kemel
+							strToCamelCase = (str)=>{
+								return str.replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index)=> {
+									return index == 0 ? word.toLowerCase() : word.toUpperCase();
+								}).replace(/\s+/g, '');
+							},
+
+						//is that bitch boi dark? thank u internet
+						isDark = (color)=>{
+
+							// Variables for red, green, blue values
+							let r, g, b, hsp;
 							
-							// If RGB --> Convert it to HEX: http://gist.github.com/983661
-							color = +("0x" + color.slice(1).replace( 
-							color.length < 5 && /./g, '$&$&'));
-					
-							r = color >> 16;
-							g = color >> 8 & 255;
-							b = color & 255;
-						}
+							// Check the format of the color, HEX or RGB?
+							if(color.match(/^rgb/)) {
+								// If HEX --> store the red, green, blue values in separate variables
+								color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
+								r = color[1];
+								g = color[2];
+								b = color[3];
+
+							} else {
+								// If RGB --> Convert it to HEX: http://gist.github.com/983661
+								color = +("0x" + color.slice(1).replace( 
+								color.length < 5 && /./g, '$&$&'));
+								r = color >> 16;
+								g = color >> 8 & 255;
+								b = color & 255;
+							}
+							
+							// HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
+							hsp = Math.sqrt(
+								0.299 * (r * r)
+								+ 0.587 * (g * g)
+								+ 0.114 * (b * b)
+							);
 						
-						// HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
-						hsp = Math.sqrt(
-							0.299 * (r * r) +
-							0.587 * (g * g) +
-							0.114 * (b * b)
-						);
-					
-						// Using the HSP value, determine whether the color is light or dark
-						
-						if(hsp>170) { //127.5
-							return false;
-						} else {
-							return true;
-						}
-					}
+							// Using the HSP value, determine whether the color is light or dark
+							if(hsp>170) { //127.5
+								return false;
+
+							} else {
+								return true;
+							}
+						};
 
 
 
@@ -203,43 +211,38 @@
 		 * END HELPERS
 		*****************************************************************************/
 
-		
 		// this is where the bitches at
-		var dataContainer = document.querySelector(selector);
+		const dataContainer = document.querySelector(selector);
 		
 		if(isIE()){
-			var error =  document.createElement('div')
-			error.className = prefix+'wrapper fatality';
+			const error =  document.createElement('div');
+
+			error.className = `${prefix}wrapper fatality`;
 			error.innerHTML = 'Sorry, this graphic needs D3 to render the data but your browser does not support it.<br><br> Newer versions of Chrome, Edge, Firefox and Safari are recommended. <br><br>See <em><a target="_blank" rel="nofollow" href="https://d3-wiki.readthedocs.io/zh_CN/master/Home/#browser-platform-support">the official wiki</a></em> for more information';
 
 			dataContainer.appendChild(error);
-			
-
-			// break;
 			throw new Error('D3 not supported by browser');
 		}
 
 		//stor variables initiated after sucessful data call + parameter declaration set as something_`axis` so its easier to tell apart which shit is set by hooman and which one javascript sets up for hooman
-		var _ = {};
+		const _dv = {};
 
-		_.dv_container = dataContainer;
+		_dv.dv_container = dataContainer;
 
 		//default params for hooman
-		var defaults  = {
-			
+		const defaults  = {
 			//settings
 				width: 600,
 				height:600,
 				margin: 40, 
-				transition: 1500,
+				transition: 500,
 				delay: 250,
 				fontSize: '16px',
-				
 
 			// content
 				title:'',
 				description:'',
-			
+
 			//src
 				srcType: '',
 				srcPath: '',
@@ -252,12 +255,12 @@
 				textValueSize: 1.25,
 				textTicksSize: .75,
 				textLegendSize: .75,
-				
+
 			// fields
 				type: 'bar',
 				nameIsNum: false,
 
-				//keys
+			//keys
 				key: {
 					multiple: '_parent',
 					0:0,
@@ -265,7 +268,8 @@
 					color: null,
 					area: null,
 				},
-				//reverse
+
+			//reverse
 				reverse: {
 					0: false,
 					1: false,
@@ -274,166 +278,192 @@
 					area:false,
 				},
 
-				//format
-					// name
-						format0Prepend: '',
-						format0Append: '',
-						format0Parameter: null,
-						format0Divider: 1,
+			//format
+				// name
+					format0Prepend: '',
+					format0Append: '',
+					format0Parameter: null,
+					format0Divider: 1,
+				// value
+					format1Prepend: '',
+					format1Append: '',
+					format1Parameter: null,
+					format1Divider: 1,
+				// color
+					formatcolorPrepend: '',
+					formatcolorAppend: '',
+					formatcolorParameter: null,
 
-					
-					// value
-						format1Prepend: '',
-						format1Append: '',
-						format1Parameter: null,
-						format1Divider: 1,
-					
-					// color
-						formatcolorPrepend: '',
-						formatcolorAppend: '',
-						formatcolorParameter: null,
-		
-				//kulay
-					areaMin: 10,
-					areaMax: 50,
-					areaOpacity: .8,
-		
-				//kulay
-					colorBackground: '#eee',
-					colorPalette : [],
-					colorData: null,
-					colorLegend: false,
-				
-				//x settings
-					xData: 0,
-					xAlign: 'bottom',
-					xTicks: false,
-					xLabel: null,
-					xTicksAmount: null,
-					xParameter: null,
-					xMin: null,
-					xMax: null,
-					xGrid: false,
-					xGridIncrement: 1,
-					xPrepend: '',
-					xAppend: '',
-					xDivider: 1,
-		
-				//y settings
-					yData: 1,
-					yAlign: 'left',
-					yTicks: false,
-					yLabel: null,
-					yTicksAmount: null,
-					yParameter: null,
-					yMin: null,
-					yMax: null,
-					yGrid: false,
-					yGridIncrement: 1,
-					yPrepend: '',
-					yAppend: '',
-					yDivider: 1,
+			//scatterplot area
+				areaMin: 10,
+				areaMax: 20,
+				areaOpacity: .8,
 
-				//bar
-					barTextWithin: false,
-					barGutter: .1,
+			//kulay
+				colorBackground: '#eee',
+				colorPalette : [],
+				colorData: null,
+				colorLegend: false,
 
-				//line
-					lineStyle: '',
-					lineWeight: 1,
-					lineColor: null,
-					linePoints: false,
-					lineFill: false,
-					linePointsColor: null,
-					linePointsSize: null,
-					lineFillColor: null,
-					lineFillInvert: false,
-					lineFillOpacity: .5,
-					lineDash: [100,0],
-				
-				//pi
-					piLabelStyle: null,
-					piInRadius: 0,
+			//x settings
+				xData: 0,
+				xAlign: 'bottom',
+				xTicks: false,
+				xLabel: null,
+				xTicksAmount: null,
+				xParameter: null,
+				xMin: null,
+				xMax: null,
+				xGrid: false,
+				xGridIncrement: 1,
+				xPrepend: '',
+				xAppend: '',
+				xDivider: 1,
 
+			//y settings
+				yData: 1,
+				yAlign: 'left',
+				yTicks: false,
+				yLabel: null,
+				yTicksAmount: null,
+				yParameter: null,
+				yMin: null,
+				yMax: null,
+				yGrid: false,
+				yGridIncrement: 1,
+				yPrepend: '',
+				yAppend: '',
+				yDivider: 1,
 
-				//tooltip
-					tooltipEnable: false,
-					tooltipTextAlign: 'left',
-					tooltipWidth: 'auto',
-					tooltipDirection: 'n',
-					tooltipDirectionParameter: null,
-					tooltipContent: null,
+			//bar
+				barTextWithin: false,
+				barGutter: .1,
 
-			
+			//line
+				lineStyle: '',
+				lineWeight: 1,
+				lineColor: null,
+				linePoints: false,
+				lineFill: false,
+				linePointsColor: null,
+				linePointsSize: null,
+				lineFillColor: null,
+				lineFillInvert: false,
+				lineFillOpacity: .5,
+				lineDash: [100,0],
 
-			//2.0.0 new args
+			//pi
+				piLabelStyle: 'within',
+				piInRadius: 0,
 
+			//tooltip
+				tooltipEnable: false,
+				tooltipTextAlign: 'left',
+				tooltipWidth: 'auto',
+				tooltipDirection: 'n',
+				tooltipDirectionParameter: null,
+				tooltipContent: null,
+
+			//2.0.0 new args. not implemented yet
+				// multiple
+					multipleDisplay: 'overlay', // single,versus,overlap
 				//kulay
 					colorBy: 'key', //set will influence key.color
-					
-					//advanced
+				//advanced
 					colorScheme: null,
-
-				
 		};
 		
-		var args = deepValidate(defaults,arr);
+		const args = deepValidate(defaults,arr);
 
 		/*****************************************************************************
 		 * MAP BOOL PROPERTIES FOR LESS EXTENSIVE LOGICS
 		*****************************************************************************/
 
-			_.user_can_debug = document.body.classList.contains('logged-in');
+			_dv.user_can_debug = document.body.classList.contains('logged-in');
+
+			//if its one ob dis bos
+			_dv.is_type = (types) => {
+
+				let templates = [];
+
+				if(typeof types === 'string'){
+					templates.push(types)
+				}else if(Array.isArray(types)){
+					types.forEach(type=>{
+						templates.push(type)
+					});
+				}
+
+				let toReturn = false;
+
+				templates.forEach(template=>{
+					if(args.type == template && !toReturn){
+						toReturn = true;
+					}
+				});
+
+				return toReturn;
+			};
 			
 
-			_.has_text = (function(){
+			_dv.has_text = (() => {
 
 				if(
 					!args.toolTip
 					&& (
 						(
-							args.type !== 'pie'
-							&& args.type !== 'scatter'
-							&& ( !args.xTicks || !args.yTicks )
+							_dv.is_type(['bar','line'])
+							&& (
+								!args.xTicks
+								|| !args.yTicks
+							)
 						)
 						|| (
-							args.type == 'pie'
-							&& ( args.piLabelStyle || !args.colorLegend )
+							_dv.is_type('pie')
+							&& (
+								args.piLabelStyle
+								|| !args.colorLegend
+							)
 						)
 					)
 				){
-					return true
+					return true;
+
 				}else{
 					return false;
 				}
 
-			}())
+			})();
 		
-			_.has_both_text_on_blob = (function(){
+			_dv.has_both_text_on_blob = (() => {
 
 				if(
-					_.has_text
+					_dv.has_text
 					&& (
 						(
-							(args.type !== 'pie')
-							&& (!args.xTicks && !args.yTicks)
+							_dv.is_type(['bar','line','scatter'])
+							&& (
+								!args.xTicks
+								&& !args.yTicks
+							)
 						)
 						|| (
-							args.type == 'pie'
+							_dv.is_type('pie')
 							&& !args.colorLegend
 							&& args.piLabelStyle !== null
 						)
 					)
 				){
 					return true;
+
 				}else{
 					return false;
 				}
 
-			}());
+			})();
 
 			//for calculating the height and offset for spacing on text elements by the blob items vertically. value is sum of both sides
-			_.text_padding = 2.25;
+			_dv.text_padding = 2.25;
 
 		/*****************************************************************************
 		 * END MAP BOOL PROPERTIES FOR LESS EXTENSIVE LOGICS
@@ -444,14 +474,66 @@
 
 
 		/*****************************************************************************
+		 * FUNCTION: getDataStructure
+		*****************************************************************************/
+
+			const getDataStructure = (mode,dataSet)=>{
+				mode = mode || 'flat'; //could be nested
+				dataSet = dataSet || 'complete';
+
+				let toReturn = [];
+
+				if(
+					mode == 'nested'
+					&& args.srcMultiple == true
+				){
+					toReturn   = d3.group(
+						_dv.data[dataSet],
+						(dis)=>{
+							return dis[args.key['multiple']]
+						}
+					);
+
+
+
+
+					// toReturn = d3.nest()
+					// .key((dis)=>{
+					// 	return dis[args.key['multiple']]
+					// })
+					// .rollup((v)=>{
+					// 	return v;
+					// })
+					// .entries( _dv.data[dataSet] );
+				}else{
+					toReturn.push(_dv.data[dataSet]);
+				}
+
+				return toReturn;
+
+			};
+
+		/*****************************************************************************
+		 * ENDFUNCTION: getDataStructure
+		*****************************************************************************/
+
+
+
+
+
+		/*****************************************************************************
 		 * FUNCTION: getAxisString
 		*****************************************************************************/
-			var getAxisString = function(key){
+
+			const getAxisString = (key)=>{
+
 				if (key == 0 || key == 1){
 					return (args.xData == key) ? 'x' : 'y'
+
 				}else{
 					return key;
 				}
+
 			};
 
 		/*****************************************************************************
@@ -465,14 +547,17 @@
 		/*****************************************************************************
 		 * FUNCTION: getNearest
 		*****************************************************************************/
-			//get nearest power of tenth
-			var getNearest = function(num){
-				if(num > 10){
 
+			//get nearest power of tenth
+			const getNearest = (num)=>{
+
+				if(num > 10){
 					return Math.pow(10, num.toString().length - 1) * 10;
+
 				}else{
 					return 1;
 				}
+
 			};
 
 		/*****************************************************************************
@@ -489,36 +574,32 @@
 
 			//set range of the bois
 			// @param itemAtt : duh
-			var getRange = function(key){
+			const getRange = (key)=>{
 
-				var range = [];
+				let range = [];
 
 				switch(key){
-
 					case 'color':
-
-						range = args[key+'Palette'];
+						range = args[`${key}Palette`];
 						break;
+
 					case 'area':
 						range = [args.areaMin,args.areaMax];
 						break;
 
 					case 0:
 					case 1:
-						
 						if(
-							args[ getAxisStringOppoFromAxisString( getAxisString(key)) + 'Align'] == 'top'
-							|| args[getAxisStringOppoFromAxisString( getAxisString(key))+'Align'] == 'left'
+							args[ `${getOppoAxis( getAxisString(key))}Align` ] == 'top'
+							|| args[ `${getOppoAxis( getAxisString(key))}Align` ] == 'left'
 						) {
 							range = [ 0, args[ getDimension(getAxisString(key)) ] ];
+
 						}else{
 							range = [ args[ getDimension(getAxisString(key)) ] , 0 ];
 						}
-
 						break;
-
 				}
-				
 				return range;
 			}
 
@@ -537,128 +618,132 @@
 			//set domain of the bois
 			// @param itemAtt : duh
 			// @param dat : ooh boi
-			var getDomain = function(keyKey,dat,dataGroupKey){
+			const getDomain = (keyKey,dataToRender,dataGroupKey)=>{
 				dataGroupKey = dataGroupKey || '';
+
+				const keyString = args.key[ keyKey ],
+					pushToDom = (d)=> {
+						if(!domain.includes(deepGet(d, keyString ))){
+							domain.push(deepGet(d, keyString ));
+						}
+					};
+
 				// @TODO get deep into the anals of this for multiple data setup
-				var domain = [],
-				keyString = args.key[ keyKey ],
-				pushToDom = function(d) {
-					if(!domain.includes(deepGet(d, keyString ))){
-						domain.push(deepGet(d, keyString ));
-					}
-				};
+				let domain = [],
+					dat = args.srcMultiple
+						? getDataStructure('nested')
+						: dataToRender;
 
 				if(keyString){
 					switch(keyKey){
-						
 						case 'color':
-								dat.forEach(function(dis){
-									// if(args.srcMultiple ) {
-									// 	dis.value.forEach(function(dit){
-									// 		pushToDom(dit);
-									// 	})
-									// }else{
+								dat.forEach((dis)=>{
+									if(args.srcMultiple) {
+										dis.forEach((dit)=>{
+											pushToDom(dit);
+										})
+									}else{
 										pushToDom(dis);
-									// }
+									}
 								});
-
 							break;
 
 						case 'area':
 						case 0:
 						case 1:
-
-							if(args.nameIsNum == true || keyKey == 1 || keyKey == 'area'){
-
-								var min,max;
-
+							if(
+								args.nameIsNum == true
+								|| keyKey == 1
+								|| keyKey == 'area'
+							){
+								let min,max;
 								//min
-								if(args[getAxisString(keyKey) + 'Min'] !== null && keyKey !== 'area'){
-									min = args[getAxisString(keyKey) + 'Min'];
-								}else{
+									if(
+										args[`${getAxisString(keyKey)}Min`] !== null
+										&& keyKey !== 'area'
+									){
+										min = args[`${getAxisString(keyKey)}Min`];
 
-									min = d3.min(dat,function(dis){
-										// if(args.srcMultiple){
-										// 	return d3.min(dis.value,function(dit){
-										// 		return deepGet(dit, keyString, true);
-										// 	}) 
-										// }else{
-											return deepGet(dis, keyString, true);
-										// }
-									});
-									
-								}
-								
+									}else{
+										min = d3.min(dat,(dis)=>{
+											if(args.srcMultiple){
+												return d3.min(dis[1],(dit)=>{
+													return deepGet(dit, keyString, true);
+												});
+
+											}else{
+												return deepGet(dis, keyString, true);
+											}
+										});
+									}
+
 								//max
-								if(args[getAxisString(keyKey) + 'Max'] !== null && keyKey !== 'area'){
+									if(
+										args[`${getAxisString(keyKey)}Max`] !== null
+										&& keyKey !== 'area'
+									){
+										max = args[`${getAxisString(keyKey)}Max`]
 
-									max = args[getAxisString(keyKey) + 'Max']
-								}else{
+									}else{
+										max = d3.max(dat,(dis)=>{
+											if(args.srcMultiple){
+												return d3.max(dis[1],(dit)=>{
+													return deepGet(dit, keyString, true);
+												});
 
-									max = d3.max(dat,function(dis){
-										// if(args.srcMultiple){
-										// 	return d3.max(dis.value,function(dit){
-										// 		return deepGet(dit, keyString, true);
-										// 	}) 
-										// }else{
-											return deepGet(dis, keyString, true);
-										// }
-									});
-
-								}
+											}else{
+												return deepGet(dis, keyString, true);
+											}
+										});
+									}
 
 								domain = [min,max];
 
-								//if it a scatter plot we shit on the boi
-								if(args.type == 'scatter' && keyKey == 0){
-									
-									var newMin = getNearest(min),
+								//if it a scatter plot we get nereast
+								if(_dv.is_type('scatter') && keyKey == 0){
+									const newMin = getNearest(min),
 										newMax = getNearest(max);
-
 									domain = [newMin,newMax];
 								}
 
 							}else{
 
-								// if(args.srcMultiple){
+								if(args.srcMultiple){
+									if(
+										dataGroupKey !== ''
+										&& dat.key == dataGroupKey
+									) {
+										domain = dat.get(dataGroupKey).map((dit)=>{
+											return deepGet(dit, keyString, false);
+										});
 
-								// 	if(dataGroupKey !== '' && dis.key == dataGroupKey) {
-										
-								// 		domain = dat[dataGroupKey].value.map(function(dit){
-								// 			return deepGet(dit, keyString, false);
-								// 		})
+									}else{
+										dat.forEach((dis)=>{
+											dis.forEach((dit)=>{
+												pushToDom(dit);
+											})
+										});
+									}
 
-								// 	}else{
-
-									// 	dat.forEach(function(dis){
-									// 		dis.value.forEach(function(dit){
-									// 			pushToDom(dit);
-									// 		})
-									// 	});
-									// }
-
-								// }else{
-									domain = dat.map(function(dis){
+								}else{
+									domain = dat.map((dis)=>{
 										return deepGet(dis, keyString, false);
 									});
-								// }
-
-
+								}
 							}
-
-
 
 							if(args.reverse[keyKey]) {
 								// dont use .reverse because it's a piece of shit
-								var domainReverse = [];
-								for (var i = domain.length - 1; i >= 0; i--) {
+								const domainReverse = [];
+
+								for (let i = domain.length - 1; i >= 0; i--) {
 									domainReverse.push(domain[i]);
 								}
+
 								domain =  domainReverse;
 							}
 
 							break;
-
 					}
 				}
 					
@@ -678,51 +763,43 @@
 		*****************************************************************************/
 
 			//AXIS STRING AND AXIS POSITION COORDINATES ARE VERY DIFFERENT THINGS U DUMB FUCK
-			var getLabelOrigin = function(coordinateAttribute,axisString){ 
-				var offset = 0;
+			const getLabelOrigin = (coordinateAttribute,axisString)=>{ 
+				let offset = 0;
+				//x
+					if(coordinateAttribute == 'x'){
+						if(axisString == 'x'){
+							offset = args[getDimension(axisString)] / 2;
 
-				if(coordinateAttribute == 'x'){ //x
+						}else if(axisString == 'y'){
+							offset = -(args[getDimension(axisString)] / 2)
+						};
+				//y
+					}else{
+						if(axisString == 'x'){
+							if(args[`${axisString}Align`] == 'bottom'){
+								offset = args[getDimension(axisString,true)]
+								+ (_dv.margin.bottom * .875);
 
-					if(axisString == 'x'){
+							}else{
+								offset = -(_dv.margin.top * .875);
+							}
+						}else if(axisString == 'y'){
+							if(args[`${axisString}Align`] == 'right'){
+								offset = args[getDimension(axisString,true)]
+									+ (
+										(_dv.margin.right * .875)
+										+ _dv.text_base_size
+									);
 
-						offset = args[getDimension(axisString)] / 2;
-
-					}else if(axisString == 'y'){
-
-						offset = -(args[getDimension(axisString)] / 2)
-						
-					};
+							}else{
+								offset = -(
+									(_dv.margin.left * .875)
+									- _dv.text_base_size
+								)
+							}
+						};
+					}
 					
-				}else{ //y
-					
-					if(axisString == 'x'){
-
-						if(args[axisString+'Align'] == 'bottom'){
-
-							offset = args[getDimension(axisString,true)] + (_.margin.bottom * .875); 
-							
-						}else{
-
-							offset = -(_.margin.top * .875);
-
-						}
-
-					}else if(axisString == 'y'){
-
-						if(args[axisString+'Align'] == 'right'){
-
-							offset = args[getDimension(axisString,true)] + ((_.margin.right * .875) + _.text_base_size);
-
-						}else{
-
-							offset = -((_.margin.left * .875) - _.text_base_size)
-
-						}
-
-					};
-
-				}
-
 				return offset;
 			}
 
@@ -739,48 +816,50 @@
 		*****************************************************************************/
 
 			//width,height or radius boi
-			var getBlobSize = function(axisString,dis,i,initial) {
+			const getBlobSize = (axisString,dis,i,initial)=>{
+				initial = initial || false;
 
-				var keyKey  =  args[axisString+'Data'],
-					oppositeAxisAlignment = args[ getAxisStringOppoFromAxisString(axisString)+'Align'],
-					dimension = 20;
-					initial = initial || false;
+				const
+					keyKey  =  args[`${axisString}Data`],
+					oppositeAxisAlignment = args[`${getOppoAxis(axisString)}Align`];
+
+				let dimension = 20;
 
 				switch(args.type) {
-
 					case 'pie': //eehhhh
 						break;
 
 					default:
-
 						if(args.nameIsNum == true ||  keyKey  == 1){
 							if(initial) {
-								
 								dimension = 0;
-							
+
 							}else{
+								if(
+									oppositeAxisAlignment == 'right'
+									|| oppositeAxisAlignment == 'bottom'
+								){
+									dimension = args[getDimension(axisString)]
+										- _dv[`the_${keyKey}`](
+											deepGet(dis, args.key[ keyKey ] ,true)
+										);
 
-								if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
-									
-									dimension = args[getDimension(axisString)] - _['the_'+ keyKey]( deepGet(dis, args.key[ keyKey ] ,true) );
-								
 								}else{
-
-									dimension = _['the_'+ keyKey ]( deepGet( dis, args.key[ keyKey ] ,true ) );
-
+									dimension = _dv[`the_${keyKey}`](
+										deepGet( dis, args.key[ keyKey ] ,true )
+									);
 								}
-
 							}
+
 						}else{
-							dimension = _[ 'the_'+ keyKey ].bandwidth()
+							dimension = _dv[`the_${keyKey}`].bandwidth()
 						}
 
 						if(dimension < 0 ){
 							dimension = 0;
 						}
-
 				}
-				
+
 				return dimension;
 			}
 
@@ -797,29 +876,28 @@
 		*****************************************************************************/
 
 			//duh 
-			var getBlobRadius = function(dis,i,initial){
+			const getBlobRadius = (dis,i,initial)=>{
 				initial = initial || false;
-				var radius = initial ? 0 : 2;
+
+
+				let radius = initial ? 0 : (
+					args.type == 'scatter'
+						? (args.areaMin + args.areaMax) / 2
+						: 5
+				);
 
 				if(!initial){
-
-
-					if(args.type == 'line'){
-			
-						if(args.type == 'line' && args.linePointsSize){
+					if(_dv.is_type('line')){
+						if(_dv.is_type('line') && args.linePointsSize){
 							radius = args.linePointsSize
 						}
-			
-					}else if(args.type == 'scatter' && args.key['area'] ){
-			
-						radius = _.the_area( deepGet(dis,args.key['area'],true) );
-
+						
+					}else if(_dv.is_type('scatter') && args.key['area'] ){
+						radius = _dv.the_area( deepGet(dis,args.key['area'],true) );
 					}
-
 				}
 
 				return radius;
-
 			}
 
 		/*****************************************************************************
@@ -835,33 +913,29 @@
 		*****************************************************************************/
 
 			//more confusion
-			var getBlobTextAnchor = function(dis,i){
-
-				var anchor = 'middle';
-
-				if(args.type == 'pie'){
+			const getBlobTextAnchor = (dis,i)=>{
 				
-				}else{
+				let anchor = 'middle';
 
+				if(_dv.is_type('pie')){
+					//halat garo may magigibo akoo kani
+
+				}else{
 					if(args.yData == 0) {
 						anchor = 'start';
 					}
 
-					coordinates.forEach(function(coordinate){
-
+					coordinates.forEach((coordinate)=>{
 						if(
-							args[ getAxisStringOppoFromAxisString(coordinate)+'Data'] == 0
-							&& args[ getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'right'
+							args[`${getOppoAxis(coordinate)}Data`] == 0
+							&& args[`${getOppoAxis(coordinate)}Align`] == 'right'
 						){
 							anchor = 'end';
 						}
-
 					});
-
 				}
-				
-				return anchor;
 
+				return anchor;
 			}
 
 		/*****************************************************************************
@@ -877,34 +951,48 @@
 		*****************************************************************************/
 
 			//pls do not ask me po this broke my brain i will not likely know what just happened
-			var getBlobTextBaselineShift = function(coordinateAttr,keyKey){
+			const getBlobTextBaselineShift = (coordinateAttr,keyKey)=>{
 
-				var shift = '0em';
+				let shift = 0;
 
-				if( _.has_both_text_on_blob ){
-
-
+				if( _dv.has_both_text_on_blob ){
 					if(
-						(coordinateAttr == 'y')
-						&& _.has_both_text_on_blob
+						coordinateAttr == 'y'
+						&& _dv.has_both_text_on_blob
 					){
-						// calculate height
-						var full_height = _.text_base_size * (args.textNameSize + args.textValueSize + _.text_padding) // .5 margin top bottom and between text
+						const
+							full_height =
+								_dv.text_base_size
+								* (
+									args.textNameSize
+									+ args.textValueSize
+									+ _dv.text_padding
+								) // .5 margin top bottom and between text
 						
 						if( keyKey == 1){
+							shift = (
+								(
+									(full_height  * -.5)
+									+ ( (_dv.text_base_size * args.textValueSize) * .5)
+									+ ( _dv.text_base_size )
+								)
+								/ (_dv.text_base_size * args.textValueSize)
+							);
 
-							shift = ( ((full_height  * -.5) + ( (_.text_base_size * args.textValueSize) * .5) + ( _.text_base_size ) )  / (_.text_base_size * args.textValueSize) ) + 'em'
 						}else{
-							shift =( ((full_height * .5) - ( (_.text_base_size * args.textNameSize) * .5) - ( _.text_base_size ) ) / (_.text_base_size * args.textNameSize) ) + 'em'
+							shift = (
+								(
+									(full_height * .5)
+									- ( (_dv.text_base_size * args.textNameSize) * .5)
+									- ( _dv.text_base_size )
+								)
+								/ (_dv.text_base_size * args.textNameSize)
+							);
 						}
-
 					}
+				}
 				
-			}
-				
-
-				return shift;
-
+				return `${shift}em`;
 			}
 
 		/*****************************************************************************
@@ -920,92 +1008,80 @@
 		*****************************************************************************/
 
 
-			var getBlobTextOrigin = function(coordinate,dis,i,initial){
-				
+			const getBlobTextOrigin = (coordinate,dis,i,initial)=>{
 				initial = initial || false;
 				//coordinate is influenced by the axis right now so this is the only time coordinate and axis is one and the same. i think... do not trust me on this
-				var keyKey =  args[ coordinate+'Data'],
-					offset = 0;
-
-				if(args.type == 'pie'){
-
-					var customInitial = (function(){
+				
+				const keyKey =  args[`${coordinate}Data`];
+				let offset = 0;
+				
+				if(_dv.is_type('pie')){
+					const customInitial = (() => {
 							return (args.piLabelStyle == 'linked') ?  false : initial;
-						}()),
-						
-						multiplier = (function(){
-							var toReturn = 0;
+						})(),
+						multiplier = (() => {
+
+							let toReturn = 0;
+
 							if(args.piLabelStyle == 'linked'){
 								toReturn =  initial ? 1 : 2.5;
+
 							}else{
 								if(initial == false) {
-
 									toReturn = 1;
 								}
 							}
 
-
 							return toReturn;
-
-						}()),
-
+						})(),
 						calcWithInnerRadius = args.piLabelStyle == 'linked' ? false : true,
-						
 						orArr =  getArcPath( getPiData(i) ,calcWithInnerRadius,'centroid',multiplier,customInitial);
-
 						offset = ( coordinate =='x') ? orArr[0] : orArr[1];
-					
+
 				}else{
-
 					// offset by where the coordinates of the ends of the blob and axis alignment is at and spaces it by the dimensions of the text bitches
-					var shiftPad = function(){
-						var value = 0,
-						multiplier = 1;
+					const shiftPad = () => {
 
-						if(!(initial || args.type == 'scatter')){
+						let value = 0,
+							multiplier = 1;
 
+						if(!(initial || _dv.is_type('scatter'))){
 							if(
-								
-								args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'bottom'
-								|| args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'right'
+								args[`${getOppoAxis(coordinate)}Align`] == 'bottom'
+								|| args[`${getOppoAxis(coordinate)}Align`] == 'right'
 							){
 								multiplier = -1;
 							}
-							
 
 							if( keyKey !== 0 && coordinate == 'x'){
-								value = ((_.text_padding * .5) * _.text_base_size);
+								value = ((_dv.text_padding * .5) * _dv.text_base_size);
 							}
 
 							value *= multiplier;
-							
 						}
-						
-						return value;
 
+						return value;
 					},
 
 					// offset if text is outside of boundaries
-					shiftArea = function(){
-						
-						var multiplier = 1,
+					shiftArea = () => {
+						let multiplier = 1,
 							value = 0;
 
-						if(!(initial || args.type == 'scatter')) {
-
+						if(!(initial || _dv.is_type('scatter'))) {
 							if(
 								(
-									(args.type !== 'bar' || !args.barTextWithin)
+									(_dv.is_type(['line','scatter']) || !args.barTextWithin)
 									&& (
-										args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'bottom'
-										|| args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'right'
+										args[`${getOppoAxis(coordinate)}Align`] == 'bottom'
+										|| args[`${getOppoAxis(coordinate)}Align`] == 'right'
 									)
 								)
 								|| (
-									(args.type == 'bar' && args.barTextWithin)
+									(_dv.is_type('bar') && args.barTextWithin)
 									&& (
-										args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'top'
-										|| args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'left'
+										args[`${getOppoAxis(coordinate)}Align`] == 'top'
+										|| args[`${getOppoAxis(coordinate)}Align`] == 'left'
 									)
 								)
 							){
@@ -1021,35 +1097,45 @@
 								){
 
 									if( 
-										(args.type !== 'bar' || !args.barTextWithin)
-										&& (parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i)) )
+										(_dv.is_type(['line','scatter']) || !args.barTextWithin)
+										&& (
+											parseFloat(getBlobSize(coordinate,dis,i))
+											>= (args[getDimension(coordinate,true)] - _dv.m_length(coordinate,i))
+										)
 									){
-										value = -_.m_length(coordinate,i);
+										value = -_dv.m_length(coordinate,i);
+
 									}else if(
-										(args.type == 'bar' && args.barTextWithin)
-										&& (parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i))
-									 ){
+										(_dv.is_type('bar') && args.barTextWithin)
+										&& (
+											parseFloat(getBlobSize(coordinate,dis,i))
+											< _dv.m_length(coordinate,i)
+										)
+									){
 										value = -getBlobSize(coordinate,dis,i);
 									}
 
 								}else{
 									if(
 										(
-											(args.type !== 'bar' || !args.barTextWithin)
-											&& (parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i)) )
+											(_dv.is_type(['line','scatter']) || !args.barTextWithin)
+											&& (
+												parseFloat(getBlobSize(coordinate,dis,i))
+												>= (args[getDimension(coordinate,true)] - _dv.m_length(coordinate,i))
+											)
 										)
 										|| (
-											(args.type == 'bar' && args.barTextWithin)
-											&& (parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i))
+											(_dv.is_type('bar') && args.barTextWithin)
+											&& (
+												parseFloat(getBlobSize(coordinate,dis,i))
+												< _dv.m_length(coordinate,i)
+											)
 										)
 									){
-
-
-										value = _.m_length(coordinate,i) * -.5;
+										value = _dv.m_length(coordinate,i) * -.5;
 										
 									}else{
-										value = _.m_length(coordinate,i) * .5;
-
+										value = _dv.m_length(coordinate,i) * .5;
 									}
 								}
 							}
@@ -1058,28 +1144,20 @@
 						
 						}
 						
-						return value;//
+						return value;
 
 					};
 
-
-
-
-					if( keyKey  == 0) {
-
+					if( keyKey  == 0 ) {
 						offset = getBlobOrigin(coordinate,dis,i);
-
-						if(args.type == 'bar') {
+						if(_dv.is_type('bar')) {
 							offset += getBlobSize(coordinate,dis,i) / 2;
 						}
 
 					}else{
-						
-						switch(args[getAxisStringOppoFromAxisString(coordinate)+'Align']){
-
+						switch(args[getOppoAxis(coordinate)+'Align']){
 							case 'top':
-
-								if(!initial && args.type !== 'scatter'){
+								if(!initial && _dv.is_type(['bar','line'])){
 									offset = getBlobSize(coordinate,dis,i)
 								}
 								break;
@@ -1087,45 +1165,34 @@
 							case 'right':
 							case 'bottom':
 								if(
-									initial && args.type !== 'scatter'
-									|| (args.barTextWithin && args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'right')
+									initial && _dv.is_type(['bar','line'])
+									|| (args.barTextWithin && args[getOppoAxis(coordinate)+'Align'] == 'right')
 								) {
-
 									offset = args[getDimension(coordinate)];
 
 								}else{
-
 									offset = args[getDimension(coordinate)] - getBlobSize(coordinate,dis,i);
-									
 								}
-
 								break;
 
 							case 'left':
-
-								if( args.type !== 'bar' ||  !args.barTextWithin ){
-
+								if( _dv.is_type(['line','scatter']) ||  !args.barTextWithin ){
 									if(!initial) {
 										offset = getBlobSize(coordinate,dis,i);
 									}
 								}
-
 								break;
 
 						}
 
 					}
-
-
 					
 					offset += shiftPad() + shiftArea();
 					// offset += shiftArea();
 					// offset += shiftPad();
-					
 				}
 				
 				return offset;
-
 			}
 
 		/*****************************************************************************
@@ -1140,62 +1207,50 @@
 		 * FUNCTION: getBlobOrigin
 		*****************************************************************************/
 
-			var getBlobOrigin = function(coordinate,dis,i,initial){
-				// same here.. could be the same probably
-				var keyKey =  args[ coordinate+'Data'],
-					oppositeAxisAlignment = args[ getAxisStringOppoFromAxisString(coordinate)+'Align'],
-					offset = 0;
+		const getBlobOrigin = (coordinate,dis,i,initial)=>{
+			initial = initial || false;
 
-					initial = initial || false;
 
-					if(args.type !== 'pie') {
+			// same here.. could be the same probably
+			const keyKey =  args[ coordinate+'Data'],
+				oppositeAxisAlignment = args[ getOppoAxis(coordinate)+'Align'];
 
-						if( args.nameIsNum == true || keyKey == 1){
-							
-							if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
+			let offset = 0;
 
-								
-								if(args.type !== 'scatter' && initial ){
-									offset = args[getDimension(coordinate)];
-								}else{
-									offset = args[getDimension(coordinate)] - (args[getDimension(coordinate)] - _['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true )));
-								}
+				if(_dv.is_type(['bar','line','scatter'])) {
+					if( args.nameIsNum == true || keyKey == 1){
+						if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
+							if(_dv.is_type(['bar','line']) && initial ){
+								offset = args[getDimension(coordinate)];
 
 							}else{
-
-								if(args.type == 'line' || args.type == 'scatter'){
-									if(
-										!initial
-										|| args.type == 'scatter'
-									){
-
-										offset = _['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true ));
-
-									}
-
-								}
-								
+								offset = args[getDimension(coordinate)] - (args[getDimension(coordinate)] - _dv['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true )));
 							}
 
 						}else{
-
-							offset = _['the_'+ args[coordinate+'Data'] ](deepGet(dis, args.key[ keyKey ], false));
-							
-							if(
-								(args.type == 'line' || args.type == 'scatter')
-								&& !args.nameIsNum 
-							) {
-								offset += getBlobSize( coordinate ,dis,i) / 2;
+							if(_dv.is_type(['line','scatter'])){
+								if(
+									!initial
+									|| _dv.is_type('scatter')
+								){
+									offset = _dv['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true ));
+								}
 							}
 						}
-							
 
+					}else{
+						offset = _dv['the_'+ args[coordinate+'Data'] ](deepGet(dis, args.key[ keyKey ], false));
+						if(
+							(_dv.is_type(['line','scatter']))
+							&& !args.nameIsNum 
+						) {
+							offset += getBlobSize( coordinate ,dis,i) / 2;
+						}
 					}
+				}
 
-				return offset;
-
-
-			}
+			return offset;
+		}
 
 		/*****************************************************************************
 		 * ENDFUNCTION: getBlobOrigin
@@ -1209,24 +1264,25 @@
 		 * FUNCTION: getLegendOrigin
 		*****************************************************************************/
 			
-			var getLegendOrigin = function(axisString){
-				if( _.container_legend ){
+			const getLegendOrigin = (axisString)=>{
 
-					var offset = 0,
-						length = axisString == 'x' ? _.container_legend.nodes()[0].getBoundingClientRect()[getDimension(axisString)] : _.legend_height, // .8
+				if( _dv.container_legend ){
+					let offset = 0,
+						length = axisString == 'x'
+							? _dv.container_legend_merge.nodes()[0].getBoundingClientRect()[getDimension(axisString)]
+							: (_dv.legend_size * _dv.dom_color.length), // .8
 					
-					shifter = function(){
-						var value = 0,
+					shifter = () => {
+						let value = 0,
 							multiplier = 1;
 
 						//multiplier
 						if (
-							args.type == 'pie'
-							|| 
-							(
-								args.type !== 'pie'
-								&& args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'left'
-								|| args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'top'
+							_dv.is_type(['pie'])
+							|| (
+								_dv.is_type(['bar','line','scatter'])
+								&& args[getOppoAxis(axisString)+'Align'] == 'left'
+								|| args[getOppoAxis(axisString)+'Align'] == 'top'
 							)
 						){
 							multiplier = -1;
@@ -1234,46 +1290,39 @@
 
 						//how much of length to shift
 						if (
-							(args.type == 'pie' && axisString == 'x')
-							|| 
-							(
-								args.type !== 'pie'
-								&& args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'left'
-								|| args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'top'
+							(_dv.is_type(['pie']) && axisString == 'x')
+							|| (
+								_dv.is_type(['bar','line','scatter'])
+								&& args[getOppoAxis(axisString)+'Align'] == 'left'
+								|| args[getOppoAxis(axisString)+'Align'] == 'top'
 							)
 						){
+							value = length + _dv.text_base_size;
 
-							value = length + _.text_base_size;
-
-						} else if(  (args.type == 'pie' && axisString == 'y') ){
+						} else if(  (_dv.is_type('pie') && axisString == 'y') ){
 								value = length * .5;
-
 						}
 							
 						return value * multiplier;
 					};
 
 					if (
-						(args.type == 'pie' && axisString == 'x')
+						(_dv.is_type('pie') && axisString == 'x')
 						|| 
 						(
-							args.type !== 'pie'
-							&& args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'left'
-							|| args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'top'
+							_dv.is_type(['bar','line','scatter'])
+							&& args[getOppoAxis(axisString)+'Align'] == 'left'
+							|| args[getOppoAxis(axisString)+'Align'] == 'top'
 						)
 					){
 						offset = args[getDimension(axisString)];
 
-					}else if( (args.type == 'pie' && axisString == 'y') ){
-						
+					}else if( (_dv.is_type('pie') && axisString == 'y') ){
 						offset = args[getDimension(axisString)] * .5;
 					}
 					
 					return offset + shifter();
-
 				}
-				
-
 			}
 
 		/*****************************************************************************
@@ -1288,84 +1337,66 @@
 		 * FUNCTION: getLinePath
 		*****************************************************************************/
 
-		var getLinePath = function(isArea,initial){
+			const getLinePath = (dat,isArea,initial)=>{
 
-
-			var pathInitiator = isArea ? 'area' : 'line',
-				axisToFill = ( args.xData == 0 )  ? 'x' : 'y',
-				pathStyle = (function(){
-					var theString = 'curveLinear';
-					switch(args.lineStyle){
-						case 'step':
-							theString = 'curveStepBefore'
-							break;
-						case 'curve':
-								theString = 'curveMonotone'+(axisToFill).toUpperCase()
+				const pathInitiator = isArea ? 'area' : 'line',
+					axisToFill = ( args.xData == 0 )  ? 'x' : 'y',
+					pathStyle = (() => {
+						const theString = 'curveLinear';
+						switch(args.lineStyle){
+							case 'step':
+								theString = 'curveStepBefore'
 								break;
-					}
-					return theString
-				}()),
-				
-				path = d3[pathInitiator]();
-			if(pathInitiator == 'area') {
+							case 'curve':
+									theString = 'curveMonotone'+(axisToFill).toUpperCase()
+									break;
+						}
+						return theString
+					})(),
+					
+					path = d3[pathInitiator]();
 
-				//name coord, value coord, fill coordinate
-				var aCord = { //default is top
-					name: axisToFill, //x
-					value: getAxisStringOppoFromAxisString(axisToFill)+1, //y
-					fill: getAxisStringOppoFromAxisString(axisToFill)+0 //initial of data name is the bottom of the fill
-				};
-				
-				var multiplier = (function(){
-					var toReturn = 0;
+				if(pathInitiator == 'area') {
 
-					if(args.lineFillInvert){
-						toReturn = ((args[axisToFill+'Align'] == 'top') || (args[axisToFill+'Align'] == 'left' )) ? 1 : -1;
-					}
+					//name coord, value coord, fill coordinate
+					const aCord = { //default is top
+						name: axisToFill, //x
+						value: getOppoAxis(axisToFill)+1, //y
+						fill: getOppoAxis(axisToFill)+0 //initial of data name is the bottom of the fill
+					};
+					
+					
+					path
+						[aCord.name]((dis,i)=>{
+							return getBlobOrigin(axisToFill,dis,i,initial); 
+						})
+						[aCord.value]((dis,i)=>{
+							return getBlobOrigin(getOppoAxis(axisToFill),dis,i,initial);
+						})
+						[aCord.fill]((dis,i)=>{
+							return (
+								args[`${axisToFill}Align` ]  == 'bottom'
+								|| args[`${axisToFill}Align` ]  == 'right'
+							) ? args[getDimension(axisToFill)] : 0;
+						});
 
-					return toReturn;
-				}());
-				
-				
-				path
-					[aCord.name](function(dis,i){
-						return getBlobOrigin(axisToFill,dis,i,initial); 
-					})
-					[aCord.value](function(dis,i){
-						return getBlobOrigin(getAxisStringOppoFromAxisString(axisToFill),dis,i,initial);
-					})
-					[aCord.fill](function(dis,i){
-						return (
-							args[ axisToFill + 'Align' ]  == 'bottom'
-							|| args[ axisToFill + 'Align' ]  == 'right'
-						) ? args[getDimension(axisToFill)] : 0;
-					});
+				}else{
+					path
+						.x((dis,i)=>{
+							return getBlobOrigin('x',dis,i,initial);
+						})
+						.y((dis,i)=>{
+							return getBlobOrigin('y',dis,i,initial);
+						});
 
-			}else{
+				}
 
-				path
-					.x(function(dis,i){
-						return getBlobOrigin('x',dis,i,initial);
-					})
-					.y(function(dis,i){
-						return getBlobOrigin('y',dis,i,initial);
-					});
+				if(pathStyle){
+					path.curve(d3[pathStyle]);
+				}
 
+				return path(dat);
 			}
-
-			if(pathStyle){
-				path.curve(d3[pathStyle]);
-			}
-			
-			// var i = d3.interpolate(path.start(_.data),path.end(_.data))
-
-			// return function(t) {
-			//	 return i(t);
-			// }
-
-			return path(_.data);
-
-		}
 
 		/*****************************************************************************
 		 * ENDFUNCTION: getLinePath
@@ -1379,40 +1410,44 @@
 		 * FUNCTION: getArcPath
 		*****************************************************************************/
 
-			var getArcPath = function(disPi,calcWithInnerRadius,subMethod,outerRadiusMultiplier,initial){
+			const getArcPath = (disPi,calcWithInnerRadius,subMethod,outerRadiusMultiplier,initial)=>{
 				outerRadiusMultiplier = outerRadiusMultiplier || 1;
 				subMethod = subMethod || '';
 				calcWithInnerRadius = calcWithInnerRadius || false;
 				initial = initial || false;
 
-				var innerRadius = (function(){
-					var toReturn = 0;
+				const innerRadius = (() => {
+					let toReturn = 0;
 
 					if( calcWithInnerRadius ){
-						toReturn = _.pi_radius * args.piInRadius;
+						toReturn = _dv.pi_radius * args.piInRadius;
 					}
 
 					return toReturn;
-				}()),
-					outerRadius = (function(){
-					var toReturn = 0;
+				})(),
+
+				outerRadius = (() => {
+					let toReturn = 0;
 
 					if(!initial || ( initial && (outerRadiusMultiplier <=1 ) && calcWithInnerRadius == false )){
-						toReturn = _.pi_radius * outerRadiusMultiplier;
+						toReturn = _dv.pi_radius * outerRadiusMultiplier;
 					}
 
 					return toReturn;
-				}()),
-					path = d3.arc()
-						.outerRadius( outerRadius )
-						.innerRadius( innerRadius );
+				})(),
+
+				path = d3.arc()
+					.outerRadius( outerRadius )
+					.innerRadius( innerRadius );
 
 				
 				if(subMethod){
 					return path[subMethod](disPi);
+
 				}else{
 					return path(disPi)
 				}
+
 			}
 
 		/*****************************************************************************
@@ -1427,15 +1462,15 @@
 		 * FUNCTION: getPiData
 		*****************************************************************************/
 
-			var getPiData = function(i){
+			const getPiData = (i)=>{
 
-				var pie =  d3.pie()
+				const pie =  d3.pie()
 					.sort(null)
-					.value(function(dis,i){
+					.value((dis,i)=>{
 						return deepGet(dis,args.key[1],true)
 					});
 
-					return pie(_.data)[i];
+					return pie(_dv.data.displayed)[i];
 			}
 
 		/*****************************************************************************
@@ -1450,11 +1485,12 @@
 		 * FUNCTION: getPiOrigin
 		*****************************************************************************/
 
-			var getPiOrigin = function(axisString){
-				var offset = 0;
+			const getPiOrigin = (axisString)=>{
+				let offset = 0;
 
 				if(args.colorLegend && axisString =='x'){
 					offset = args[getDimension(axisString)] * .375;
+
 				}else{
 					offset  = (args[getDimension(axisString)] * .5);
 				}
@@ -1474,8 +1510,8 @@
 		 * FUNCTION: getMidAngle
 		*****************************************************************************/
 
-			var getMidAngle = function(disPi){
-			return disPi.startAngle + (disPi.endAngle - disPi.startAngle)/2;
+			const getMidAngle = (disPi)=>{
+				return disPi.startAngle + (disPi.endAngle - disPi.startAngle)/2;
 			}
 
 		/*****************************************************************************
@@ -1490,20 +1526,16 @@
 		 * FUNCTION: getInterpolation
 		*****************************************************************************/
 
-			var getInterpolation = function(start,end,fn,d3fn){
-				fn = fn || function(value,start,end){ return value; };
+			const getInterpolation = (start,end,fn,d3fn)=>{
+				fn = fn || ((value,start,end)=>{ return value; });
 				d3fn = d3fn || 'interpolate';
 
-				var i = d3[d3fn](start,end);
+				const i = d3[d3fn](start,end);
 
-
-				return function(t) {
-					var interVal = i(t);
-
-					// fn(interVal);
-
+				return ((t)=>{
+					const interVal = i(t);
 					return fn(interVal,start,end);
-				}
+				})
 			}
 
 		/*****************************************************************************
@@ -1518,42 +1550,39 @@
 		 * FUNCTION: setScale
 		*****************************************************************************/
 
-			var setScale = function(keyKey){
+			const setScale = (keyKey)=>{
 				
-				var scale;
+				let scale;
 
 				switch(keyKey){
 
 					case 'color':
-							scale = d3.scaleOrdinal()
-								.range(_['range_'+keyKey]) 
+						scale = d3.scaleOrdinal()
+							.range(_dv['range_'+keyKey]) 
 						break;
 
 					case 'area':
 					case 0:
 					case 1:
-
 						if(args.nameIsNum == true || keyKey == 1 || keyKey == 'area' ){
-							if(args.nameIsNum == true && keyKey == 0 && args.type == 'scatter'){
-
+							if(args.nameIsNum == true && keyKey == 0 && _dv.is_type('scatter')){
 								scale = d3.scaleSymlog()
 									.constant(10)
-									.range(_['range_'+keyKey]);
+									.range(_dv['range_'+keyKey]);
+
 							}else{
 								scale = d3.scaleLinear()
-									.range(_['range_'+keyKey]);
+									.range(_dv['range_'+keyKey]);
 							}
 							
-							
 						}else{
-							if(args.type == 'line' || args.type == 'scatter'){
-								
+							if(_dv.is_type(['line','scatter'])){
 								scale = d3.scalePoint() //scales shit to dimensios
-									.range(_['range_'+keyKey]) // scaled data from available space
-							}else{
+									.range(_dv['range_'+keyKey]) // scaled data from available space
 
+							}else{
 								scale = d3.scaleBand() //scales shit to dimensios
-									.range(_['range_'+keyKey]) // scaled data from available space
+									.range(_dv['range_'+keyKey]) // scaled data from available space
 									.paddingInner(args.barGutter) //spacing between
 									.paddingOuter(args.barGutter);
 							}
@@ -1564,7 +1593,6 @@
 				}
 				
 				return scale;
-
 			};
 
 		/*****************************************************************************
@@ -1580,24 +1608,23 @@
 		*****************************************************************************/
 
 			//generates lab_coord, rule_coord and rule_coord
-			var renderAxisContainers = function(axisString,containerObj,isGrid) {
-
+			const renderAxisContainers = (axisString,containerObj,isGrid)=>{
 
 				if( args[axisString+'Ticks']) {
 					isGrid = isGrid || false;
-					var alignString = args[axisString+'Align'],
-						tickContainer = (isGrid ? 'grid_' : 'rule_')+axisString;
 
+					const alignString = args[axisString+'Align'],
+						tickContainer = (isGrid ? 'grid_' : 'rule_')+axisString;
 
 					// label
 						if( args[axisString+'Label'] && !isGrid ){
 							
-							_['lab_'+axisString] = _.container_lab.append('text')
-								.attr('class', prefix + 'label-'+axisString)
-								.attr('y', function(){
+							_dv['lab_'+axisString] = _dv.container_lab.append('text')
+								.attr('class',`${prefix}label-${axisString}`)
+								.attr('y',() => {
 									return getLabelOrigin('y',axisString);
 								})
-								.attr('x', function(){
+								.attr('x',() => {
 									return getLabelOrigin('x',axisString);
 								})
 								.attr('font-size', '1em')
@@ -1606,37 +1633,29 @@
 								.attr('opacity',0)
 								.text(args[axisString+'Label']);
 
-
 							if(axisString == 'y') {
-								_['lab_'+axisString].attr('transform', 'rotate(-90)');
+								_dv['lab_'+axisString].attr('transform', 'rotate(-90)');
 							}
 
-							_['lab_'+axisString]
-								.transition(_.duration)
+							_dv['lab_'+axisString]
+								.transition(_dv.duration)
 								.attr('opacity',1);
 
 						}
 
 					//ruler/grid
-						_[tickContainer] = containerObj.append('g')
-							.attr('class', function(){
-			
-									var contClass = null;
+						_dv[tickContainer] = containerObj.append('g')
+							.attr('class', () => {
+
+									let contClass = null;
 			
 									if(isGrid){
-			
 										contClass =
-											prefix
-											+ 'grid-'+axisString
-											+ ' grid-increment-' + args[axisString+'GridIncrement'];
+											`${prefix}grid-${axisString} grid-increment-${args[axisString+'GridIncrement']}`;
 										
 									}else{
-			
 										contClass =
-											prefix
-											+ 'axis-'+axisString+' '
-											+ prefix +'axis-align-'+alignString;
-			
+											`${prefix}axis-${axisString} ${prefix}axis-align-${alignString}`;
 									}
 			
 									return contClass;
@@ -1645,14 +1664,12 @@
 			
 							);
 			
-							var transformCoord = '';
+							let transformCoord = '';
 						
 							switch( axisString+' '+alignString ) {
-				
 								case 'x bottom':
 									transformCoord = '0,'+ args.height;
 									break;
-				
 								case 'y right':
 									transformCoord = args.width+',0';
 									break;
@@ -1661,7 +1678,7 @@
 									transformCoord = '0,0'
 							}
 			
-						_[tickContainer].attr('transform','translate('+transformCoord+')');
+						_dv[tickContainer].attr('transform','translate('+transformCoord+')');
 
 				}
 			}
@@ -1678,132 +1695,94 @@
 		 * FUNCTION: setData
 		*****************************************************************************/
 
-			var setData = function(dataToParse){
-
-				var toReturn = null;
+			const setData = (dataToParse)=>{
 				
 				// heck if src key exists
-				toReturn = (function(){
+				let toReturn = (() => {
 					if (args.srcKey) {
 						if(deepGet(dataToParse,args.srcKey)){
 							return deepGet(dataToParse,args.srcKey);
 						}else{
 							renderError(selector+' provided source key is invalid');
 						}
+
 					}else{
 						return dataToParse
 					}
-				}());
+				})();
 
+				// convert to single level
+				if(args.srcMultiple == true && args.srcPreNest) {
 
+						const arrPreNest = [],
+							appendParentProp = (parentKey)=>{
+							//add parent key to proops
+							toReturn[parentKey].forEach(function(dis,i){
+								toReturn[parentKey][i]._parent = parentKey;
+								arrPreNest.push(toReturn[parentKey][i]);
+							});
+						}
 
+						//if they are array
+						if(Object.prototype.toString.call(toReturn) === '[object Array]'){
 
+							toReturn.forEach((par,key)=>{
+								appendParentProp(key);
+							})
 
+						//if they are kwan have keys
+						}else{
+							Object.keys(toReturn).forEach((key)=>{
+								//add parent key to proops
+								appendParentProp(key);
+							})
+						}
 
-				//convert to single level
-				// if(args.srcMultiple == true && args.srcPreNest) {
-
-
-				// 		var arrPreNest = [];
-
-				// 		function appendParentProp(parentKey){
-				// 			//add parent key to proops
-				// 			toReturn[parentKey].forEach(function(dis,i){
-				// 				toReturn[parentKey][i]._parent = parentKey;
-				// 				arrPreNest.push(toReturn[parentKey][i]);
-				// 			});
-				// 		}
-
-
-				// 		//if they are array
-				// 		if(Object.prototype.toString.call(toReturn) === '[object Array]'){
-
-				// 			toReturn.forEach(function(par,key){
-				// 				appendParentProp(key);
-				// 			})
-
-				// 		//if they are kwan have keys
-				// 		}else{
-				// 			Object.keys(toReturn).forEach(function(key){
-				// 				//add parent key to proops
-				// 				appendParentProp(key);
-				// 			})
-				// 		}
-
-
-
-				// 	toReturn = arrPreNest;
-
-				// }
-
+					toReturn = arrPreNest;
+				}
 
 				
 				//filter data that has null value
-				toReturn = toReturn.filter(function(dis,i){
+				toReturn = toReturn.filter((dis,i)=>{
 
-					var toInclude = true;
+					const toInclude = true;
 
-					datum_keys.forEach(function(keyKey){
-
-
+					datum_keys.forEach((keyKey)=>{
 						if(args.key[keyKey] && deepGet(dis,args.key[keyKey]) == null) {
-								// _.has[keyKey] = false;
+								// _dv.has[keyKey] = false;
 							toInclude = false;
-
-							if(_.user_can_debug){
-
-								var humanForKey = keyKey == 0 ? 'name': keyKey == 1 ? 'value': keyKey;
-								console.warn(selector +' datum index `'+i+'` was filtered.\ndatum does not have data for the key `'+args.key[keyKey] + '`, which is set as the property for `'+humanForKey+'`')
+							if(_dv.user_can_debug){
+								const humanForKey = keyKey == 0 ? 'name': keyKey == 1 ? 'value': keyKey;
+								console.warn(`${selector} datum index '${i}' was filtered.\ndatum does not have data for the key '${args.key[keyKey]}', which is set as the property for '${humanForKey}'`)
 							}
-
-
-
 						}
-						
 					});
 
 					if(toInclude){
 						return dis;
 					}
 
-				});	
-				
+				});
 			
 				//sort data 0 so that it doesnt go forward then backward then forward on the graph which is weird
 				if(args.nameIsNum == true){
 					
-					var sortable = [];
+					const sortable = [];
 
-					for(var i = 0 ;i < toReturn.length; i++){
+					for(let i = 0 ;i < toReturn.length; i++){
 						if(toReturn[i]){
 							sortable.push(toReturn[i]);
 						}
 					}
 					
-					sortable.sort(function(a, b) {
+					sortable.sort((a, b)=>{
 						return deepGet(a,args.key[0],true) - deepGet(b,args.key[0],true);
 					});
 
 					toReturn = sortable;
 				}
 
-
-				// //nest it
-				// if(args.srcMultiple == true) {
-
-				// 	_.data_flat = toReturn;
-
-				// 	toReturn = d3.nest()
-				// 		.key(function(dis){
-				// 			return dis[args.key['multiple']]
-				// 		})
-				// 		.rollup(function(v){
-				// 			return v;
-				// 		})
-				// 		.entries( toReturn );
-				// }
-
-				_.data = toReturn;
+				return toReturn;
 
 			}
 
@@ -1818,25 +1797,22 @@
 		 * FUNCTION: setAxis
 		*****************************************************************************/
 
-			var setAxis = function(axisString,isGrid){
-				//axis functiono
-
+			const setAxis = (axisString,isGrid)=>{
+				isGrid = isGrid || false;
 				
-					isGrid = isGrid || false;
-					var axisKey = 'Axis '+ args[axisString+'Align'];
-					var	axisToReturn = d3[axisKey.toCamelCase()](_['the_'+ args[axisString+'Data']]);
+				const axisKey = 'Axis '+ args[axisString+'Align'];
+				var	axisToReturn = d3[strToCamelCase(axisKey)](_dv['the_'+ args[axisString+'Data']]);
 
 				if(args[axisString +'Ticks']){
-
-					if(args.type == 'scatter' && args[axisString+'Data'] == 0 && args.nameIsNum == true ){
-						var tickValues = function(){
-							var values = [],
-								currVal = getDomain(0,_.data)[0];
+					if(_dv.is_type(['scatter']) && args[axisString+'Data'] == 0 && args.nameIsNum == true ){
+						const tickValues = () => {
+							const values = [],
+								currVal = getDomain(0,_dv.data.displayed)[0];
 							do{
 								values.push(currVal);
 								currVal *= 10;
 
-							}while(currVal <= getDomain(1,_.data)[1]);
+							}while(currVal <= getDomain(1,_dv.data.displayed)[1]);
 
 							return values;
 						}
@@ -1846,29 +1822,27 @@
 
 					if(args[axisString +'TicksAmount']){
 						
-						var ticksAmount = function(){
-
+						const ticksAmount = () => {
 							if( isGrid && args[axisString +'TicksAmount']  ){
 								return args[axisString +'TicksAmount'] * args[axisString +'GridIncrement'];
+
 							} else {
 								return args[axisString +'TicksAmount']
 							}
-
 						};
 						
 						axisToReturn.ticks( ticksAmount() );
 					};
 
 					if(isGrid){
-
 						axisToReturn
 							.tickSize(-args[ getDimension( axisString,true ) ])
 							.tickFormat("");
 
 					}else {
 						axisToReturn
-							.tickFormat(function(dis,i){
-								return _['format_'+ args[axisString+'Data'] ](dis)
+							.tickFormat((dis,i)=>{
+								return _dv['format_'+ args[axisString+'Data'] ](dis)
 							})
 					}
 				}
@@ -1888,13 +1862,21 @@
 		 * FUNCTION: renderCursorStalker
 		*****************************************************************************/
 
-			var renderCursorStalker = function(d3_event){
-
-				return _.tooltip_cursor_stalker 
-					.attr('cx',  ( d3_event.offsetX * ( _.outer_width / _.svg.node().clientWidth ) ) + 'px')
-					.attr('cy',  ( d3_event.offsetY * (  _.outer_height / _.svg.node().clientHeight ) ) + 'px')
+			const renderCursorStalker = (d3_event)=>{
+				return _dv.tooltip_cursor_stalker 
+					.attr('cx',
+						`${(
+							d3_event.offsetX
+							* ( _dv.outer_width / _dv.svg.node().clientWidth )
+						)}px`
+					)
+					.attr('cy',
+						`${(
+							d3_event.offsetY
+							* (  _dv.outer_height / _dv.svg.node().clientHeight )
+						)}px`
+					)
 					.node();
-
 			}
 
 		/*****************************************************************************
@@ -1906,12 +1888,51 @@
 
 
 		/*****************************************************************************
+		 * FUNCTION: renderTextWrap
+		*****************************************************************************/
+
+			const renderTextWrap = (text,width)=>{
+				text.each(() => { //or use basic bitch function
+					const text = d3.select(this),
+						words = text.text().split(/\s+/).reverse()
+						;
+					let word,
+						line = [],
+						lineNumber = 0,
+						lineHeight = 1.1, // ems
+						y = text.attr("y"),c
+						dy = parseFloat(text.attr("dy")),
+						tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+					while (word = words.pop()) {
+					  line.push(word);
+					  tspan.text(line.join(" "));
+					  if (tspan.node().getComputedTextLength() > width) {
+						line.pop();
+						tspan.text(line.join(" "));
+						line = [word];
+						tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+					  }
+					}
+				});
+			}
+
+		/*****************************************************************************
+		 * ENDFUNCTION: renderTextWrap
+		*****************************************************************************/
+
+
+
+
+
+		/*****************************************************************************
 		 * FUNCTION: renderError
 		*****************************************************************************/
 
-			var renderError = function(theConsoleError,useThrow){
+			const renderError = (theConsoleError,useThrow)=>{
 				useThrow = useThrow || true;
-				var errorFront = "Sorry, unable to display data." + (  _.user_can_debug ? "<br> Please check the console for more details" : '');
+
+				const errorFront = "Sorry, unable to display data." + (  _dv.user_can_debug ? "<br> Please check the console for more details" : '');
+
 				d3.select(selector).classed(prefix+'initialized',true);
 
 				if(!dataContainer.querySelector('.'+prefix+'wrapper.fatality')){
@@ -1922,8 +1943,9 @@
 
 				if(!useThrow) {
 					console.error(theConsoleError);
+
 				}else{
-					throw new Error(theConsoleError)
+					throw new Error(theConsoleError);
 				}
 			}
 
@@ -1940,728 +1962,798 @@
 		*****************************************************************************/
 
 			// fuck these bois up. pass data again in case changing data is a future feature
-			var renderGraph = function(incomingData) {
+			const renderGraph = ()=> {
+				_dv.data.displayed = _dv.data.displayed.length
+					? _dv.data.displayed
+					: _dv.data.complete;
+
 				// ok do the thing now
-				console.log(
+				_dv.user_can_debug && console.log(
 					"\n",
 					selector,'('+args.title+')','-------------------------------------------------------------------',"\n",
-					'calculated shit',_,"\n",
-					'data',incomingData,"\n",
+					'calculated shit',_dv,"\n",
+					'data',_dv.data,"\n",
 					'args',args,"\n",
 					"\n"
-				);
+				)
+				;
 
+				/******** UPDOOT DOMAIN ********/
 
-				// if(args.srcMultiple) {
-					
-				// 	_.container_graph = _.container.selectAll('g.' + prefix + 'graph')
-				// 		.data(incomingData,function(doot){
-				// 			return doot.key;
-				// 		});
+					datum_keys.forEach((keyKey)=>{
 
-				// 	_.container_graph.exit()
-				// 		.transition(_.duration)
-				// 		.style('opacity',0)
-				// 		.remove()
+						//get domain
+						_dv['dom_'+keyKey] = getDomain(keyKey,_dv.data.displayed);
 
-				// 	_.container_graph_enter = _.container_graph.enter()
-				// 		.append('g')
-				// 		.attr('class',
-				// 			prefix + 'graph'
-				// 		);
-
-				// }else{
-
-					_.container_graph = _.container.select('g.'+prefix + 'graph')
-					
-					_.container_graph
-						.remove();
-
-
-					//create container for graph
-					_.container_graph = _.container.insert('g')
-						.attr('class',
-							prefix + 'graph'
-						);
-				// }
-
-				//offset graph for pie because its origin is in the center. right in the heart :'>
-				if(args.type == 'pie'){
-					_.container_graph
-						.attr('transform','translate('+ getPiOrigin('x') +','+ getPiOrigin('y') +')');
-				}
-
-				
-
-				//set dom
-				datum_keys.forEach(function(keyKey){
-
-					//get domain
-					_['dom_'+keyKey] = getDomain(keyKey,incomingData);
-
-					//set that fucker
-					if(_['the_'+keyKey] && _['dom_'+keyKey]) {
-						_['the_'+keyKey].domain(_['dom_'+keyKey]);
-					}
-
-				});
-					
-				// axis + grid
-				if(args.type !== 'pie'){
-
-					coordinates.forEach(function(coordinate){
-						if( args[coordinate+'Ticks'] ){
-							_['rule_'+coordinate+'_axis'] = setAxis(coordinate);
-									
-							_['rule_'+coordinate]
-								.transition(args.duration)
-								.call( _['rule_'+coordinate+'_axis'] )
-								.attr('font-family',null)
-								.attr('font-size',null);
-		
-							if(args[coordinate+'Grid']){
-							_['grid_'+coordinate+'_axis'] = setAxis(coordinate,true);
-								
-								_['grid_'+coordinate]
-									.transition(args.duration)
-									.call( _['grid_'+coordinate+'_axis'] );
-									
-								_['grid_'+coordinate].selectAll('g')
-									.classed('grid',true)
-									.filter(function(dis,i){
-										
-										//IM HERE FUCKER
-										var isAligned = false;
-										_['rule_'+coordinate].selectAll('g').each(function(tik){
-											//if current looped tik matches dis grid data, add the class boi
-											if(tik == dis){
-												isAligned = true;
-											};
-										})
-		
-										return isAligned;
-		
-									})
-									.classed('tick-aligned',true)
-		
-							}
-		
+						//set that fucker
+						if(_dv['the_'+keyKey] && _dv['dom_'+keyKey]) {
+							_dv['the_'+keyKey].domain(_dv['dom_'+keyKey])
+							;
 						}
 					});
-				}
-					
-				// MAKE THIS MULTIPLE
-				//selector of bitches
-				_.blob = _.container_graph.selectAll(_.graph_item_element +'.'+prefix + 'graph-item.graph-item-blob')
-					.data(incomingData,function(dis){
-						
-						return deepGet(dis,args.key[0])
-					});
 
+				/******** AXIS + GRID ********/
 
+					if(_dv.is_type(['bar','line','scatter'])){
+						coordinates.forEach((coordinate)=>{
+							if( args[coordinate+'Ticks'] ){
+								_dv['rule_'+coordinate+'_axis'] = setAxis(coordinate);
+										
+								_dv['rule_'+coordinate]
+									.transition(_dv.duration)
+									.call( _dv['rule_'+coordinate+'_axis'] )
+									.attr('font-family',null)
+									.attr('font-size',null);
 			
-				//blob exit
-				_.blob.exit()
-					.transition(_.duration)
-					.attr('fill','transparent')
-					.attr('stroke','transparent')
-					.remove();
+								if(args[coordinate+'Grid']){
+								_dv['grid_'+coordinate+'_axis'] = setAxis(coordinate,true);
+									
+									_dv['grid_'+coordinate]
+										.transition(_dv.duration)
+										.call( _dv['grid_'+coordinate+'_axis'] );
+										
+									_dv['grid_'+coordinate].selectAll('g')
+										.classed('grid',true)
+										.filter((dis,i)=>{
 
-				//text exit
-				if( _.has_text ){
-
-					_.blob_text = _.container_graph.selectAll('text.'+prefix + 'graph-item.graph-item-text')
-						.data(incomingData,function(dis){
-							return deepGet(dis,args.key[0])
+											//IM HERE FUCKER
+											let isAligned = false;
+											_dv['rule_'+coordinate].selectAll('g').each((tik)=>{
+												//if current looped tik matches dis grid data, add the class boi
+												if(tik == dis){
+													isAligned = true;
+												};
+											})
+			
+											return isAligned;
+										})
+										.classed('tick-aligned',true)
+										;
+								}
+			
+							}
 						});
+					}
+
+				/******** CONTAINER ********/
+
+
+					_dv.container_graph = _dv.container
+						.selectAll(`g.${prefix}graph`)
+						.data(
+							getDataStructure('nested','displayed'),
+							(dat)=>{ return dat.key }
+						)
+						.enter()
+							.append('g')
+							.attr('class',(dat)=>{
+
+								return	prefix + 'graph'
+									+ ' ' + (
+										(args.srcMultiple)
+											? prefix
+												+ 'graph-set '
+												+ 'data-group-'+ dat[0]
+											: ''
+									)
+							}
+							)
+							.attr('transform',()=> {
+								return _dv.is_type('pie')
+									? 'translate('+ getPiOrigin('x') +','+ getPiOrigin('y') +')'
+									: ''
+							})
+							;
+
+
+							_dv.container_graph.exit()
+								.transition(10) //DO NOT
+								.style('opacity',0)
+								.remove()
+								;
 
 				
-					_.blob_text.exit()
-						.transition(_.duration)
-						.attr('fill','transparent')
-						.attr('stroke','transparent')
-						.remove();
-					
-					if(args.type == 'pie' && args.piLabelStyle == 'linked'){
 
-						_.blob_text_link = _.container_graph.selectAll('polyline.'+prefix + 'graph-item.graph-item-link')
-							.data(incomingData,function(dis){
-								return deepGet(dis,args.key[0])
-							});
+				/******** LINE ********/
+					if(_dv.is_type('line')){
 
-						_.blob_text_link.exit()
-							.transition(_.duration)
-							.attr('fill','transparent')
-							.attr('stroke','transparent')
-							.remove();
-
-					}
-				}
-
-
-				// //generate the graph bitches
-				if(args.type !== 'pie'){
-					
-					// line graph + fill
-					if(args.type == 'line'){
+						// _dv.line = _dv.container_graph.select(`.${prefix}line`)
+						// 	// .data((dat)=> {
+						// 	// 	getDataStructure('nested','displayed'),
+						// 	// 	()=>{ console.log(dat);return dat.key }
+						// 	// })
+						// 	// // .data((d)=> { return d[1] }) 
+						// 	// .join(`.${prefix}line`)
+						// 	;
 						
-						_.line = _.container_graph.select('.'+prefix+'line').remove();
-
-						_.line = _.container_graph.append('path').lower()
-							.attr('class',prefix+'line' + ((args.lineColor !== null) ? ' has-color' : ' no-color' ))
+						_dv.line = _dv.container_graph.append('path').lower()
+							.attr('class',
+								`${prefix}line
+								${
+									args.lineColor !== null
+										? ' has-color'
+										: ' no-color'
+								}`
+							)
 							.attr('fill','none')
 							.attr('stroke-width',args.lineWeight)
 							.attr('stroke-linejoin','round')
 							.attr('stroke-dasharray',args.lineDash)
 							.attr('stroke-opacity',1)
 							.attr('stroke-dasharray','0,0')
-							.transition(_.duration)
-								.attrTween('d',function(){
-									
+							;
+						_dv.line
+							// .attr('d',getLinePath(false,false))
+							.transition(_dv.duration)
+								.attrTween('d',function(dat){
 									return getInterpolation(
-										getLinePath(false,true),
-										getLinePath(false,false)
+										getLinePath(dat[1],false,true),
+										getLinePath(dat[1],false,false)
 									)
-								});
+								})
+							;
+
 
 							if(args.lineColor) {
-								_.line
+								_dv.line
 									.attr('stroke',args.lineColor)
 							}
-
 						
 						
-							if(args.lineFill){
 
-								_.fill = _.container_graph.select('.'+prefix+'fill').remove();
-								
-								_.fill = _.container_graph.append('path').lower()
-									.attr('class',prefix+'fill'+ ((args.lineFillColor !== null || args.lineColor !== null) ? ' has-color' : ' no-color' ))
-									.attr('fill-opacity',args.lineFillOpacity)
-									;
-	
-								_.fill
-									.transition(_.duration)
-										.attrTween('d',function(){
-											return getInterpolation(
-												getLinePath(true,true),
-												getLinePath(true,false)
-											)
-										})
-									;
-	
+						if( args.lineFill ){
+							_dv.fill = _dv.container_graph.select(`.${prefix}fill`)
+								// .data((dat)=> {
+								// 	getDataStructure('nested','displayed'),
+								// 	()=>{ console.log(dat);return dat.key }
+								// })
+								// .data((d)=> { return d[1] }) 
+								;
+							
+							_dv.fill = _dv.container_graph.append('path').lower()
+								.attr('class',
+									`${prefix}fill
+									${
+										(
+											args.lineFillColor !== null
+											|| args.lineColor !== null
+										)
+											? ' has-color'
+											: ' no-color'
+									}`
+								)
+								.attr('fill-opacity',args.lineFillOpacity)
+								;
+							_dv.fill
+								.transition(_dv.duration)
+									.attrTween('d',function(dat){
+										return getInterpolation(
+											getLinePath(dat[1],true,true),
+											getLinePath(dat[1],true,false)
+										)
+									})
+								;
+							;
+
 								if( args.lineFillColor || args.lineColor ) {
-									_.fill
+									_dv.fill
 										.attr('fill', args.lineFillColor || args.lineColor);
 								}
-	
-							}
-							
+						}
 					}
-				
-				}
 
-				// bars, scatter plots, pizza, points
-				
-					
-					
-					_.enter_blob = _.blob.enter()
-						.append(_.graph_item_element)
-							.attr('class', function(dis){
-								return prefix + 'graph-item graph-item-blob';
-							});
+				/******** DECLARE ********/
 
-						_.merge_blob = _.blob.merge(_.enter_blob)
-							
-						//coordinates
-						if(args.type !== 'pie'){
+					//graph item : bars, scatter plots, pizza, points	
+						_dv.blob = _dv.container_graph.selectAll(`${_dv.graph_item_element}.${prefix}graph-item.graph-item-blob`)
+							.data((d)=> { return d[1] }) //@TODO return proper boi depending on type of display
+							;
 
-							_.merge_blob
-								// .attr(
-								// 	((args.type == 'line' || args.type == 'scatter') ? 'cx' : 'x'),
-								// 	function(dis,i){
-								// 		return getBlobOrigin('x',dis,i,true);
-								// 	}
-								// )
-								// .attr(
-								// 	((args.type == 'line' || args.type == 'scatter') ? 'cy' : 'y'),
-								// 	function(dis,i){
-								// 		return getBlobOrigin('y',dis,i,true);
-								// 	}
-								// )
-								.transition(_.duration)
-									// .attr(
-									// 	((args.type == 'line' || args.type == 'scatter') ? 'cx' : 'x'),
-									// 	function(dis,i){
-									// 		return getBlobOrigin('x',dis,i,false);
-									// 	}
-									// )
-									// .attr(
-									// 	((args.type == 'line' || args.type == 'scatter') ? 'cy' : 'y'),
-									// 	function(dis,i){
-									// 		return getBlobOrigin('y',dis,i,false);
-									// 	}
-									// )
-									.attrTween(
-										((args.type == 'line' || args.type == 'scatter') ? 'cx' : 'x'),
-										function(dis,i){
-											return getInterpolation(
-												getBlobOrigin('x',dis,i,true),
-												getBlobOrigin('x',dis,i,false)
-											)
-										}
-									)
-									.attrTween(
-										((args.type == 'line' || args.type == 'scatter') ? 'cy' : 'y'),
-										function(dis,i){
-											return getInterpolation(
-												getBlobOrigin('y',dis,i,true),
-												getBlobOrigin('y',dis,i,false)
-											)
-										}
-									)
-									;
+					//text labels
+						if(_dv.has_text){
 
+							//polyline 
+								if(_dv.is_type('pie') && args.piLabelStyle == 'linked'){
+
+									_dv.blob_text_link = _dv.container_graph.selectAll(`polyline.${prefix}graph-item.graph-item-link`)
+										.data((d)=> { return d[1] })
+								}
+							//text itself
+								_dv.blob_text = _dv.container_graph.selectAll(`text.${prefix}graph-item.graph-item-text`)
+									.data((d)=> { return d[1] })
 						}
 
-						//areas and what not
-						if(args.type == 'pie'){
-							
-							_.merge_blob
-								.transition(_.duration)
-									.attrTween('d',function(dis,i){
-										
-										var current = getPiData(i);
-										
-										return getInterpolation(
-											current.endAngle,
-											current.startAngle,
-											function(value){
+					//legend
+						if(args.colorLegend){
 
-												current.startAngle = value;
-												return getArcPath(current,true);
+							_dv.container_legend = _dv.container.selectAll(`g.${prefix}legend`)
+								.data((d)=> { return d[1] })
+								
+							_dv.legend = _dv.container_legend.selectAll('g.'+ prefix+'legend-item')
+								.data(_dv.dom_color);
+						}
+
+				/******** EXIT ********/
+
+					//graph item : bars, scatter plots, pizza, points
+						_dv.blob.exit()
+							.transition(_dv.duration)
+							.style('opacity',0)
+							.remove();
+
+					//text label
+						if(_dv.has_text){
+
+							//polyline 
+								if(_dv.is_type('pie') && args.piLabelStyle == 'linked'){
+
+									_dv.blob_text_link.exit()
+										.transition(_dv.duration)
+										.style('opacity','0')
+										.remove();
+								}
+
+							//text itself
+								_dv.blob_text.exit()
+									.transition(_dv.duration)
+									.style('opacity','0')
+									.remove();
+						}
+
+					//legend
+						if(args.colorLegend){
+							_dv.container_legend.exit()
+								.transition(_dv.duration)
+								.style('opacity',0)
+								.remove();
+
+								_dv.legend.exit()
+									.transition(_dv.duration)
+									.style('opacity','0')
+									.remove();
+						}
+				
+						
+
+				/******** ENTER ********/
+
+					//graph item : bars, scatter plots, pizza, points
+						_dv.blob_enter = _dv.blob.enter()
+							.append(_dv.graph_item_element)
+								.attr('class', (dis)=>{
+									return `${prefix}graph-item graph-item-blob data-name-${deepGet(dis,args.key[0])}`
+								})
+								;
+
+								if(_dv.is_type(['bar','line','scatter'])){
+									_dv.blob_enter
+										.attr(
+											(_dv.is_type(['line','scatter']) ? 'cx' : 'x'),
+											(dis,i)=>{
+												return getBlobOrigin('x',dis,i,true);
 											}
 										)
-									});
-
-						}
-						
-						if(args.type == 'line' || args.type == 'scatter'){
-							_.merge_blob
-								.transition(_.duration)
-									.attrTween('r',function(dis,i){
-										return getInterpolation(
-											getBlobRadius(dis,i,true),
-											getBlobRadius(dis,i,false)
-										);
-									})
-
-							if(args.type == 'line' && !args.linePoints) {
-								_.merge_blob
-									.attr('fill-opacity',0)
-									.attr('stroke-opacity',0);
-							}
-
-
-						}else{
-							_.merge_blob
-								.transition(_.duration)
-									.attrTween('width',function(dis,i){
-										return getInterpolation(
-											getBlobSize('x',dis,i,false),
-											getBlobSize('x',dis,i,false)
-										);
-									}) // _ width
-									.attrTween('height',function(dis,i){
-										return getInterpolation(
-											getBlobSize('y',dis,i,false),
-											getBlobSize('y',dis,i,false)
-										);
-									})
-						}
-
-						//tooltip
-						if(args.tooltipEnable) {
-							_.merge_blob
-								.on('mousemove',function(dis){
-										_.tooltip.show(dis,renderCursorStalker(d3.event));
-								})
-								.on('mouseleave',_.tooltip.hide);
-						}
-						
-						//line  colors
-						if(!args.colorPalette.length){
-							if(
-								args.type == 'line'
-								&& (
-									args.linePointsColor
-									|| args.lineColor
-								)
-							) {
-								_.merge_blob
-									.attr('fill',function(){
-										return args.linePointsColor || args.lineColor;
-									});
-
-							}
-						}else{
-							_.merge_blob
-								.attr('fill',function(dis,i){
-									return _.the_color(deepGet(dis,args.key.color));
-								});
-
-								if(args.type == 'scatter'){
-									_.merge_blob
-										.attr('fill-opacity',args.areaOpacity)
-										.attr('stroke-width',1)
-										.attr('stroke',function(dis,i){
-											return _.the_color(deepGet(dis,args.key.color));
-										})
-								}
-						}
-
-					
-				//graph item label if ticks are not set
-				if(
-					_.has_text
-				){
-
-					// pie polyline
-					if(_.blob_text_link ){
-						
-						_.enter_blob_text_link = _.blob_text_link
-							.enter()
-							.append('polyline')
-							.attr('class',function(dis){
-								return prefix+'graph-item graph-item-link' 
-									+ ' '+ 'data-name-'+deepGet(dis,args.key[0]);
-							})
-
-						
-						_.merge_blob_text_link = _.blob_text_link.merge(_.enter_blob_text_link)
-							.transition(_.duration)
-							.attrTween('stroke-opacity',function(dis,i){
-								
-								return getInterpolation(0,.75);
-							})
-							.attrTween('points',function(dis,i){
-								
-								//in pie, initial means it starts at zero but we dont want that so dont set the initial to true
-								var start = [
-										getArcPath(getPiData(i),true,'centroid',1,false), //first coord is centroid of our pie boi
-										getArcPath(getPiData(i),true,'centroid',1,false), // second is outer radius.
-									],
-									end = [
-
-										getArcPath(getPiData(i),true,'centroid',1,false),
-										getArcPath(getPiData(i),false,'centroid',2.25,false),
-									];
-
-								return getInterpolation(
-									start,
-									end
-								)
-							});
-
-					}
-
-					_.enter_blob_text = _.blob_text
-						.enter()
-						.append('text')
-						.attr('line-height',1.25)
-						.attr('dominant-baseline','middle')
-						;
-
-					//append content right away so we can calculate where shit offset
-					[0,1].forEach(function(keyKey){
-
-						if(
-							(
-								args.type !== 'pie'
-								&& !args[getAxisString(keyKey)+'Ticks']
-							)
-							|| (
-								args.type == 'pie'
-								&& (
-									( keyKey == 0 && !args.colorLegend )
-									|| ( keyKey == 1 && args.piLabelStyle !== null )
-								)
-							)
-						){
-
-							_['blob_text_'+keyKey] = _.enter_blob_text.append('tspan')
-
-								.attr('class', function(dis){
-									return 'graph-item-text-data-'+keyKey
-										+ ' '+ 'data-name-'+deepGet(dis,args.key[0]);
-								} )
-								.attr('dominant-baseline','middle')
-								.attr('text-anchor',function(dis,i){
-									return getBlobTextAnchor(dis,i);
-								})
-								.attr('font-size',function(){
-									var toReturn = null;
-
-									if(
-										(
-											args.type !== 'pie'
-											&& !args[ getAxisStringOppoFromAxisString ( getAxisString(keyKey) )+'Ticks']
+										.attr(
+											(_dv.is_type(['line','scatter']) ? 'cy' : 'y'),
+											(dis,i)=>{
+												return getBlobOrigin('y',dis,i,true);
+											}
 										)
-										|| (
-											args.type == 'pie'
-											&& !args.colorLegend
-											&& args.piLabelStyle !== null
-										)
-									){
-									
-
-										if( keyKey == 0 ){
-											toReturn = args.textNameSize+'em';
-										}else{
-											toReturn = args.textValueSize+'em';
-										}	
-									}
-
-									return toReturn;
-								})
-								.attr('x',getBlobTextBaselineShift('x',keyKey))
-								.attr('y',getBlobTextBaselineShift('y',keyKey))
-								.attr('font-weight',function(){
-									var toReturn = 700;
-
-									if(
-										(
-											args.type !== 'pie'
-											&& !args[ getAxisStringOppoFromAxisString ( getAxisString(keyKey) )+'Ticks']
-										)
-										|| (
-											args.type == 'pie'
-											&& !args.colorLegend
-											&& args.piLabelStyle !== null
-										)
-									){
-									
-
-										if( keyKey !== 0 ){
-											toReturn = 300;
-										}	
-									}
-
-									return toReturn;
-								})
-								.text(function(dis,i){
-									return _['format_'+ keyKey ]( deepGet(dis,args.key[ keyKey ]) );
-								})
-
-						}
-						
-					});
-
-					//continue fucking with text blob
-					_.merge_blob_text = _.blob_text.merge(_.enter_blob_text);
-
-
-					//set a minimum length for graph items to offset its text bois. doesnt matter which data key is on the axis we just want the width or height of the graph item on the given axis
-					// add padding for less math i think
-					_.m_length = function(axisString,i){
-
-						if(_.has_text && _.merge_blob_text){
-							var value = 0;
-
-							if( getDimension( axisString ) == 'width' ) {
-								value = (_.merge_blob_text.nodes()[i].getBBox()[ getDimension( axisString ) ]) + (_.text_padding * _.text_base_size);
-							}else{
-								value = (_.text_base_size * (args.textNameSize + args.textValueSize + _.text_padding));
-							}
-
-							return parseFloat(value);
-						}
-					};
-
-
-					_.merge_blob_text
-						.attr('class', function(dis,i){
-							var classString =  prefix + 'graph-item graph-item-text';
-							
-							if( 
-								(
-									(args.type == 'bar')
-									&& (
+										;
 										
-										(
-											
-											args.barTextWithin
-											&& (
-												( // it out
-													(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) < _.m_length(getAxisString(1),i))
-													&& !isDark(args.colorBackground)
-												)
-												|| ( //it in
-													(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) >= _.m_length(getAxisString(1),i))
-													&& (args.colorPalette.length > 0)
-													&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
-												)
-											)
-										)
-										|| (
-											!args.barTextWithin
-											&& (
-												( // it out
-													(
-														(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) + _.m_length(getAxisString(1),i)) <=  args[getDimension(getAxisString(1))]
-													)
-													&& !isDark(args.colorBackground)
-												)
-												|| ( //it in
-													(
-														(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) + _.m_length(getAxisString(1),i)) > args[getDimension(getAxisString(1))]
-													)
-													&& (args.colorPalette.length > 0)
-													&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
-												)
-											)
-										)
-									)
-								)
-								|| (
-									(args.type == 'line' || args.type == 'scatter')
-									&& !isDark(args.colorBackground)
-								)
-								|| (
-									args.type == 'pie'
-									&& (
-										(
-											args.piLabelStyle == 'within'
-											&& (args.colorPalette.length > 0)
-											&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
-										)
-										|| (
-											args.piLabelStyle == 'linked'
-											&& !isDark(args.colorBackground)
-										)
-									)
-								)
-							){
+										if(_dv.is_type(['line','scatter'])){
+											_dv.blob_enter
+												.attr('r',(dis,i)=>{
+													return getBlobRadius(dis,i,true);
+												})
+												;
+				
+				
+										}else if(_dv.is_type('bar')){
+											_dv.blob_enter
+												.attr('width',(dis,i)=>{
+													return getBlobSize('x',dis,i,true)
+												}) // _ width
+												.attr('height',(dis,i)=>{
+													return getBlobSize('y',dis,i,true)
+												})
+												;
+										}
+								}
 
+					//text label
+						if(_dv.has_text){
 
-								classString +=  ' dark';
-							}else{
-
-								classString +=  ' light';
-							}
-
-							return classString;
-						})
-						.attr('stroke',function(dis,i){
-							if(
-								(
-									args.type == 'pie'
-									&& args.piLabelStyle == 'within'
-									&& args.colorPalette.length > 0
-								)
-
-								|| (
-									args.type == 'bar' 
-
-									&& (
-										(
-											!args.barTextWithin
-											&& (parseFloat(getBlobSize(getAxisString(1),dis,i)) >= (args[getDimension(getAxisString(1),true)] - _.m_length(getAxisString(1),i)) )
-										)
-										|| (
-											args.barTextWithin
-											&& (parseFloat(getBlobSize(getAxisString(1),dis,i)) >= _.m_length(getAxisString(1),i))
-										) //@TODO this
-									)
-								)
-							){
-								return _.the_color(deepGet(dis,args.key.color))
-
-							}else if(
-								(args.type !== 'bar' && args.type !== 'pie')
-								|| (
-									args.type == 'pie'
-									&& args.piLabelStyle == 'linked'
-								)
-							){
-								return args.colorBackground;
-							}
-						})
-						.transition(_.duration)
-							.attrTween('transform',function(dis,i){
-
-								var dataToUse = args.type == 'pie' ? getPiData(i) : dis;
+							//polyline 
+								if(_dv.is_type('pie') && args.piLabelStyle == 'linked'){
 									
-								return getInterpolation(
-									'translate('
-										+getBlobTextOrigin('x',dataToUse,i,true)
-										+','
-										+getBlobTextOrigin('y',dataToUse,i,true)
-									+')',
-									'translate('
-										+getBlobTextOrigin('x',dataToUse,i,false)
-										+','
-										+getBlobTextOrigin('y',dataToUse,i,false)
-									+')'
-								)
+										_dv.blob_text_link_enter = _dv.blob_text_link
+											.enter()
+											.append('polyline')
+											.attr('class',(dis)=>{
+												return `${prefix}graph-item graph-item-link data-name-${deepGet(dis,args.key[0])}`;
+											})
+											.attr('stroke-opacity',.75)
+											.attr('opacity',1)
+											;
+								}
 
-							})
-							.styleTween('opacity',function(){
-								return getInterpolation(0,1);
-							});
+							// text itself
+								_dv.blob_text_enter = _dv.blob_text
+									.enter()
+									.append('text')
+									.attr('line-height',1.25)
+									.attr('dominant-baseline','middle')
+									.attr('transform',(dis,i)=>{
+										const dataToUse = _dv.is_type('pie') ? getPiData(i) : dis;
+										return `translate( ${getBlobTextOrigin('x',dataToUse,i,true)} , ${getBlobTextOrigin('y',dataToUse,i,true)} )`;
+									})
+									.style('opacity','0')
+									;
+
+								//append content right away so we can calculate where shit offset
+								[0,1].forEach((keyKey)=>{
+
+									if(
+										(
+											_dv.is_type(['bar','line','scatter'])
+											&& !args[getAxisString(keyKey)+'Ticks']
+										)
+										|| (
+											_dv.is_type('pie')
+											&& (
+												( keyKey == 0 && !args.colorLegend )
+												|| ( keyKey == 1 && args.piLabelStyle !== null )
+											)
+										)
+									){
+
+										_dv['blob_text_'+keyKey] = _dv.blob_text_enter.append('tspan')
+
+											.attr('class', (dis)=>{
+												return `${prefix}graph-item-text-data-${keyKey} data-name-${deepGet(dis,args.key[0])}`
+											} )
+											.attr('dominant-baseline','middle')
+											.attr('text-anchor',(dis,i)=>{
+												return getBlobTextAnchor(dis,i);
+											})
+											.attr('font-size',() => {
+
+												let toReturn = null;
+
+												if(
+													(
+														_dv.is_type(['bar','line','scatter'])
+														&& !args[ getOppoAxis ( getAxisString(keyKey) )+'Ticks']
+													)
+													|| (
+														_dv.is_type('pie')
+														&& !args.colorLegend
+														&& args.piLabelStyle !== null
+													)
+												){
+													if( keyKey == 0 ){
+														toReturn = args.textNameSize+'em';
+
+													}else{
+														toReturn = args.textValueSize+'em';
+													}	
+												}
+
+												return toReturn;
+											})
+											.attr('x',getBlobTextBaselineShift('x',keyKey))
+											.attr('y',getBlobTextBaselineShift('y',keyKey))
+											.attr('font-weight',() => {
+												let toReturn = 700;
+
+												if(
+													(
+														_dv.is_type(['bar','line','scatter'])
+														&& !args[ getOppoAxis ( getAxisString(keyKey) )+'Ticks']
+													)
+													|| (
+														_dv.is_type('pie')
+														&& !args.colorLegend
+														&& args.piLabelStyle !== null
+													)
+												){
+													if( keyKey !== 0 ){
+														toReturn = 300;
+													}	
+												}
+
+												return toReturn;
+											})
+											.text((dis,i)=>{
+												return _dv['format_'+ keyKey ]( deepGet(dis,args.key[ keyKey ]) );
+											})
+
+									}
+									
+								});
+						}
+
+					//legend
+						if(args.colorLegend){
+
+							_dv.container_legend_enter = _dv.container_legend.enter()
+								.append('g')
+								.attr('class',
+									prefix + 'legend'
+								)
+								.attr('font-size', args.textLegendSize+'em')
+								.transition(_dv.duration)
+								.styleTween('opacity',() => {getInterpolation(0,1)});
+								;
+
+								_dv.legend_enter = _dv.legend
+									.enter()
+									.append('g')
+									.attr('class',prefix+'legend-item')
+									.style('opacity','0');
+
+									_dv.legend_enter
+										.transition(_dv.duration)
+										.style('opacity','1')
+
+									_dv.legend_enter.append('rect')
+										.attr('class','legend-item-blob')
+										.attr('width',_dv.legend_size * .75)
+										.attr('height',_dv.legend_size * .75)
+										.attr('fill', (dis,i)=>{
+											_dv.the_color(dis);
+										})
+										.attr('stroke',args.colorBackground);
+
+									_dv.legend_enter.append("text")
+										.attr('class','legend-item-text')
+										.text((dis)=>{
+											return dis;
+										})
+										.attr('dominant-baseline','middle')
+										.attr('x', _dv.legend_size )
+										.attr('y', _dv.legend_size * .375)
+										.attr('stroke',args.colorBackground);
+						}
+
+
+				/******** MERGE ********/
+					
+					//graph item : bars, scatter plots, pizza, points
+						_dv.blob_merge = _dv.blob.merge(_dv.blob_enter)
+								
+							//coordinates
+							if(_dv.is_type(['bar','line','scatter'])){
+								_dv.blob_merge
+									.transition(_dv.duration)
+										.attr(
+											(_dv.is_type(['line','scatter']) ? 'cx' : 'x'),
+											(dis,i)=>{
+												return getBlobOrigin('x',dis,i,false);
+											}
+										)
+										.attr(
+											(_dv.is_type(['line','scatter']) ? 'cy' : 'y'),
+											(dis,i)=>{
+												return getBlobOrigin('y',dis,i,false);
+											}
+										)
+										;
+							}
+
+							//areas and what not
+							if(_dv.is_type('pie')){
+								_dv.blob_merge
+									.transition(args.transition) //DO NOT
+										.attrTween('d',function(dis,i){
+											dis._current = dis._current || getPiData(i);
+											let theCurrent = dis._current;
+											
+											return getInterpolation(
+												theCurrent.endAngle,
+												theCurrent.startAngle,
+												(value)=>{
+													theCurrent.startAngle = value;
+													return getArcPath(theCurrent,true);
+												}
+											)
+										});
+							}
+							
+							if(_dv.is_type(['line','scatter'])){
+								_dv.blob_merge
+									.transition(_dv.duration)
+										.attr('r',(dis,i)=>{
+											return getBlobRadius(dis,i,false)
+										})
+										;
+
+								if(_dv.is_type('line') && !args.linePoints) {
+									_dv.blob_merge
+										.attr('fill-opacity',0)
+										.attr('stroke-opacity',0);
+								}
+							}
+							
+							if(_dv.is_type('bar')){
+								_dv.blob_merge
+									.transition(_dv.duration)
+										.attr('width',(dis,i)=>{
+											return getBlobSize('x',dis,i,false)
+										}) // _ width
+										.attr('height',(dis,i)=>{
+											return getBlobSize('y',dis,i,false)
+										})
+										;
+							}
+
+							//tooltip
+							if(args.tooltipEnable) {
+								_dv.blob_merge
+									.on('mousemove',(dis)=>{
+											_dv.tooltip.show(dis,renderCursorStalker(d3.event));
+									})
+									.on('mouseleave',_dv.tooltip.hide);
+							}
+							
+							//line  colors
+							if(!args.colorPalette.length){
+								if(
+									_dv.is_type('line')
+									&& (
+										args.linePointsColor
+										|| args.lineColor
+									)
+								) {
+									_dv.blob_merge
+										.attr('fill',() => {
+											return args.linePointsColor || args.lineColor;
+										});
+
+								}
+							}else{
+								_dv.blob_merge
+									.attr('fill',(dis,i)=>{
+										return _dv.the_color(deepGet(dis,args.key.color));
+									});
+
+									if(_dv.is_type('scatter')){
+										_dv.blob_merge
+											.attr('fill-opacity',args.areaOpacity)
+											.attr('stroke-width',1)
+											.attr('stroke',(dis,i)=>{
+												return _dv.the_color(deepGet(dis,args.key.color));
+											})
+									}
+							}
 
 					
-				}
+					// text label
+						if(_dv.has_text){
 
-				//legends boi
-				if(args.colorLegend){
-					_.legend_height = 0;
+							//polyline 
+								if(_dv.is_type('pie') && args.piLabelStyle == 'linked'){
 
-					if(_.container_legend){
-						_.container_legend.remove();
-					}
+									_dv.blob_text_link_merge = _dv.blob_text_link.merge(_dv.blob_text_link_enter)
+										.transition(_dv.duration)
+										.attrTween('points',(dis,i)=>{
+											//in pie, initial means it starts at zero but we dont want that so dont set the initial to true
+											const start = [
+													getArcPath(getPiData(i),true,'centroid',1,false), //first coord is centroid of our pie boi
+													getArcPath(getPiData(i),true,'centroid',1,false), // second is outer radius.
+												],
+												end = [
 
+													getArcPath(getPiData(i),true,'centroid',1,false),
+													getArcPath(getPiData(i),false,'centroid',2.25,false),
+												];
 
-					_.container_legend = _.container.append('g')
-						.attr('class',prefix+'legend')
-						.attr('font-size', args.textLegendSize+'em');
-						
-						
-					_.dom_color.forEach(function(key,i){
-						_.legend = _.container_legend.append('g')
-							.attr('class',prefix+'legend-item')
-
-
-						_.legend.append('rect')
-						.attr('class','legend-item-blob')
-							.attr('width',_.legend_size * .75)
-							.attr('height',_.legend_size * .75)
-							.attr('fill',_.the_color(key) )
-							.attr('stroke',args.colorBackground);
-
-						_.legend.append("text")
-							.attr('class','legend-item-text')
-							.text(key)
-							.attr('dominant-baseline','middle')
-							.attr('x',_.legend_size)
-							.attr('y',_.legend_size * .375)
-							.attr('stroke',args.colorBackground);
-							
-						_.legend
-							.attr("transform", "translate(0, " + (i *  _.legend_size) + ")");
-
-						_.legend_height += _.legend_size;
+											return getInterpolation(start,end);
+										});
+								}
 
 							
-					});
+							// text itself
+								_dv.blob_text_merge = _dv.blob_text.merge(_dv.blob_text_enter);
 
-					_.container_legend
-						.attr('transform','translate('+getLegendOrigin('x')+','+getLegendOrigin('y')+')')
-						.transition(_.duration)
-							.styleTween('opacity',function(){
-								return getInterpolation(0,1);
-							});
-				}
+									//commercial break
+									//set a minimum length for graph items to offset its text bois. doesnt matter which data key is on the axis we just want the width or height of the graph item on the given axis
+									// add padding for less math i think
+									_dv.m_length = (axisString,i)=>{
+
+										if(_dv.has_text && _dv.blob_text_merge){
+											let value = 0;
+
+											if( getDimension( axisString ) == 'width' ) {
+												value = (
+													_dv.blob_text_merge.nodes()[i]
+														.getBBox()[ getDimension( axisString ) ]
+												) + (
+													_dv.text_padding
+													* _dv.text_base_size
+												);
+											}else{
+												value = (
+													_dv.text_base_size
+													* (
+														args.textNameSize
+														+ args.textValueSize
+														+ _dv.text_padding
+													)
+												);
+											}
+
+											return parseFloat(value);
+										}
+									};
+
+
+									_dv.blob_text_merge
+										.attr('class', (dis,i)=>{
+											let classString =  `${prefix}graph-item graph-item-text`;
+											
+											if( 
+												(
+													_dv.is_type('bar')
+													&& (
+														(
+															args.barTextWithin
+															&& (
+																( // it out
+																	(
+																		parseFloat(getBlobSize(getAxisString(1),dis,i,false))
+																		< _dv.m_length(getAxisString(1),i)
+																	)
+																	&& !isDark(args.colorBackground)
+																)
+																|| ( //it in
+																	(
+																		parseFloat(getBlobSize(getAxisString(1),dis,i,false))
+																		>= _dv.m_length(getAxisString(1),i)
+																	)
+																	&& (args.colorPalette.length > 0)
+																	&& !isDark( _dv.the_color(deepGet(dis,args.key.color)) )
+																)
+															)
+														)
+														|| (
+															!args.barTextWithin
+															&& (
+																( // it out
+																	(
+																		(
+																			parseFloat(getBlobSize(getAxisString(1),dis,i,false))
+																			+ _dv.m_length(getAxisString(1),i)
+																		) <=  args[getDimension(getAxisString(1))]
+																	)
+																	&& !isDark(args.colorBackground)
+																)
+																|| ( //it in
+																	(
+																		(
+																			parseFloat(getBlobSize(getAxisString(1),dis,i,false))
+																			+ _dv.m_length(getAxisString(1),i)
+																		) > args[getDimension(getAxisString(1))]
+																	)
+																	&& (args.colorPalette.length > 0)
+																	&& !isDark( _dv.the_color(deepGet(dis,args.key.color)) )
+																)
+															)
+														)
+													)
+												)
+												|| (
+													_dv.is_type(['line','scatter'])
+													&& !isDark(args.colorBackground)
+												)
+												|| (
+													_dv.is_type('pie')
+													&& (
+														(
+															args.piLabelStyle == 'within'
+															&& (args.colorPalette.length > 0)
+															&& !isDark( _dv.the_color(deepGet(dis,args.key.color)) )
+														)
+														|| (
+															args.piLabelStyle == 'linked'
+															&& !isDark(args.colorBackground)
+														)
+													)
+												)
+											){
+												classString +=  ' dark';
+											}else{
+
+												classString +=  ' light';
+											}
+
+											return classString;
+										})
+										.attr('stroke',(dis,i)=>{
+											if(
+												(
+													_dv.is_type('pie')
+													&& args.piLabelStyle == 'within'
+													&& args.colorPalette.length > 0
+												)
+												|| (
+													_dv.is_type('bar')
+
+													&& (
+														(
+															!args.barTextWithin
+															&& (
+																parseFloat(getBlobSize(getAxisString(1),dis,i))
+																>= (args[getDimension(getAxisString(1),true)] - _dv.m_length(getAxisString(1),i))
+															)
+														)
+														|| (
+															args.barTextWithin
+															&& (
+																parseFloat(getBlobSize(getAxisString(1),dis,i))
+																>= _dv.m_length(getAxisString(1),i)
+															)
+														) //@TODO this
+													)
+												)
+											){
+												return _dv.the_color(deepGet(dis,args.key.color))
+
+											}else if(
+												!_dv.is_type(['bar','pie'])
+												|| (
+													_dv.is_type(['pie'])
+													&& args.piLabelStyle == 'linked'
+												)
+											){
+												return args.colorBackground;
+											}
+										})
+										.transition(_dv.duration)
+											.attr('transform',(dis,i)=>{
+												const dataToUse = _dv.is_type('pie') ? getPiData(i) : dis;
+												return `translate( ${getBlobTextOrigin('x',dataToUse,i,false)} , ${getBlobTextOrigin('y',dataToUse,i,false)} )`;
+											})
+											.style('opacity',1);
+
+							
+						}
+
+					//legend
+						if(args.colorLegend){
+
+
+							_dv.container_legend_merge = _dv.container_legend.merge(_dv.container_legend_enter)
+									.attr('transform',`translate( ${getLegendOrigin('x')} , ${getLegendOrigin('y')} )`)
+
+								_dv.legend_merge = _dv.legend.merge(_dv.legend_enter)
+									.transition(_dv.duration)
+									.attr('transform', (dis,i)=>{
+										return `translate(0, ${i *  _dv.legend_size})`;
+									});
+							
+						}
 
 
 
@@ -2680,29 +2772,30 @@
 		*****************************************************************************/
 
 			//initialize a good boi
-			var init = function(retrievedData){
+			const init = (retrievedData) => {
 				
 				//add initialized class so we know the boi been fucked na
-				_.the_container = d3.select(selector);
+				_dv.the_container = d3.select(selector);
 				
-				_.the_container.classed(prefix+'initialized'+ ( isDark(args.colorBackground) ? ' '+prefix+'dark' : '' ) ,true )
+				_dv.the_container
+					.classed(
+						`${prefix}initialized
+						${ isDark(args.colorBackground) ? prefix+'dark' : '' }` ,true
+					)
 					.style('background-color',args.colorBackground)
-
-				_.data = null;
+					;
 
 				//graph element
 				switch(args.type){
-
 					case 'bar':
-						_.graph_item_element = 'rect';
+						_dv.graph_item_element = 'rect';
 						break;
 					case 'pie':
-						_.graph_item_element = 'path';
+						_dv.graph_item_element = 'path';
 						break;
 					case 'line':
 					case 'scatter':
-
-						_.graph_item_element = 'circle';
+						_dv.graph_item_element = 'circle';
 						break;
 
 				}
@@ -2710,157 +2803,186 @@
 
 			
 				// relative to 1em supposedly idk
-				_.text_base_size = parseFloat(args.fontSize);
-
-				
-				setData(retrievedData);
-
-				
+				_dv.text_base_size = parseFloat(args.fontSize);
 				
 
+				_dv.data = {
+					displayed: [],
+					complete: []
+				};
+				_dv.data.complete = setData(retrievedData);
 
-				if(_.data && _.data.length > 0 ){
-
+				if( _dv.data.complete.length > 0 ){
 					// fallback + validate color data
 					// if color data key aint set put in name
-					if(!(args.key.color)){ 
+					if(!arr.key.color){ 
 						args.key.color = args.key[0];
 
 						//if legend was not fucked with we take the authority to kill legend
-						if(!args.colorLegend){
+						if(!arr.colorLegend){
 							args.colorLegend = false;
 						}
 					};
 
+					if(!arr.key.area){
+						
+					}
+
 
 					// setup padding and sizes
-					_.legend_size = (args.textLegendSize * parseFloat(args.fontSize) * 2);
+					_dv.legend_size = (args.textLegendSize * parseFloat(args.fontSize) * 2);
 					
-					_.margin = {
-						top:	args.margin[0] || args.margin,
-						right: 	args.margin[1] || args.margin[0] || args.margin,
-						bottom:	args.margin[2] || args.margin[0] || args.margin,
-						left:	args.margin[3] || args.margin[1] || args.margin[0] || args.margin,
+					_dv.margin = {
+						top:	
+							typeof args.margin[0] === 'number'
+								&& args.margin[0]
+							|| typeof args.margin === 'number'
+								&& args.margin
+							|| 0,
+						right: 	
+							typeof args.margin[1] === 'number'
+								&& args.margin[1]
+							|| typeof args.margin[0] === 'number'
+								&& args.margin[0]
+							|| typeof args.margin === 'number'
+								&& args.margin
+							|| 0,
+						bottom:	
+							typeof args.margin[2] === 'number'
+								&& args.margin[2]
+							|| typeof args.margin[0] === 'number'
+								&& args.margin[0]
+							|| typeof args.margin === 'number'
+								&& args.margin
+							|| 0,
+						left:	
+							typeof args.margin[3] === 'number'
+								&& args.margin[3]
+							|| typeof args.margin[1] === 'number'
+								&& args.margin[1]
+							|| typeof args.margin[0] === 'number'
+								&& args.margin[0]
+							|| typeof args.margin === 'number'
+								&& args.margin
+							|| 0,
 					};
 					
 					
 					//add tooltipcontent function if there is none;
 
-					_.tooltip_html = args.tooltipContent || function(dis,i) {
+					_dv.tooltip_html = args.tooltipContent
+						|| ((dis,i)=>{
+							const html = `<div class="${prefix}tooltip-data">`;
 
-						var html = '<div class="'+prefix+'tooltip-data">';
+							for (let prop in dis) {
+								if (Object.prototype.hasOwnProperty.call(dis, prop)) {
+									const propIsOutputted = false;
+									if(typeof dis[prop] !== 'object'){
 
-						for (var prop in dis) {
-							if (Object.prototype.hasOwnProperty.call(dis, prop)) {
-								var propIsOutputted = false;
+									
+										html += `<div class="${prefix}tooltip-data-property">`;
 
-								if(typeof dis[prop] !== 'object'){
-
-								
-									html += '<div class="'+prefix+'tooltip-data-property">';
-
-										// label
-										if(args.srcType !== 'row'){
-											html += '<strong class="'+prefix+'tooltip-data-property-label">'+prop+':</strong> ';
-										}
-
-
-								
-										datum_keys.forEach(function(keyKey){
-											
-											if(
-												args.key[keyKey]
-												&& args.key[keyKey].lastIndexOf(prop)  > -1
-												&& _['format_'+keyKey]
-												&& propIsOutputted == false
-											){
-												html += '<span class="'+prefix+'tooltip-data-property-content">'+ _['format_'+ keyKey ] (deepGet(dis,args.key[ keyKey ]) ) +'</span>';
-												propIsOutputted = true;
+											// label
+											if(args.srcType !== 'row'){
+												html += `<strong class="${prefix}tooltip-data-property-label">${prop}:</strong> `;
 											}
 
-										});
 
-										if(propIsOutputted == false) {
-
-											// content
-											html += '<span class="'+prefix+'tooltip-data-property-content">'+dis[prop]+'</span>';
-
-										}
 									
+											datum_keys.forEach((keyKey)=>{
+												
+												if(
+													args.key[keyKey]
+													&& args.key[keyKey].lastIndexOf(prop)  > -1
+													&& _dv[`format_${keyKey}`]
+													&& propIsOutputted == false
+												){
+													html += `<span class="${prefix}tooltip-data-property-content">${_dv[`format_${keyKey}`] (deepGet(dis,args.key[ keyKey ]) )} </span>`;
+													propIsOutputted = true;
+												}
+
+											});
+
+											if(propIsOutputted == false) {
+
+												// content
+												html += `<span class="${prefix}tooltip-data-property-content">${dis[prop]}</span>`;
+
+											}
+										
+										
+										html += '</div>';
 									
-									html += '</div>';
-								
+									}
+									
 								}
-								
 							}
-						}
 
-						html += '</div>';
-
-						return html;
-					}
+							html += '</div>';
+							return html;
+						});
 
 					
 					//set them dimensions
-					_.outer_width = args.width + _.margin.left + _.margin.right;
-					_.outer_height = args.height + _.margin.top + _.margin.bottom;
+					_dv.outer_width = args.width + _dv.margin.left + _dv.margin.right;
+					_dv.outer_height = args.height + _dv.margin.top + _dv.margin.bottom;
 
 
 
 
 					d3.select(selector).append('div').lower()
-						.attr('class',prefix+'heading');
+						.attr('class',`${prefix}heading`);
 					
-					_.heading_sel = d3.select(selector).select('div.'+prefix+'heading');
+						_dv.heading_sel = d3.select(selector).select(`div.${prefix}heading`);
 
 						if(args.title){
-							_.heading_title = _.heading_sel.append('span')
-							.attr('class',prefix+'title')
+							_dv.heading_title = _dv.heading_sel.append('span')
+							.attr('class',`${prefix}title`)
 							.text(args.title)
 						}
 
 						if(args.description){
-							_.heading_description = _.heading_sel.append('span')
-							.attr('class',prefix+'description')
+							_dv.heading_description = _dv.heading_sel.append('span')
+							.attr('class',`${prefix}description`)
 							.text(args.description)
 						}
 
-					_.heading_sel
-						.style('padding-top', function(){
-							return  ((_.margin.top / args.height) * 50) + '%'
-						})
-						.style('padding-left', function(){
-							return  ((_.margin.left / _.outer_width) * 100) + '%'
-						})
-						.style('padding-right', function(){
-							return  ((_.margin.right / _.outer_width) * 100) + '%'
-						})
-						.transition(_.duration)
-						.styleTween('opacity',function(){return getInterpolation(0,1)});
+						_dv.heading_sel
+							.style('padding-top', () => {
+								`${(_dv.margin.top / args.height) * 50}%`
+							})
+							.style('padding-left', () => {
+								`${(_dv.margin.left / _dv.outer_width) * 100}%`
+							})
+							.style('padding-right', () => {
+								`${(_dv.margin.right / _dv.outer_width) * 100}%`
+							})
+							.transition(_dv.duration)
+							.styleTween('opacity',() => {getInterpolation(0,1)});
 				
-					_.canvas = d3.select(selector)
+					_dv.canvas = d3.select(selector)
 						.append('div')
-						.attr('class', prefix + 'wrapper')
+						.attr('class', `${prefix}wrapper`)
 						.style('position','relative')
-						.style('padding-bottom',function(){
-							return (( _.outer_height / _.outer_width) * 100) + '%';
+						.style('padding-bottom',() => {
+							return `${(( _dv.outer_height / _dv.outer_width) * 100)}%`;
 						})
 						.style('position','relative');
 
-					var dimensionString = '0 0 '+ _.outer_width +' ' + _.outer_height;
+						const dimensionString = `0 0 ${_dv.outer_width} ${_dv.outer_height}`;
 					
 					//check if its scrolled on the place it should be at
-					_.dv_init = false;
+					_dv.dv_init = false;
 					
-					document.addEventListener('scroll',function(e) {
-						var graphPosition = dataContainer.getBoundingClientRect().top;
-						if(graphPosition < (window.innerHeight * .5) && !_.dv_init) {
-							_.dv_init = true;
+					document.addEventListener('scroll',(e)=>{
+						const graphPosition = dataContainer.getBoundingClientRect().top;
+						if(graphPosition < (window.innerHeight * .5) && !_dv.dv_init) {
+							_dv.dv_init = true;
 							
-							setTimeout(function(){
+							setTimeout(() => {
 
-								_.svg = _.canvas.append('svg')
-									.attr('id',selector+'-svg')
+								_dv.svg = _dv.canvas.append('svg')
+									.attr('id',`${selector}-svg`)
 									.style('position','absolute')
 									.style('top','0')
 									.style('left','0')
@@ -2871,69 +2993,95 @@
 									.attr('x','0px')
 									.attr('y','0px')
 									.attr('class',
-										prefix + 'svg'
-										+ ' ' + prefix + 'type-' + args.type
-										+ ' ' + prefix + ( (args.colorPalette.length > 0 || args.linePointsColor !== null || args.lineColor !== null) ?  'has' : 'no' ) + '-palette'
-										+ ' ' + prefix + ((args.type !== 'pie' && !args.xTicks && !args.yTicks) ? 'no' : 'has') + '-ticks'
-										+ ' ' + prefix + ((args.colorLegend ) ? 'has' : 'no') + '-legend'
-										+ ((args.type == 'pie' && args.piLabelStyle !== null) ? ' ' + prefix +'pi-label-style-'+args.piLabelStyle : ' '+prefix+'no-label')
+										`${prefix}svg`
+										+ ` ${prefix}type-${args.type}`
+										+ ` ${prefix}${(
+												(
+													args.colorPalette.length > 0
+													|| args.linePointsColor !== null
+													|| args.lineColor !== null
+												)
+													? 'has'
+													: 'no' 
+											)}-palette`
+
+										+ ` ${prefix}${(
+												(
+													_dv.is_type('pie')
+													&& !args.xTicks
+													&& !args.yTicks
+												)
+													? 'no'
+													: 'has'
+											)}-ticks`
+
+										+ ` ${prefix}${(
+												(args.colorLegend )
+													? 'no'
+													: 'has'
+											)}-legend`
+											
+										+ ` ${(
+												(_dv.is_type('pie') && args.piLabelStyle !== null)
+													? ` ${prefix}pi-label-style-${args.piLabelStyle}`
+													: ` ${prefix}no-label`
+											)}`
 									)
 									.attr('viewBox', dimensionString)
-									.attr("preserveAspectRatio", "xMinYMin meet")
+									.attr('preserveAspectRatio', 'xMidYMid meet')
 									.attr('xml:space','preserve')
-									// .attr('width',_.outer_width)
-									// .attr('height',_.outer_height)
+									.attr('width',_dv.outer_width)
+									.attr('height',_dv.outer_height)
 									;
 
 									
 								//duration
-								// _.duration = _.svg.transition().duration( args.transition ).ease(d3.easeLinear);
-
-
-								// _.duration = 500;
+								_dv.duration = _dv.svg.transition()
+									.duration( args.transition )
+									.ease(d3.easeLinear);
 									
-								_.container = _.svg.append('g')
-									.attr('class',prefix+'svg-wrapper')
+								_dv.container = _dv.svg.append('g')
+									.attr('class',`${prefix}svg-wrapper`)
 									.attr('font-size',args.fontSize)
 									.style('line-height',1)
-									.attr('transform','translate('+ _.margin.left +','+ _.margin.top +')');
+									.attr('transform',`translate( ${_dv.margin.left} , ${_dv.margin.top} )`);
 
 
 								//tooltip
 								if(args.tooltipEnable) {
 
 									
-									_.svg.append('circle')
+									_dv.svg.append('circle')
 										.attr('class',prefix+'cursor-stalker')
 										// .attr('r',10)
 										// // .style('opacity',0)
 										// .attr('fill','red');
 
-									_.tooltip_cursor_stalker = _.svg.select('circle.'+prefix+'cursor-stalker')
+									_dv.tooltip_cursor_stalker = _dv.svg.select(`circle.${prefix}cursor-stalker`)
 
-									_.tooltip = d3.tip()
+									_dv.tooltip = d3.tip()
 										.attr('class',prefix+'tooltip')
-										.style('width', function(){
+										.style('width', () => {
 											if(typeof args.tooltipWidth === 'number'){
-												return parseFloat(args.tooltipWidth) + 'px';
+												return `${parseFloat(args.tooltipWidth)}px`;
 											}else if(args.tooltipWidth == 'auto'){
 												return args.tooltipWidth;
 											}
 										})
 										.style('text-align',args.tooltipTextAlign)
 										.direction(args.tooltipDirectionParameter || args.tooltipDirection)
-										.html(_.tooltip_html)
+										.html(_dv.tooltip_html)
 
-									_.svg.call(_.tooltip);
+									_dv.svg.call(_dv.tooltip);
 								}
 
 								//@TODO multiple here
 
 								
-								if(args.type == 'pie'){
+								if(_dv.is_type('pie')){
 									//radius boi
-									_.pi_radius = (function(){
-										var value = Math.min((args.width * .5),(args.height * .5));
+									_dv.pi_radius = (() => {
+										let value = Math.min((args.width * .5),(args.height * .5));
 					
 										if(args.colorLegend){
 											value -= (value * .25)
@@ -2944,33 +3092,33 @@
 										}
 					
 										return value;
-									}());
+									})();
 
 								}else{
 
 									// container for labels
-									_.container_lab = _.container.append('g')
+									_dv.container_lab = _dv.container.append('g')
 										.attr('class', prefix + 'label');
 						
 									// container for axis
-									_.container_rule = _.container.append('g')
+									_dv.container_rule = _dv.container.append('g')
 										.attr('class', prefix + 'axis')
 										.attr('font-size',args.textTicksSize+'em');
 										
 									//kung may grid gibo kang grid
 									if( args.xGrid || args.yGrid ){
-										_.container_grid = _.container.append('g')
+										_dv.container_grid = _dv.container.append('g')
 										.attr('class', prefix + 'grid')
 										.attr('font-size',args.textTicksSize+'em');
 									}
 								}
 
 								//style warns
-								if(_.user_can_debug){
+								if(_dv.user_can_debug){
 									if(
 										args.width == defaults.width
 										&& args.height == defaults.height
-										&& _.data.length > 9
+										&& _dv.data.complete > 9
 									){
 										
 										console.warn(selector+' Width and height was not adjusted. graph elements may not fit in the canvas');
@@ -2992,55 +3140,55 @@
 										console.debug(selector+' text may overlap. margins may need to be modified');
 									}
 								}
-								
+
 
 
 								// scales and shit
-								datum_keys.forEach(function(keyKey){
+								datum_keys.forEach((keyKey)=>{
 
 									//range
-									_['range_'+keyKey] = getRange(keyKey);
+									_dv['range_'+keyKey] = getRange(keyKey);
 
 									//scale
-									_['the_'+keyKey] = setScale(keyKey);
+									_dv['the_'+keyKey] = setScale(keyKey);
 
 									//formatting of data on the graph
-									_['format_'+keyKey] = (function(){
+									_dv['format_'+keyKey] = (() => {
 										
 										if(typeof args['format'+keyKey+'Parameter'] === 'function' ) {
-											
 											return args['format'+keyKey+'Parameter']
 
-										}else if( typeof args['format'+keyKey+'Parameter'] === 'string'  ) {
-											
-											return function(value){
+										}else if( typeof args['format'+keyKey+'Parameter'] === 'string' ) {
+											return ((value)=>{
 												return d3.format(args['format'+keyKey+'Parameter'])(value)
-											}
+											})
 
 										}else{
-											
-											return function(value){
-
-												var divider = args[ 'format' + keyKey.toString().toUpperCase() + 'Divider'],
-													prepend = args[ 'format' + keyKey.toString().toUpperCase() + 'Prepend'],
-													append = args[ 'format' + keyKey.toString().toUpperCase() + 'Append'],
-													dataPossiblyDivided = (keyKey == 1 || args.nameIsNum == true ) ? (value / divider): value,
+											return ((value)=>{
+												const
+													divider = args[ `format${keyKey.toString().toUpperCase()}Divider`],
+													prepend = args[ `format${keyKey.toString().toUpperCase()}Prepend`],
+													append = args[ `format${keyKey.toString().toUpperCase()}Append`],
+													dataPossiblyDivided = 
+														(keyKey == 1 || args.nameIsNum == true )
+															? (value / divider)
+															: value,
 													formatted = prepend + dataPossiblyDivided + append;
 
 												return formatted;
-											}
+											})
 										}
-									}());
+									})();
 
 									switch(keyKey){
 
 										case 0:
 										case 1:
 
-											renderAxisContainers(getAxisString(keyKey),_.container_rule)
+											renderAxisContainers(getAxisString(keyKey),_dv.container_rule)
 											
 											if(args[getAxisString(keyKey)+'Grid']) {
-												renderAxisContainers(getAxisString(keyKey),_.container_grid,true)
+												renderAxisContainers(getAxisString(keyKey),_dv.container_grid,true)
 											}
 
 										case 'color':
@@ -3056,24 +3204,18 @@
 
 
 								});
+
+								renderGraph();
 								
+								// _dv.resize = null;
 
-									
-								renderGraph(_.data);
+								_1p21.graphs[selector] = {data:_dv.data,calcuated:_dv};
 
-								// _.resize = null;
-
-								_1p21.graphs[selector] = {data:_.data,calcuated:_};
-
-								window.addEventListener("resize", function(){
-									clearTimeout(_.resize);
-									_.resize = setTimeout(function(){
-										if(args.srcMultiple){
-
-										}else{
-											renderGraph(_.data);
-										}
-									},100);
+								window.addEventListener("resize", () => {
+									clearTimeout(_dv.resize);
+									_dv.resize = setTimeout(() => {
+										renderGraph();
+									},300);
 								});
 								
 							},args.delay);
@@ -3097,47 +3239,53 @@
 		 * GETREADY TO USE ALL OF THEM FUCKHOLES
 		*****************************************************************************/
 
-		//data is embedded on the page oooooo
-		if(args.srcPath.indexOf(window.location.href) > -1){
-			var jsonSelector = document.getElementById(args.srcPath.getHash()).innerHTML;
-			
-			if(jsonSelector.isValidJSONString()){
+		window.addEventListener('DOMContentLoaded',() => {
 
-				var dataIsJSON = JSON.parse(jsonSelector);
-				init(dataIsJSON);
-			}else{
-				renderError('Data input may not be valid. Please check and update the syntax');
-			}
-
-		//o its not ok we normal now
-		}else{
-			switch(args.srcPath.getFileExtension()) {
-				case 'csv':
-				case 'dsv':
-				case 'tsv':
-				case 'xml':
-					d3[args.srcPath.getFileExtension()](args.srcPath,function(d){
-							return d;
-						})
-						.then(init)
-						.catch(function(error){
-							renderError(error,false);
-						});
-					break;
+			//data is embedded on the page oooooo
+			if(args.srcPath.indexOf(window.location.href) > -1){
+				const jsonSelector = document.getElementById(strGetHash(args.srcPath)).innerHTML;
 				
-				default:
-					d3.json(args.srcPath,function(d){
-							return d;
-						})
-						.then(init)
-						.catch(function(error){
-							renderError(error,false);
-						});
-					break;
+				if( strIsValidJSONString(jsonSelector) ){
+
+					const dataIsJSON = JSON.parse(jsonSelector);
+					init(dataIsJSON);
+				}else{
+					renderError('Data input may not be valid. Please check and update the syntax');
+				}
+
+			//o its not ok we normal now
+			}else{
+				switch( strGetFileExtension(args.srcPath) ) {
+					case 'csv':
+					case 'dsv':
+					case 'tsv':
+					case 'xml':
+						d3[ strGetFileExtension(args.srcPath)](args.srcPath,(d)=>{
+								return d;
+							})
+							.then(init)
+							.catch((error)=>{
+								renderError(error,false);
+							});
+						break;
+					
+					default:
+						d3.json(args.srcPath,(d)=>{
+								return d;
+							})
+							.then(init)
+							.catch((error)=>{
+								renderError(error,false);
+							});
+						break;
+				}
 			}
-		}
+		})
+
+		
+
 	}
 
 	window._1p21 = _1p21;
 	
-}(window,d3));
+})(window,d3);

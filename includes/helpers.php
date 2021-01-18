@@ -72,7 +72,6 @@ deep sub field get but only get the post meta that this fuck actually needs
 */
 
 function _1p21_dv_deep_sub_fields($array = array()){
-	global $post;
 	
 
 	$defaults = array(
@@ -90,11 +89,9 @@ function _1p21_dv_deep_sub_fields($array = array()){
 
 	$return_arr = array();
 	$acf_prefix = 'dv_';
-	
 
 
 	foreach($args['fields'] as $field){
-
 
 		if(
 			$field[ 'name' ] !== null
