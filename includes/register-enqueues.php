@@ -19,16 +19,20 @@
 
 		}else{
 			
-			wp_register_style( '1p21-dv-data-visualizer-style',_1P21_DV_PLUGIN_URL . 'assets/data-visualizer.css',array(),null );
+			wp_register_style( '1p21-dv-data-visualizer-style',_1P21_DV_PLUGIN_URL . 'assets/dataVisualizer.css',array(),null );
 
-			wp_register_script( 'd3',_1P21_DV_PLUGIN_URL.'assets/d3.min.js',array(),false,true);
+			if(current_user_can('administrator')) {
+				wp_register_script( 'd3',_1P21_DV_PLUGIN_URL.'assets/d3.js',array(),false,true);
+			}else{
+				wp_register_script( 'd3',_1P21_DV_PLUGIN_URL.'assets/d3.min.js',array(),false,true);
+			}
 
 				wp_register_script( 'd3-tip',_1P21_DV_PLUGIN_URL.'assets/d3-tip.min.js',array('d3'),false,true);
 
 				if(current_user_can('administrator')) {
-					wp_register_script( '1p21-dv-data-visualizer-script',_1P21_DV_PLUGIN_URL . 'assets/data-visualizer.min.js',array('d3','d3-tip'),null,true);
+					wp_register_script( '1p21-dv-data-visualizer-script',_1P21_DV_PLUGIN_URL . 'assets/dataVisualizer.min.js',array('d3','d3-tip'),null,true);
 				}else{
-					wp_register_script( '1p21-dv-data-visualizer-script',_1P21_DV_PLUGIN_URL . 'assets/data-visualizer.min.js',array('d3','d3-tip'),null,true);
+					wp_register_script( '1p21-dv-data-visualizer-script',_1P21_DV_PLUGIN_URL . 'assets/dataVisualizer.min.js',array('d3','d3-tip'),null,true);
 				}
 		}
 
@@ -67,17 +71,22 @@
 			if($_1p21_dv['enqueued'] == false){
 
 				//stylesheet
-					wp_add_inline_style('1p21-dv-data-visualizer-style',_1p21_dv_get_file_as_string(_1P21_DV_PLUGIN_PATH . '/assets/data-visualizer.css') );
+					wp_add_inline_style('1p21-dv-data-visualizer-style',_1p21_dv_get_file_as_string(_1P21_DV_PLUGIN_PATH . '/assets/datVvisualizer.css') );
 
 				//script
-					wp_add_inline_script('d3',_1p21_dv_get_file_as_string(_1P21_DV_PLUGIN_PATH.'/assets/d3.v5.min.js') );
+
+			if(current_user_can('administrator')) {
+				wp_add_inline_script('d3',_1p21_dv_get_file_as_string(_1P21_DV_PLUGIN_PATH.'/assets/d3.js') );
+			}else{
+				wp_add_inline_script('d3',_1p21_dv_get_file_as_string(_1P21_DV_PLUGIN_PATH.'/assets/d3.min.js') );
+			}
 					
 						wp_add_inline_script('d3',_1p21_dv_get_file_as_string(_1P21_DV_PLUGIN_PATH.'/assets/d3-tip.min.js') );
 
 						if(current_user_can('administrator')) {
-							wp_add_inline_script( '1p21-dv-data-visualizer-script', _1p21_dv_get_file_as_string( _1P21_DV_PLUGIN_PATH . 'assets/data-visualizer.js') );
+							wp_add_inline_script( '1p21-dv-data-visualizer-script', _1p21_dv_get_file_as_string( _1P21_DV_PLUGIN_PATH . 'assets/dataVisualizer.js') );
 						}else{
-							wp_add_inline_script( '1p21-dv-data-visualizer-script', _1p21_dv_get_file_as_string( _1P21_DV_PLUGIN_PATH . '/assets/data-visualizer.min.js') );
+							wp_add_inline_script( '1p21-dv-data-visualizer-script', _1p21_dv_get_file_as_string( _1P21_DV_PLUGIN_PATH . '/assets/dataVisualizer.min.js') );
 						}
 
 				$_1p21_dv['enqueued'] = true;

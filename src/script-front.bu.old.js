@@ -355,7 +355,7 @@
 
 			}())
 		
-			_.has_both_text_on_blob = (function(){
+			_.has_both_text_on_shape = (function(){
 
 				if(
 					_.has_text
@@ -378,7 +378,7 @@
 
 			}());
 
-			//for calculating the height and offset for spacing on text elements by the blob items vertically. value is sum of both sides
+			//for calculating the height and offset for spacing on text elements by the shape items vertically. value is sum of both sides
 			_.text_padding = 2.25;
 
 		/*****************************************************************************
@@ -694,11 +694,11 @@
 
 
 		/*****************************************************************************
-		 * FUNCTION: getBlobSize
+		 * FUNCTION: getShapeSize
 		*****************************************************************************/
 
 			//width,height or radius boi
-			var getBlobSize = function(axisString,dis,i,initial) {
+			var getShapeSize = function(axisString,dis,i,initial) {
 
 				var keyKey  =  args[axisString+'Data'],
 					oppositeAxisAlignment = args[ getAxisStringOppo(axisString)+'Align'],
@@ -744,7 +744,7 @@
 			}
 
 		/*****************************************************************************
-		 * ENDFUNCTION: getBlobSize
+		 * ENDFUNCTION: getShapeSize
 		*****************************************************************************/
 
 
@@ -752,11 +752,11 @@
 
 
 		/*****************************************************************************
-		 * FUNCTION: getBlobRadius
+		 * FUNCTION: getShapeRadius
 		*****************************************************************************/
 
 			//duh 
-			var getBlobRadius = function(dis,i,initial){
+			var getShapeRadius = function(dis,i,initial){
 				initial = initial || false;
 				var radius = initial ? 0 : 2;
 
@@ -782,7 +782,7 @@
 			}
 
 		/*****************************************************************************
-		 * ENDFUNCTION: getBlobRadius
+		 * ENDFUNCTION: getShapeRadius
 		*****************************************************************************/
 
 
@@ -790,11 +790,11 @@
 
 
 		/*****************************************************************************
-		 * FUNCTION: getBlobTextAnchor
+		 * FUNCTION: getShapeTextAnchor
 		*****************************************************************************/
 
 			//more confusion
-			var getBlobTextAnchor = function(dis,i){
+			var getShapeTextAnchor = function(dis,i){
 
 				var anchor = 'middle';
 
@@ -824,7 +824,7 @@
 			}
 
 		/*****************************************************************************
-		 * ENDFUNCTION: getBlobTextAnchor
+		 * ENDFUNCTION: getShapeTextAnchor
 		*****************************************************************************/
 
 
@@ -832,20 +832,20 @@
 
 
 		/*****************************************************************************
-		 * FUNCTION: getBlobTextBaselineShift
+		 * FUNCTION: getShapeTextBaselineShift
 		*****************************************************************************/
 
 			//pls do not ask me po this broke my brain i will not likely know what just happened
-			var getBlobTextBaselineShift = function(coordinateAttr,keyKey){
+			var getShapeTextBaselineShift = function(coordinateAttr,keyKey){
 
 				var shift = '0em';
 
-				if( _.has_both_text_on_blob ){
+				if( _.has_both_text_on_shape ){
 
 
 					if(
 						(coordinateAttr == 'y')
-						&& _.has_both_text_on_blob
+						&& _.has_both_text_on_shape
 					){
 						// calculate height
 						var full_height = _.text_base_size * (args.textNameSize + args.textValueSize + _.text_padding) // .5 margin top bottom and between text
@@ -867,7 +867,7 @@
 			}
 
 		/*****************************************************************************
-		 * ENDFUNCTION: getBlobTextBaselineShift
+		 * ENDFUNCTION: getShapeTextBaselineShift
 		*****************************************************************************/
 
 
@@ -875,11 +875,11 @@
 
 
 		/*****************************************************************************
-		 * FUNCTION: getBlobTextOrigin
+		 * FUNCTION: getShapeTextOrigin
 		*****************************************************************************/
 
 
-			var getBlobTextOrigin = function(coordinate,dis,i,initial){
+			var getShapeTextOrigin = function(coordinate,dis,i,initial){
 				
 				initial = initial || false;
 				//coordinate is influenced by the axis right now so this is the only time coordinate and axis is one and the same. i think... do not trust me on this
@@ -916,7 +916,7 @@
 					
 				}else{
 
-					// offset by where the coordinates of the ends of the blob and axis alignment is at and spaces it by the dimensions of the text bitches
+					// offset by where the coordinates of the ends of the shape and axis alignment is at and spaces it by the dimensions of the text bitches
 					var shiftPad = function(){
 						var value = 0,
 						multiplier = 1;
@@ -981,25 +981,25 @@
 
 									if( 
 										(args.type !== 'bar' || !args.barTextWithin)
-										&& (parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i)) )
+										&& (parseFloat(getShapeSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i)) )
 									){
 										value = -_.m_length(coordinate,i);
 									}else if(
 										(args.type == 'bar' && args.barTextWithin)
-										&& (parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i))
+										&& (parseFloat(getShapeSize(coordinate,dis,i)) < _.m_length(coordinate,i))
 									 ){
-										value = -getBlobSize(coordinate,dis,i);
+										value = -getShapeSize(coordinate,dis,i);
 									}
 
 								}else{
 									if(
 										(
 											(args.type !== 'bar' || !args.barTextWithin)
-											&& (parseFloat(getBlobSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i)) )
+											&& (parseFloat(getShapeSize(coordinate,dis,i)) >= (args[getDimension(coordinate,true)] - _.m_length(coordinate,i)) )
 										)
 										|| (
 											(args.type == 'bar' && args.barTextWithin)
-											&& (parseFloat(getBlobSize(coordinate,dis,i)) < _.m_length(coordinate,i))
+											&& (parseFloat(getShapeSize(coordinate,dis,i)) < _.m_length(coordinate,i))
 										)
 									){
 
@@ -1026,10 +1026,10 @@
 
 					if( keyKey  == 0) {
 
-						offset = getBlobOrigin(coordinate,dis,i);
+						offset = getShapeOrigin(coordinate,dis,i);
 
 						if(args.type == 'bar') {
-							offset += getBlobSize(coordinate,dis,i) / 2;
+							offset += getShapeSize(coordinate,dis,i) / 2;
 						}
 
 					}else{
@@ -1039,7 +1039,7 @@
 							case 'top':
 
 								if(!initial && args.type !== 'scatter'){
-									offset = getBlobSize(coordinate,dis,i)
+									offset = getShapeSize(coordinate,dis,i)
 								}
 								break;
 
@@ -1054,7 +1054,7 @@
 
 								}else{
 
-									offset = args[getDimension(coordinate)] - getBlobSize(coordinate,dis,i);
+									offset = args[getDimension(coordinate)] - getShapeSize(coordinate,dis,i);
 									
 								}
 
@@ -1065,7 +1065,7 @@
 								if( args.type !== 'bar' ||  !args.barTextWithin ){
 
 									if(!initial) {
-										offset = getBlobSize(coordinate,dis,i);
+										offset = getShapeSize(coordinate,dis,i);
 									}
 								}
 
@@ -1088,7 +1088,7 @@
 			}
 
 		/*****************************************************************************
-		 * ENDFUNCTION: getBlobTextOrigin
+		 * ENDFUNCTION: getShapeTextOrigin
 		*****************************************************************************/
 
 
@@ -1096,10 +1096,10 @@
 
 
 		/*****************************************************************************
-		 * FUNCTION: getBlobOrigin
+		 * FUNCTION: getShapeOrigin
 		*****************************************************************************/
 
-			var getBlobOrigin = function(coordinate,dis,i,initial){
+			var getShapeOrigin = function(coordinate,dis,i,initial){
 				// same here.. could be the same probably
 				var keyKey =  args[ coordinate+'Data'],
 					oppositeAxisAlignment = args[ getAxisStringOppo(coordinate)+'Align'],
@@ -1144,7 +1144,7 @@
 							(args.type == 'line' || args.type == 'scatter')
 							&& !args.nameIsNum 
 						) {
-							offset += getBlobSize( coordinate ,dis,i) / 2;
+							offset += getShapeSize( coordinate ,dis,i) / 2;
 						}
 					}
 						
@@ -1157,7 +1157,7 @@
 			}
 
 		/*****************************************************************************
-		 * ENDFUNCTION: getBlobOrigin
+		 * ENDFUNCTION: getShapeOrigin
 		*****************************************************************************/
 
 
@@ -1288,23 +1288,23 @@
 					
 					path
 						[aCord.name](function(dis,i){
-							return getBlobOrigin(axisToFill,dis,i,initial); 
+							return getShapeOrigin(axisToFill,dis,i,initial); 
 						})
 						[aCord.value](function(dis,i){
-							return getBlobOrigin(getAxisStringOppo(axisToFill),dis,i,initial);
+							return getShapeOrigin(getAxisStringOppo(axisToFill),dis,i,initial);
 						})
 						[aCord.fill](function(dis,i){
-							return getBlobOrigin( getAxisStringOppo(axisToFill),dis,i,true) + (multiplier * args[getDimension(axisToFill)]);
+							return getShapeOrigin( getAxisStringOppo(axisToFill),dis,i,true) + (multiplier * args[getDimension(axisToFill)]);
 						});
 
 				}else{
 
 					path
 						.x(function(dis,i){
-							return getBlobOrigin('x',dis,i,initial);
+							return getShapeOrigin('x',dis,i,initial);
 						})
 						.y(function(dis,i){
-							return getBlobOrigin('y',dis,i,initial);
+							return getShapeOrigin('y',dis,i,initial);
 						});
 
 				}
@@ -1824,7 +1824,7 @@
 					
 
 
-				_.blob = _.container_graph.selectAll(_.graph_item_element +'.'+prefix + 'graph-item.graph-item-blob')
+				_.shape = _.container_graph.selectAll(_.graph_item_element +'.'+prefix + 'graph-item.graph-item-shape')
 					.data(_.data,function(dis){
 						
 						return deepGet(dis,args.key[0])
@@ -1832,8 +1832,8 @@
 
 
 			
-				//blob exit
-				_.blob.exit()
+				//shape exit
+				_.shape.exit()
 					.transition(_.duration)
 					.attr('fill','transparent')
 					.attr('stroke','transparent')
@@ -1842,13 +1842,13 @@
 				//text exit
 				if( _.has_text ){
 
-					_.blob_text = _.container_graph.selectAll('text.'+prefix + 'graph-item.graph-item-text')
+					_.shape_text = _.container_graph.selectAll('text.'+prefix + 'graph-item.graph-item-text')
 						.data(_.data,function(dis){
 							return deepGet(dis,args.key[0])
 						});
 
 				
-					_.blob_text.exit()
+					_.shape_text.exit()
 						.transition(_.duration)
 						.attr('fill','transparent')
 						.attr('stroke','transparent')
@@ -1856,12 +1856,12 @@
 					
 					if(args.type == 'pie' && args.piLabelStyle == 'linked'){
 
-						_.blob_text_link = _.container_graph.selectAll('polyline.'+prefix + 'graph-item.graph-item-link')
+						_.shape_text_link = _.container_graph.selectAll('polyline.'+prefix + 'graph-item.graph-item-link')
 							.data(_.data,function(dis){
 								return deepGet(dis,args.key[0])
 							});
 
-						_.blob_text_link.exit()
+						_.shape_text_link.exit()
 							.transition(_.duration)
 							.attr('fill','transparent')
 							.attr('stroke','transparent')
@@ -1936,26 +1936,26 @@
 				
 					
 					
-					_.enter_blob = _.blob.enter()
+					_.enter_shape = _.shape.enter()
 						.append(_.graph_item_element)
 							.attr('class', function(dis){
-								return prefix + 'graph-item graph-item-blob'
+								return prefix + 'graph-item graph-item-shape'
 									+ ' '+ 'data-name-'+deepGet(dis,args.key[0]);
 							});
 
-						_.merge_blob = _.blob.merge(_.enter_blob)
+						_.merge_shape = _.shape.merge(_.enter_shape)
 							
 						//coordinates
 						if(args.type !== 'pie'){
 
-							_.merge_blob
+							_.merge_shape
 								.transition(_.duration)
 									.attrTween(
 										((args.type == 'line' || args.type == 'scatter') ? 'cx' : 'x'),
 										function(dis,i){
 											return getInterpolation(
-												getBlobOrigin('x',dis,i,true),
-												getBlobOrigin('x',dis,i,false)
+												getShapeOrigin('x',dis,i,true),
+												getShapeOrigin('x',dis,i,false)
 											)
 										}
 									)
@@ -1963,8 +1963,8 @@
 										((args.type == 'line' || args.type == 'scatter') ? 'cy' : 'y'),
 										function(dis,i){
 											return getInterpolation(
-												getBlobOrigin('y',dis,i,true),
-												getBlobOrigin('y',dis,i,false)
+												getShapeOrigin('y',dis,i,true),
+												getShapeOrigin('y',dis,i,false)
 											)
 										}
 									)
@@ -1975,7 +1975,7 @@
 						//areas and what not
 						if(args.type == 'pie'){
 							
-							_.merge_blob
+							_.merge_shape
 								.transition(_.duration)
 									.attrTween('d',function(dis,i){
 										
@@ -1995,42 +1995,42 @@
 						}
 						
 						if(args.type == 'line' || args.type == 'scatter'){
-							_.merge_blob
+							_.merge_shape
 								.transition(_.duration)
 									.attrTween('r',function(dis,i){
 										return getInterpolation(
-											getBlobRadius(dis,i,true),
-											getBlobRadius(dis,i,false)
+											getShapeRadius(dis,i,true),
+											getShapeRadius(dis,i,false)
 										);
 									})
 
 							if(args.type == 'line' && !args.linePoints) {
-								_.merge_blob
+								_.merge_shape
 									.attr('fill-opacity',0)
 									.attr('stroke-opacity',0);
 							}
 
 
 						}else{
-							_.merge_blob
+							_.merge_shape
 								.transition(_.duration)
 									.attrTween('width',function(dis,i){
 										return getInterpolation(
-											getBlobSize('x',dis,i,true),
-											getBlobSize('x',dis,i,false)
+											getShapeSize('x',dis,i,true),
+											getShapeSize('x',dis,i,false)
 										);
 									}) // _ width
 									.attrTween('height',function(dis,i){
 										return getInterpolation(
-											getBlobSize('y',dis,i,true),
-											getBlobSize('y',dis,i,false)
+											getShapeSize('y',dis,i,true),
+											getShapeSize('y',dis,i,false)
 										);
 									})
 						}
 
 						//tooltip
 						if(args.tooltipEnable) {
-							_.merge_blob
+							_.merge_shape
 								.on('mousemove',function(dis){
 										_.tooltip.show(dis,renderCursorStalker(d3.event));
 								})
@@ -2046,20 +2046,20 @@
 									|| args.lineColor
 								)
 							) {
-								_.merge_blob
+								_.merge_shape
 									.attr('fill',function(){
 										return args.linePointsColor || args.lineColor;
 									});
 
 							}
 						}else{
-							_.merge_blob
+							_.merge_shape
 								.attr('fill',function(dis,i){
 									return _.the_color(deepGet(dis,args.key.color));
 								});
 
 								if(args.type == 'scatter'){
-									_.merge_blob
+									_.merge_shape
 										.attr('fill-opacity',args.areaOpacity)
 										.attr('stroke-width',1)
 										.attr('stroke',function(dis,i){
@@ -2075,9 +2075,9 @@
 				){
 
 					// pie polyline
-					if(_.blob_text_link ){
+					if(_.shape_text_link ){
 						
-						_.enter_blob_text_link = _.blob_text_link
+						_.enter_shape_text_link = _.shape_text_link
 							.enter()
 							.append('polyline')
 							.attr('class',function(dis){
@@ -2086,7 +2086,7 @@
 							})
 
 						
-						_.merge_blob_text_link = _.blob_text_link.merge(_.enter_blob_text_link)
+						_.merge_shape_text_link = _.shape_text_link.merge(_.enter_shape_text_link)
 							.transition(_.duration)
 							.attrTween('stroke-opacity',function(dis,i){
 								
@@ -2113,7 +2113,7 @@
 
 					}
 
-					_.enter_blob_text = _.blob_text
+					_.enter_shape_text = _.shape_text
 						.enter()
 						.append('text')
 						.attr('line-height',1.25)
@@ -2156,7 +2156,7 @@
 							)
 						){
 
-							_['blob_text_'+keyKey] = _.enter_blob_text.append('tspan')
+							_['shape_text_'+keyKey] = _.enter_shape_text.append('tspan')
 
 								.attr('class', function(dis){
 									return 'graph-item-text-data-'+keyKey
@@ -2164,7 +2164,7 @@
 								} )
 								.attr('dominant-baseline','middle')
 								.attr('text-anchor',function(dis,i){
-									return getBlobTextAnchor(dis,i);
+									return getShapeTextAnchor(dis,i);
 								})
 								.attr('font-size',function(){
 									var toReturn = null;
@@ -2191,8 +2191,8 @@
 
 									return toReturn;
 								})
-								.attr('x',getBlobTextBaselineShift('x',keyKey))
-								.attr('y',getBlobTextBaselineShift('y',keyKey))
+								.attr('x',getShapeTextBaselineShift('x',keyKey))
+								.attr('y',getShapeTextBaselineShift('y',keyKey))
 								.attr('font-weight',function(){
 									var toReturn = 700;
 
@@ -2224,19 +2224,19 @@
 						
 					});
 
-					//continue fucking with text blob
-					_.merge_blob_text = _.blob_text.merge(_.enter_blob_text);
+					//continue fucking with text shape
+					_.merge_shape_text = _.shape_text.merge(_.enter_shape_text);
 
 
 					//set a minimum length for graph items to offset its text bois. doesnt matter which data key is on the axis we just want the width or height of the graph item on the given axis
 					// add padding for less math i think
 					_.m_length = function(axisString,i){
 
-						if(_.has_text && _.merge_blob_text){
+						if(_.has_text && _.merge_shape_text){
 							var value = 0;
 
 							if( getDimension( axisString ) == 'width' ) {
-								value = (_.merge_blob_text.nodes()[i].getBBox()[ getDimension( axisString ) ]) + (_.text_padding * _.text_base_size);
+								value = (_.merge_shape_text.nodes()[i].getBBox()[ getDimension( axisString ) ]) + (_.text_padding * _.text_base_size);
 							}else{
 								value = (_.text_base_size * (args.textNameSize + args.textValueSize + _.text_padding));
 							}
@@ -2246,7 +2246,7 @@
 					};
 
 
-					_.merge_blob_text
+					_.merge_shape_text
 						.attr('class', function(dis,i){
 							var classString =  prefix + 'graph-item graph-item-text';
 							
@@ -2260,11 +2260,11 @@
 											args.barTextWithin
 											&& (
 												( // it out
-													(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) < _.m_length(getAxisString(1),i))
+													(parseFloat(getShapeSize(getAxisString(1),dis,i,false)) < _.m_length(getAxisString(1),i))
 													&& !isDark(args.colorBackground)
 												)
 												|| ( //it in
-													(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) >= _.m_length(getAxisString(1),i))
+													(parseFloat(getShapeSize(getAxisString(1),dis,i,false)) >= _.m_length(getAxisString(1),i))
 													&& (args.colorPalette.length > 0)
 													&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
 												)
@@ -2275,13 +2275,13 @@
 											&& (
 												( // it out
 													(
-														(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) + _.m_length(getAxisString(1),i)) <=  args[getDimension(getAxisString(1))]
+														(parseFloat(getShapeSize(getAxisString(1),dis,i,false)) + _.m_length(getAxisString(1),i)) <=  args[getDimension(getAxisString(1))]
 													)
 													&& !isDark(args.colorBackground)
 												)
 												|| ( //it in
 													(
-														(parseFloat(getBlobSize(getAxisString(1),dis,i,false)) + _.m_length(getAxisString(1),i)) > args[getDimension(getAxisString(1))]
+														(parseFloat(getShapeSize(getAxisString(1),dis,i,false)) + _.m_length(getAxisString(1),i)) > args[getDimension(getAxisString(1))]
 													)
 													&& (args.colorPalette.length > 0)
 													&& !isDark( _.the_color(deepGet(dis,args.key.color)) )
@@ -2326,14 +2326,14 @@
 									
 								return getInterpolation(
 									'translate('
-										+getBlobTextOrigin('x',dataToUse,i,true)
+										+getShapeTextOrigin('x',dataToUse,i,true)
 										+','
-										+getBlobTextOrigin('y',dataToUse,i,true)
+										+getShapeTextOrigin('y',dataToUse,i,true)
 									+')',
 									'translate('
-										+getBlobTextOrigin('x',dataToUse,i,false)
+										+getShapeTextOrigin('x',dataToUse,i,false)
 										+','
-										+getBlobTextOrigin('y',dataToUse,i,false)
+										+getShapeTextOrigin('y',dataToUse,i,false)
 									+')'
 								)
 
@@ -2365,7 +2365,7 @@
 
 
 						_.legend.append('rect')
-						.attr('class','legend-item-blob')
+						.attr('class','legend-item-shape')
 							.attr('width',_.legend_size * .75)
 							.attr('height',_.legend_size * .75)
 							.attr('fill',_.the_color(key) )

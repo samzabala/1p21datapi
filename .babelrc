@@ -1,0 +1,24 @@
+{
+// 	"presets": [
+// 	  [
+// 		"preset-env",
+// 		{
+// 		  "loose": true,
+// 		  "bugfixes": true,
+// 		  "modules": false
+// 		}
+// 	  ]
+// 	],
+	"plugins": [
+		[
+			"private-methods"
+		],
+		[
+			"syntax-throw-expressions"
+		],
+		[
+			"class-properties",
+			{ "loose": true }
+		]
+	]
+}

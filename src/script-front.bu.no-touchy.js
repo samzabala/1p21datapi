@@ -1,5 +1,5 @@
 /*!
-* 1point21 Data Vizualiser Version 1.2.1
+* 1point21 Data Vizualiser Version 1.2.0.2
 * Render Script
 * @license yes
 * DO NOT EDIT min.js
@@ -33,67 +33,6 @@
 				//yeeee
 				prefix = 'data-visualizer-',
 
-				// get data but with aility to get down deep because we never know where the fuck the date will be at
-				// @param obj : duh 
-				// @param keystring : hooman provided object key string that is hopefully correct 
-				// @param isNum : if the data is a number 
-				deepGet = function (obj,keyString, isNum) {
-					
-					var splitString = keyString.toString().split('.');
-					isNum = isNum || false;
-
-					//remove empty instances because they just mess with the loop
-					splitString.forEach(function(key,i){
-
-						(key == '') && splitString.splice(i, 1);
-
-					})
-
-					function multiIndex(obj,is) {
-
-						var toReturn = null;
-
-						if(is.length){
-							toReturn = multiIndex(obj[is[0]],is.slice(1))
-						}else{
-							toReturn = ( isNum == true ) ? parseFloat(obj) : obj;
-
-
-						}
-
-						return toReturn;
-					}
-
-					var value = multiIndex(obj,splitString);
-					
-
-					if(isNum == true && isNaN(value)){
-
-						console.warn(selector+' data with the key source of `'+keyString+ '` was passed as numeric but is not.' )
-					}
-					return value;
-
-				},
-
-
-				//merge defaults with custom
-				deepValidate = function(defaults,arr){
-
-					var args = defaults;
-					for (var prop in arr) {
-						//ha?
-						if(Object.prototype.toString.call(arr[prop]) == '[object Object]'){
-							args[prop] = deepValidate(args[prop],arr[prop]);
-
-						}else if(arr.hasOwnProperty.call(arr,prop)) {
-							// Push each value from `obj` into `extended`
-							args[prop] = arr[prop];
-						}
-					}
-
-					return args;
-				},
-
 
 				//get the length attribute to associate with the axis bro
 				getDimension = function(axisString,opposite){
@@ -103,7 +42,7 @@
 				},
 
 				// get the opposite boi for alignmeny purposes
-				getAxisStringOppoFromAxisString = function(axisString) { return (axisString == 'x') ? 'y' : 'x'; },
+				getAxisStringOppo = function(axisString) { return (axisString == 'x') ? 'y' : 'x'; },
 
 				//d3 does not support ie 11. kill it
 				isIE = function(){
@@ -240,12 +179,10 @@
 				title:'',
 				description:'',
 			
-			//src
+				//src
 				srcType: '',
 				srcPath: '',
 				srcKey: null,
-				srcMultiple: false,
-				srcPreNest: false,
 
 			//text
 				textNameSize: .75,
@@ -259,11 +196,10 @@
 
 				//keys
 				key: {
-					multiple: '_parent',
 					0:0,
 					1: 1,
 					color: null,
-					area: null,
+					area: null
 				},
 				//reverse
 				reverse: {
@@ -289,9 +225,9 @@
 						format1Divider: 1,
 					
 					// color
-						formatcolorPrepend: '',
-						formatcolorAppend: '',
-						formatcolorParameter: null,
+						format1Prepend: '',
+						format1Append: '',
+						format1Parameter: null,
 		
 				//kulay
 					areaMin: 10,
@@ -356,6 +292,19 @@
 					piInRadius: 0,
 
 
+			
+
+			//2.0.0 new args
+				//src
+					srcMultiple: false,
+					srcKeyMultiple: null,
+
+				//kulay
+					colorBy: 'key', //set will influence key.color
+					
+					//advanced
+					colorScheme: null,
+
 				//tooltip
 					tooltipEnable: false,
 					tooltipTextAlign: 'left',
@@ -364,20 +313,17 @@
 					tooltipDirectionParameter: null,
 					tooltipContent: null,
 
-			
-
-			//2.0.0 new args
-
-				//kulay
-					colorBy: 'key', //set will influence key.color
-					
-					//advanced
-					colorScheme: null,
-
 				
 		};
-		
-		var args = deepValidate(defaults,arr);
+
+		//merge defaults with custom
+		var args = defaults;
+		for (var prop in arr) {
+			if(arr.hasOwnProperty.call(arr,prop)) {
+				// Push each value from `obj` into `extended`
+				args[prop] = arr[prop];
+			}
+		}
 
 		/*****************************************************************************
 		 * MAP BOOL PROPERTIES FOR LESS EXTENSIVE LOGICS
@@ -484,6 +430,60 @@
 
 
 		/*****************************************************************************
+		 * FUNCTION: deepGet
+		*****************************************************************************/
+
+			// get data but with aility to get down deep because we never know where the fuck the date will be at
+			// @param obj : duh 
+			// @param keystring : hooman provided object key string that is hopefully correct 
+			// @param isNum : if the data is a number 
+			var deepGet = function (obj,keyString, isNum) {
+				
+				var splitString = keyString.toString().split('.');
+				isNum = isNum || false;
+
+				//remove empty instances because they just mess with the loop
+				splitString.forEach(function(key,i){
+
+					(key == '') && splitString.splice(i, 1);
+
+				})
+
+				function multiIndex(obj,is) {
+
+					var toReturn = null;
+
+					if(is.length){
+						toReturn = multiIndex(obj[is[0]],is.slice(1))
+					}else{
+						toReturn = ( isNum == true ) ? parseFloat(obj) : obj;
+
+
+					}
+
+					return toReturn;
+				}
+
+				var value = multiIndex(obj,splitString);
+				
+
+				if(isNum == true && isNaN(value)){
+
+					console.warn(selector+' data with the key source of `'+keyString+ '` was passed as numeric but is not.' )
+				}
+				return value;
+
+			}
+
+		/*****************************************************************************
+		 * ENDFUNCTION: deepGet
+		*****************************************************************************/
+
+
+
+
+
+		/*****************************************************************************
 		 * FUNCTION: getRange
 		*****************************************************************************/
 
@@ -507,8 +507,8 @@
 					case 1:
 						
 						if(
-							args[ getAxisStringOppoFromAxisString( getAxisString(key)) + 'Align'] == 'top'
-							|| args[getAxisStringOppoFromAxisString( getAxisString(key))+'Align'] == 'left'
+							args[ getAxisStringOppo( getAxisString(key)) + 'Align'] == 'top'
+							|| args[getAxisStringOppo( getAxisString(key))+'Align'] == 'left'
 						) {
 							range = [ 0, args[ getDimension(getAxisString(key)) ] ];
 						}else{
@@ -537,127 +537,86 @@
 			//set domain of the bois
 			// @param itemAtt : duh
 			// @param dat : ooh boi
-			var getDomain = function(keyKey,dat,dataGroupKey){
-				dataGroupKey = dataGroupKey || '';
-				// @TODO get deep into the anals of this for multiple data setup
+			var getDomain = function(keyKey,dat){
+
 				var domain = [],
-				keyString = args.key[ keyKey ],
-				pushToDom = function(d) {
-					if(!domain.includes(deepGet(d, keyString ))){
-						domain.push(deepGet(d, keyString ));
-					}
-				};
-
+				keyString = args.key[ keyKey ];
 				if(keyString){
-					switch(keyKey){
+				switch(keyKey){
+					
+					case 'color':
 						
-						case 'color':
-								dat.forEach(function(dis){
-									// if(args.srcMultiple ) {
-									// 	dis.value.forEach(function(dit){
-									// 		pushToDom(dit);
-									// 	})
-									// }else{
-										pushToDom(dis);
-									// }
-								});
+						var instances = dat.reduce(function(acc,dis){
+							if(!acc.includes(deepGet(dis, keyString ))){
+								acc.push(deepGet(dis, keyString ));
+							}
+							
+							return acc;
+						},[]);
 
-							break;
+						domain = instances;
 
-						case 'area':
-						case 0:
-						case 1:
+						break;
 
-							if(args.nameIsNum == true || keyKey == 1 || keyKey == 'area'){
+					case 'area':
+					case 0:
+					case 1:
 
-								var min,max;
+						if(args.nameIsNum == true || keyKey == 1 || keyKey == 'area'){
 
-								//min
-								if(args[getAxisString(keyKey) + 'Min'] !== null && keyKey !== 'area'){
-									min = args[getAxisString(keyKey) + 'Min'];
-								}else{
+							var min,max;
 
-									min = d3.min(dat,function(dis){
-										// if(args.srcMultiple){
-										// 	return d3.min(dis.value,function(dit){
-										// 		return deepGet(dit, keyString, true);
-										// 	}) 
-										// }else{
-											return deepGet(dis, keyString, true);
-										// }
-									});
-									
-								}
-								
-								//max
-								if(args[getAxisString(keyKey) + 'Max'] !== null && keyKey !== 'area'){
+							//min
+							if(args[getAxisString(keyKey) + 'Min'] !== null && keyKey !== 'area'){
 
-									max = args[getAxisString(keyKey) + 'Max']
-								}else{
-
-									max = d3.max(dat,function(dis){
-										// if(args.srcMultiple){
-										// 	return d3.max(dis.value,function(dit){
-										// 		return deepGet(dit, keyString, true);
-										// 	}) 
-										// }else{
-											return deepGet(dis, keyString, true);
-										// }
-									});
-
-								}
-
-								domain = [min,max];
-
-								//if it a scatter plot we shit on the boi
-								if(args.type == 'scatter' && keyKey == 0){
-									
-									var newMin = getNearest(min),
-										newMax = getNearest(max);
-
-									domain = [newMin,newMax];
-								}
-
+								min = args[getAxisString(keyKey) + 'Min'];
 							}else{
+								min = d3.min(dat,function(dis){
+									return deepGet(dis, keyString, true);
+								});
+							}
+							
+							//max
+							if(args[getAxisString(keyKey) + 'Max'] !== null && keyKey !== 'area'){
 
-								// if(args.srcMultiple){
-
-								// 	if(dataGroupKey !== '' && dis.key == dataGroupKey) {
-										
-								// 		domain = dat[dataGroupKey].value.map(function(dit){
-								// 			return deepGet(dit, keyString, false);
-								// 		})
-
-								// 	}else{
-
-									// 	dat.forEach(function(dis){
-									// 		dis.value.forEach(function(dit){
-									// 			pushToDom(dit);
-									// 		})
-									// 	});
-									// }
-
-								// }else{
-									domain = dat.map(function(dis){
-										return deepGet(dis, keyString, false);
-									});
-								// }
-
-
+								max = args[getAxisString(keyKey) + 'Max']
+							}else{
+								max = d3.max(dat,function(dis){
+									return deepGet(dis,keyString,true);
+								});
 							}
 
+							domain = [min,max];
 
+							//if it a scatter plot we shit on the boi
+							if(args.type == 'scatter' && keyKey == 0){
+								
+								var newMin = getNearest(min),
+									newMax = getNearest(max);
 
-							if(args.reverse[keyKey]) {
-								// dont use .reverse because it's a piece of shit
-								var domainReverse = [];
-								for (var i = domain.length - 1; i >= 0; i--) {
-									domainReverse.push(domain[i]);
-								}
-								domain =  domainReverse;
+								domain = [newMin,newMax];
 							}
 
-							break;
+						}else{
+							
+							domain =  dat.map(function(dis){
+								return deepGet(dis, keyString, false);
+							});
+
+						}
+
+
+
+						if(args.reverse[keyKey]) {
+							// dont use .reverse because it's a piece of shit
+							var domainReverse = [];
+							for (var i = domain.length - 1; i >= 0; i--) {
+								domainReverse.push(domain[i]);
+							}
+							domain =  domainReverse;
+						}
+
+						break;
 
 					}
 				}
@@ -742,7 +701,7 @@
 			var getShapeSize = function(axisString,dis,i,initial) {
 
 				var keyKey  =  args[axisString+'Data'],
-					oppositeAxisAlignment = args[ getAxisStringOppoFromAxisString(axisString)+'Align'],
+					oppositeAxisAlignment = args[ getAxisStringOppo(axisString)+'Align'],
 					dimension = 20;
 					initial = initial || false;
 
@@ -850,8 +809,8 @@
 					coordinates.forEach(function(coordinate){
 
 						if(
-							args[ getAxisStringOppoFromAxisString(coordinate)+'Data'] == 0
-							&& args[ getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'right'
+							args[ getAxisStringOppo(coordinate)+'Data'] == 0
+							&& args[ getAxisStringOppo(coordinate)+'Align'] == 'right'
 						){
 							anchor = 'end';
 						}
@@ -966,8 +925,8 @@
 
 							if(
 								
-								args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'bottom'
-								|| args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'right'
+								args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
+								|| args[getAxisStringOppo(coordinate)+'Align'] == 'right'
 							){
 								multiplier = -1;
 							}
@@ -997,15 +956,15 @@
 								(
 									(args.type !== 'bar' || !args.barTextWithin)
 									&& (
-										args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'bottom'
-										|| args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'right'
+										args[getAxisStringOppo(coordinate)+'Align'] == 'bottom'
+										|| args[getAxisStringOppo(coordinate)+'Align'] == 'right'
 									)
 								)
 								|| (
 									(args.type == 'bar' && args.barTextWithin)
 									&& (
-										args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'top'
-										|| args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'left'
+										args[getAxisStringOppo(coordinate)+'Align'] == 'top'
+										|| args[getAxisStringOppo(coordinate)+'Align'] == 'left'
 									)
 								)
 							){
@@ -1075,7 +1034,7 @@
 
 					}else{
 						
-						switch(args[getAxisStringOppoFromAxisString(coordinate)+'Align']){
+						switch(args[getAxisStringOppo(coordinate)+'Align']){
 
 							case 'top':
 
@@ -1088,7 +1047,7 @@
 							case 'bottom':
 								if(
 									initial && args.type !== 'scatter'
-									|| (args.barTextWithin && args[getAxisStringOppoFromAxisString(coordinate)+'Align'] == 'right')
+									|| (args.barTextWithin && args[getAxisStringOppo(coordinate)+'Align'] == 'right')
 								) {
 
 									offset = args[getDimension(coordinate)];
@@ -1143,54 +1102,59 @@
 			var getShapeOrigin = function(coordinate,dis,i,initial){
 				// same here.. could be the same probably
 				var keyKey =  args[ coordinate+'Data'],
-					oppositeAxisAlignment = args[ getAxisStringOppoFromAxisString(coordinate)+'Align'],
+					oppositeAxisAlignment = args[ getAxisStringOppo(coordinate)+'Align'],
 					offset = 0;
 
 					initial = initial || false;
 
-					if(args.type !== 'pie') {
+				if(args.type !== 'pie') {
 
-						if( args.nameIsNum == true || keyKey == 1){
+					if( args.nameIsNum == true || keyKey == 1){
+						
+						if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
 							
-							if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
+							if(initial && keyKey !== 0 && args.type !== 'scatter'){
 
-								
-								if(args.type !== 'scatter' && initial ){
-									offset = args[getDimension(coordinate)];
-								}else{
-									offset = args[getDimension(coordinate)] - (args[getDimension(coordinate)] - _['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true )));
-								}
+								offset = args[getDimension(coordinate)];
 
 							}else{
 
-								if(args.type == 'line' || args.type == 'scatter'){
-									if(
-										!initial
-										|| args.type == 'scatter'
-									){
+								offset = args[getDimension(coordinate)]
+								- (
+									args[getDimension(coordinate)]
+									- _['the_'+ args[coordinate+'Data'] ](
+										deepGet(dis, args.key[ keyKey ], true )
+									));
 
-										offset = _['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true ));
-
-									}
-
-								}
-								
 							}
 
 						}else{
 
-							offset = _['the_'+ args[coordinate+'Data'] ](deepGet(dis, args.key[ keyKey ], false));
-							
-							if(
-								(args.type == 'line' || args.type == 'scatter')
-								&& !args.nameIsNum 
-							) {
-								offset += getShapeSize( coordinate ,dis,i) / 2;
-							}
-						}
-							
+							if(args.type == 'line' || args.type == 'scatter'){
+								if(!(initial && keyKey !== 0 && args.type !== 'scatter')){
 
+									offset = _['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true ));
+
+								}
+
+							}
+							
+						}
+
+					}else{
+
+						offset = _['the_'+ args[coordinate+'Data'] ](deepGet(dis, args.key[ keyKey ], false));
+						
+						if(
+							(args.type == 'line' || args.type == 'scatter')
+							&& !args.nameIsNum 
+						) {
+							offset += getShapeSize( coordinate ,dis,i) / 2;
+						}
 					}
+						
+
+				}
 
 				return offset;
 
@@ -1225,8 +1189,8 @@
 							|| 
 							(
 								args.type !== 'pie'
-								&& args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'left'
-								|| args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'top'
+								&& args[getAxisStringOppo(axisString)+'Align'] == 'left'
+								|| args[getAxisStringOppo(axisString)+'Align'] == 'top'
 							)
 						){
 							multiplier = -1;
@@ -1238,8 +1202,8 @@
 							|| 
 							(
 								args.type !== 'pie'
-								&& args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'left'
-								|| args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'top'
+								&& args[getAxisStringOppo(axisString)+'Align'] == 'left'
+								|| args[getAxisStringOppo(axisString)+'Align'] == 'top'
 							)
 						){
 
@@ -1258,8 +1222,8 @@
 						|| 
 						(
 							args.type !== 'pie'
-							&& args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'left'
-							|| args[getAxisStringOppoFromAxisString(axisString)+'Align'] == 'top'
+							&& args[getAxisStringOppo(axisString)+'Align'] == 'left'
+							|| args[getAxisStringOppo(axisString)+'Align'] == 'top'
 						)
 					){
 						offset = args[getDimension(axisString)];
@@ -1288,84 +1252,81 @@
 		 * FUNCTION: getLinePath
 		*****************************************************************************/
 
-		var getLinePath = function(isArea,initial){
+			var getLinePath = function(isArea,initial){
 
 
-			var pathInitiator = isArea ? 'area' : 'line',
-				axisToFill = ( args.xData == 0 )  ? 'x' : 'y',
-				pathStyle = (function(){
-					var theString = 'curveLinear';
-					switch(args.lineStyle){
-						case 'step':
-							theString = 'curveStepBefore'
-							break;
-						case 'curve':
-								theString = 'curveMonotone'+(axisToFill).toUpperCase()
+				var pathInitiator = isArea ? 'area' : 'line',
+					axisToFill = ( args.xData == 0 )  ? 'x' : 'y',
+					pathStyle = (function(){
+						var theString = 'curveLinear';
+						switch(args.lineStyle){
+							case 'step':
+								theString = 'curveStepAfter'
 								break;
-					}
-					return theString
-				}()),
+							case 'curve':
+									theString = 'curveMonotone'+(axisToFill).toUpperCase()
+									break;
+						}
+						return theString
+					}()),
+					
+					path = d3[pathInitiator]();
+				if(pathInitiator == 'area') {
+
+					//name coord, value coord, fill coordinate
+					var aCord = { //default is top
+						name: axisToFill, //x
+						value: getAxisStringOppo(axisToFill)+1, //y
+						fill: getAxisStringOppo(axisToFill)+0 //initial of data name is the bottom of the fill
+					};
+					
+					var multiplier = (function(){
+						var toReturn = 0;
+
+						if(args.lineFillInvert){
+							toReturn = ((args[axisToFill+'Align'] == 'top') || (args[axisToFill+'Align'] == 'left' )) ? 1 : -1;
+						}
+
+						return toReturn;
+					}());
+					
+					
+					path
+						[aCord.name](function(dis,i){
+							return getShapeOrigin(axisToFill,dis,i,initial); 
+						})
+						[aCord.value](function(dis,i){
+							return getShapeOrigin(getAxisStringOppo(axisToFill),dis,i,initial);
+						})
+						[aCord.fill](function(dis,i){
+							return getShapeOrigin( getAxisStringOppo(axisToFill),dis,i,true) + (multiplier * args[getDimension(axisToFill)]);
+						});
+
+				}else{
+
+					path
+						.x(function(dis,i){
+							return getShapeOrigin('x',dis,i,initial);
+						})
+						.y(function(dis,i){
+							return getShapeOrigin('y',dis,i,initial);
+						});
+
+				}
+
+				if(pathStyle){
+					path.curve(d3[pathStyle]);
+				}
 				
-				path = d3[pathInitiator]();
-			if(pathInitiator == 'area') {
+				// var i = d3.interpolate(path.start(_.data),path.end(_.data))
 
-				//name coord, value coord, fill coordinate
-				var aCord = { //default is top
-					name: axisToFill, //x
-					value: getAxisStringOppoFromAxisString(axisToFill)+1, //y
-					fill: getAxisStringOppoFromAxisString(axisToFill)+0 //initial of data name is the bottom of the fill
-				};
-				
-				var multiplier = (function(){
-					var toReturn = 0;
+				// return function(t) {
+				//	 return i(t);
+				// }
 
-					if(args.lineFillInvert){
-						toReturn = ((args[axisToFill+'Align'] == 'top') || (args[axisToFill+'Align'] == 'left' )) ? 1 : -1;
-					}
-
-					return toReturn;
-				}());
-				
-				
-				path
-					[aCord.name](function(dis,i){
-						return getShapeOrigin(axisToFill,dis,i,initial); 
-					})
-					[aCord.value](function(dis,i){
-						return getShapeOrigin(getAxisStringOppoFromAxisString(axisToFill),dis,i,initial);
-					})
-					[aCord.fill](function(dis,i){
-						return (
-							args[ axisToFill + 'Align' ]  == 'bottom'
-							|| args[ axisToFill + 'Align' ]  == 'right'
-						) ? args[getDimension(axisToFill)] : 0;
-					});
-
-			}else{
-
-				path
-					.x(function(dis,i){
-						return getShapeOrigin('x',dis,i,initial);
-					})
-					.y(function(dis,i){
-						return getShapeOrigin('y',dis,i,initial);
-					});
+				return path(_.data);
 
 			}
-
-			if(pathStyle){
-				path.curve(d3[pathStyle]);
-			}
-			
-			// var i = d3.interpolate(path.start(_.data),path.end(_.data))
-
-			// return function(t) {
-			//	 return i(t);
-			// }
-
-			return path(_.data);
-
-		}
 
 		/*****************************************************************************
 		 * ENDFUNCTION: getLinePath
@@ -1499,7 +1460,6 @@
 
 				return function(t) {
 					var interVal = i(t);
-
 					// fn(interVal);
 
 					return fn(interVal,start,end);
@@ -1673,147 +1633,6 @@
 
 
 
-
-		/*****************************************************************************
-		 * FUNCTION: setData
-		*****************************************************************************/
-
-			var setData = function(dataToParse){
-
-				var toReturn = null;
-				
-				// heck if src key exists
-				toReturn = (function(){
-					if (args.srcKey) {
-						if(deepGet(dataToParse,args.srcKey)){
-							return deepGet(dataToParse,args.srcKey);
-						}else{
-							renderError(selector+' provided source key is invalid');
-						}
-					}else{
-						return dataToParse
-					}
-				}());
-
-
-
-
-
-
-				//convert to single level
-				// if(args.srcMultiple == true && args.srcPreNest) {
-
-
-				// 		var arrPreNest = [];
-
-				// 		function appendParentProp(parentKey){
-				// 			//add parent key to proops
-				// 			toReturn[parentKey].forEach(function(dis,i){
-				// 				toReturn[parentKey][i]._parent = parentKey;
-				// 				arrPreNest.push(toReturn[parentKey][i]);
-				// 			});
-				// 		}
-
-
-				// 		//if they are array
-				// 		if(Object.prototype.toString.call(toReturn) === '[object Array]'){
-
-				// 			toReturn.forEach(function(par,key){
-				// 				appendParentProp(key);
-				// 			})
-
-				// 		//if they are kwan have keys
-				// 		}else{
-				// 			Object.keys(toReturn).forEach(function(key){
-				// 				//add parent key to proops
-				// 				appendParentProp(key);
-				// 			})
-				// 		}
-
-
-
-				// 	toReturn = arrPreNest;
-
-				// }
-
-
-				
-				//filter data that has null value
-				toReturn = toReturn.filter(function(dis,i){
-
-					var toInclude = true;
-
-					datum_keys.forEach(function(keyKey){
-
-
-						if(args.key[keyKey] && deepGet(dis,args.key[keyKey]) == null) {
-								// _.has[keyKey] = false;
-							toInclude = false;
-
-							if(_.user_can_debug){
-
-								var humanForKey = keyKey == 0 ? 'name': keyKey == 1 ? 'value': keyKey;
-								console.warn(selector +' datum index `'+i+'` was filtered.\ndatum does not have data for the key `'+args.key[keyKey] + '`, which is set as the property for `'+humanForKey+'`')
-							}
-
-
-
-						}
-						
-					});
-
-					if(toInclude){
-						return dis;
-					}
-
-				});	
-				
-			
-				//sort data 0 so that it doesnt go forward then backward then forward on the graph which is weird
-				if(args.nameIsNum == true){
-					
-					var sortable = [];
-
-					for(var i = 0 ;i < toReturn.length; i++){
-						if(toReturn[i]){
-							sortable.push(toReturn[i]);
-						}
-					}
-					
-					sortable.sort(function(a, b) {
-						return deepGet(a,args.key[0],true) - deepGet(b,args.key[0],true);
-					});
-
-					toReturn = sortable;
-				}
-
-
-				// //nest it
-				// if(args.srcMultiple == true) {
-
-				// 	_.data_flat = toReturn;
-
-				// 	toReturn = d3.nest()
-				// 		.key(function(dis){
-				// 			return dis[args.key['multiple']]
-				// 		})
-				// 		.rollup(function(v){
-				// 			return v;
-				// 		})
-				// 		.entries( toReturn );
-				// }
-
-				_.data = toReturn;
-
-			}
-
-		/*****************************************************************************
-		 * ENDFUNCTION: setData
-		*****************************************************************************/
-
-
-
-
 		/*****************************************************************************
 		 * FUNCTION: setAxis
 		*****************************************************************************/
@@ -1941,63 +1760,21 @@
 
 			// fuck these bois up. pass data again in case changing data is a future feature
 			var renderGraph = function(incomingData) {
+				_.data = incomingData;
 				// ok do the thing now
 				console.log(
 					"\n",
 					selector,'('+args.title+')','-------------------------------------------------------------------',"\n",
 					'calculated shit',_,"\n",
-					'data',incomingData,"\n",
+					'data',_.data,"\n",
 					'args',args,"\n",
 					"\n"
 				);
 
-
-				// if(args.srcMultiple) {
-					
-				// 	_.container_graph = _.container.selectAll('g.' + prefix + 'graph')
-				// 		.data(incomingData,function(doot){
-				// 			return doot.key;
-				// 		});
-
-				// 	_.container_graph.exit()
-				// 		.transition(_.duration)
-				// 		.style('opacity',0)
-				// 		.remove()
-
-				// 	_.container_graph_enter = _.container_graph.enter()
-				// 		.append('g')
-				// 		.attr('class',
-				// 			prefix + 'graph'
-				// 		);
-
-				// }else{
-
-					// _.container_graph = _.container.select('g.'+prefix + 'graph')
-					
-					// _.container_graph
-					// 	.remove();
-
-
-					//create container for graph
-					_.container_graph = _.container.insert('g')
-						.attr('class',
-							prefix + 'graph'
-						);
-				// }
-
-				//offset graph for pie because its origin is in the center. right in the heart :'>
-				if(args.type == 'pie'){
-					_.container_graph
-						.attr('transform','translate('+ getPiOrigin('x') +','+ getPiOrigin('y') +')');
-				}
-
-				
-
-				//set dom
 				datum_keys.forEach(function(keyKey){
 
 					//get domain
-					_['dom_'+keyKey] = getDomain(keyKey,incomingData);
+					_['dom_'+keyKey] = getDomain(keyKey,_.data);
 
 					//set that fucker
 					if(_['the_'+keyKey] && _['dom_'+keyKey]) {
@@ -2050,10 +1827,10 @@
 					});
 				}
 					
-				// MAKE THIS MULTIPLE
-				//selector of bitches
+
+
 				_.shape = _.container_graph.selectAll(_.graph_item_element +'.'+prefix + 'graph-item.graph-item-shape')
-					.data(incomingData,function(dis){
+					.data(_.data,function(dis){
 						
 						return deepGet(dis,args.key[0])
 					});
@@ -2071,7 +1848,7 @@
 				if( _.has_text ){
 
 					_.shape_text = _.container_graph.selectAll('text.'+prefix + 'graph-item.graph-item-text')
-						.data(incomingData,function(dis){
+						.data(_.data,function(dis){
 							return deepGet(dis,args.key[0])
 						});
 
@@ -2085,7 +1862,7 @@
 					if(args.type == 'pie' && args.piLabelStyle == 'linked'){
 
 						_.shape_text_link = _.container_graph.selectAll('polyline.'+prefix + 'graph-item.graph-item-link')
-							.data(incomingData,function(dis){
+							.data(_.data,function(dis){
 								return deepGet(dis,args.key[0])
 							});
 
@@ -2117,7 +1894,6 @@
 							.attr('stroke-dasharray','0,0')
 							.transition(_.duration)
 								.attrTween('d',function(){
-									
 									return getInterpolation(
 										getLinePath(false,true),
 										getLinePath(false,false)
@@ -2168,7 +1944,8 @@
 					_.enter_shape = _.shape.enter()
 						.append(_.graph_item_element)
 							.attr('class', function(dis){
-								return prefix + 'graph-item graph-item-shape';
+								return prefix + 'graph-item graph-item-shape'
+									+ ' '+ 'data-name-'+deepGet(dis,args.key[0]);
 							});
 
 						_.merge_shape = _.shape.merge(_.enter_shape)
@@ -2177,31 +1954,7 @@
 						if(args.type !== 'pie'){
 
 							_.merge_shape
-								// .attr(
-								// 	((args.type == 'line' || args.type == 'scatter') ? 'cx' : 'x'),
-								// 	function(dis,i){
-								// 		return getShapeOrigin('x',dis,i,true);
-								// 	}
-								// )
-								// .attr(
-								// 	((args.type == 'line' || args.type == 'scatter') ? 'cy' : 'y'),
-								// 	function(dis,i){
-								// 		return getShapeOrigin('y',dis,i,true);
-								// 	}
-								// )
 								.transition(_.duration)
-									// .attr(
-									// 	((args.type == 'line' || args.type == 'scatter') ? 'cx' : 'x'),
-									// 	function(dis,i){
-									// 		return getShapeOrigin('x',dis,i,false);
-									// 	}
-									// )
-									// .attr(
-									// 	((args.type == 'line' || args.type == 'scatter') ? 'cy' : 'y'),
-									// 	function(dis,i){
-									// 		return getShapeOrigin('y',dis,i,false);
-									// 	}
-									// )
 									.attrTween(
 										((args.type == 'line' || args.type == 'scatter') ? 'cx' : 'x'),
 										function(dis,i){
@@ -2268,13 +2021,13 @@
 								.transition(_.duration)
 									.attrTween('width',function(dis,i){
 										return getInterpolation(
-											getShapeSize('x',dis,i,false),
+											getShapeSize('x',dis,i,true),
 											getShapeSize('x',dis,i,false)
 										);
 									}) // _ width
 									.attrTween('height',function(dis,i){
 										return getInterpolation(
-											getShapeSize('y',dis,i,false),
+											getShapeSize('y',dis,i,true),
 											getShapeSize('y',dis,i,false)
 										);
 									})
@@ -2370,7 +2123,26 @@
 						.append('text')
 						.attr('line-height',1.25)
 						.attr('dominant-baseline','middle')
-						;
+						.attr('stroke',function(dis){
+								if(
+									args.type == 'pie'
+									&& args.piLabelStyle == 'within'
+									&& args.colorPalette.length > 0 
+								){
+									return _.the_color(deepGet(dis,args.key.color))
+
+								}else if(
+									(args.type !== 'bar' && args.type !== 'pie')
+									|| (
+										args.type == 'pie'
+										&& args.piLabelStyle == 'linked'
+									)
+								){
+									return args.colorBackground;
+								}
+						});
+
+					//stroke width
 
 					//append content right away so we can calculate where shit offset
 					[0,1].forEach(function(keyKey){
@@ -2405,7 +2177,7 @@
 									if(
 										(
 											args.type !== 'pie'
-											&& !args[ getAxisStringOppoFromAxisString ( getAxisString(keyKey) )+'Ticks']
+											&& !args[ getAxisStringOppo ( getAxisString(keyKey) )+'Ticks']
 										)
 										|| (
 											args.type == 'pie'
@@ -2432,7 +2204,7 @@
 									if(
 										(
 											args.type !== 'pie'
-											&& !args[ getAxisStringOppoFromAxisString ( getAxisString(keyKey) )+'Ticks']
+											&& !args[ getAxisStringOppo ( getAxisString(keyKey) )+'Ticks']
 										)
 										|| (
 											args.type == 'pie'
@@ -2552,41 +2324,6 @@
 
 							return classString;
 						})
-						.attr('stroke',function(dis,i){
-							if(
-								(
-									args.type == 'pie'
-									&& args.piLabelStyle == 'within'
-									&& args.colorPalette.length > 0
-								)
-
-								|| (
-									args.type == 'bar' 
-
-									&& (
-										(
-											!args.barTextWithin
-											&& (parseFloat(getShapeSize(getAxisString(1),dis,i)) >= (args[getDimension(getAxisString(1),true)] - _.m_length(getAxisString(1),i)) )
-										)
-										|| (
-											args.barTextWithin
-											&& (parseFloat(getShapeSize(getAxisString(1),dis,i)) >= _.m_length(getAxisString(1),i))
-										) //@TODO this
-									)
-								)
-							){
-								return _.the_color(deepGet(dis,args.key.color))
-
-							}else if(
-								(args.type !== 'bar' && args.type !== 'pie')
-								|| (
-									args.type == 'pie'
-									&& args.piLabelStyle == 'linked'
-								)
-							){
-								return args.colorBackground;
-							}
-						})
 						.transition(_.duration)
 							.attrTween('transform',function(dis,i){
 
@@ -2663,6 +2400,8 @@
 							});
 				}
 
+				_1p21.graphs[selector] = {data:_.data,_:_};
+
 
 
 			}
@@ -2711,23 +2450,81 @@
 			
 				// relative to 1em supposedly idk
 				_.text_base_size = parseFloat(args.fontSize);
+				
+				// heck if src key exists
+				_.data = (function(){
+					if (args.srcKey) {
+						if(deepGet(retrievedData,args.srcKey)){
+							return deepGet(retrievedData,args.srcKey);
+						}else{
+							renderError(selector+' provided source key is invalid');
+						}
+					}else{
+						return retrievedData
+					}
+				}());
 
 				
-				setData(retrievedData);
+				//filter data that has null value
+				_.data = _.data.filter(function(dis,i){
 
+					var toInclude = true;
+
+
+					datum_keys.forEach(function(keyKey){
+
+						if(args.key[keyKey] && deepGet(dis,args.key[keyKey]) == null) {
+								// _.has[keyKey] = false;
+							toInclude = false;
+
+							if(_.user_can_debug){
+
+								var humanForKey = keyKey == 0 ? 'name': keyKey == 1 ? 'value': keyKey;
+								console.warn(selector +' datum index `'+i+'` was filtered.\ndatum does not have data for the key `'+args.key[keyKey] + '`, which is set as the property for `'+humanForKey+'`')
+							}
+
+
+
+						}
+						
+					});
+
+					if(toInclude){
+						return dis;
+					}
+
+				});
+
+
+				if(_.data.length > 0 ){
 				
 				
+					//sort data 0 so that it doesnt go forward then backward then forward on the graph which is weird
+					if(args.nameIsNum == true){
+						
+						var sortable = [];
 
+						for(var i = 0 ;i < _.data.length; i++){
+							if(_.data[i]){
+								sortable.push(_.data[i]);
+							}
+						}
+						
+						sortable.sort(function(a, b) {
+							return deepGet(a,args.key[0],true) - deepGet(b,args.key[0],true);
+						});
 
-				if(_.data && _.data.length > 0 ){
+						_.data = sortable;
+					}
+					
 
 					// fallback + validate color data
 					// if color data key aint set put in name
-					if(!(args.key.color)){ 
-						args.key.color = args.key[0];
+					if(!(arr.key.color)){ 
+						arr.key.color = args.key[0];
 
 						//if legend was not fucked with we take the authority to kill legend
-						if(!args.colorLegend){
+						if(!arr.colorLegend){
 							args.colorLegend = false;
 						}
 					};
@@ -2752,45 +2549,17 @@
 
 						for (var prop in dis) {
 							if (Object.prototype.hasOwnProperty.call(dis, prop)) {
-								var propIsOutputted = false;
+								//item
+								html += '<div class="'+prefix+'tooltip-data-property">';
 
-								if(typeof dis[prop] !== 'object'){
-
-								
-									html += '<div class="'+prefix+'tooltip-data-property">';
-
-										// label
-										if(args.srcType !== 'row'){
-											html += '<strong class="'+prefix+'tooltip-data-property-label">'+prop+':</strong> ';
-										}
+									//@TODO speshal
 
 
-								
-										datum_keys.forEach(function(keyKey){
-											
-											if(
-												args.key[keyKey]
-												&& args.key[keyKey].lastIndexOf(prop)  > -1
-												&& _['format_'+keyKey]
-												&& propIsOutputted == false
-											){
-												html += '<span class="'+prefix+'tooltip-data-property-content">'+ _['format_'+ keyKey ] (deepGet(dis,args.key[ keyKey ]) ) +'</span>';
-												propIsOutputted = true;
-											}
-
-										});
-
-										if(propIsOutputted == false) {
-
-											// content
-											html += '<span class="'+prefix+'tooltip-data-property-content">'+dis[prop]+'</span>';
-
-										}
-									
-									
-									html += '</div>';
-								
-								}
+									// label
+									html += '<strong class="'+prefix+'tooltip-data-property-label">'+prop+':</strong> ';
+									// content
+									html += '<span class="'+prefix+'tooltip-data-property-content">'+dis[prop]+'</span>';
+								html += '</div>';
 								
 							}
 						}
@@ -2879,18 +2648,15 @@
 										+ ((args.type == 'pie' && args.piLabelStyle !== null) ? ' ' + prefix +'pi-label-style-'+args.piLabelStyle : ' '+prefix+'no-label')
 									)
 									.attr('viewBox', dimensionString)
-									.attr("preserveAspectRatio", "xMinYMin meet")
+									.attr("preserveAspectRatio", "xMidYMid meet")
 									.attr('xml:space','preserve')
-									// .attr('width',_.outer_width)
-									// .attr('height',_.outer_height)
+									.attr('width',_.outer_width)
+									.attr('height',_.outer_height)
 									;
 
 									
 								//duration
-								// _.duration = _.svg.transition().duration( args.transition ).ease(d3.easeLinear);
-
-
-								// _.duration = 500;
+								_.duration = _.svg.transition().duration( args.transition ).ease(d3.easeLinear);
 									
 								_.container = _.svg.append('g')
 									.attr('class',prefix+'svg-wrapper')
@@ -2926,8 +2692,6 @@
 
 									_.svg.call(_.tooltip);
 								}
-
-								//@TODO multiple here
 
 								
 								if(args.type == 'pie'){
@@ -2965,6 +2729,13 @@
 									}
 								}
 
+
+								//create container for graph
+								_.container_graph = _.container.insert('g')
+									.attr('class',
+										prefix + 'graph'
+									);
+
 								//style warns
 								if(_.user_can_debug){
 									if(
@@ -2992,8 +2763,13 @@
 										console.debug(selector+' text may overlap. margins may need to be modified');
 									}
 								}
-								
 
+								//offset graph for pie because its origin is in the center. right in the heart :'>
+								if(args.type == 'pie'){
+									_.container_graph
+										.attr('transform','translate('+ getPiOrigin('x') +','+ getPiOrigin('y') +')');
+								}
+								
 
 								// scales and shit
 								datum_keys.forEach(function(keyKey){
@@ -3056,23 +2832,16 @@
 
 
 								});
+
 								
-
-									
 								renderGraph(_.data);
-
+								
 								// _.resize = null;
-
-								_1p21.graphs[selector] = {data:_.data,calcuated:_};
 
 								window.addEventListener("resize", function(){
 									clearTimeout(_.resize);
 									_.resize = setTimeout(function(){
-										if(args.srcMultiple){
-
-										}else{
-											renderGraph(_.data);
-										}
+										renderGraph(_.data);
 									},100);
 								});
 								
@@ -3081,7 +2850,7 @@
 						}
 					},true);
 				}else{
-					renderError('Data for '+selector+' was filtered and all items are invalid for visualizing. check provided data keys and make sure they are correct');
+					renderError('Data was filtered and all items are invalid for visualizing. check provided data keys and make sure they are correct');
 				}
 			}
 

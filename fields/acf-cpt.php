@@ -791,6 +791,38 @@ $_1p21_dv_fields_groups = array(
 				),
 			),
 			array(
+				'key' => 'field_5d55d2e48b9a1',
+				'label' => 'Set Name Key As Numeric',
+				'name' => 'dv_name_is_num',
+				'type' => 'true_false',
+				'instructions' => 'Adds additional numeric capabilities to name data.',
+				'required' => 0,
+				'conditional_logic' => array(
+					array(
+						array(
+							'field' => 'field_5d420a45de26f',
+							'operator' => '!=',
+							'value' => 'bar',
+						),
+						array(
+							'field' => 'field_5d420a45de26f',
+							'operator' => '!=',
+							'value' => 'pie',
+						),
+					),
+				),
+				'wrapper' => array(
+					'width' => '100',
+					'class' => 'dv-code',
+					'id' => '',
+				),
+				'message' => 'Convert name key to an axis of numeric data',
+				'default_value' => 0,
+				'ui' => 0,
+				'ui_on_text' => '',
+				'ui_off_text' => '',
+			),
+			array(
 				'key' => 'field_5db7516bf3aa9',
 				'label' => 'Reverse',
 				'name' => 'dv_reverse',
@@ -1027,38 +1059,6 @@ $_1p21_dv_fields_groups = array(
 						'ui_off_text' => '',
 					),
 				),
-			),
-			array(
-				'key' => 'field_5d55d2e48b9a1',
-				'label' => 'Set Name Key As Numeric',
-				'name' => 'dv_name_is_num',
-				'type' => 'true_false',
-				'instructions' => 'Adds additional numeric capabilities to name data.',
-				'required' => 0,
-				'conditional_logic' => array(
-					array(
-						array(
-							'field' => 'field_5d420a45de26f',
-							'operator' => '!=',
-							'value' => 'bar',
-						),
-						array(
-							'field' => 'field_5d420a45de26f',
-							'operator' => '!=',
-							'value' => 'pie',
-						),
-					),
-				),
-				'wrapper' => array(
-					'width' => '100',
-					'class' => 'dv-code',
-					'id' => '',
-				),
-				'message' => 'Convert name key to an axis of numeric data',
-				'default_value' => 0,
-				'ui' => 0,
-				'ui_on_text' => '',
-				'ui_off_text' => '',
 			),
 			array(
 				'key' => 'field_5d60205502da2',
@@ -3546,7 +3546,7 @@ $_1p21_dv_fields_groups = array(
 						'label' => 'Direction Parameter',
 						'name' => 'direction_parameter',
 						'type' => 'textarea',
-						'instructions' => 'Function or string that will be used by the <code>d3.tip.direction()</code> method. This will replace the set tooltip direction. View documentation here:<br> <a target="_blank" href="https://github.com/caged/d3-tip/blob/master/docs/positioning-tooltips.md#tipdirection">https://github.com/caged/d3-tip/blob/master/docs/positioning-tooltips.md#tipdirection</a>',
+						'instructions' => 'Function or string that will be used by the <code>d3.tip.direction()</code> method. This will replace the set tooltip direction. View documentation here:<br> <a target="_blank" href="https://github.com/caged/d3-tip/shape/master/docs/positioning-tooltips.md#tipdirection">https://github.com/caged/d3-tip/shape/master/docs/positioning-tooltips.md#tipdirection</a>',
 						'required' => 0,
 						'conditional_logic' => 0,
 						'wrapper' => array(
@@ -3565,7 +3565,7 @@ $_1p21_dv_fields_groups = array(
 						'label' => 'Content',
 						'name' => 'content',
 						'type' => 'textarea',
-						'instructions' => 'Function that will be used by the <code>d3.tip.html()</code> method. View documentation here:<br> <a target="_blank" href="https://github.com/caged/d3-tip/blob/master/docs/initializing-tooltips.md#d3tip">https://github.com/caged/d3-tip/blob/master/docs/initializing-tooltips.md#d3tip</a>',
+						'instructions' => 'Function that will be used by the <code>d3.tip.html()</code> method. View documentation here:<br> <a target="_blank" href="https://github.com/caged/d3-tip/shape/master/docs/initializing-tooltips.md#d3tip">https://github.com/caged/d3-tip/shape/master/docs/initializing-tooltips.md#d3tip</a>',
 						'required' => 0,
 						'conditional_logic' => 0,
 						'wrapper' => array(

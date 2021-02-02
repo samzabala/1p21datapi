@@ -1,0 +1,32 @@
+
+
+
+{
+	"ass" : [
+		{
+			"name": "Tony",
+			"age": "33",
+			"shittiness": "69"
+		},
+		{
+			"name": "Jessica",
+			"age": "17",
+			"shittiness": "666"
+		},
+		{
+			"name": "Andrew",
+			"age": "88",
+			"shittiness": "420"
+		},
+		{
+			"name": "Emily",
+			"age": "2",
+			"shittiness": "3"
+		},
+		{
+			"name": "Richard",
+			"age": "9",
+			"shittiness": "777"
+		}
+	]
+}

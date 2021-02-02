@@ -27,7 +27,7 @@ add_action( 'wp_footer', '_1p21_dv_output_what_the_fuck_is_going_on');
 
 function _1p21_dv_output_arr($args) {
 	if( current_user_can('administrator') ){
-		echo '<div class="content" style="poaition:relative;z-index:9999999!important;background:#ccc;font-size:10px;padding:1em;margin-bottom:1em;height:400px;overflow:scroll;"><pre>';
+		echo '<div class="content" style="position:relative;z-index:9!important;background:#ccc;font-size:10px;padding:1em;margin-bottom:1em;height:400px;overflow:scroll;"><pre>';
 		print_r($args);
 		echo '</pre></div>';
 	}
@@ -240,14 +240,14 @@ function _1p21_dv_dashes_to_camel_case($string, $capitalizeFirstCharacter = fals
 
 
 //key selector in a format js understands
-function _1p21_parse_data_key($key_string) {
+// function _1p21_parse_data_key($key_string) {
 
-	$parsed_key = $key_string;
-	$parsed_key  = str_replace( array("'"),'', $parsed_key); //quotes
-	$parsed_key = preg_replace("/\[(.+?)\]/",'.$1',$parsed_key);// brackets
+// 	$parsed_key = $key_string;
+// 	$parsed_key  = str_replace( array("'"),'', $parsed_key); //quotes
+// 	$parsed_key = preg_replace("/\[(.+?)\]/",'.$1',$parsed_key);// brackets
 
-	return $parsed_key;
-}
+// 	return $parsed_key;
+// }
 /********************************************************************************************
 * HELPERS BUT HMMM other ppl can use it i guess
 *********************************************************************************************/

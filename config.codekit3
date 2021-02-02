@@ -9,6 +9,14 @@
 	],
 "creatorBuild": "33081",
 "files": {
+	"/.babelrc": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/.babelrc",
+		"oF": 0
+		},
 	"/.gitignore": {
 		"cB": 0,
 		"ft": 8192,
@@ -23,6 +31,14 @@
 		"hM": 0,
 		"oA": 0,
 		"oAP": "/1p21-datavisualizer.php",
+		"oF": 0
+		},
+	"/__dev/notes.txt": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 0,
+		"oAP": "/__dev/notes.txt",
 		"oF": 0
 		},
 	"/__dev/test.svg": {
@@ -51,10 +67,18 @@
 		"oO": 0,
 		"oS": 1
 		},
-	"/__dev/testdata/nesteddata.json": {
+	"/__dev/testdata/nested.json": {
 		"ft": 524288,
 		"oA": 1,
-		"oAP": "/__dev/testdata/nesteddata-min.json",
+		"oAP": "/__dev/testdata/nested-min.json",
+		"oF": 0,
+		"oO": 0,
+		"oS": 1
+		},
+	"/__dev/testdata/test.json": {
+		"ft": 524288,
+		"oA": 1,
+		"oAP": "/__dev/testdata/test-min.json",
 		"oF": 0,
 		"oO": 0,
 		"oS": 1
@@ -65,7 +89,18 @@
 		"ma": 0,
 		"mi": 1,
 		"oA": 1,
-		"oAP": "/assets/d3-tip.min-min.js",
+		"oAP": "/assets/d3-tip.min.min.js",
+		"oF": 0,
+		"sC": 0,
+		"tS": 0
+		},
+	"/assets/d3.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/assets/d3.min.js",
 		"oF": 0,
 		"sC": 0,
 		"tS": 0
@@ -81,33 +116,33 @@
 		"sC": 0,
 		"tS": 0
 		},
-	"/assets/data-visualizer.css": {
+	"/assets/dataVisualizer.css": {
 		"aP": 1,
 		"bl": 0,
 		"ft": 16,
 		"ma": 0,
 		"oA": 0,
-		"oAP": "/assets/data-visualizer-min.css",
+		"oAP": "/assets/dataVisualizer-min.css",
 		"oF": 0,
 		"oS": 3
 		},
-	"/assets/data-visualizer.min.js": {
+	"/assets/dataVisualizer.min.js": {
 		"bF": 0,
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
 		"oA": 1,
-		"oAP": "/assets/data-visualizer.min.min.js",
+		"oAP": "/assets/dataVisualizer.min.min.js",
 		"oF": 0,
 		"sC": 0,
 		"tS": 0
 		},
-	"/assets/data-visualizer.min.js.map": {
+	"/assets/dataVisualizer.min.js.map": {
 		"cB": 0,
 		"ft": 8192,
 		"hM": 0,
 		"oA": 0,
-		"oAP": "/assets/data-visualizer.min.js.map",
+		"oAP": "/assets/dataVisualizer.min.js.map",
 		"oF": 0
 		},
 	"/assets/script-admin.min.js": {
@@ -126,10 +161,20 @@
 		"bl": 0,
 		"ft": 16,
 		"ma": 0,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "/assets/style-admin-min.css",
 		"oF": 0,
 		"oS": 3
+		},
+	"/assets/test.svg": {
+		"ft": 2097152,
+		"miP": 0,
+		"oA": 2,
+		"oAP": "/assets/test.svg",
+		"oF": 0,
+		"opt": 0,
+		"plM": 3758088159,
+		"prP": 0
 		},
 	"/fields/acf-cpt.php": {
 		"cB": 0,
@@ -238,18 +283,7 @@
 		"rFN": 0,
 		"uCM": 0
 		},
-	"/src/data-visualizer.js": {
-		"bF": 0,
-		"ft": 64,
-		"ma": 1,
-		"mi": 0,
-		"oA": 0,
-		"oAP": "/assets/data-visualizer.min.js",
-		"oF": 3,
-		"sC": 0,
-		"tS": 1
-		},
-	"/src/data-visualizer.scss": {
+	"/src/data-visualizer/dataVisualizer.scss": {
 		"aP": 0,
 		"bl": 0,
 		"dP": 10,
@@ -257,29 +291,117 @@
 		"ft": 4,
 		"ma": 0,
 		"oA": 0,
-		"oAP": "/assets/data-visualizer.css",
+		"oAP": "/assets/dataVisualizer.css",
 		"oF": 2,
 		"oS": 0,
 		"sct": 1
 		},
-	"/src/front/dv.js": {
+	"/src/data-visualizer/js/dataVisualizer.js": {
+		"bF": 6,
+		"ft": 64,
+		"ma": 1,
+		"mi": 0,
+		"oA": 0,
+		"oAP": "/assets/dataVisualizer.min.js",
+		"oF": 3,
+		"sC": 0,
+		"tS": 1
+		},
+	"/src/data-visualizer/js/src/components/axis.js": {
 		"bF": 0,
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
 		"oA": 1,
-		"oAP": "/src/front/dv.min.js",
+		"oAP": "/src/data-visualizer/js/src/components/axis.min.js",
 		"oF": 0,
 		"sC": 0,
 		"tS": 0
 		},
-	"/src/front/helpers.js": {
+	"/src/data-visualizer/js/src/components/label.js": {
 		"bF": 0,
 		"ft": 64,
 		"ma": 0,
 		"mi": 1,
 		"oA": 1,
-		"oAP": "/src/front/helpers.min.js",
+		"oAP": "/src/data-visualizer/js/src/components/label.min.js",
+		"oF": 0,
+		"sC": 0,
+		"tS": 0
+		},
+	"/src/data-visualizer/js/src/components/line.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/src/data-visualizer/js/src/components/line.min.js",
+		"oF": 0,
+		"sC": 0,
+		"tS": 0
+		},
+	"/src/data-visualizer/js/src/components/pi.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/src/data-visualizer/js/src/components/pi.min.js",
+		"oF": 0,
+		"sC": 0,
+		"tS": 0
+		},
+	"/src/data-visualizer/js/src/components/shape.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/src/data-visualizer/js/src/components/shape.min.js",
+		"oF": 0,
+		"sC": 0,
+		"tS": 0
+		},
+	"/src/data-visualizer/js/src/components/ticks.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/src/data-visualizer/js/src/components/ticks.min.js",
+		"oF": 0,
+		"sC": 0,
+		"tS": 0
+		},
+	"/src/data-visualizer/js/src/components/tip.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/src/data-visualizer/js/src/components/tip.min.js",
+		"oF": 0,
+		"sC": 0,
+		"tS": 0
+		},
+	"/src/data-visualizer/js/src/util/helpers.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/src/data-visualizer/js/src/util/helpers.min.js",
+		"oF": 0,
+		"sC": 0,
+		"tS": 0
+		},
+	"/src/data-visualizer/js/src/util/template-component.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/src/data-visualizer/js/src/util/template-component.min.js",
 		"oF": 0,
 		"sC": 0,
 		"tS": 0
@@ -317,6 +439,17 @@
 		"sC": 0,
 		"tS": 0
 		},
+	"/src/script-front.bu.no-touchy.js": {
+		"bF": 0,
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "/src/script-front.bu.no-touchy.min.js",
+		"oF": 0,
+		"sC": 0,
+		"tS": 0
+		},
 	"/src/script-front.bu.old.js": {
 		"bF": 0,
 		"ft": 64,
@@ -345,7 +478,7 @@
 		"cB": 0,
 		"ft": 8192,
 		"hM": 0,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "/templates/documentation.html",
 		"oF": 0
 		},
@@ -384,7 +517,7 @@
 	"animateCSSInjections": 1,
 	"autoBuildNewItems": 1,
 	"autoprefixerEnableIEGrid": 0,
-	"babel7PresetType": 1,
+	"babel7PresetType": 0,
 	"babelAllowRCFiles": 0,
 	"babelAuxiliaryCommentAfter": "",
 	"babelAuxiliaryCommentBefore": "",
@@ -412,7 +545,7 @@
 			"active": 0
 			},
 		"class-properties": {
-			"active": 0
+			"active": 1
 			},
 		"classes": {
 			"active": 0
@@ -574,7 +707,7 @@
 			"active": 0
 			},
 		"private-methods": {
-			"active": 0
+			"active": 1
 			},
 		"property-literals": {
 			"active": 0
@@ -640,13 +773,13 @@
 			"active": 0
 			},
 		"strict-mode": {
-			"active": 0
+			"active": 1
 			},
 		"template-literals": {
 			"active": 0
 			},
 		"throw-expressions": {
-			"active": 0
+			"active": 1
 			},
 		"typeof-symbol": {
 			"active": 0
@@ -2380,7 +2513,7 @@
 	"npmTargetDependencyListType": 1,
 	"overrideExternalServerCSS": 0,
 	"previewPathAddition": "",
-	"rollupExternals": "DataVisualizer:::dv,d3:::d3,window:::this",
+	"rollupExternals": "DataVisualizer:::dv,NewExternalModule:::,d3:::d3,window:::this",
 	"rollupReplacements": "process.env.NODE_ENV:::$NODE_ENV,,,ENVIRONMENT:::$NODE_ENV",
 	"rollupTreeshakingEnabled": 1,
 	"skippedFoldersString": "log, _logs, logs, _cache, cache, .idea, /storage/framework/sessions, node_modules",

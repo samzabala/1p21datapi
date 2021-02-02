@@ -1,28 +1,3 @@
-/*!
-* 1point21 Data Vizualiser Version 1.2.1
-* Render Script
-* @license yes
-* DO NOT EDIT min.js
-* edit its corresponding unminified js file in /src instead
-*/
-
-/* DO NOT TOUCH I DEV ON THIS BOI I ENQUEUE THE MINIFIED ONE ANYWAY  :< */
-
-/*
-
-TODO:
-pie does not display a wHOLE PIE
-duisplay types for multiple
-- compare
-- slider
-- overlap
-- one
-*/
-
-"use strict";
-
-
-
 
 
 
@@ -42,19 +17,22 @@ duisplay types for multiple
 
 			const
 				//sana 2d lang
-					coordinates = ['x','y'],
+					COORDINATES = ['x','y'],
 
 				//kwan has scales domains and shit
-					datum_keys = [0,1,'color','area'], 
+					DATUM_KEYS = [0,1,'color','area'], 
 
 				//yeeee
-					prefix = 'dv-',
+					PREFIX = 'dv-',
+
+				//for calculating the height and offset for spacing on text elements by the shape items vertically. value is sum of both sides
+					TEXT_PADDING = 2.25,
 
 				// get data but with aility to get down deep because we never know where the fuck the date will be at
 				// @param obj : duh 
 				// @param keystring : hooman provided object key string that is hopefully correct 
 				// @param isNum : if the data is a number
-					deepGet = (obj,keyString, isNum) => {
+					__calculated.#_get = (obj,keyString, isNum) => {
 						isNum = isNum || false;
 
 						let splitString = keyString.toString().split('.');
@@ -82,7 +60,7 @@ duisplay types for multiple
 							value = multiIndex(obj,splitString);
 						
 						if(isNum == true && isNaN(value)){
-							console.warn(`${selector} data with the key source of '${keyString}' was passed as numeric but is not.` )
+							console.warn(`${dv.selector} data with the key source of '${keyString}' was passed as numeric but is not.` )
 						}
 
 						return value;
@@ -108,7 +86,7 @@ duisplay types for multiple
 						},
 
 					//get the length attribute to associate with the axis bro
-						getDimension = (axisString,opposite) => {
+						ToSide = (axisString,opposite) => {
 							return opposite
 							? (
 								(axisString == 'x')
@@ -123,70 +101,71 @@ duisplay types for multiple
 						},
 
 					// get the opposite boi for alignmeny purposes
-						getOppoAxis = (axisString)=>{
+						ToOppoAxis = (axisString)=>{
 							return (axisString == 'x') ? 'y' : 'x';
 						},
 
 					//d3 does not support ie 11. kill it
-						isIE = () => {
+						VaildateBrowser = () => {
 							const ua = navigator.userAgent;
 							return ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1
 						},
+						Str = {
 
-					//string helpers
-						// duh
-							strGetFileExtension = (str)=>{
-								return str.split('.').pop();
-							},
-						
-						// convert boi to 
-							strGetHash = (str)=>{
-								const url = str;
-								const type = url.split('#');
-								const hash = type[ (type.length - 1 )] || '';
-								return hash;
-							},
-						
-						// is dis json enough for u?
-							strIsValidJSONString = (str)=>{
-								try {
-									JSON.parse(str);
+							// duh
+								fileExtension: (str)=>{
+									return str.split('.').pop();
+								},
 
-								} catch (e) {
-									return false;
+							// convert boi to 
+								hash: (str)=>{
+									const url = str;
+									const type = url.split('#');
+									const hash = type[ (type.length - 1 )] || '';
+									return hash;
+								},
+
+							// is dis json enough for u?
+								IsValidJSONString: (str)=>{
+									try {
+										JSON.parse(str);
+
+									} catch (e) {
+										return false;
+									}
+
+									return true;
+								},
+
+							//kemel
+								toCamelCase: (str)=>{
+									return str.replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index)=> {
+										return index == 0 ? word.toLowerCase() : word.toUpperCase();
+									}).replace(/\s+/g, '');
 								}
-
-								return true;
-							},
-
-						//kemel
-							strToCamelCase = (str)=>{
-								return str.replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index)=> {
-									return index == 0 ? word.toLowerCase() : word.toUpperCase();
-								}).replace(/\s+/g, '');
-							},
+						},
 
 						//is that bitch boi dark? thank u internet
-						isDark = (color)=>{
+						ColorisDark = (hexString)=>{
 
 							// Variables for red, green, blue values
 							let r, g, b, hsp;
 							
-							// Check the format of the color, HEX or RGB?
-							if(color.match(/^rgb/)) {
+							// Check the format of the hexString, HEX or RGB?
+							if(hexString.match(/^rgb/)) {
 								// If HEX --> store the red, green, blue values in separate variables
-								color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
-								r = color[1];
-								g = color[2];
-								b = color[3];
+								hexString = hexString.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
+								r = hexString[1];
+								g = hexString[2];
+								b = hexString[3];
 
 							} else {
 								// If RGB --> Convert it to HEX: http://gist.github.com/983661
-								color = +("0x" + color.slice(1).replace( 
-								color.length < 5 && /./g, '$&$&'));
-								r = color >> 16;
-								g = color >> 8 & 255;
-								b = color & 255;
+								hexString = +("0x" + hexString.slice(1).replace( 
+								hexString.length < 5 && /./g, '$&$&'));
+								r = hexString >> 16;
+								g = hexString >> 8 & 255;
+								b = hexString & 255;
 							}
 							
 							// HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
@@ -196,7 +175,7 @@ duisplay types for multiple
 								+ 0.114 * (b * b)
 							);
 						
-							// Using the HSP value, determine whether the color is light or dark
+							// Using the HSP value, determine whether the hexString is light or dark
 							if(hsp>170) { //127.5
 								return false;
 
@@ -212,12 +191,12 @@ duisplay types for multiple
 		*****************************************************************************/
 
 		// this is where the bitches at
-		const dataContainer = document.querySelector(selector);
+		const dataContainer = document.querydv.Selector(dv.selector);
 		
-		if(isIE()){
+		if(VaildateBrowser()){
 			const error =  document.createElement('div');
 
-			error.className = `${prefix}wrapper fatality`;
+			error.className = `${PREFIX}wrapper fatality`;
 			error.innerHTML = 'Sorry, this graphic needs D3 to render the data but your browser does not support it.<br><br> Newer versions of Chrome, Edge, Firefox and Safari are recommended. <br><br>See <em><a target="_blank" rel="nofollow" href="https://d3-wiki.readthedocs.io/zh_CN/master/Home/#browser-platform-support">the official wiki</a></em> for more information';
 
 			dataContainer.appendChild(error);
@@ -225,9 +204,10 @@ duisplay types for multiple
 		}
 
 		//stor variables initiated after sucessful data call + parameter declaration set as something_`axis` so its easier to tell apart which shit is set by hooman and which one javascript sets up for hooman
-		const _dv = {};
+		const __calculated = {};
 
-		_dv.dv_container = dataContainer;
+		__calculated.elem = dataContainer;
+		__calculated.pi_angle_start = {};
 
 		//default params for hooman
 		const defaults  = {
@@ -379,10 +359,10 @@ duisplay types for multiple
 		 * MAP BOOL PROPERTIES FOR LESS EXTENSIVE LOGICS
 		*****************************************************************************/
 
-			_dv.user_can_debug = document.body.classList.contains('logged-in');
+			__calculated.is_debuggy = document.body.classList.contains('logged-in');
 
 			//if its one ob dis bos
-			_dv.is_type = (types) => {
+			__calculated.is_base = (types) => {
 
 				let templates = [];
 
@@ -404,22 +384,28 @@ duisplay types for multiple
 
 				return toReturn;
 			};
+
+			__calculated.has_nested_data = (() => {
+				return !(
+					( args.srcMultiple && __calculated.is_base('pie') )
+				)
+			})();
 			
 
-			_dv.has_text = (() => {
+			__calculated.has_text = (() => {
 
 				if(
 					!args.toolTip
 					&& (
 						(
-							_dv.is_type(['bar','line'])
+							__calculated.is_base(['bar','line'])
 							&& (
 								!args.xTicks
 								|| !args.yTicks
 							)
 						)
 						|| (
-							_dv.is_type('pie')
+							__calculated.is_base('pie')
 							&& (
 								args.piLabelStyle
 								|| !args.colorLegend
@@ -435,20 +421,20 @@ duisplay types for multiple
 
 			})();
 		
-			_dv.has_both_text_on_blob = (() => {
+			__calculated.has_both_text = (() => {
 
 				if(
-					_dv.has_text
+					__calculated.has_text
 					&& (
 						(
-							_dv.is_type(['bar','line','scatter'])
+							__calculated.is_base(['bar','line','scatter'])
 							&& (
 								!args.xTicks
 								&& !args.yTicks
 							)
 						)
 						|| (
-							_dv.is_type('pie')
+							__calculated.is_base('pie')
 							&& !args.colorLegend
 							&& args.piLabelStyle !== null
 						)
@@ -462,9 +448,6 @@ duisplay types for multiple
 
 			})();
 
-			//for calculating the height and offset for spacing on text elements by the blob items vertically. value is sum of both sides
-			_dv.text_padding = 2.25;
-
 		/*****************************************************************************
 		 * END MAP BOOL PROPERTIES FOR LESS EXTENSIVE LOGICS
 		*****************************************************************************/
@@ -474,10 +457,10 @@ duisplay types for multiple
 
 
 		/*****************************************************************************
-		 * FUNCTION: getDataStructure
+		 * FUNCTION: theData
 		*****************************************************************************/
 
-			const getDataStructure = (mode,dataSet)=>{
+			const theData = (mode,dataSet)=>{
 				mode = mode || 'flat'; //could be nested
 				dataSet = dataSet || 'complete';
 
@@ -488,11 +471,14 @@ duisplay types for multiple
 					&& args.srcMultiple == true
 				){
 					toReturn   = d3.group(
-						_dv.data[dataSet],
+						__calculated.data[dataSet],
 						(dis)=>{
 							return dis[args.key['multiple']]
 						}
 					);
+
+					//to array because its easier to deal with
+					toReturn = Array.from(toReturn, ([name, value]) => ({ parent: name, values: value }))
 
 
 
@@ -504,9 +490,9 @@ duisplay types for multiple
 					// .rollup((v)=>{
 					// 	return v;
 					// })
-					// .entries( _dv.data[dataSet] );
+					// .entries( __calculated.data[dataSet] );
 				}else{
-					toReturn.push(_dv.data[dataSet]);
+					toReturn = __calculated.data[dataSet];
 				}
 
 				return toReturn;
@@ -514,7 +500,7 @@ duisplay types for multiple
 			};
 
 		/*****************************************************************************
-		 * ENDFUNCTION: getDataStructure
+		 * ENDFUNCTION: theData
 		*****************************************************************************/
 
 
@@ -522,10 +508,10 @@ duisplay types for multiple
 
 
 		/*****************************************************************************
-		 * FUNCTION: getAxisString
+		 * FUNCTION: axisName
 		*****************************************************************************/
 
-			const getAxisString = (key)=>{
+			const axisName = (key)=>{
 
 				if (key == 0 || key == 1){
 					return (args.xData == key) ? 'x' : 'y'
@@ -537,7 +523,7 @@ duisplay types for multiple
 			};
 
 		/*****************************************************************************
-		 * ENDFUNCTION: getAxisString
+		 * ENDFUNCTION: axisName
 		*****************************************************************************/
 
 
@@ -569,12 +555,12 @@ duisplay types for multiple
 
 
 		/*****************************************************************************
-		 * FUNCTION: getRange
+		 * FUNCTION: range
 		*****************************************************************************/
 
 			//set range of the bois
 			// @param itemAtt : duh
-			const getRange = (key)=>{
+			const range = (key)=>{
 
 				let range = [];
 
@@ -590,13 +576,13 @@ duisplay types for multiple
 					case 0:
 					case 1:
 						if(
-							args[ `${getOppoAxis( getAxisString(key))}Align` ] == 'top'
-							|| args[ `${getOppoAxis( getAxisString(key))}Align` ] == 'left'
+							args[ `${ToOppoAxis( axisName(key))}Align` ] == 'top'
+							|| args[ `${ToOppoAxis( axisName(key))}Align` ] == 'left'
 						) {
-							range = [ 0, args[ getDimension(getAxisString(key)) ] ];
+							range = [ 0, args[ ToSide(axisName(key)) ] ];
 
 						}else{
-							range = [ args[ getDimension(getAxisString(key)) ] , 0 ];
+							range = [ args[ ToSide(axisName(key)) ] , 0 ];
 						}
 						break;
 				}
@@ -604,7 +590,7 @@ duisplay types for multiple
 			}
 
 		/*****************************************************************************
-		 * ENDFUNCTION: getRange
+		 * ENDFUNCTION: range
 		*****************************************************************************/
 
 
@@ -612,26 +598,26 @@ duisplay types for multiple
 
 
 		/*****************************************************************************
-		 * FUNCTION: getDomain
+		 * FUNCTION: domain
 		*****************************************************************************/
 
 			//set domain of the bois
 			// @param itemAtt : duh
 			// @param dat : ooh boi
-			const getDomain = (keyKey,dataToRender,dataGroupKey)=>{
+			const domain = (keyKey,dataToRender,dataGroupKey)=>{
 				dataGroupKey = dataGroupKey || '';
 
 				const keyString = args.key[ keyKey ],
 					pushToDom = (d)=> {
-						if(!domain.includes(deepGet(d, keyString ))){
-							domain.push(deepGet(d, keyString ));
+						if(!domain.includes(__calculated.#_get(d, keyString ))){
+							domain.push(__calculated.#_get(d, keyString ));
 						}
 					};
 
 				// @TODO get deep into the anals of this for multiple data setup
 				let domain = [],
 					dat = args.srcMultiple
-						? getDataStructure('nested')
+						? theData('nested')
 						: dataToRender;
 
 				if(keyString){
@@ -639,7 +625,7 @@ duisplay types for multiple
 						case 'color':
 								dat.forEach((dis)=>{
 									if(args.srcMultiple) {
-										dis.forEach((dit)=>{
+										dis.values.forEach((dit)=>{
 											pushToDom(dit);
 										})
 									}else{
@@ -659,40 +645,40 @@ duisplay types for multiple
 								let min,max;
 								//min
 									if(
-										args[`${getAxisString(keyKey)}Min`] !== null
+										args[`${axisName(keyKey)}Min`] !== null
 										&& keyKey !== 'area'
 									){
-										min = args[`${getAxisString(keyKey)}Min`];
+										min = args[`${axisName(keyKey)}Min`];
 
 									}else{
 										min = d3.min(dat,(dis)=>{
 											if(args.srcMultiple){
-												return d3.min(dis[1],(dit)=>{
-													return deepGet(dit, keyString, true);
+												return d3.min(dis.values,(dit)=>{
+													return __calculated.#_get(dit, keyString, true);
 												});
 
 											}else{
-												return deepGet(dis, keyString, true);
+												return __calculated.#_get(dis, keyString, true);
 											}
 										});
 									}
 
 								//max
 									if(
-										args[`${getAxisString(keyKey)}Max`] !== null
+										args[`${axisName(keyKey)}Max`] !== null
 										&& keyKey !== 'area'
 									){
-										max = args[`${getAxisString(keyKey)}Max`]
+										max = args[`${axisName(keyKey)}Max`]
 
 									}else{
 										max = d3.max(dat,(dis)=>{
 											if(args.srcMultiple){
-												return d3.max(dis[1],(dit)=>{
-													return deepGet(dit, keyString, true);
+												return d3.max(dis.values,(dit)=>{
+													return __calculated.#_get(dit, keyString, true);
 												});
 
 											}else{
-												return deepGet(dis, keyString, true);
+												return __calculated.#_get(dis, keyString, true);
 											}
 										});
 									}
@@ -700,7 +686,7 @@ duisplay types for multiple
 								domain = [min,max];
 
 								//if it a scatter plot we get nereast
-								if(_dv.is_type('scatter') && keyKey == 0){
+								if(__calculated.is_base('scatter') && keyKey == 0){
 									const newMin = getNearest(min),
 										newMax = getNearest(max);
 									domain = [newMin,newMax];
@@ -714,12 +700,12 @@ duisplay types for multiple
 										&& dat.key == dataGroupKey
 									) {
 										domain = dat.get(dataGroupKey).map((dit)=>{
-											return deepGet(dit, keyString, false);
+											return __calculated.#_get(dit, keyString, false);
 										});
 
 									}else{
 										dat.forEach((dis)=>{
-											dis.forEach((dit)=>{
+											dis.values.forEach((dit)=>{
 												pushToDom(dit);
 											})
 										});
@@ -727,7 +713,7 @@ duisplay types for multiple
 
 								}else{
 									domain = dat.map((dis)=>{
-										return deepGet(dis, keyString, false);
+										return __calculated.#_get(dis, keyString, false);
 									});
 								}
 							}
@@ -751,7 +737,7 @@ duisplay types for multiple
 			};
 
 		/*****************************************************************************
-		 * ENDFUNCTION: getDomain
+		 * ENDFUNCTION: domain
 		*****************************************************************************/
 
 
@@ -759,42 +745,42 @@ duisplay types for multiple
 
 
 		/*****************************************************************************
-		 * FUNCTION: getLabelOrigin
+		 * FUNCTION: Label.origin
 		*****************************************************************************/
 
 			//AXIS STRING AND AXIS POSITION COORDINATES ARE VERY DIFFERENT THINGS U DUMB FUCK
-			const getLabelOrigin = (coordinateAttribute,axisString)=>{ 
+			const Label.origin = (coordinateAttribute,axisString)=>{ 
 				let offset = 0;
 				//x
 					if(coordinateAttribute == 'x'){
 						if(axisString == 'x'){
-							offset = args[getDimension(axisString)] / 2;
+							offset = args[ToSide(axisString)] / 2;
 
 						}else if(axisString == 'y'){
-							offset = -(args[getDimension(axisString)] / 2)
+							offset = -(args[ToSide(axisString)] / 2)
 						};
 				//y
 					}else{
 						if(axisString == 'x'){
 							if(args[`${axisString}Align`] == 'bottom'){
-								offset = args[getDimension(axisString,true)]
-								+ (_dv.margin.bottom * .875);
+								offset = args[ToSide(axisString,true)]
+								+ (__calculated.margin.bottom * .875);
 
 							}else{
-								offset = -(_dv.margin.top * .875);
+								offset = -(__calculated.margin.top * .875);
 							}
 						}else if(axisString == 'y'){
 							if(args[`${axisString}Align`] == 'right'){
-								offset = args[getDimension(axisString,true)]
+								offset = args[ToSide(axisString,true)]
 									+ (
-										(_dv.margin.right * .875)
-										+ _dv.text_base_size
+										(__calculated.margin.right * .875)
+										+ __calculated.fontSize
 									);
 
 							}else{
 								offset = -(
-									(_dv.margin.left * .875)
-									- _dv.text_base_size
+									(__calculated.margin.left * .875)
+									- __calculated.fontSize
 								)
 							}
 						};
@@ -804,7 +790,7 @@ duisplay types for multiple
 			}
 
 		/*****************************************************************************
-		 * ENDFUNCTION: getLabelOrigin
+		 * ENDFUNCTION: Label.origin
 		*****************************************************************************/
 
 
@@ -812,16 +798,16 @@ duisplay types for multiple
 
 
 		/*****************************************************************************
-		 * FUNCTION: getBlobSize
+		 * FUNCTION: getShapeSize
 		*****************************************************************************/
 
 			//width,height or radius boi
-			const getBlobSize = (axisString,dis,i,initial)=>{
+			const getShapeSize = (axisString,dis,i,initial)=>{
 				initial = initial || false;
 
 				const
 					keyKey  =  args[`${axisString}Data`],
-					oppositeAxisAlignment = args[`${getOppoAxis(axisString)}Align`];
+					oppositeAxisAlignment = args[`${ToOppoAxis(axisString)}Align`];
 
 				let dimension = 20;
 
@@ -839,20 +825,20 @@ duisplay types for multiple
 									oppositeAxisAlignment == 'right'
 									|| oppositeAxisAlignment == 'bottom'
 								){
-									dimension = args[getDimension(axisString)]
-										- _dv[`the_${keyKey}`](
-											deepGet(dis, args.key[ keyKey ] ,true)
+									dimension = args[ToSide(axisString)]
+										- __calculated[`the_${keyKey}`](
+											__calculated.#_get(dis, args.key[ keyKey ] ,true)
 										);
 
 								}else{
-									dimension = _dv[`the_${keyKey}`](
-										deepGet( dis, args.key[ keyKey ] ,true )
+									dimension = __calculated[`the_${keyKey}`](
+										__calculated.#_get( dis, args.key[ keyKey ] ,true )
 									);
 								}
 							}
 
 						}else{
-							dimension = _dv[`the_${keyKey}`].bandwidth()
+							dimension = __calculated[`the_${keyKey}`].bandwidth()
 						}
 
 						if(dimension < 0 ){
@@ -864,7 +850,7 @@ duisplay types for multiple
 			}
 
 		/*****************************************************************************
-		 * ENDFUNCTION: getBlobSize
+		 * ENDFUNCTION: getShapeSize
 		*****************************************************************************/
 
 
@@ -872,11 +858,11 @@ duisplay types for multiple
 
 
 		/*****************************************************************************
-		 * FUNCTION: getBlobRadius
+		 * FUNCTION: getShapeRadius
 		*****************************************************************************/
 
 			//duh 
-			const getBlobRadius = (dis,i,initial)=>{
+			const getShapeRadius = (dis,i,initial)=>{
 				initial = initial || false;
 
 
@@ -887,13 +873,13 @@ duisplay types for multiple
 				);
 
 				if(!initial){
-					if(_dv.is_type('line')){
-						if(_dv.is_type('line') && args.linePointsSize){
+					if(__calculated.is_base('line')){
+						if(__calculated.is_base('line') && args.linePointsSize){
 							radius = args.linePointsSize
 						}
 						
-					}else if(_dv.is_type('scatter') && args.key['area'] ){
-						radius = _dv.the_area( deepGet(dis,args.key['area'],true) );
+					}else if(__calculated.is_base('scatter') && args.key['area'] ){
+						radius = __calculated.the_area( __calculated.#_get(dis,args.key['area'],true) );
 					}
 				}
 
@@ -901,7 +887,7 @@ duisplay types for multiple
 			}
 
 		/*****************************************************************************
-		 * ENDFUNCTION: getBlobRadius
+		 * ENDFUNCTION: getShapeRadius
 		*****************************************************************************/
 
 
@@ -909,15 +895,15 @@ duisplay types for multiple
 
 
 		/*****************************************************************************
-		 * FUNCTION: getBlobTextAnchor
+		 * FUNCTION: getShapeTextAnchor
 		*****************************************************************************/
 
 			//more confusion
-			const getBlobTextAnchor = (dis,i)=>{
+			const getShapeTextAnchor = (dis,i)=>{
 				
 				let anchor = 'middle';
 
-				if(_dv.is_type('pie')){
+				if(__calculated.is_base('pie')){
 					//halat garo may magigibo akoo kani
 
 				}else{
@@ -925,10 +911,10 @@ duisplay types for multiple
 						anchor = 'start';
 					}
 
-					coordinates.forEach((coordinate)=>{
+					COORDINATES.forEach((coordinate)=>{
 						if(
-							args[`${getOppoAxis(coordinate)}Data`] == 0
-							&& args[`${getOppoAxis(coordinate)}Align`] == 'right'
+							args[`${ToOppoAxis(coordinate)}Data`] == 0
+							&& args[`${ToOppoAxis(coordinate)}Align`] == 'right'
 						){
 							anchor = 'end';
 						}
@@ -939,7 +925,7 @@ duisplay types for multiple
 			}
 
 		/*****************************************************************************
-		 * ENDFUNCTION: getBlobTextAnchor
+		 * ENDFUNCTION: getShapeTextAnchor
 		*****************************************************************************/
 
 
@@ -947,46 +933,46 @@ duisplay types for multiple
 
 
 		/*****************************************************************************
-		 * FUNCTION: getBlobTextBaselineShift
+		 * FUNCTION: getShapeTextBaselineShift
 		*****************************************************************************/
 
 			//pls do not ask me po this broke my brain i will not likely know what just happened
-			const getBlobTextBaselineShift = (coordinateAttr,keyKey)=>{
+			const getShapeTextBaselineShift = (coordinateAttr,keyKey)=>{
 
 				let shift = 0;
 
-				if( _dv.has_both_text_on_blob ){
+				if( __calculated.has_both_text ){
 					if(
 						coordinateAttr == 'y'
-						&& _dv.has_both_text_on_blob
+						&& __calculated.has_both_text
 					){
 						const
 							full_height =
-								_dv.text_base_size
+								__calculated.fontSize
 								* (
 									args.textNameSize
 									+ args.textValueSize
-									+ _dv.text_padding
+									+ TEXT_PADDING
 								) // .5 margin top bottom and between text
 						
 						if( keyKey == 1){
 							shift = (
 								(
 									(full_height  * -.5)
-									+ ( (_dv.text_base_size * args.textValueSize) * .5)
-									+ ( _dv.text_base_size )
+									+ ( (__calculated.fontSize * args.textValueSize) * .5)
+									+ ( __calculated.fontSize )
 								)
-								/ (_dv.text_base_size * args.textValueSize)
+								/ (__calculated.fontSize * args.textValueSize)
 							);
 
 						}else{
 							shift = (
 								(
 									(full_height * .5)
-									- ( (_dv.text_base_size * args.textNameSize) * .5)
-									- ( _dv.text_base_size )
+									- ( (__calculated.fontSize * args.textNameSize) * .5)
+									- ( __calculated.fontSize )
 								)
-								/ (_dv.text_base_size * args.textNameSize)
+								/ (__calculated.fontSize * args.textNameSize)
 							);
 						}
 					}
@@ -996,7 +982,7 @@ duisplay types for multiple
 			}
 
 		/*****************************************************************************
-		 * ENDFUNCTION: getBlobTextBaselineShift
+		 * ENDFUNCTION: getShapeTextBaselineShift
 		*****************************************************************************/
 
 
@@ -1004,18 +990,18 @@ duisplay types for multiple
 
 
 		/*****************************************************************************
-		 * FUNCTION: getBlobTextOrigin
+		 * FUNCTION: getShapeTextOrigin
 		*****************************************************************************/
 
 
-			const getBlobTextOrigin = (coordinate,dis,i,initial)=>{
+			const getShapeTextOrigin = (coordinate,dis,i,initial)=>{
 				initial = initial || false;
 				//coordinate is influenced by the axis right now so this is the only time coordinate and axis is one and the same. i think... do not trust me on this
 				
 				const keyKey =  args[`${coordinate}Data`];
 				let offset = 0;
 				
-				if(_dv.is_type('pie')){
+				if(__calculated.is_base('pie')){
 					const customInitial = (() => {
 							return (args.piLabelStyle == 'linked') ?  false : initial;
 						})(),
@@ -1035,26 +1021,26 @@ duisplay types for multiple
 							return toReturn;
 						})(),
 						calcWithInnerRadius = args.piLabelStyle == 'linked' ? false : true,
-						orArr =  getArcPath( getPiData(i) ,calcWithInnerRadius,'centroid',multiplier,customInitial);
+						orArr =  getArcPath( getPiData(dis,i) ,calcWithInnerRadius,'centroid',multiplier,customInitial);
 						offset = ( coordinate =='x') ? orArr[0] : orArr[1];
 
 				}else{
-					// offset by where the coordinates of the ends of the blob and axis alignment is at and spaces it by the dimensions of the text bitches
+					// offset by where the COORDINATES of the ends of the shape and axis alignment is at and spaces it by the dimensions of the text bitches
 					const shiftPad = () => {
 
 						let value = 0,
 							multiplier = 1;
 
-						if(!(initial || _dv.is_type('scatter'))){
+						if(!(initial || __calculated.is_base('scatter'))){
 							if(
-								args[`${getOppoAxis(coordinate)}Align`] == 'bottom'
-								|| args[`${getOppoAxis(coordinate)}Align`] == 'right'
+								args[`${ToOppoAxis(coordinate)}Align`] == 'bottom'
+								|| args[`${ToOppoAxis(coordinate)}Align`] == 'right'
 							){
 								multiplier = -1;
 							}
 
 							if( keyKey !== 0 && coordinate == 'x'){
-								value = ((_dv.text_padding * .5) * _dv.text_base_size);
+								value = ((TEXT_PADDING * .5) * __calculated.fontSize);
 							}
 
 							value *= multiplier;
@@ -1068,20 +1054,20 @@ duisplay types for multiple
 						let multiplier = 1,
 							value = 0;
 
-						if(!(initial || _dv.is_type('scatter'))) {
+						if(!(initial || __calculated.is_base('scatter'))) {
 							if(
 								(
-									(_dv.is_type(['line','scatter']) || !args.barTextWithin)
+									(__calculated.is_base(['line','scatter']) || !args.barTextWithin)
 									&& (
-										args[`${getOppoAxis(coordinate)}Align`] == 'bottom'
-										|| args[`${getOppoAxis(coordinate)}Align`] == 'right'
+										args[`${ToOppoAxis(coordinate)}Align`] == 'bottom'
+										|| args[`${ToOppoAxis(coordinate)}Align`] == 'right'
 									)
 								)
 								|| (
-									(_dv.is_type('bar') && args.barTextWithin)
+									(__calculated.is_base('bar') && args.barTextWithin)
 									&& (
-										args[`${getOppoAxis(coordinate)}Align`] == 'top'
-										|| args[`${getOppoAxis(coordinate)}Align`] == 'left'
+										args[`${ToOppoAxis(coordinate)}Align`] == 'top'
+										|| args[`${ToOppoAxis(coordinate)}Align`] == 'left'
 									)
 								)
 							){
@@ -1097,45 +1083,45 @@ duisplay types for multiple
 								){
 
 									if( 
-										(_dv.is_type(['line','scatter']) || !args.barTextWithin)
+										(__calculated.is_base(['line','scatter']) || !args.barTextWithin)
 										&& (
-											parseFloat(getBlobSize(coordinate,dis,i))
-											>= (args[getDimension(coordinate,true)] - _dv.m_length(coordinate,i))
+											parseFloat(getShapeSize(coordinate,dis,i))
+											>= (args[ToSide(coordinate,true)] - __calculated.m_length(coordinate,i))
 										)
 									){
-										value = -_dv.m_length(coordinate,i);
+										value = -__calculated.m_length(coordinate,i);
 
 									}else if(
-										(_dv.is_type('bar') && args.barTextWithin)
+										(__calculated.is_base('bar') && args.barTextWithin)
 										&& (
-											parseFloat(getBlobSize(coordinate,dis,i))
-											< _dv.m_length(coordinate,i)
+											parseFloat(getShapeSize(coordinate,dis,i))
+											< __calculated.m_length(coordinate,i)
 										)
 									){
-										value = -getBlobSize(coordinate,dis,i);
+										value = -getShapeSize(coordinate,dis,i);
 									}
 
 								}else{
 									if(
 										(
-											(_dv.is_type(['line','scatter']) || !args.barTextWithin)
+											(__calculated.is_base(['line','scatter']) || !args.barTextWithin)
 											&& (
-												parseFloat(getBlobSize(coordinate,dis,i))
-												>= (args[getDimension(coordinate,true)] - _dv.m_length(coordinate,i))
+												parseFloat(getShapeSize(coordinate,dis,i))
+												>= (args[ToSide(coordinate,true)] - __calculated.m_length(coordinate,i))
 											)
 										)
 										|| (
-											(_dv.is_type('bar') && args.barTextWithin)
+											(__calculated.is_base('bar') && args.barTextWithin)
 											&& (
-												parseFloat(getBlobSize(coordinate,dis,i))
-												< _dv.m_length(coordinate,i)
+												parseFloat(getShapeSize(coordinate,dis,i))
+												< __calculated.m_length(coordinate,i)
 											)
 										)
 									){
-										value = _dv.m_length(coordinate,i) * -.5;
+										value = __calculated.m_length(coordinate,i) * -.5;
 										
 									}else{
-										value = _dv.m_length(coordinate,i) * .5;
+										value = __calculated.m_length(coordinate,i) * .5;
 									}
 								}
 							}
@@ -1149,36 +1135,36 @@ duisplay types for multiple
 					};
 
 					if( keyKey  == 0 ) {
-						offset = getBlobOrigin(coordinate,dis,i);
-						if(_dv.is_type('bar')) {
-							offset += getBlobSize(coordinate,dis,i) / 2;
+						offset = getShapeOrigin(coordinate,dis,i);
+						if(__calculated.is_base('bar')) {
+							offset += getShapeSize(coordinate,dis,i) / 2;
 						}
 
 					}else{
-						switch(args[getOppoAxis(coordinate)+'Align']){
+						switch(args[ToOppoAxis(coordinate)+'Align']){
 							case 'top':
-								if(!initial && _dv.is_type(['bar','line'])){
-									offset = getBlobSize(coordinate,dis,i)
+								if(!initial && __calculated.is_base(['bar','line'])){
+									offset = getShapeSize(coordinate,dis,i)
 								}
 								break;
 
 							case 'right':
 							case 'bottom':
 								if(
-									initial && _dv.is_type(['bar','line'])
-									|| (args.barTextWithin && args[getOppoAxis(coordinate)+'Align'] == 'right')
+									initial && __calculated.is_base(['bar','line'])
+									|| (args.barTextWithin && args[ToOppoAxis(coordinate)+'Align'] == 'right')
 								) {
-									offset = args[getDimension(coordinate)];
+									offset = args[ToSide(coordinate)];
 
 								}else{
-									offset = args[getDimension(coordinate)] - getBlobSize(coordinate,dis,i);
+									offset = args[ToSide(coordinate)] - getShapeSize(coordinate,dis,i);
 								}
 								break;
 
 							case 'left':
-								if( _dv.is_type(['line','scatter']) ||  !args.barTextWithin ){
+								if( __calculated.is_base(['line','scatter']) ||  !args.barTextWithin ){
 									if(!initial) {
-										offset = getBlobSize(coordinate,dis,i);
+										offset = getShapeSize(coordinate,dis,i);
 									}
 								}
 								break;
@@ -1196,7 +1182,7 @@ duisplay types for multiple
 			}
 
 		/*****************************************************************************
-		 * ENDFUNCTION: getBlobTextOrigin
+		 * ENDFUNCTION: getShapeTextOrigin
 		*****************************************************************************/
 
 
@@ -1204,47 +1190,53 @@ duisplay types for multiple
 
 
 		/*****************************************************************************
-		 * FUNCTION: getBlobOrigin
+		 * FUNCTION: getShapeOrigin
 		*****************************************************************************/
 
-		const getBlobOrigin = (coordinate,dis,i,initial)=>{
+		const getShapeOrigin = (coordinate,dis,i,initial)=>{
 			initial = initial || false;
 
 
 			// same here.. could be the same probably
 			const keyKey =  args[ coordinate+'Data'],
-				oppositeAxisAlignment = args[ getOppoAxis(coordinate)+'Align'];
+				oppositeAxisAlignment = args[ ToOppoAxis(coordinate)+'Align'];
 
 			let offset = 0;
 
-				if(_dv.is_type(['bar','line','scatter'])) {
+				if(__calculated.is_base(['bar','line','scatter'])) {
 					if( args.nameIsNum == true || keyKey == 1){
-						if( oppositeAxisAlignment == 'right' || oppositeAxisAlignment == 'bottom' ){
-							if(_dv.is_type(['bar','line']) && initial ){
-								offset = args[getDimension(coordinate)];
+						if(
+							oppositeAxisAlignment == 'right'
+							|| oppositeAxisAlignment == 'bottom'
+							){
+							if(__calculated.is_base(['bar','line']) && initial ){
+								offset = args[ToSide(coordinate)];
 
 							}else{
-								offset = args[getDimension(coordinate)] - (args[getDimension(coordinate)] - _dv['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true )));
+								offset = args[ToSide(coordinate)]
+								- (
+									args[ToSide(coordinate)]
+									- __calculated['the_'+ args[coordinate+'Data'] ]( __calculated.#_get(dis, args.key[ keyKey ], true )));
 							}
 
 						}else{
-							if(_dv.is_type(['line','scatter'])){
+							if(__calculated.is_base(['line','scatter'])){
 								if(
 									!initial
-									|| _dv.is_type('scatter')
+									|| __calculated.is_base('scatter')
 								){
-									offset = _dv['the_'+ args[coordinate+'Data'] ]( deepGet(dis, args.key[ keyKey ], true ));
+									offset = __calculated['the_'+ args[coordinate+'Data'] ]( __calculated.#_get(dis, args.key[ keyKey ], true ));
 								}
 							}
 						}
 
 					}else{
-						offset = _dv['the_'+ args[coordinate+'Data'] ](deepGet(dis, args.key[ keyKey ], false));
+						offset = __calculated['the_'+ args[coordinate+'Data'] ](__calculated.#_get(dis, args.key[ keyKey ], false));
 						if(
-							(_dv.is_type(['line','scatter']))
+							(__calculated.is_base(['line','scatter']))
 							&& !args.nameIsNum 
 						) {
-							offset += getBlobSize( coordinate ,dis,i) / 2;
+							offset += getShapeSize( coordinate ,dis,i) / 2;
 						}
 					}
 				}
@@ -1253,7 +1245,7 @@ duisplay types for multiple
 		}
 
 		/*****************************************************************************
-		 * ENDFUNCTION: getBlobOrigin
+		 * ENDFUNCTION: getShapeOrigin
 		*****************************************************************************/
 
 
@@ -1266,11 +1258,11 @@ duisplay types for multiple
 			
 			const getLegendOrigin = (axisString)=>{
 
-				if( _dv.container_legend ){
+				if( __calculated.container_legend ){
 					let offset = 0,
 						length = axisString == 'x'
-							? _dv.container_legend_merge.nodes()[0].getBoundingClientRect()[getDimension(axisString)]
-							: (_dv.legend_size * _dv.dom_color.length), // .8
+							? __calculated.container_legend_merge.nodes()[0].getBoundingClientRect()[ToSide(axisString)]
+							: (__calculated.legendSize * __calculated.dom_color.length), // .8
 					
 					shifter = () => {
 						let value = 0,
@@ -1278,11 +1270,11 @@ duisplay types for multiple
 
 						//multiplier
 						if (
-							_dv.is_type(['pie'])
+							__calculated.is_base(['pie'])
 							|| (
-								_dv.is_type(['bar','line','scatter'])
-								&& args[getOppoAxis(axisString)+'Align'] == 'left'
-								|| args[getOppoAxis(axisString)+'Align'] == 'top'
+								__calculated.is_base(['bar','line','scatter'])
+								&& args[ToOppoAxis(axisString)+'Align'] == 'left'
+								|| args[ToOppoAxis(axisString)+'Align'] == 'top'
 							)
 						){
 							multiplier = -1;
@@ -1290,16 +1282,16 @@ duisplay types for multiple
 
 						//how much of length to shift
 						if (
-							(_dv.is_type(['pie']) && axisString == 'x')
+							(__calculated.is_base(['pie']) && axisString == 'x')
 							|| (
-								_dv.is_type(['bar','line','scatter'])
-								&& args[getOppoAxis(axisString)+'Align'] == 'left'
-								|| args[getOppoAxis(axisString)+'Align'] == 'top'
+								__calculated.is_base(['bar','line','scatter'])
+								&& args[ToOppoAxis(axisString)+'Align'] == 'left'
+								|| args[ToOppoAxis(axisString)+'Align'] == 'top'
 							)
 						){
-							value = length + _dv.text_base_size;
+							value = length + __calculated.fontSize;
 
-						} else if(  (_dv.is_type('pie') && axisString == 'y') ){
+						} else if(  (__calculated.is_base('pie') && axisString == 'y') ){
 								value = length * .5;
 						}
 							
@@ -1307,18 +1299,18 @@ duisplay types for multiple
 					};
 
 					if (
-						(_dv.is_type('pie') && axisString == 'x')
+						(__calculated.is_base('pie') && axisString == 'x')
 						|| 
 						(
-							_dv.is_type(['bar','line','scatter'])
-							&& args[getOppoAxis(axisString)+'Align'] == 'left'
-							|| args[getOppoAxis(axisString)+'Align'] == 'top'
+							__calculated.is_base(['bar','line','scatter'])
+							&& args[ToOppoAxis(axisString)+'Align'] == 'left'
+							|| args[ToOppoAxis(axisString)+'Align'] == 'top'
 						)
 					){
-						offset = args[getDimension(axisString)];
+						offset = args[ToSide(axisString)];
 
-					}else if( (_dv.is_type('pie') && axisString == 'y') ){
-						offset = args[getDimension(axisString)] * .5;
+					}else if( (__calculated.is_base('pie') && axisString == 'y') ){
+						offset = args[ToSide(axisString)] * .5;
 					}
 					
 					return offset + shifter();
@@ -1361,32 +1353,32 @@ duisplay types for multiple
 					//name coord, value coord, fill coordinate
 					const aCord = { //default is top
 						name: axisToFill, //x
-						value: getOppoAxis(axisToFill)+1, //y
-						fill: getOppoAxis(axisToFill)+0 //initial of data name is the bottom of the fill
+						value: ToOppoAxis(axisToFill)+1, //y
+						fill: ToOppoAxis(axisToFill)+0 //initial of data name is the bottom of the fill
 					};
 					
 					
 					path
 						[aCord.name]((dis,i)=>{
-							return getBlobOrigin(axisToFill,dis,i,initial); 
+							return getShapeOrigin(axisToFill,dis,i,initial); 
 						})
 						[aCord.value]((dis,i)=>{
-							return getBlobOrigin(getOppoAxis(axisToFill),dis,i,initial);
+							return getShapeOrigin(ToOppoAxis(axisToFill),dis,i,initial);
 						})
 						[aCord.fill]((dis,i)=>{
 							return (
 								args[`${axisToFill}Align` ]  == 'bottom'
 								|| args[`${axisToFill}Align` ]  == 'right'
-							) ? args[getDimension(axisToFill)] : 0;
+							) ? args[ToSide(axisToFill)] : 0;
 						});
 
 				}else{
 					path
 						.x((dis,i)=>{
-							return getBlobOrigin('x',dis,i,initial);
+							return getShapeOrigin('x',dis,i,initial);
 						})
 						.y((dis,i)=>{
-							return getBlobOrigin('y',dis,i,initial);
+							return getShapeOrigin('y',dis,i,initial);
 						});
 
 				}
@@ -1420,7 +1412,7 @@ duisplay types for multiple
 					let toReturn = 0;
 
 					if( calcWithInnerRadius ){
-						toReturn = _dv.pi_radius * args.piInRadius;
+						toReturn = __calculated.pi_radius * args.piInRadius;
 					}
 
 					return toReturn;
@@ -1430,7 +1422,7 @@ duisplay types for multiple
 					let toReturn = 0;
 
 					if(!initial || ( initial && (outerRadiusMultiplier <=1 ) && calcWithInnerRadius == false )){
-						toReturn = _dv.pi_radius * outerRadiusMultiplier;
+						toReturn = __calculated.pi_radius * outerRadiusMultiplier;
 					}
 
 					return toReturn;
@@ -1462,15 +1454,17 @@ duisplay types for multiple
 		 * FUNCTION: getPiData
 		*****************************************************************************/
 
-			const getPiData = (i)=>{
-
+			const getPiData = (dis,i)=>{
+				//@TODO WTF THE FUCK NANI ANO
 				const pie =  d3.pie()
 					.sort(null)
 					.value((dis,i)=>{
-						return deepGet(dis,args.key[1],true)
-					});
+						return __calculated.#_get(dis,args.key[1],true)
+					})
+					;
 
-					return pie(_dv.data.displayed)[i];
+
+					return pie(theData('flat','displayed'))[i];
 			}
 
 		/*****************************************************************************
@@ -1489,10 +1483,10 @@ duisplay types for multiple
 				let offset = 0;
 
 				if(args.colorLegend && axisString =='x'){
-					offset = args[getDimension(axisString)] * .375;
+					offset = args[ToSide(axisString)] * .375;
 
 				}else{
-					offset  = (args[getDimension(axisString)] * .5);
+					offset  = (args[ToSide(axisString)] * .5);
 				}
 
 				return offset;
@@ -1547,10 +1541,10 @@ duisplay types for multiple
 
 
 		/*****************************************************************************
-		 * FUNCTION: setScale
+		 * FUNCTION: scale
 		*****************************************************************************/
 
-			const setScale = (keyKey)=>{
+			const scale = (keyKey)=>{
 				
 				let scale;
 
@@ -1558,31 +1552,31 @@ duisplay types for multiple
 
 					case 'color':
 						scale = d3.scaleOrdinal()
-							.range(_dv['range_'+keyKey]) 
+							.range(__calculated['range_'+keyKey]) 
 						break;
 
 					case 'area':
 					case 0:
 					case 1:
 						if(args.nameIsNum == true || keyKey == 1 || keyKey == 'area' ){
-							if(args.nameIsNum == true && keyKey == 0 && _dv.is_type('scatter')){
+							if(args.nameIsNum == true && keyKey == 0 && __calculated.is_base('scatter')){
 								scale = d3.scaleSymlog()
 									.constant(10)
-									.range(_dv['range_'+keyKey]);
+									.range(__calculated['range_'+keyKey]);
 
 							}else{
 								scale = d3.scaleLinear()
-									.range(_dv['range_'+keyKey]);
+									.range(__calculated['range_'+keyKey]);
 							}
 							
 						}else{
-							if(_dv.is_type(['line','scatter'])){
+							if(__calculated.is_base(['line','scatter'])){
 								scale = d3.scalePoint() //scales shit to dimensios
-									.range(_dv['range_'+keyKey]) // scaled data from available space
+									.range(__calculated['range_'+keyKey]) // scaled data from available space
 
 							}else{
 								scale = d3.scaleBand() //scales shit to dimensios
-									.range(_dv['range_'+keyKey]) // scaled data from available space
+									.range(__calculated['range_'+keyKey]) // scaled data from available space
 									.paddingInner(args.barGutter) //spacing between
 									.paddingOuter(args.barGutter);
 							}
@@ -1596,7 +1590,7 @@ duisplay types for multiple
 			};
 
 		/*****************************************************************************
-		 * ENDFUNCTION: setScale
+		 * ENDFUNCTION: scale
 		*****************************************************************************/
 
 
@@ -1619,13 +1613,13 @@ duisplay types for multiple
 					// label
 						if( args[axisString+'Label'] && !isGrid ){
 							
-							_dv['lab_'+axisString] = _dv.container_lab.append('text')
-								.attr('class',`${prefix}label-${axisString}`)
+							__calculated['lab_'+axisString] = __calculated.labels.append('text')
+								.attr('class',`${PREFIX}label-${axisString}`)
 								.attr('y',() => {
-									return getLabelOrigin('y',axisString);
+									return Label.origin('y',axisString);
 								})
 								.attr('x',() => {
-									return getLabelOrigin('x',axisString);
+									return Label.origin('x',axisString);
 								})
 								.attr('font-size', '1em')
 								.attr('text-anchor', 'middle')
@@ -1634,28 +1628,28 @@ duisplay types for multiple
 								.text(args[axisString+'Label']);
 
 							if(axisString == 'y') {
-								_dv['lab_'+axisString].attr('transform', 'rotate(-90)');
+								__calculated['lab_'+axisString].attr('transform', 'rotate(-90)');
 							}
 
-							_dv['lab_'+axisString]
-								.transition(_dv.duration)
+							__calculated['lab_'+axisString]
+								.transition(__calculated.duration)
 								.attr('opacity',1);
 
 						}
 
 					//ruler/grid
-						_dv[tickContainer] = containerObj.append('g')
+						__calculated[tickContainer] = containerObj.append('g')
 							.attr('class', () => {
 
 									let contClass = null;
 			
 									if(isGrid){
 										contClass =
-											`${prefix}grid-${axisString} grid-increment-${args[axisString+'GridIncrement']}`;
+											`${PREFIX}grid-${axisString} grid-increment-${args[axisString+'GridIncrement']}`;
 										
 									}else{
 										contClass =
-											`${prefix}axis-${axisString} ${prefix}axis-align-${alignString}`;
+											`${PREFIX}axis-${axisString} ${PREFIX}axis-align-${alignString}`;
 									}
 			
 									return contClass;
@@ -1678,7 +1672,7 @@ duisplay types for multiple
 									transformCoord = '0,0'
 							}
 			
-						_dv[tickContainer].attr('transform','translate('+transformCoord+')');
+						__calculated[tickContainer].attr('transform','translate('+transformCoord+')');
 
 				}
 			}
@@ -1692,18 +1686,45 @@ duisplay types for multiple
 
 
 		/*****************************************************************************
-		 * FUNCTION: setData
+		 * FUNCTION: setGroupData
 		*****************************************************************************/
 
-			const setData = (dataToParse)=>{
+			const setGroupData = ()=>{
+				let toReturn;
+				if(__calculated.has_nested_data){
+					console.warn(__calculated.elem,__calculated.has_nested_data,'it fuckin grouped');
+					toReturn = theData('nested','displayed');
+				}else{
+					toReturn = [{
+						parent:'flat',
+						values: theData('flat','displayed')
+					}]
+				}
+
+				return toReturn;
+			}
+
+		/*****************************************************************************
+		 * ENDFUNCTION: setGroupData
+		*****************************************************************************/
+
+
+
+
+
+		/*****************************************************************************
+		 * FUNCTION: parseData
+		*****************************************************************************/
+
+			const parseData = (dataToParse)=>{
 				
 				// heck if src key exists
 				let toReturn = (() => {
 					if (args.srcKey) {
-						if(deepGet(dataToParse,args.srcKey)){
-							return deepGet(dataToParse,args.srcKey);
+						if(__calculated.#_get(dataToParse,args.srcKey)){
+							return __calculated.#_get(dataToParse,args.srcKey);
 						}else{
-							renderError(selector+' provided source key is invalid');
+							renderError(dv.selector+' provided source key is invalid');
 						}
 
 					}else{
@@ -1747,13 +1768,13 @@ duisplay types for multiple
 
 					const toInclude = true;
 
-					datum_keys.forEach((keyKey)=>{
-						if(args.key[keyKey] && deepGet(dis,args.key[keyKey]) == null) {
-								// _dv.has[keyKey] = false;
+					DATUM_KEYS.forEach((keyKey)=>{
+						if(args.key[keyKey] && __calculated.#_get(dis,args.key[keyKey]) == null) {
+								// __calculated.has[keyKey] = false;
 							toInclude = false;
-							if(_dv.user_can_debug){
+							if(__calculated.is_debuggy){
 								const humanForKey = keyKey == 0 ? 'name': keyKey == 1 ? 'value': keyKey;
-								console.warn(`${selector} datum index '${i}' was filtered.\ndatum does not have data for the key '${args.key[keyKey]}', which is set as the property for '${humanForKey}'`)
+								console.warn(`${dv.selector} datum index '${i}' was filtered.\ndatum does not have data for the key '${args.key[keyKey]}', which is set as the property for '${humanForKey}'`)
 							}
 						}
 					});
@@ -1776,7 +1797,7 @@ duisplay types for multiple
 					}
 					
 					sortable.sort((a, b)=>{
-						return deepGet(a,args.key[0],true) - deepGet(b,args.key[0],true);
+						return __calculated.#_get(a,args.key[0],true) - __calculated.#_get(b,args.key[0],true);
 					});
 
 					toReturn = sortable;
@@ -1787,7 +1808,7 @@ duisplay types for multiple
 			}
 
 		/*****************************************************************************
-		 * ENDFUNCTION: setData
+		 * ENDFUNCTION: parseData
 		*****************************************************************************/
 
 
@@ -1801,18 +1822,18 @@ duisplay types for multiple
 				isGrid = isGrid || false;
 				
 				const axisKey = 'Axis '+ args[axisString+'Align'];
-				var	axisToReturn = d3[strToCamelCase(axisKey)](_dv['the_'+ args[axisString+'Data']]);
+				var	axisToReturn = d3[Str.toCamelCase(axisKey)](__calculated['the_'+ args[axisString+'Data']]);
 
 				if(args[axisString +'Ticks']){
-					if(_dv.is_type(['scatter']) && args[axisString+'Data'] == 0 && args.nameIsNum == true ){
+					if(__calculated.is_base(['scatter']) && args[axisString+'Data'] == 0 && args.nameIsNum == true ){
 						const tickValues = () => {
 							const values = [],
-								currVal = getDomain(0,_dv.data.displayed)[0];
+								currVal = domain(0,__calculated.data.displayed)[0];
 							do{
 								values.push(currVal);
 								currVal *= 10;
 
-							}while(currVal <= getDomain(1,_dv.data.displayed)[1]);
+							}while(currVal <= domain(1,__calculated.data.displayed).values);
 
 							return values;
 						}
@@ -1836,13 +1857,13 @@ duisplay types for multiple
 
 					if(isGrid){
 						axisToReturn
-							.tickSize(-args[ getDimension( axisString,true ) ])
+							.tickSize(-args[ ToSide( axisString,true ) ])
 							.tickFormat("");
 
 					}else {
 						axisToReturn
 							.tickFormat((dis,i)=>{
-								return _dv['format_'+ args[axisString+'Data'] ](dis)
+								return __calculated['format_'+ args[axisString+'Data'] ](dis)
 							})
 					}
 				}
@@ -1863,17 +1884,17 @@ duisplay types for multiple
 		*****************************************************************************/
 
 			const renderCursorStalker = (d3_event)=>{
-				return _dv.tooltip_cursor_stalker 
+				return __calculated.tooltip_cursor_stalker 
 					.attr('cx',
 						`${(
 							d3_event.offsetX
-							* ( _dv.outer_width / _dv.svg.node().clientWidth )
+							* ( __calculated.outer('width') / __calculated.svg.node().clientWidth )
 						)}px`
 					)
 					.attr('cy',
 						`${(
 							d3_event.offsetY
-							* (  _dv.outer_height / _dv.svg.node().clientHeight )
+							* (  __calculated.outer('height') / __calculated.svg.node().clientHeight )
 						)}px`
 					)
 					.node();
@@ -1931,13 +1952,13 @@ duisplay types for multiple
 			const renderError = (theConsoleError,useThrow)=>{
 				useThrow = useThrow || true;
 
-				const errorFront = "Sorry, unable to display data." + (  _dv.user_can_debug ? "<br> Please check the console for more details" : '');
+				const errorFront = "Sorry, unable to display data." + (  __calculated.is_debuggy ? "<br> Please check the console for more details" : '');
 
-				d3.select(selector).classed(prefix+'initialized',true);
+				d3.select(dv.selector).classed(PREFIX+'initialized',true);
 
-				if(!dataContainer.querySelector('.'+prefix+'wrapper.fatality')){
-					d3.select(selector).append('div')
-						.attr('class',prefix+'wrapper fatality')
+				if(!dataContainer.querydv.Selector('.'+PREFIX+'wrapper.fatality')){
+					d3.select(dv.selector).append('div')
+						.attr('class',PREFIX+'wrapper fatality')
 						.html( errorFront );
 				}
 
@@ -1958,21 +1979,72 @@ duisplay types for multiple
 
 
 		/*****************************************************************************
+		 * FUNCTION: renderGraphGroup
+		*****************************************************************************/
+			
+			//a g that contains sum bitches
+			const renderGraphGroup = (gName) =>{
+				let toReturn = __calculated.container
+						.selectAll(`g.${PREFIX}${gName}`)
+						.data(
+							setGroupData,
+							(dat)=>{ return dat.parent }
+						)
+						.enter()
+							.append('g')
+							.attr('class',(dat)=>{
+
+								return	PREFIX + gName
+									+ ' ' + (
+										(dat.parent && dat.key)
+											? PREFIX
+												+ gName+'-set '
+												+ 'data-group-'+ dat.parent
+											: ''
+									)
+							}
+							)
+							.attr('transform',()=> {
+								return __calculated.is_base('pie')
+									? 'translate('+ getPiOrigin('x') +','+ getPiOrigin('y') +')'
+									: ''
+							})
+							;
+
+
+							toReturn.exit()
+								.transition(10) //DO NOT
+								.style('opacity',0)
+								.remove()
+								;
+
+				return toReturn;
+			}
+
+		/*****************************************************************************
+		 * ENDFUNCTION: renderGraphGroup
+		*****************************************************************************/
+
+
+
+
+
+		/*****************************************************************************
 		 * FUNCTION: renderGraph
 		*****************************************************************************/
 
 			// fuck these bois up. pass data again in case changing data is a future feature
 			const renderGraph = ()=> {
-				_dv.data.displayed = _dv.data.displayed.length
-					? _dv.data.displayed
-					: _dv.data.complete;
+				__calculated.data.displayed = __calculated.data.displayed.length
+					? __calculated.data.displayed
+					: __calculated.data.complete;
 
 				// ok do the thing now
-				_dv.user_can_debug && console.log(
+				__calculated.is_debuggy && console.log(
 					"\n",
-					selector,'('+args.title+')','-------------------------------------------------------------------',"\n",
-					'calculated shit',_dv,"\n",
-					'data',_dv.data,"\n",
+					dv.selector,'('+args.title+')','-------------------------------------------------------------------',"\n",
+					'calculated shit',__calculated,"\n",
+					'data',__calculated.data,"\n",
 					'args',args,"\n",
 					"\n"
 				)
@@ -1980,45 +2052,45 @@ duisplay types for multiple
 
 				/******** UPDOOT DOMAIN ********/
 
-					datum_keys.forEach((keyKey)=>{
+					DATUM_KEYS.forEach((keyKey)=>{
 
 						//get domain
-						_dv['dom_'+keyKey] = getDomain(keyKey,_dv.data.displayed);
+						__calculated['dom_'+keyKey] = domain(keyKey,__calculated.data.displayed);
 
 						//set that fucker
-						if(_dv['the_'+keyKey] && _dv['dom_'+keyKey]) {
-							_dv['the_'+keyKey].domain(_dv['dom_'+keyKey])
+						if(__calculated['the_'+keyKey] && __calculated['dom_'+keyKey]) {
+							__calculated['the_'+keyKey].domain(__calculated['dom_'+keyKey])
 							;
 						}
 					});
 
 				/******** AXIS + GRID ********/
 
-					if(_dv.is_type(['bar','line','scatter'])){
-						coordinates.forEach((coordinate)=>{
+					if(__calculated.is_base(['bar','line','scatter'])){
+						COORDINATES.forEach((coordinate)=>{
 							if( args[coordinate+'Ticks'] ){
-								_dv['rule_'+coordinate+'_axis'] = setAxis(coordinate);
+								__calculated['rule_'+coordinate+'_axis'] = setAxis(coordinate);
 										
-								_dv['rule_'+coordinate]
-									.transition(_dv.duration)
-									.call( _dv['rule_'+coordinate+'_axis'] )
+								__calculated['rule_'+coordinate]
+									.transition(__calculated.duration)
+									.call( __calculated['rule_'+coordinate+'_axis'] )
 									.attr('font-family',null)
 									.attr('font-size',null);
 			
 								if(args[coordinate+'Grid']){
-								_dv['grid_'+coordinate+'_axis'] = setAxis(coordinate,true);
+								__calculated['grid_'+coordinate+'_axis'] = setAxis(coordinate,true);
 									
-									_dv['grid_'+coordinate]
-										.transition(_dv.duration)
-										.call( _dv['grid_'+coordinate+'_axis'] );
+									__calculated['grid_'+coordinate]
+										.transition(__calculated.duration)
+										.call( __calculated['grid_'+coordinate+'_axis'] );
 										
-									_dv['grid_'+coordinate].selectAll('g')
+									__calculated['grid_'+coordinate].selectAll('g')
 										.classed('grid',true)
 										.filter((dis,i)=>{
 
 											//IM HERE FUCKER
 											let isAligned = false;
-											_dv['rule_'+coordinate].selectAll('g').each((tik)=>{
+											__calculated['rule_'+coordinate].selectAll('g').each((tik)=>{
 												//if current looped tik matches dis grid data, add the class boi
 												if(tik == dis){
 													isAligned = true;
@@ -2038,57 +2110,29 @@ duisplay types for multiple
 				/******** CONTAINER ********/
 
 
-					_dv.container_graph = _dv.container
-						.selectAll(`g.${prefix}graph`)
-						.data(
-							getDataStructure('nested','displayed'),
-							(dat)=>{ return dat.key }
-						)
-						.enter()
-							.append('g')
-							.attr('class',(dat)=>{
-
-								return	prefix + 'graph'
-									+ ' ' + (
-										(args.srcMultiple)
-											? prefix
-												+ 'graph-set '
-												+ 'data-group-'+ dat[0]
-											: ''
-									)
-							}
-							)
-							.attr('transform',()=> {
-								return _dv.is_type('pie')
-									? 'translate('+ getPiOrigin('x') +','+ getPiOrigin('y') +')'
-									: ''
-							})
-							;
+					__calculated.container_graph = renderGraphGroup('graph');
 
 
-							_dv.container_graph.exit()
-								.transition(10) //DO NOT
-								.style('opacity',0)
-								.remove()
-								;
-
-				
+					if(__calculated.has_text){
+						__calculated.container_text = renderGraphGroup('text');
+					}
+					
 
 				/******** LINE ********/
-					if(_dv.is_type('line')){
+					if(__calculated.is_base('line')){
 
-						// _dv.line = _dv.container_graph.select(`.${prefix}line`)
+						// __calculated.line = __calculated.container_graph.select(`.${PREFIX}line`)
 						// 	// .data((dat)=> {
-						// 	// 	getDataStructure('nested','displayed'),
+						// 	// 	theData('nested','displayed'),
 						// 	// 	()=>{ console.log(dat);return dat.key }
 						// 	// })
-						// 	// // .data((d)=> { return d[1] }) 
-						// 	// .join(`.${prefix}line`)
+						// 	// // .data((d)=> { return d.values }) 
+						// 	// .join(`.${PREFIX}line`)
 						// 	;
 						
-						_dv.line = _dv.container_graph.append('path').lower()
+						__calculated.line = __calculated.container_graph.append('path').lower()
 							.attr('class',
-								`${prefix}line
+								`${PREFIX}line
 								${
 									args.lineColor !== null
 										? ' has-color'
@@ -2102,37 +2146,37 @@ duisplay types for multiple
 							.attr('stroke-opacity',1)
 							.attr('stroke-dasharray','0,0')
 							;
-						_dv.line
+						__calculated.line
 							// .attr('d',getLinePath(false,false))
-							.transition(_dv.duration)
+							.transition(__calculated.duration)
 								.attrTween('d',function(dat){
 									return getInterpolation(
-										getLinePath(dat[1],false,true),
-										getLinePath(dat[1],false,false)
+										getLinePath(dat.values,false,true),
+										getLinePath(dat.values,false,false)
 									)
 								})
 							;
 
 
 							if(args.lineColor) {
-								_dv.line
+								__calculated.line
 									.attr('stroke',args.lineColor)
 							}
 						
 						
 
 						if( args.lineFill ){
-							_dv.fill = _dv.container_graph.select(`.${prefix}fill`)
+							__calculated.fill = __calculated.container_graph.select(`.${PREFIX}fill`)
 								// .data((dat)=> {
-								// 	getDataStructure('nested','displayed'),
+								// 	theData('nested','displayed'),
 								// 	()=>{ console.log(dat);return dat.key }
 								// })
-								// .data((d)=> { return d[1] }) 
+								// .data((d)=> { return d.values }) 
 								;
 							
-							_dv.fill = _dv.container_graph.append('path').lower()
+							__calculated.fill = __calculated.container_graph.append('path').lower()
 								.attr('class',
-									`${prefix}fill
+									`${PREFIX}fill
 									${
 										(
 											args.lineFillColor !== null
@@ -2144,19 +2188,19 @@ duisplay types for multiple
 								)
 								.attr('fill-opacity',args.lineFillOpacity)
 								;
-							_dv.fill
-								.transition(_dv.duration)
+							__calculated.fill
+								.transition(__calculated.duration)
 									.attrTween('d',function(dat){
 										return getInterpolation(
-											getLinePath(dat[1],true,true),
-											getLinePath(dat[1],true,false)
+											getLinePath(dat.values,true,true),
+											getLinePath(dat.values,true,false)
 										)
 									})
 								;
 							;
 
 								if( args.lineFillColor || args.lineColor ) {
-									_dv.fill
+									__calculated.fill
 										.attr('fill', args.lineFillColor || args.lineColor);
 								}
 						}
@@ -2165,70 +2209,70 @@ duisplay types for multiple
 				/******** DECLARE ********/
 
 					//graph item : bars, scatter plots, pizza, points	
-						_dv.blob = _dv.container_graph.selectAll(`${_dv.graph_item_element}.${prefix}graph-item.graph-item-blob`)
-							.data((d)=> { return d[1] }) //@TODO return proper boi depending on type of display
+						__calculated.shape = __calculated.container_graph.selectAll(`${__calculated.shape.tag}.${PREFIX}graph-item.graph-item-shape`)
+							.data((d)=> {  console.warn('-------',d); return d.values }) //@TODO return proper boi depending on type of display
 							;
 
 					//text labels
-						if(_dv.has_text){
+						if(__calculated.has_text){
 
 							//polyline 
-								if(_dv.is_type('pie') && args.piLabelStyle == 'linked'){
+								if(__calculated.is_base('pie') && args.piLabelStyle == 'linked'){
 
-									_dv.blob_text_link = _dv.container_graph.selectAll(`polyline.${prefix}graph-item.graph-item-link`)
-										.data((d)=> { return d[1] })
+									__calculated.shape_text_link = __calculated.container_text.selectAll(`polyline.${PREFIX}graph-item.graph-item-link`)
+										.data((d)=> { return d.values })
 								}
 							//text itself
-								_dv.blob_text = _dv.container_graph.selectAll(`text.${prefix}graph-item.graph-item-text`)
-									.data((d)=> { return d[1] })
+								__calculated.shape_text = __calculated.container_text.selectAll(`text.${PREFIX}graph-item.graph-item-text`)
+									.data((d)=> { return d.values })
 						}
 
 					//legend
 						if(args.colorLegend){
 
-							_dv.container_legend = _dv.container.selectAll(`g.${prefix}legend`)
-								.data((d)=> { return d[1] })
+							__calculated.container_legend = __calculated.g.selectAll(`g.${PREFIX}legend`)
+								.data((d)=> { return d.values })
 								
-							_dv.legend = _dv.container_legend.selectAll('g.'+ prefix+'legend-item')
-								.data(_dv.dom_color);
+							__calculated.legend = __calculated.container_legend.selectAll('g.'+ PREFIX+'legend-item')
+								.data(__calculated.dom_color);
 						}
 
 				/******** EXIT ********/
 
 					//graph item : bars, scatter plots, pizza, points
-						_dv.blob.exit()
-							.transition(_dv.duration)
+						__calculated.shape.exit()
+							.transition(__calculated.duration)
 							.style('opacity',0)
 							.remove();
 
 					//text label
-						if(_dv.has_text){
+						if(__calculated.has_text){
 
 							//polyline 
-								if(_dv.is_type('pie') && args.piLabelStyle == 'linked'){
+								if(__calculated.is_base('pie') && args.piLabelStyle == 'linked'){
 
-									_dv.blob_text_link.exit()
-										.transition(_dv.duration)
+									__calculated.shape_text_link.exit()
+										.transition(__calculated.duration)
 										.style('opacity','0')
 										.remove();
 								}
 
 							//text itself
-								_dv.blob_text.exit()
-									.transition(_dv.duration)
+								__calculated.shape_text.exit()
+									.transition(__calculated.duration)
 									.style('opacity','0')
 									.remove();
 						}
 
 					//legend
 						if(args.colorLegend){
-							_dv.container_legend.exit()
-								.transition(_dv.duration)
+							__calculated.container_legend.exit()
+								.transition(__calculated.duration)
 								.style('opacity',0)
 								.remove();
 
-								_dv.legend.exit()
-									.transition(_dv.duration)
+								__calculated.legend.exit()
+									.transition(__calculated.duration)
 									.style('opacity','0')
 									.remove();
 						}
@@ -2238,60 +2282,60 @@ duisplay types for multiple
 				/******** ENTER ********/
 
 					//graph item : bars, scatter plots, pizza, points
-						_dv.blob_enter = _dv.blob.enter()
-							.append(_dv.graph_item_element)
+						__calculated.shape_enter = __calculated.shape.enter()
+							.append(__calculated.shape.tag)
 								.attr('class', (dis)=>{
-									return `${prefix}graph-item graph-item-blob data-name-${deepGet(dis,args.key[0])}`
+									return `${PREFIX}graph-item graph-item-shape data-name-${__calculated.#_get(dis,args.key[0])}`
 								})
 								;
 
-								if(_dv.is_type(['bar','line','scatter'])){
-									_dv.blob_enter
+								if(__calculated.is_base(['bar','line','scatter'])){
+									__calculated.shape_enter
 										.attr(
-											(_dv.is_type(['line','scatter']) ? 'cx' : 'x'),
+											(__calculated.is_base(['line','scatter']) ? 'cx' : 'x'),
 											(dis,i)=>{
-												return getBlobOrigin('x',dis,i,true);
+												return getShapeOrigin('x',dis,i,true);
 											}
 										)
 										.attr(
-											(_dv.is_type(['line','scatter']) ? 'cy' : 'y'),
+											(__calculated.is_base(['line','scatter']) ? 'cy' : 'y'),
 											(dis,i)=>{
-												return getBlobOrigin('y',dis,i,true);
+												return getShapeOrigin('y',dis,i,true);
 											}
 										)
 										;
 										
-										if(_dv.is_type(['line','scatter'])){
-											_dv.blob_enter
+										if(__calculated.is_base(['line','scatter'])){
+											__calculated.shape_enter
 												.attr('r',(dis,i)=>{
-													return getBlobRadius(dis,i,true);
+													return getShapeRadius(dis,i,true);
 												})
 												;
 				
 				
-										}else if(_dv.is_type('bar')){
-											_dv.blob_enter
+										}else if(__calculated.is_base('bar')){
+											__calculated.shape_enter
 												.attr('width',(dis,i)=>{
-													return getBlobSize('x',dis,i,true)
+													return getShapeSize('x',dis,i,true)
 												}) // _ width
 												.attr('height',(dis,i)=>{
-													return getBlobSize('y',dis,i,true)
+													return getShapeSize('y',dis,i,true)
 												})
 												;
 										}
 								}
 
 					//text label
-						if(_dv.has_text){
+						if(__calculated.has_text){
 
 							//polyline 
-								if(_dv.is_type('pie') && args.piLabelStyle == 'linked'){
+								if(__calculated.is_base('pie') && args.piLabelStyle == 'linked'){
 									
-										_dv.blob_text_link_enter = _dv.blob_text_link
+										__calculated.shape_text_link_enter = __calculated.shape_text_link
 											.enter()
 											.append('polyline')
 											.attr('class',(dis)=>{
-												return `${prefix}graph-item graph-item-link data-name-${deepGet(dis,args.key[0])}`;
+												return `${PREFIX}graph-item graph-item-link data-name-${__calculated.#_get(dis,args.key[0])}`;
 											})
 											.attr('stroke-opacity',.75)
 											.attr('opacity',1)
@@ -2299,14 +2343,14 @@ duisplay types for multiple
 								}
 
 							// text itself
-								_dv.blob_text_enter = _dv.blob_text
+								__calculated.shape_text_enter = __calculated.shape_text
 									.enter()
 									.append('text')
 									.attr('line-height',1.25)
 									.attr('dominant-baseline','middle')
 									.attr('transform',(dis,i)=>{
-										const dataToUse = _dv.is_type('pie') ? getPiData(i) : dis;
-										return `translate( ${getBlobTextOrigin('x',dataToUse,i,true)} , ${getBlobTextOrigin('y',dataToUse,i,true)} )`;
+										const dataToUse = __calculated.is_base('pie') ? getPiData(dis,i) : dis;
+										return `translate( ${getShapeTextOrigin('x',dataToUse,i,true)} , ${getShapeTextOrigin('y',dataToUse,i,true)} )`;
 									})
 									.style('opacity','0')
 									;
@@ -2316,11 +2360,11 @@ duisplay types for multiple
 
 									if(
 										(
-											_dv.is_type(['bar','line','scatter'])
-											&& !args[getAxisString(keyKey)+'Ticks']
+											__calculated.is_base(['bar','line','scatter'])
+											&& !args[axisName(keyKey)+'Ticks']
 										)
 										|| (
-											_dv.is_type('pie')
+											__calculated.is_base('pie')
 											&& (
 												( keyKey == 0 && !args.colorLegend )
 												|| ( keyKey == 1 && args.piLabelStyle !== null )
@@ -2328,14 +2372,14 @@ duisplay types for multiple
 										)
 									){
 
-										_dv['blob_text_'+keyKey] = _dv.blob_text_enter.append('tspan')
+										__calculated['shape_text_'+keyKey] = __calculated.shape_text_enter.append('tspan')
 
 											.attr('class', (dis)=>{
-												return `${prefix}graph-item-text-data-${keyKey} data-name-${deepGet(dis,args.key[0])}`
+												return `${PREFIX}graph-item-text-data-${keyKey} data-name-${__calculated.#_get(dis,args.key[0])}`
 											} )
 											.attr('dominant-baseline','middle')
 											.attr('text-anchor',(dis,i)=>{
-												return getBlobTextAnchor(dis,i);
+												return getShapeTextAnchor(dis,i);
 											})
 											.attr('font-size',() => {
 
@@ -2343,11 +2387,11 @@ duisplay types for multiple
 
 												if(
 													(
-														_dv.is_type(['bar','line','scatter'])
-														&& !args[ getOppoAxis ( getAxisString(keyKey) )+'Ticks']
+														__calculated.is_base(['bar','line','scatter'])
+														&& !args[ ToOppoAxis ( axisName(keyKey) )+'Ticks']
 													)
 													|| (
-														_dv.is_type('pie')
+														__calculated.is_base('pie')
 														&& !args.colorLegend
 														&& args.piLabelStyle !== null
 													)
@@ -2362,18 +2406,18 @@ duisplay types for multiple
 
 												return toReturn;
 											})
-											.attr('x',getBlobTextBaselineShift('x',keyKey))
-											.attr('y',getBlobTextBaselineShift('y',keyKey))
+											.attr('x',getShapeTextBaselineShift('x',keyKey))
+											.attr('y',getShapeTextBaselineShift('y',keyKey))
 											.attr('font-weight',() => {
 												let toReturn = 700;
 
 												if(
 													(
-														_dv.is_type(['bar','line','scatter'])
-														&& !args[ getOppoAxis ( getAxisString(keyKey) )+'Ticks']
+														__calculated.is_base(['bar','line','scatter'])
+														&& !args[ ToOppoAxis ( axisName(keyKey) )+'Ticks']
 													)
 													|| (
-														_dv.is_type('pie')
+														__calculated.is_base('pie')
 														&& !args.colorLegend
 														&& args.piLabelStyle !== null
 													)
@@ -2386,7 +2430,7 @@ duisplay types for multiple
 												return toReturn;
 											})
 											.text((dis,i)=>{
-												return _dv['format_'+ keyKey ]( deepGet(dis,args.key[ keyKey ]) );
+												return __calculated['format_'+ keyKey ]( __calculated.#_get(dis,args.key[ keyKey ]) );
 											})
 
 									}
@@ -2397,43 +2441,43 @@ duisplay types for multiple
 					//legend
 						if(args.colorLegend){
 
-							_dv.container_legend_enter = _dv.container_legend.enter()
+							__calculated.container_legend_enter = __calculated.container_legend.enter()
 								.append('g')
 								.attr('class',
-									prefix + 'legend'
+									PREFIX + 'legend'
 								)
 								.attr('font-size', args.textLegendSize+'em')
-								.transition(_dv.duration)
+								.transition(__calculated.duration)
 								.styleTween('opacity',() => {getInterpolation(0,1)});
 								;
 
-								_dv.legend_enter = _dv.legend
+								__calculated.legend_enter = __calculated.legend
 									.enter()
 									.append('g')
-									.attr('class',prefix+'legend-item')
+									.attr('class',PREFIX+'legend-item')
 									.style('opacity','0');
 
-									_dv.legend_enter
-										.transition(_dv.duration)
+									__calculated.legend_enter
+										.transition(__calculated.duration)
 										.style('opacity','1')
 
-									_dv.legend_enter.append('rect')
-										.attr('class','legend-item-blob')
-										.attr('width',_dv.legend_size * .75)
-										.attr('height',_dv.legend_size * .75)
+									__calculated.legend_enter.append('rect')
+										.attr('class','legend-item-shape')
+										.attr('width',__calculated.legendSize * .75)
+										.attr('height',__calculated.legendSize * .75)
 										.attr('fill', (dis,i)=>{
-											_dv.the_color(dis);
+											__calculated.the_color(dis);
 										})
 										.attr('stroke',args.colorBackground);
 
-									_dv.legend_enter.append("text")
+									__calculated.legend_enter.append("text")
 										.attr('class','legend-item-text')
 										.text((dis)=>{
 											return dis;
 										})
 										.attr('dominant-baseline','middle')
-										.attr('x', _dv.legend_size )
-										.attr('y', _dv.legend_size * .375)
+										.attr('x', __calculated.legendSize )
+										.attr('y', __calculated.legendSize * .375)
 										.attr('stroke',args.colorBackground);
 						}
 
@@ -2441,33 +2485,33 @@ duisplay types for multiple
 				/******** MERGE ********/
 					
 					//graph item : bars, scatter plots, pizza, points
-						_dv.blob_merge = _dv.blob.merge(_dv.blob_enter)
+						__calculated.shape_merge = __calculated.shape.merge(__calculated.shape_enter)
 								
-							//coordinates
-							if(_dv.is_type(['bar','line','scatter'])){
-								_dv.blob_merge
-									.transition(_dv.duration)
+							//COORDINATES
+							if(__calculated.is_base(['bar','line','scatter'])){
+								__calculated.shape_merge
+									.transition(__calculated.duration)
 										.attr(
-											(_dv.is_type(['line','scatter']) ? 'cx' : 'x'),
+											(__calculated.is_base(['line','scatter']) ? 'cx' : 'x'),
 											(dis,i)=>{
-												return getBlobOrigin('x',dis,i,false);
+												return getShapeOrigin('x',dis,i,false);
 											}
 										)
 										.attr(
-											(_dv.is_type(['line','scatter']) ? 'cy' : 'y'),
+											(__calculated.is_base(['line','scatter']) ? 'cy' : 'y'),
 											(dis,i)=>{
-												return getBlobOrigin('y',dis,i,false);
+												return getShapeOrigin('y',dis,i,false);
 											}
 										)
 										;
 							}
 
 							//areas and what not
-							if(_dv.is_type('pie')){
-								_dv.blob_merge
+							if(__calculated.is_base('pie')){
+								__calculated.shape_merge
 									.transition(args.transition) //DO NOT
 										.attrTween('d',function(dis,i){
-											dis._current = dis._current || getPiData(i);
+											dis._current = dis._current || getPiData(dis,i);
 											let theCurrent = dis._current;
 											
 											return getInterpolation(
@@ -2481,92 +2525,92 @@ duisplay types for multiple
 										});
 							}
 							
-							if(_dv.is_type(['line','scatter'])){
-								_dv.blob_merge
-									.transition(_dv.duration)
+							if(__calculated.is_base(['line','scatter'])){
+								__calculated.shape_merge
+									.transition(__calculated.duration)
 										.attr('r',(dis,i)=>{
-											return getBlobRadius(dis,i,false)
+											return getShapeRadius(dis,i,false)
 										})
 										;
 
-								if(_dv.is_type('line') && !args.linePoints) {
-									_dv.blob_merge
+								if(__calculated.is_base('line') && !args.linePoints) {
+									__calculated.shape_merge
 										.attr('fill-opacity',0)
 										.attr('stroke-opacity',0);
 								}
 							}
 							
-							if(_dv.is_type('bar')){
-								_dv.blob_merge
-									.transition(_dv.duration)
+							if(__calculated.is_base('bar')){
+								__calculated.shape_merge
+									.transition(__calculated.duration)
 										.attr('width',(dis,i)=>{
-											return getBlobSize('x',dis,i,false)
+											return getShapeSize('x',dis,i,false)
 										}) // _ width
 										.attr('height',(dis,i)=>{
-											return getBlobSize('y',dis,i,false)
+											return getShapeSize('y',dis,i,false)
 										})
 										;
 							}
 
 							//tooltip
 							if(args.tooltipEnable) {
-								_dv.blob_merge
+								__calculated.shape_merge
 									.on('mousemove',(dis)=>{
-											_dv.tooltip.show(dis,renderCursorStalker(d3.event));
+											__calculated.tooltip.show(dis,renderCursorStalker(d3.event));
 									})
-									.on('mouseleave',_dv.tooltip.hide);
+									.on('mouseleave',__calculated.tooltip.hide);
 							}
 							
 							//line  colors
 							if(!args.colorPalette.length){
 								if(
-									_dv.is_type('line')
+									__calculated.is_base('line')
 									&& (
 										args.linePointsColor
 										|| args.lineColor
 									)
 								) {
-									_dv.blob_merge
+									__calculated.shape_merge
 										.attr('fill',() => {
 											return args.linePointsColor || args.lineColor;
 										});
 
 								}
 							}else{
-								_dv.blob_merge
+								__calculated.shape_merge
 									.attr('fill',(dis,i)=>{
-										return _dv.the_color(deepGet(dis,args.key.color));
+										return __calculated.the_color(__calculated.#_get(dis,args.key.color));
 									});
 
-									if(_dv.is_type('scatter')){
-										_dv.blob_merge
+									if(__calculated.is_base('scatter')){
+										__calculated.shape_merge
 											.attr('fill-opacity',args.areaOpacity)
 											.attr('stroke-width',1)
 											.attr('stroke',(dis,i)=>{
-												return _dv.the_color(deepGet(dis,args.key.color));
+												return __calculated.the_color(__calculated.#_get(dis,args.key.color));
 											})
 									}
 							}
 
 					
 					// text label
-						if(_dv.has_text){
+						if(__calculated.has_text){
 
 							//polyline 
-								if(_dv.is_type('pie') && args.piLabelStyle == 'linked'){
+								if(__calculated.is_base('pie') && args.piLabelStyle == 'linked'){
 
-									_dv.blob_text_link_merge = _dv.blob_text_link.merge(_dv.blob_text_link_enter)
-										.transition(_dv.duration)
+									__calculated.shape_text_link_merge = __calculated.shape_text_link.merge(__calculated.shape_text_link_enter)
+										.transition(__calculated.duration)
 										.attrTween('points',(dis,i)=>{
 											//in pie, initial means it starts at zero but we dont want that so dont set the initial to true
 											const start = [
-													getArcPath(getPiData(i),true,'centroid',1,false), //first coord is centroid of our pie boi
-													getArcPath(getPiData(i),true,'centroid',1,false), // second is outer radius.
+													getArcPath(getPiData(dis,i),true,'centroid',1,false), //first coord is centroid of our pie boi
+													getArcPath(getPiData(dis,i),true,'centroid',1,false), // second is outer radius.
 												],
 												end = [
 
-													getArcPath(getPiData(i),true,'centroid',1,false),
-													getArcPath(getPiData(i),false,'centroid',2.25,false),
+													getArcPath(getPiData(dis,i),true,'centroid',1,false),
+													getArcPath(getPiData(dis,i),false,'centroid',2.25,false),
 												];
 
 											return getInterpolation(start,end);
@@ -2575,31 +2619,31 @@ duisplay types for multiple
 
 							
 							// text itself
-								_dv.blob_text_merge = _dv.blob_text.merge(_dv.blob_text_enter);
+								__calculated.shape_text_merge = __calculated.shape_text.merge(__calculated.shape_text_enter);
 
 									//commercial break
 									//set a minimum length for graph items to offset its text bois. doesnt matter which data key is on the axis we just want the width or height of the graph item on the given axis
 									// add padding for less math i think
-									_dv.m_length = (axisString,i)=>{
+									__calculated.m_length = (axisString,i)=>{
 
-										if(_dv.has_text && _dv.blob_text_merge){
+										if(__calculated.has_text && __calculated.shape_text_merge){
 											let value = 0;
 
-											if( getDimension( axisString ) == 'width' ) {
+											if( ToSide( axisString ) == 'width' ) {
 												value = (
-													_dv.blob_text_merge.nodes()[i]
-														.getBBox()[ getDimension( axisString ) ]
+													__calculated.shape_text_merge.nodes()[i]
+														.getBBox()[ ToSide( axisString ) ]
 												) + (
-													_dv.text_padding
-													* _dv.text_base_size
+													TEXT_PADDING
+													* __calculated.fontSize
 												);
 											}else{
 												value = (
-													_dv.text_base_size
+													__calculated.fontSize
 													* (
 														args.textNameSize
 														+ args.textValueSize
-														+ _dv.text_padding
+														+ TEXT_PADDING
 													)
 												);
 											}
@@ -2609,31 +2653,31 @@ duisplay types for multiple
 									};
 
 
-									_dv.blob_text_merge
+									__calculated.shape_text_merge
 										.attr('class', (dis,i)=>{
-											let classString =  `${prefix}graph-item graph-item-text`;
+											let classString =  `${PREFIX}graph-item graph-item-text`;
 											
 											if( 
 												(
-													_dv.is_type('bar')
+													__calculated.is_base('bar')
 													&& (
 														(
 															args.barTextWithin
 															&& (
 																( // it out
 																	(
-																		parseFloat(getBlobSize(getAxisString(1),dis,i,false))
-																		< _dv.m_length(getAxisString(1),i)
+																		parseFloat(getShapeSize(axisName(1),dis,i,false))
+																		< __calculated.m_length(axisName(1),i)
 																	)
-																	&& !isDark(args.colorBackground)
+																	&& !ColorisDark(args.colorBackground)
 																)
 																|| ( //it in
 																	(
-																		parseFloat(getBlobSize(getAxisString(1),dis,i,false))
-																		>= _dv.m_length(getAxisString(1),i)
+																		parseFloat(getShapeSize(axisName(1),dis,i,false))
+																		>= __calculated.m_length(axisName(1),i)
 																	)
 																	&& (args.colorPalette.length > 0)
-																	&& !isDark( _dv.the_color(deepGet(dis,args.key.color)) )
+																	&& !ColorisDark( __calculated.the_color(__calculated.#_get(dis,args.key.color)) )
 																)
 															)
 														)
@@ -2643,49 +2687,49 @@ duisplay types for multiple
 																( // it out
 																	(
 																		(
-																			parseFloat(getBlobSize(getAxisString(1),dis,i,false))
-																			+ _dv.m_length(getAxisString(1),i)
-																		) <=  args[getDimension(getAxisString(1))]
+																			parseFloat(getShapeSize(axisName(1),dis,i,false))
+																			+ __calculated.m_length(axisName(1),i)
+																		) <=  args[ToSide(axisName(1))]
 																	)
-																	&& !isDark(args.colorBackground)
+																	&& !ColorisDark(args.colorBackground)
 																)
 																|| ( //it in
 																	(
 																		(
-																			parseFloat(getBlobSize(getAxisString(1),dis,i,false))
-																			+ _dv.m_length(getAxisString(1),i)
-																		) > args[getDimension(getAxisString(1))]
+																			parseFloat(getShapeSize(axisName(1),dis,i,false))
+																			+ __calculated.m_length(axisName(1),i)
+																		) > args[ToSide(axisName(1))]
 																	)
 																	&& (args.colorPalette.length > 0)
-																	&& !isDark( _dv.the_color(deepGet(dis,args.key.color)) )
+																	&& !ColorisDark( __calculated.the_color(__calculated.#_get(dis,args.key.color)) )
 																)
 															)
 														)
 													)
 												)
 												|| (
-													_dv.is_type(['line','scatter'])
-													&& !isDark(args.colorBackground)
+													__calculated.is_base(['line','scatter'])
+													&& !ColorisDark(args.colorBackground)
 												)
 												|| (
-													_dv.is_type('pie')
+													__calculated.is_base('pie')
 													&& (
 														(
 															args.piLabelStyle == 'within'
 															&& (args.colorPalette.length > 0)
-															&& !isDark( _dv.the_color(deepGet(dis,args.key.color)) )
+															&& !ColorisDark( __calculated.the_color(__calculated.#_get(dis,args.key.color)) )
 														)
 														|| (
 															args.piLabelStyle == 'linked'
-															&& !isDark(args.colorBackground)
+															&& !ColorisDark(args.colorBackground)
 														)
 													)
 												)
 											){
-												classString +=  ' dark';
+												classString +=  ` ${PREFIX}dark`;
 											}else{
 
-												classString +=  ' light';
+												classString +=  ` ${PREFIX}light`;
 											}
 
 											return classString;
@@ -2693,47 +2737,47 @@ duisplay types for multiple
 										.attr('stroke',(dis,i)=>{
 											if(
 												(
-													_dv.is_type('pie')
+													__calculated.is_base('pie')
 													&& args.piLabelStyle == 'within'
 													&& args.colorPalette.length > 0
 												)
 												|| (
-													_dv.is_type('bar')
+													__calculated.is_base('bar')
 
 													&& (
 														(
 															!args.barTextWithin
 															&& (
-																parseFloat(getBlobSize(getAxisString(1),dis,i))
-																>= (args[getDimension(getAxisString(1),true)] - _dv.m_length(getAxisString(1),i))
+																parseFloat(getShapeSize(axisName(1),dis,i))
+																>= (args[ToSide(axisName(1),true)] - __calculated.m_length(axisName(1),i))
 															)
 														)
 														|| (
 															args.barTextWithin
 															&& (
-																parseFloat(getBlobSize(getAxisString(1),dis,i))
-																>= _dv.m_length(getAxisString(1),i)
+																parseFloat(getShapeSize(axisName(1),dis,i))
+																>= __calculated.m_length(axisName(1),i)
 															)
 														) //@TODO this
 													)
 												)
 											){
-												return _dv.the_color(deepGet(dis,args.key.color))
+												return __calculated.the_color(__calculated.#_get(dis,args.key.color))
 
 											}else if(
-												!_dv.is_type(['bar','pie'])
+												!__calculated.is_base(['bar','pie'])
 												|| (
-													_dv.is_type(['pie'])
+													__calculated.is_base(['pie'])
 													&& args.piLabelStyle == 'linked'
 												)
 											){
 												return args.colorBackground;
 											}
 										})
-										.transition(_dv.duration)
+										.transition(__calculated.duration)
 											.attr('transform',(dis,i)=>{
-												const dataToUse = _dv.is_type('pie') ? getPiData(i) : dis;
-												return `translate( ${getBlobTextOrigin('x',dataToUse,i,false)} , ${getBlobTextOrigin('y',dataToUse,i,false)} )`;
+												const dataToUse = __calculated.is_base('pie') ? getPiData(dis,i) : dis;
+												return `translate( ${getShapeTextOrigin('x',dataToUse,i,false)} , ${getShapeTextOrigin('y',dataToUse,i,false)} )`;
 											})
 											.style('opacity',1);
 
@@ -2744,13 +2788,13 @@ duisplay types for multiple
 						if(args.colorLegend){
 
 
-							_dv.container_legend_merge = _dv.container_legend.merge(_dv.container_legend_enter)
+							__calculated.container_legend_merge = __calculated.container_legend.merge(__calculated.container_legend_enter)
 									.attr('transform',`translate( ${getLegendOrigin('x')} , ${getLegendOrigin('y')} )`)
 
-								_dv.legend_merge = _dv.legend.merge(_dv.legend_enter)
-									.transition(_dv.duration)
+								__calculated.legend_merge = __calculated.legend.merge(__calculated.legend_enter)
+									.transition(__calculated.duration)
 									.attr('transform', (dis,i)=>{
-										return `translate(0, ${i *  _dv.legend_size})`;
+										return `translate(0, ${i *  __calculated.legendSize})`;
 									});
 							
 						}
@@ -2775,12 +2819,12 @@ duisplay types for multiple
 			const init = (retrievedData) => {
 				
 				//add initialized class so we know the boi been fucked na
-				_dv.the_container = d3.select(selector);
+				__calculated.theUi = d3.select(dv.selector);
 				
-				_dv.the_container
+				__calculated.theUi
 					.classed(
-						`${prefix}initialized
-						${ isDark(args.colorBackground) ? prefix+'dark' : '' }` ,true
+						`${PREFIX}initialized
+						${ ColorisDark(args.colorBackground) ? PREFIX+'dark' : '' }` ,true
 					)
 					.style('background-color',args.colorBackground)
 					;
@@ -2788,14 +2832,14 @@ duisplay types for multiple
 				//graph element
 				switch(args.type){
 					case 'bar':
-						_dv.graph_item_element = 'rect';
+						__calculated.shape.tag = 'rect';
 						break;
 					case 'pie':
-						_dv.graph_item_element = 'path';
+						__calculated.shape.tag = 'path';
 						break;
 					case 'line':
 					case 'scatter':
-						_dv.graph_item_element = 'circle';
+						__calculated.shape.tag = 'circle';
 						break;
 
 				}
@@ -2803,16 +2847,16 @@ duisplay types for multiple
 
 			
 				// relative to 1em supposedly idk
-				_dv.text_base_size = parseFloat(args.fontSize);
+				__calculated.fontSize = parseFloat(args.fontSize);
 				
 
-				_dv.data = {
+				__calculated.data = {
 					displayed: [],
 					complete: []
 				};
-				_dv.data.complete = setData(retrievedData);
+				__calculated.data.complete = parseData(retrievedData);
 
-				if( _dv.data.complete.length > 0 ){
+				if( __calculated.data.complete.length > 0 ){
 					// fallback + validate color data
 					// if color data key aint set put in name
 					if(!arr.key.color){ 
@@ -2830,9 +2874,9 @@ duisplay types for multiple
 
 
 					// setup padding and sizes
-					_dv.legend_size = (args.textLegendSize * parseFloat(args.fontSize) * 2);
+					__calculated.legendSize = (args.textLegendSize * parseFloat(args.fontSize) * 2);
 					
-					_dv.margin = {
+					__calculated.margin = {
 						top:	
 							typeof args.margin[0] === 'number'
 								&& args.margin[0]
@@ -2870,9 +2914,9 @@ duisplay types for multiple
 					
 					//add tooltipcontent function if there is none;
 
-					_dv.tooltip_html = args.tooltipContent
+					__calculated.tooltip_html = args.tooltipContent
 						|| ((dis,i)=>{
-							const html = `<div class="${prefix}tooltip-data">`;
+							const html = `<div class="${PREFIX}tooltip-data">`;
 
 							for (let prop in dis) {
 								if (Object.prototype.hasOwnProperty.call(dis, prop)) {
@@ -2880,24 +2924,24 @@ duisplay types for multiple
 									if(typeof dis[prop] !== 'object'){
 
 									
-										html += `<div class="${prefix}tooltip-data-property">`;
+										html += `<div class="${PREFIX}tooltip-data-property">`;
 
 											// label
 											if(args.srcType !== 'row'){
-												html += `<strong class="${prefix}tooltip-data-property-label">${prop}:</strong> `;
+												html += `<strong class="${PREFIX}tooltip-data-property-label">${prop}:</strong> `;
 											}
 
 
 									
-											datum_keys.forEach((keyKey)=>{
+											DATUM_KEYS.forEach((keyKey)=>{
 												
 												if(
 													args.key[keyKey]
 													&& args.key[keyKey].lastIndexOf(prop)  > -1
-													&& _dv[`format_${keyKey}`]
+													&& __calculated[`format_${keyKey}`]
 													&& propIsOutputted == false
 												){
-													html += `<span class="${prefix}tooltip-data-property-content">${_dv[`format_${keyKey}`] (deepGet(dis,args.key[ keyKey ]) )} </span>`;
+													html += `<span class="${PREFIX}tooltip-data-property-content">${__calculated[`format_${keyKey}`] (__calculated.#_get(dis,args.key[ keyKey ]) )} </span>`;
 													propIsOutputted = true;
 												}
 
@@ -2906,7 +2950,7 @@ duisplay types for multiple
 											if(propIsOutputted == false) {
 
 												// content
-												html += `<span class="${prefix}tooltip-data-property-content">${dis[prop]}</span>`;
+												html += `<span class="${PREFIX}tooltip-data-property-content">${dis[prop]}</span>`;
 
 											}
 										
@@ -2924,65 +2968,65 @@ duisplay types for multiple
 
 					
 					//set them dimensions
-					_dv.outer_width = args.width + _dv.margin.left + _dv.margin.right;
-					_dv.outer_height = args.height + _dv.margin.top + _dv.margin.bottom;
+					__calculated.outer('width') = args.width + __calculated.margin.left + __calculated.margin.right;
+					__calculated.outer('height') = args.height + __calculated.margin.top + __calculated.margin.bottom;
 
 
 
 
-					d3.select(selector).append('div').lower()
-						.attr('class',`${prefix}heading`);
+					d3.select(dv.selector).append('div').lower()
+						.attr('class',`${PREFIX}heading`);
 					
-						_dv.heading_sel = d3.select(selector).select(`div.${prefix}heading`);
+						__calculated.heading_sel = d3.select(dv.selector).select(`div.${PREFIX}heading`);
 
 						if(args.title){
-							_dv.heading_title = _dv.heading_sel.append('span')
-							.attr('class',`${prefix}title`)
+							__calculated.heading_title = __calculated.heading_sel.append('span')
+							.attr('class',`${PREFIX}title`)
 							.text(args.title)
 						}
 
 						if(args.description){
-							_dv.heading_description = _dv.heading_sel.append('span')
-							.attr('class',`${prefix}description`)
+							__calculated.heading_description = __calculated.heading_sel.append('span')
+							.attr('class',`${PREFIX}description`)
 							.text(args.description)
 						}
 
-						_dv.heading_sel
+						__calculated.heading_sel
 							.style('padding-top', () => {
-								`${(_dv.margin.top / args.height) * 50}%`
+								`${(__calculated.margin.top / args.height) * 50}%`
 							})
 							.style('padding-left', () => {
-								`${(_dv.margin.left / _dv.outer_width) * 100}%`
+								`${(__calculated.margin.left / __calculated.outer('width')) * 100}%`
 							})
 							.style('padding-right', () => {
-								`${(_dv.margin.right / _dv.outer_width) * 100}%`
+								`${(__calculated.margin.right / __calculated.outer('width')) * 100}%`
 							})
-							.transition(_dv.duration)
+							.transition(__calculated.duration)
 							.styleTween('opacity',() => {getInterpolation(0,1)});
 				
-					_dv.canvas = d3.select(selector)
+					__calculated.body = d3.select(dv.selector)
 						.append('div')
-						.attr('class', `${prefix}wrapper`)
+						.attr('class', `${PREFIX}wrapper`)
 						.style('position','relative')
 						.style('padding-bottom',() => {
-							return `${(( _dv.outer_height / _dv.outer_width) * 100)}%`;
+							return `${(( __calculated.outer('height') / __calculated.outer('width')) * 100)}%`;
 						})
 						.style('position','relative');
 
-						const dimensionString = `0 0 ${_dv.outer_width} ${_dv.outer_height}`;
+						const dimensionString = `0 0 ${__calculated.outer('width')} ${__calculated.outer('height')}`;
 					
 					//check if its scrolled on the place it should be at
-					_dv.dv_init = false;
+					__calculated.isLoaded = false;
 					
 					document.addEventListener('scroll',(e)=>{
 						const graphPosition = dataContainer.getBoundingClientRect().top;
-						if(graphPosition < (window.innerHeight * .5) && !_dv.dv_init) {
-							_dv.dv_init = true;
+						if(graphPosition < (window.innerHeight * .5) && !__calculated.isLoaded) {
+							__calculated.isLoaded = true;
 							
 							setTimeout(() => {
 
-								_dv.svg = _dv.canvas.append('svg')
-									.attr('id',`${selector}-svg`)
+								__calculated.svg = __calculated.body.append('svg')
+									.attr('id',`${dv.selector}-svg`)
 									.style('position','absolute')
 									.style('top','0')
 									.style('left','0')
@@ -2993,9 +3037,9 @@ duisplay types for multiple
 									.attr('x','0px')
 									.attr('y','0px')
 									.attr('class',
-										`${prefix}svg`
-										+ ` ${prefix}type-${args.type}`
-										+ ` ${prefix}${(
+										`${PREFIX}svg`
+										+ ` ${PREFIX}type-${args.type}`
+										+ ` ${PREFIX}${(
 												(
 													args.colorPalette.length > 0
 													|| args.linePointsColor !== null
@@ -3005,9 +3049,9 @@ duisplay types for multiple
 													: 'no' 
 											)}-palette`
 
-										+ ` ${prefix}${(
+										+ ` ${PREFIX}${(
 												(
-													_dv.is_type('pie')
+													__calculated.is_base('pie')
 													&& !args.xTicks
 													&& !args.yTicks
 												)
@@ -3015,52 +3059,52 @@ duisplay types for multiple
 													: 'has'
 											)}-ticks`
 
-										+ ` ${prefix}${(
+										+ ` ${PREFIX}${(
 												(args.colorLegend )
 													? 'no'
 													: 'has'
 											)}-legend`
 											
 										+ ` ${(
-												(_dv.is_type('pie') && args.piLabelStyle !== null)
-													? ` ${prefix}pi-label-style-${args.piLabelStyle}`
-													: ` ${prefix}no-label`
+												(__calculated.is_base('pie') && args.piLabelStyle !== null)
+													? ` ${PREFIX}pi-label-style-${args.piLabelStyle}`
+													: ` ${PREFIX}no-label`
 											)}`
 									)
 									.attr('viewBox', dimensionString)
 									.attr('preserveAspectRatio', 'xMidYMid meet')
 									.attr('xml:space','preserve')
-									.attr('width',_dv.outer_width)
-									.attr('height',_dv.outer_height)
+									.attr('width',__calculated.outer('width'))
+									.attr('height',__calculated.outer('height'))
 									;
 
 									
 								//duration
-								_dv.duration = _dv.svg.transition()
+								__calculated.duration = __calculated.svg.transition()
 									.duration( args.transition )
 									.ease(d3.easeLinear);
 									
-								_dv.container = _dv.svg.append('g')
-									.attr('class',`${prefix}svg-wrapper`)
+								__calculated.container = __calculated.svg.append('g')
+									.attr('class',`${PREFIX}svg-wrapper`)
 									.attr('font-size',args.fontSize)
 									.style('line-height',1)
-									.attr('transform',`translate( ${_dv.margin.left} , ${_dv.margin.top} )`);
+									.attr('transform',`translate( ${__calculated.margin.left} , ${__calculated.margin.top} )`);
 
 
 								//tooltip
 								if(args.tooltipEnable) {
 
 									
-									_dv.svg.append('circle')
-										.attr('class',prefix+'cursor-stalker')
+									__calculated.svg.append('circle')
+										.attr('class',PREFIX+'cursor-stalker')
 										// .attr('r',10)
 										// // .style('opacity',0)
 										// .attr('fill','red');
 
-									_dv.tooltip_cursor_stalker = _dv.svg.select(`circle.${prefix}cursor-stalker`)
+									__calculated.tooltip_cursor_stalker = __calculated.svg.select(`circle.${PREFIX}cursor-stalker`)
 
-									_dv.tooltip = d3.tip()
-										.attr('class',prefix+'tooltip')
+									__calculated.tooltip = d3.tip()
+										.attr('class',PREFIX+'tooltip')
 										.style('width', () => {
 											if(typeof args.tooltipWidth === 'number'){
 												return `${parseFloat(args.tooltipWidth)}px`;
@@ -3070,17 +3114,17 @@ duisplay types for multiple
 										})
 										.style('text-align',args.tooltipTextAlign)
 										.direction(args.tooltipDirectionParameter || args.tooltipDirection)
-										.html(_dv.tooltip_html)
+										.html(__calculated.tooltip_html)
 
-									_dv.svg.call(_dv.tooltip);
+									__calculated.svg.call(__calculated.tooltip);
 								}
 
 								//@TODO multiple here
 
 								
-								if(_dv.is_type('pie')){
+								if(__calculated.is_base('pie')){
 									//radius boi
-									_dv.pi_radius = (() => {
+									__calculated.pi_radius = (() => {
 										let value = Math.min((args.width * .5),(args.height * .5));
 					
 										if(args.colorLegend){
@@ -3097,38 +3141,38 @@ duisplay types for multiple
 								}else{
 
 									// container for labels
-									_dv.container_lab = _dv.container.append('g')
-										.attr('class', prefix + 'label');
+									__calculated.labels = __calculated.g.append('g')
+										.attr('class', PREFIX + 'label');
 						
 									// container for axis
-									_dv.container_rule = _dv.container.append('g')
-										.attr('class', prefix + 'axis')
+									__calculated.rulers = __calculated.g.append('g')
+										.attr('class', PREFIX + 'axis')
 										.attr('font-size',args.textTicksSize+'em');
 										
 									//kung may grid gibo kang grid
 									if( args.xGrid || args.yGrid ){
-										_dv.container_grid = _dv.container.append('g')
-										.attr('class', prefix + 'grid')
+										__calculated.grid = __calculated.g.append('g')
+										.attr('class', PREFIX + 'grid')
 										.attr('font-size',args.textTicksSize+'em');
 									}
 								}
 
 								//style warns
-								if(_dv.user_can_debug){
+								if(__calculated.is_debuggy){
 									if(
 										args.width == defaults.width
 										&& args.height == defaults.height
-										&& _dv.data.complete > 9
+										&& __calculated.data.complete > 9
 									){
 										
-										console.warn(selector+' Width and height was not adjusted. graph elements may not fit in the canvas');
+										console.warn(dv.selector+' Width and height was not adjusted. graph elements may not fit in the canvas');
 									
 									}else if(
 										args.width < defaults.width
 										&& args.height < defaults.height
 									){
 
-										console.warn(selector+' set canvas width and or height may be too small.\n Tip: The given height and width are not absolute and act more like aspect ratios. svgs are responsive and will shrink along with content.');
+										console.warn(dv.selector+' set canvas width and or height may be too small.\n Tip: The given height and width are not absolute and act more like aspect ratios. svgs are responsive and will shrink along with content.');
 
 									}
 
@@ -3137,23 +3181,23 @@ duisplay types for multiple
 										&& (args.xLabel || args.yLabel)
 										&& (args.xTicks || args.yTicks)
 									){
-										console.debug(selector+' text may overlap. margins may need to be modified');
+										console.debug(dv.selector+' text may overlap. margins may need to be modified');
 									}
 								}
 
 
 
 								// scales and shit
-								datum_keys.forEach((keyKey)=>{
+								DATUM_KEYS.forEach((keyKey)=>{
 
 									//range
-									_dv['range_'+keyKey] = getRange(keyKey);
+									__calculated['range_'+keyKey] = range(keyKey);
 
 									//scale
-									_dv['the_'+keyKey] = setScale(keyKey);
+									__calculated['the_'+keyKey] = scale(keyKey);
 
 									//formatting of data on the graph
-									_dv['format_'+keyKey] = (() => {
+									__calculated['format_'+keyKey] = (() => {
 										
 										if(typeof args['format'+keyKey+'Parameter'] === 'function' ) {
 											return args['format'+keyKey+'Parameter']
@@ -3185,10 +3229,10 @@ duisplay types for multiple
 										case 0:
 										case 1:
 
-											renderAxisContainers(getAxisString(keyKey),_dv.container_rule)
+											renderAxisContainers(axisName(keyKey),__calculated.rulers)
 											
-											if(args[getAxisString(keyKey)+'Grid']) {
-												renderAxisContainers(getAxisString(keyKey),_dv.container_grid,true)
+											if(args[axisName(keyKey)+'Grid']) {
+												renderAxisContainers(axisName(keyKey),__calculated.grid,true)
 											}
 
 										case 'color':
@@ -3207,13 +3251,13 @@ duisplay types for multiple
 
 								renderGraph();
 								
-								// _dv.resize = null;
+								// __calculated.resize = null;
 
-								_1p21.graphs[selector] = {data:_dv.data,calcuated:_dv};
+								_1p21.graphs[dv.selector] = {data:__calculated.data,calcuated:__calculated};
 
 								window.addEventListener("resize", () => {
-									clearTimeout(_dv.resize);
-									_dv.resize = setTimeout(() => {
+									clearTimeout(__calculated.resize);
+									__calculated.resize = setTimeout(() => {
 										renderGraph();
 									},300);
 								});
@@ -3223,7 +3267,7 @@ duisplay types for multiple
 						}
 					},true);
 				}else{
-					renderError('Data for '+selector+' was filtered and all items are invalid for visualizing. check provided data keys and make sure they are correct');
+					renderError('Data for '+dv.selector+' was filtered and all items are invalid for visualizing. check provided data keys and make sure they are correct');
 				}
 			}
 
@@ -3243,11 +3287,11 @@ duisplay types for multiple
 
 			//data is embedded on the page oooooo
 			if(args.srcPath.indexOf(window.location.href) > -1){
-				const jsonSelector = document.getElementById(strGetHash(args.srcPath)).innerHTML;
+				const jsondv.Selector = document.getElementById(Str.hash(args.srcPath)).innerHTML;
 				
-				if( strIsValidJSONString(jsonSelector) ){
+				if( Str.isValidJSONString(jsondv.Selector) ){
 
-					const dataIsJSON = JSON.parse(jsonSelector);
+					const dataIsJSON = JSON.parse(jsondv.Selector);
 					init(dataIsJSON);
 				}else{
 					renderError('Data input may not be valid. Please check and update the syntax');
@@ -3255,12 +3299,12 @@ duisplay types for multiple
 
 			//o its not ok we normal now
 			}else{
-				switch( strGetFileExtension(args.srcPath) ) {
+				switch( Str.fileExtension(args.srcPath) ) {
 					case 'csv':
 					case 'dsv':
 					case 'tsv':
 					case 'xml':
-						d3[ strGetFileExtension(args.srcPath)](args.srcPath,(d)=>{
+						d3[ Str.fileExtension(args.srcPath)](args.srcPath,(d)=>{
 								return d;
 							})
 							.then(init)

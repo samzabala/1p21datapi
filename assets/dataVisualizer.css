@@ -30,14 +30,14 @@
     display: block; }
   .dv-title {
     font-size: 1.25em;
-    margin-bottom: .5em;
+    margin: 0;
     font-weight: 700;
     line-height: 1.25; }
   .dv-description {
     opacity: .8;
     font-size: .875em;
     line-height: 1.5; }
-  .dv-wrapper:before {
+  .dv-container:before {
     content: "Loading...";
     position: absolute;
     margin: auto;
@@ -46,15 +46,15 @@
     transform: translate(-50%, -50%);
     opacity: 0;
     transition: .25s opacity linear; }
-  .dv-wrapper.fatality {
+  .dv-container.fatality {
     padding: 4em 0;
     max-width: 28em;
     font-size: .875em;
     text-align: center;
     margin: 0 auto; }
-  .dv:not(.dv-initialized):not(.no-data), .dv-wrapper:empty {
+  .dv:not(.dv-initialized):not(.no-data), .dv-container:empty {
     padding-bottom: 75%; }
-    .dv:not(.dv-initialized):not(.no-data):before, .dv-wrapper:empty:before {
+    .dv:not(.dv-initialized):not(.no-data):before, .dv-container:empty:before {
       opacity: 1; }
   .dv text {
     font-family: inherit !important; }
@@ -62,7 +62,7 @@
     stroke-opacity: .25; }
   .dv-grid .tick-aligned line, .dv-grid .tick-aligned path {
     stroke-opacity: .5; }
-  .dv-fill.no-color, .dv-no-palette .graph-item-blob, .dv-no-palette .legend-item-blob {
+  .dv-fill.dv-no-color, .dv-no-palette .dv-graph-item-shape, .dv-no-palette .dv-legend-item-shape {
     fill: #222; }
   .dv-line.no-color {
     stroke: #222; }
@@ -70,58 +70,54 @@
       stroke: #FFF; }
   .dv-fill.no-color {
     fill-opacity: .25; }
-  .dv-no-palette.dv-type-bar .graph-item-blob:nth-of-type(2n),
-  .dv-no-palette.dv-type-bar .dv-legend-item:nth-of-type(2n) .legend-item-blob, .dv-no-palette.dv-type-pie .graph-item-blob:nth-of-type(2n),
-  .dv-no-palette.dv-type-pie .dv-legend-item:nth-of-type(2n) .legend-item-blob, .dv-no-palette.dv-has-legend .graph-item-blob:nth-of-type(2n),
-  .dv-no-palette.dv-has-legend .dv-legend-item:nth-of-type(2n) .legend-item-blob {
+  .dv-no-palette.dv-base-bar .dv-graph-item-shape:nth-of-base(2n),
+  .dv-no-palette.dv-base-bar .dv-legend-item:nth-of-base(2n) .dv-legend-item-shape, .dv-no-palette.dv-base-pie .dv-graph-item-shape:nth-of-base(2n),
+  .dv-no-palette.dv-base-pie .dv-legend-item:nth-of-base(2n) .dv-legend-item-shape, .dv-no-palette.dv-has-legend .dv-graph-item-shape:nth-of-base(2n),
+  .dv-no-palette.dv-has-legend .dv-legend-item:nth-of-base(2n) .dv-legend-item-shape {
     fill: #444; }
-  .dv-no-palette.dv-type-pie.dv-pi-label-style-within .graph-item-text:nth-of-type(2n), .dv-no-palette.dv-has-legend.dv-type-scatter .blob-item-blob:nth-of-type(2n) {
+  .dv-no-palette.dv-base-pie.dv-pi-label-style-within .dv-graph-item-text:nth-of-base(2n), .dv-no-palette.dv-has-legend.dv-base-scatter .dv-graph-item-shape:nth-of-base(2n) {
     stroke: #444; }
-  .dv-no-palette.dv-type-bar .graph-item-blob:nth-of-type(3n),
-  .dv-no-palette.dv-type-bar .dv-legend-item:nth-of-type(3n) .legend-item-blob, .dv-no-palette.dv-type-pie .graph-item-blob:nth-of-type(3n),
-  .dv-no-palette.dv-type-pie .dv-legend-item:nth-of-type(3n) .legend-item-blob, .dv-no-palette.dv-has-legend .graph-item-blob:nth-of-type(3n),
-  .dv-no-palette.dv-has-legend .dv-legend-item:nth-of-type(3n) .legend-item-blob {
+  .dv-no-palette.dv-base-bar .dv-graph-item-shape:nth-of-base(3n),
+  .dv-no-palette.dv-base-bar .dv-legend-item:nth-of-base(3n) .dv-legend-item-shape, .dv-no-palette.dv-base-pie .dv-graph-item-shape:nth-of-base(3n),
+  .dv-no-palette.dv-base-pie .dv-legend-item:nth-of-base(3n) .dv-legend-item-shape, .dv-no-palette.dv-has-legend .dv-graph-item-shape:nth-of-base(3n),
+  .dv-no-palette.dv-has-legend .dv-legend-item:nth-of-base(3n) .dv-legend-item-shape {
     fill: #666; }
-  .dv-no-palette.dv-type-pie.dv-pi-label-style-within .graph-item-text:nth-of-type(3n), .dv-no-palette.dv-has-legend.dv-type-scatter .blob-item-blob:nth-of-type(3n) {
+  .dv-no-palette.dv-base-pie.dv-pi-label-style-within .dv-graph-item-text:nth-of-base(3n), .dv-no-palette.dv-has-legend.dv-base-scatter .dv-graph-item-shape:nth-of-base(3n) {
     stroke: #666; }
-  .dv-no-palette.dv-type-bar .graph-item-blob:nth-of-type(4n),
-  .dv-no-palette.dv-type-bar .dv-legend-item:nth-of-type(4n) .legend-item-blob, .dv-no-palette.dv-type-pie .graph-item-blob:nth-of-type(4n),
-  .dv-no-palette.dv-type-pie .dv-legend-item:nth-of-type(4n) .legend-item-blob, .dv-no-palette.dv-has-legend .graph-item-blob:nth-of-type(4n),
-  .dv-no-palette.dv-has-legend .dv-legend-item:nth-of-type(4n) .legend-item-blob {
+  .dv-no-palette.dv-base-bar .dv-graph-item-shape:nth-of-base(4n),
+  .dv-no-palette.dv-base-bar .dv-legend-item:nth-of-base(4n) .dv-legend-item-shape, .dv-no-palette.dv-base-pie .dv-graph-item-shape:nth-of-base(4n),
+  .dv-no-palette.dv-base-pie .dv-legend-item:nth-of-base(4n) .dv-legend-item-shape, .dv-no-palette.dv-has-legend .dv-graph-item-shape:nth-of-base(4n),
+  .dv-no-palette.dv-has-legend .dv-legend-item:nth-of-base(4n) .dv-legend-item-shape {
     fill: #888; }
-  .dv-no-palette.dv-type-pie.dv-pi-label-style-within .graph-item-text:nth-of-type(4n), .dv-no-palette.dv-has-legend.dv-type-scatter .blob-item-blob:nth-of-type(4n) {
+  .dv-no-palette.dv-base-pie.dv-pi-label-style-within .dv-graph-item-text:nth-of-base(4n), .dv-no-palette.dv-has-legend.dv-base-scatter .dv-graph-item-shape:nth-of-base(4n) {
     stroke: #888; }
-  .dv-no-palette.dv-type-bar .graph-item-blob:nth-of-type(5n),
-  .dv-no-palette.dv-type-bar .dv-legend-item:nth-of-type(5n) .legend-item-blob, .dv-no-palette.dv-type-pie .graph-item-blob:nth-of-type(5n),
-  .dv-no-palette.dv-type-pie .dv-legend-item:nth-of-type(5n) .legend-item-blob, .dv-no-palette.dv-has-legend .graph-item-blob:nth-of-type(5n),
-  .dv-no-palette.dv-has-legend .dv-legend-item:nth-of-type(5n) .legend-item-blob {
+  .dv-no-palette.dv-base-bar .dv-graph-item-shape:nth-of-base(5n),
+  .dv-no-palette.dv-base-bar .dv-legend-item:nth-of-base(5n) .dv-legend-item-shape, .dv-no-palette.dv-base-pie .dv-graph-item-shape:nth-of-base(5n),
+  .dv-no-palette.dv-base-pie .dv-legend-item:nth-of-base(5n) .dv-legend-item-shape, .dv-no-palette.dv-has-legend .dv-graph-item-shape:nth-of-base(5n),
+  .dv-no-palette.dv-has-legend .dv-legend-item:nth-of-base(5n) .dv-legend-item-shape {
     fill: #BBB; }
-  .dv-no-palette.dv-type-pie.dv-pi-label-style-within .graph-item-text:nth-of-type(5n), .dv-no-palette.dv-has-legend.dv-type-scatter .blob-item-blob:nth-of-type(5n) {
+  .dv-no-palette.dv-base-pie.dv-pi-label-style-within .dv-graph-item-text:nth-of-base(5n), .dv-no-palette.dv-has-legend.dv-base-scatter .dv-graph-item-shape:nth-of-base(5n) {
     stroke: #BBB; }
-  .dv .graph-item-text,
-  .dv .legend-item-text,
-  .dv .legend-item-blob {
+  .dv-graph-item-text, .dv-legend-item-text, .dv-legend-item-shape {
     paint-order: stroke;
     stroke-linejoin: round; }
-  .dv .graph-item-text,
-  .dv .legend-item-text,
-  .dv .legend-item-blob {
+  .dv-graph-item-text, .dv-legend-item-text, .dv-legend-item-shape {
     stroke-width: 4; }
-  .dv-type-pie.dv-pi-label-style-linked .graph-item-text, .dv-type-pie.dv-pi-label-style-within .graph-item-text {
+  .dv-base-pie.dv-pi-label-style-linked .dv-graph-item-text, .dv-base-pie.dv-pi-label-style-within .dv-graph-item-text {
     stroke-width: 6; }
-  .dv .legend-item-text, .dv-graph .graph-item-text {
+  .dv-legend-item-text, .dv-graph .dv-graph-item-text {
     fill: #222; }
-  .dv-dark .legend-item-text, .dv-dark-graph .graph-item-text {
+  .dv-dark .dv-legend-item-text, .dv-dark-graph .dv-graph-item-text {
     fill: #FFF; }
-  .dv .graph-item-link, .dv .graph-item-text {
+  .dv-graph-item-link, .dv-graph-item-text {
     pointer-events: none; }
-  .dv .graph-item-link {
+  .dv-graph-item-link {
     stroke: #222; }
-    .dv-dark .dv .graph-item-link {
+    .dv-dark .dv-graph-item-link {
       stroke: #FFF; }
-  .dv .graph-item-text.dark {
+  .dv-graph-item-text.dark {
     fill: #222; }
-  .dv .graph-item-text.light {
+  .dv-graph-item-text.light {
     fill: #FFF; }
   .dv-cursor-stalker {
     fill-opacity: 0 !important;

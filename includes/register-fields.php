@@ -9,24 +9,26 @@
 
 
 function _1p21_dv_load_acf(){
+
 	if(function_exists('acf_add_local_field_group')){
-		//register them
-		require _1P21_DV_PLUGIN_PATH . 'fields/acf-cpt.php';
-			
+		
+		//$_1p21_dv_fields_groups
+		require(  _1P21_DV_PLUGIN_PATH . 'fields/acf-cpt.php' );
+
+		// print_r($_1p21_dv_fields_groups);
+		
 		//add each field group
+		
 		foreach($_1p21_dv_fields_groups as $arr) {
 			acf_add_local_field_group($arr);
 		}
 
-
-		//update json for debug or update via import
-
+		//update and format json for debug or update via import if php is updated
 		$fields_group_mod = filemtime(_1P21_DV_PLUGIN_PATH . '/fields/acf-cpt.php');
-		// $fields_set_mod = filemtime(_1P21_DV_PLUGIN_PATH . '/fields/acf-settings.php');
 		$json_mod = filemtime(_1P21_DV_PLUGIN_PATH . '/fields/acf-dv-fields.json');
 
-		
-		if( $fields_group_mod > $json_mod and is_admin() ){
+		//is php newer than json? ok. do this shit
+		if( $fields_group_mod > $json_mod and function_exists('acf_get_local_fields') ){
 
 			//put bois here
 			$json = [];
@@ -48,11 +50,10 @@ function _1p21_dv_load_acf(){
 					// Add this group to the array going to be jsonified
 
 
-				$to_json = $arr;
 
-				if(isset($to_json['ID'])):
-					unset($to_json['ID']);
-				endif;
+
+				$to_json = $arr;
+				unset($to_json['ID']);
 
 				// $json[] = $group;
 				$json[] = $to_json;
@@ -64,7 +65,7 @@ function _1p21_dv_load_acf(){
 
 			// Write output to file for easy import into ACF.
 			// The file must be writable by the server process.
-			$file =  _1P21_DV_PLUGIN_PATH . 'fields/acf-dv-fields.json';
+			$file =  _1P21_DV_PLUGIN_PATH . '/fields/acf-dv-fields.json';
 
 			//pootpoot
 			file_put_contents($file, $json );

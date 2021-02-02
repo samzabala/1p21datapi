@@ -16,6 +16,8 @@ function _1p21_dv_validate_arr($value){
 function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 	global $_1p21_dv;
 	$att_prefix = 'dv';
+	
+	$random_id = mt_rand();
 
 	$render = '';
 
@@ -36,7 +38,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 			};
 			
 			//create unique id for instance to avoid script conflict
-				$wrapper_id = "{$att_prefix}-{$args['id']}";
+				$wrapper_id = "{$att_prefix}-{$args['id']}-{$random_id}";
 
 				if($_1p21_dv['present'][$args['id']]['front']['instance'] > 1) {
 					$wrapper_id .= "-{$_1p21_dv['present'][$args['id']]['front']['instance']}";
@@ -90,7 +92,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 				//<![CDATA[
 				(function(){
 					document.addEventListener('DOMContentLoaded', function() {
-						_1p21.dataVisualizer('#{$wrapper_id}',{\n";
+						/*_1p21.d*/ new dataVisualizer('#{$wrapper_id}',{\n";
 
 							foreach($data_visual as $attribute => $value){
 
@@ -138,7 +140,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
 											$parsed_keys_arr_string = implode(',',array_map(
 												function($value,$key){
-													return $key.' :\'' . _1p21_parse_data_key($value) . '\'';
+													return $key.' :\'' . $value . '\'';
 												},
 												$value,
 												array_keys($value)
@@ -207,8 +209,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 													case 'key':
 													case 'multiple_key':
 
-														$parsed_value = _1p21_parse_data_key($sub_value);
-														$render .= _1p21_dv_dashes_to_camel_case($attribute.'_'.$sub_setting). ":'".$parsed_value."',\n";
+														$render .= _1p21_dv_dashes_to_camel_case($attribute.'_'.$sub_setting). ":'".$sub_value."',\n";
 
 														break;
 
