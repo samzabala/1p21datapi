@@ -648,14 +648,14 @@ These are optional settings to allow reformatting data on the visualizer
 
 		**[ Optional | Meta Key : `'dv_tooltip_direction'` | Default: `'n'` ]**
 
-		Function or string that will be used by the `d3.tip.direction()` method. View documentation [https://github.com/caged/d3-tip/blob/master/docs/positioning-tooltips.md#tipdirection](Here)
+		Function or string that will be used by the `d3.tip.direction()` method. View documentation [https://github.com/caged/d3-tip/shape/master/docs/positioning-tooltips.md#tipdirection](Here)
 
 
 	*	**Content**
 
 		**[ Optional | Meta Key : `'dv_tooltip_content'` | Default: `null` ]**
 
-		Function that will be used `by the d3.tip.html()` method. View documentation here: [https://github.com/caged/d3-tip/blob/master/docs/initializing-tooltips.md#d3tip](Here)
+		Function that will be used `by the d3.tip.html()` method. View documentation here: [https://github.com/caged/d3-tip/shape/master/docs/initializing-tooltips.md#d3tip](Here)
 
 
 ## Functions
@@ -691,3 +691,8 @@ Embeds scripts and stylesheets directly on the markup of the page to optimize pe
 ## Troubleshooting
 
 Good luck.
+
+
+# For Sam's Eyes only
+[] shortcode modal admin weak
+[] align labels opts

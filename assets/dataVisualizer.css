@@ -1,0 +1,181 @@
+/*!
+* 1point21 Data Vizualiser Version 1.2.1
+* Render Styles
+* DO NOT EDIT THIS CSS FILE
+* Edit its corresponding scss file in the src/ folder instead
+*/
+.dv {
+  background: #EEE;
+  position: relative;
+  padding: 2.5em 1em 1em;
+  margin-bottom: 1em;
+  color: #222; }
+  .dv.dv-initialized, .dv.no-data {
+    padding-top: 1em; }
+  .dv-svg {
+    width: 100% !important;
+    max-width: 100%;
+    height: auto; }
+  .dv-dark {
+    fill: currentColor; }
+  .dv-light {
+    fill: #FFF; }
+  .dv-align-center {
+    text-align: center; }
+  .dv-align-left {
+    text-align: left; }
+  .dv-align-right {
+    text-align: right; }
+  .dv-title, .dv-description {
+    display: block; }
+  .dv-title {
+    font-size: 1.25em;
+    margin: 0;
+    font-weight: 700;
+    line-height: 1.25; }
+  .dv-description {
+    opacity: .8;
+    font-size: .875em;
+    line-height: 1.5; }
+  .dv-container:before {
+    content: "Loading...";
+    position: absolute;
+    margin: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: .25s opacity linear; }
+  .dv-container.fatality {
+    padding: 4em 0;
+    max-width: 28em;
+    font-size: .875em;
+    text-align: center;
+    margin: 0 auto; }
+  .dv:not(.dv-initialized):not(.no-data), .dv-container:empty {
+    padding-bottom: 75%; }
+    .dv:not(.dv-initialized):not(.no-data):before, .dv-container:empty:before {
+      opacity: 1; }
+  .dv text {
+    font-family: inherit !important; }
+  .dv-grid line, .dv-grid path {
+    stroke-opacity: .25; }
+  .dv-grid .tick-aligned line, .dv-grid .tick-aligned path {
+    stroke-opacity: .5; }
+  .dv-fill.dv-no-color, .dv-no-palette .dv-graph-item-shape, .dv-no-palette .dv-legend-item-shape {
+    fill: #222; }
+  .dv-line.no-color {
+    stroke: #222; }
+    .dv-dark .dv-line.no-color {
+      stroke: #FFF; }
+  .dv-fill.no-color {
+    fill-opacity: .25; }
+  .dv-no-palette.dv-base-bar .dv-graph-item-shape:nth-of-base(2n),
+  .dv-no-palette.dv-base-bar .dv-legend-item:nth-of-base(2n) .dv-legend-item-shape, .dv-no-palette.dv-base-pie .dv-graph-item-shape:nth-of-base(2n),
+  .dv-no-palette.dv-base-pie .dv-legend-item:nth-of-base(2n) .dv-legend-item-shape, .dv-no-palette.dv-has-legend .dv-graph-item-shape:nth-of-base(2n),
+  .dv-no-palette.dv-has-legend .dv-legend-item:nth-of-base(2n) .dv-legend-item-shape {
+    fill: #444; }
+  .dv-no-palette.dv-base-pie.dv-pi-label-style-within .dv-graph-item-text:nth-of-base(2n), .dv-no-palette.dv-has-legend.dv-base-scatter .dv-graph-item-shape:nth-of-base(2n) {
+    stroke: #444; }
+  .dv-no-palette.dv-base-bar .dv-graph-item-shape:nth-of-base(3n),
+  .dv-no-palette.dv-base-bar .dv-legend-item:nth-of-base(3n) .dv-legend-item-shape, .dv-no-palette.dv-base-pie .dv-graph-item-shape:nth-of-base(3n),
+  .dv-no-palette.dv-base-pie .dv-legend-item:nth-of-base(3n) .dv-legend-item-shape, .dv-no-palette.dv-has-legend .dv-graph-item-shape:nth-of-base(3n),
+  .dv-no-palette.dv-has-legend .dv-legend-item:nth-of-base(3n) .dv-legend-item-shape {
+    fill: #666; }
+  .dv-no-palette.dv-base-pie.dv-pi-label-style-within .dv-graph-item-text:nth-of-base(3n), .dv-no-palette.dv-has-legend.dv-base-scatter .dv-graph-item-shape:nth-of-base(3n) {
+    stroke: #666; }
+  .dv-no-palette.dv-base-bar .dv-graph-item-shape:nth-of-base(4n),
+  .dv-no-palette.dv-base-bar .dv-legend-item:nth-of-base(4n) .dv-legend-item-shape, .dv-no-palette.dv-base-pie .dv-graph-item-shape:nth-of-base(4n),
+  .dv-no-palette.dv-base-pie .dv-legend-item:nth-of-base(4n) .dv-legend-item-shape, .dv-no-palette.dv-has-legend .dv-graph-item-shape:nth-of-base(4n),
+  .dv-no-palette.dv-has-legend .dv-legend-item:nth-of-base(4n) .dv-legend-item-shape {
+    fill: #888; }
+  .dv-no-palette.dv-base-pie.dv-pi-label-style-within .dv-graph-item-text:nth-of-base(4n), .dv-no-palette.dv-has-legend.dv-base-scatter .dv-graph-item-shape:nth-of-base(4n) {
+    stroke: #888; }
+  .dv-no-palette.dv-base-bar .dv-graph-item-shape:nth-of-base(5n),
+  .dv-no-palette.dv-base-bar .dv-legend-item:nth-of-base(5n) .dv-legend-item-shape, .dv-no-palette.dv-base-pie .dv-graph-item-shape:nth-of-base(5n),
+  .dv-no-palette.dv-base-pie .dv-legend-item:nth-of-base(5n) .dv-legend-item-shape, .dv-no-palette.dv-has-legend .dv-graph-item-shape:nth-of-base(5n),
+  .dv-no-palette.dv-has-legend .dv-legend-item:nth-of-base(5n) .dv-legend-item-shape {
+    fill: #BBB; }
+  .dv-no-palette.dv-base-pie.dv-pi-label-style-within .dv-graph-item-text:nth-of-base(5n), .dv-no-palette.dv-has-legend.dv-base-scatter .dv-graph-item-shape:nth-of-base(5n) {
+    stroke: #BBB; }
+  .dv-graph-item-text, .dv-legend-item-text, .dv-legend-item-shape {
+    paint-order: stroke;
+    stroke-linejoin: round; }
+  .dv-graph-item-text, .dv-legend-item-text, .dv-legend-item-shape {
+    stroke-width: 4; }
+  .dv-base-pie.dv-pi-label-style-linked .dv-graph-item-text, .dv-base-pie.dv-pi-label-style-within .dv-graph-item-text {
+    stroke-width: 6; }
+  .dv-legend-item-text, .dv-graph .dv-graph-item-text {
+    fill: #222; }
+  .dv-dark .dv-legend-item-text, .dv-dark-graph .dv-graph-item-text {
+    fill: #FFF; }
+  .dv-graph-item-link, .dv-graph-item-text {
+    pointer-events: none; }
+  .dv-graph-item-link {
+    stroke: #222; }
+    .dv-dark .dv-graph-item-link {
+      stroke: #FFF; }
+  .dv-graph-item-text.dark {
+    fill: #222; }
+  .dv-graph-item-text.light {
+    fill: #FFF; }
+  .dv-cursor-stalker {
+    fill-opacity: 0 !important;
+    stroke-opacity: 0 !important; }
+  .dv-tooltip {
+    background: #EEE;
+    font: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+    padding: 1.5em;
+    border-radius: .5em;
+    border: 1px solid rgba(34, 34, 34, 0.1);
+    box-shadow: 0 5px 5px rgba(34, 34, 34, 0.1);
+    z-index: 999999;
+    max-width: 80vw !important;
+    pointer-events: none !important;
+    transition: .0625s top ease-out, .0625s left ease-out, .0625s opacity ease-out; }
+    .dv-tooltip:after {
+      content: "";
+      background: #EEE;
+      display: block;
+      width: 1.5rem;
+      height: 1.5rem;
+      z-index: -1;
+      position: absolute;
+      margin: auto;
+      border-right: 1px solid rgba(34, 34, 34, 0.1);
+      border-bottom: 1px solid rgba(34, 34, 34, 0.1); }
+    .dv-tooltip.n {
+      margin-top: calc( -0.8660714286rem - 10px); }
+      .dv-tooltip.n:after {
+        bottom: -.75rem;
+        right: 0;
+        left: 0;
+        transform: rotate(45deg); }
+    .dv-tooltip.w {
+      margin-left: calc( -0.8660714286rem - 2px); }
+      .dv-tooltip.w:after {
+        right: -.75rem;
+        top: 0;
+        bottom: 0;
+        transform: rotate(-45deg); }
+    .dv-tooltip.s {
+      margin-top: calc( 0.8660714286rem - 2px); }
+      .dv-tooltip.s:after {
+        top: -.75rem;
+        right: 0;
+        left: 0;
+        transform: rotate(-135deg); }
+    .dv-tooltip.e {
+      margin-left: calc( 0.8660714286rem - 2px); }
+      .dv-tooltip.e:after {
+        left: -.75rem;
+        top: 0;
+        bottom: 0;
+        transform: rotate(135deg); }
+    .dv-tooltip-data-property:nth-child(n + 2) {
+      margin-top: .5em; }
+  @media only screen and (max-width: 700px) {
+    .dv {
+      padding: .25em; } }

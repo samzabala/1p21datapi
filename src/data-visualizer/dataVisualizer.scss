@@ -1,10 +1,10 @@
 /*!
-* 1point21 Data Vizualiser Version 1.2.0.2
+* 1point21 Data Vizualiser Version 1.2.1
 * Render Styles
 * DO NOT EDIT THIS CSS FILE
 * Edit its corresponding scss file in the src/ folder instead
 */
-$prefix: '.data-visualizer';
+$prefix: '.dv';
 $color-bg: #EEE;
 $color-base: #222;
 $color-neutral: #888;
@@ -61,7 +61,11 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 
 	&-dark {
 
-		color: $color-white;
+		fill: currentColor;
+	}
+
+	&-light {
+		fill: $color-white
 	}
 
 	// * { outline: 1px solid red!important}
@@ -86,7 +90,7 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 
 	&-title {
 		font-size: 1.25em;
-		margin-bottom:.5em;
+		margin:0;
 		font-weight: 700;
 		line-height:1.25;
 	}
@@ -97,7 +101,7 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 		line-height:1.5;
 	}
 
-	&-wrapper {
+	&-container {
 
 		
 		&:before { 
@@ -131,9 +135,9 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 		font-family: inherit!important;
 	}
 
-	// &-axis,
+	// &-rulers,
 	// &-grid,
-	// &-label{
+	// &-labels{
 	// 	color: $color-base;
 
 	// 	> g {
@@ -153,14 +157,14 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 
 		.tick-aligned {
 			line,path {
-				stroke-opacity: .625;
+				stroke-opacity: .5;
 			}
 		}
 	}
 	
-	&-fill.no-color,
-	&-no-palette .graph-item-blob,
-	&-no-palette .legend-item-blob {
+	&-fill#{$prefix}-no-color,
+	&-no-palette &-graph-item-shape,
+	&-no-palette &-legend-item-shape {
 		fill: $color-base;
 	}
 	
@@ -179,65 +183,65 @@ $palette: $color-base,$color-neutral-darker,$color-neutral-dark,$color-neutral,$
 	@for $i from 2 through length($palette) {
 
 
-		&-no-palette#{$prefix}-type-pie,
+		&-no-palette#{$prefix}-base-bar,
+		&-no-palette#{$prefix}-base-pie,
 		&-no-palette#{$prefix}-has-legend {
 
-			.graph-item-blob:nth-of-type(#{$i}n),
-			#{$prefix}-legend-item:nth-of-type(#{$i}n) .legend-item-blob {
+			#{$prefix}-graph-item-shape:nth-of-base(#{$i}n),
+			#{$prefix}-legend-item:nth-of-base(#{$i}n) #{$prefix}-legend-item-shape {
 				fill: nth($palette,$i);
 
 			}
 		}
 
-		&-no-palette#{$prefix}-type-pie#{$prefix}-pi-label-style-within .graph-item-text, 
-		&-no-palette#{$prefix}-has-legend#{$prefix}-type-scatter .blob-item-blob {
-			&:nth-of-type(#{$i}n) {
+		&-no-palette#{$prefix}-base-pie#{$prefix}-pi-label-style-within #{$prefix}-graph-item-text, 
+		&-no-palette#{$prefix}-has-legend#{$prefix}-base-scatter #{$prefix}-graph-item-shape {
+			&:nth-of-base(#{$i}n) {
 				stroke: nth($palette,$i);
 			}
 		}
 			
 	}
 
-	.graph-item-text,
-	.legend-item-text,
-	.legend-item-blob {
+	&-graph-item-text,
+	&-legend-item-text,
+	&-legend-item-shape {
 		paint-order: stroke;
 		stroke-linejoin: round;
 	}
 
-	.graph-item-text,
-	.legend-item-text,
-	.legend-item-blob {
+	&-graph-item-text,
+	&-legend-item-text,
+	&-legend-item-shape {
 		stroke-width: 4;
 	}
 
-	&-type-pie#{$prefix}-pi-label-style-linked .graph-item-text,
-	&-type-pie#{$prefix}-pi-label-style-within .graph-item-text {
-
+	&-base-pie#{$prefix}-pi-label-style-linked &-graph-item-text,
+	&-base-pie#{$prefix}-pi-label-style-within &-graph-item-text {
 		stroke-width: 6;
 	}
 
 
-	// &-type-line .graph-item-text,
-	// &-type-pie#{$prefix}-pi-label-style-linked .graph-item-text,
-	// & .legend-item-blob {
+	// &-base-line .graph-item-text,
+	// &-base-pie#{$prefix}-pi-label-style-linked .graph-item-text,
+	// & .legend-item-shape {
 	// 	stroke: $color-bg;
 	// }
 
 
-	.legend-item-text,
-	&-graph .graph-item-text {
+	&-legend-item-text,
+	&-graph &-graph-item-text {
 		fill: $color-base;
 	}
 
 	&-dark {
-		.legend-item-text,
-		&-graph .graph-item-text {
+		#{$prefix}-legend-item-text,
+		&-graph #{$prefix}-graph-item-text {
 			fill: $color-white;
 		}
 }
 
-	&-graph .graph-item {
+	&-graph-item {
 
 		&-link,
 		&-text {

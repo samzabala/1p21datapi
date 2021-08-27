@@ -1,0 +1,114 @@
+
+
+
+{
+	"hoe" : [
+		{
+			"name": "Helen",
+			"age": "10",
+			"shittiness": "69"
+		},
+		{
+			"name": "Karen",
+			"age": "12",
+			"shittiness": "666"
+		},
+		{
+			"name": "Barbara",
+			"age": "9",
+			"shittiness": "420"
+		},
+		{
+			"name": "Susan",
+			"age": "10",
+			"shittiness": "3"
+		},
+		{
+			"name": "Becky",
+			"age": "11",
+			"shittiness": "777"
+		}
+	],
+
+	"thot" : [
+		{
+			"name": "Tony",
+			"age": "12",
+			"shittiness": "69"
+		},
+		{
+			"name": "Jessica",
+			"age": "15",
+			"shittiness": "666"
+		},
+		{
+			"name": "Andrew",
+			"age": "10",
+			"shittiness": "420"
+		},
+		{
+			"name": "Emily",
+			"age": "9",
+			"shittiness": "3"
+		},
+		{
+			"name": "Richard",
+			"age": "11",
+			"shittiness": "777"
+		}
+	],
+	"bitch" : [
+		{
+			"name": "Helen",
+			"age": "10",
+			"shittiness": "69"
+		},
+		{
+			"name": "Karen",
+			"age": "12",
+			"shittiness": "666"
+		},
+		{
+			"name": "Barbara",
+			"age": "9",
+			"shittiness": "420"
+		},
+		{
+			"name": "Susan",
+			"age": "10",
+			"shittiness": "3"
+		},
+		{
+			"name": "Becky",
+			"age": "11",
+			"shittiness": "777"
+		}
+	],
+	"ass" : [
+		{
+			"name": "Tony",
+			"age": "33",
+			"shittiness": "69"
+		},
+		{
+			"name": "Jessica",
+			"age": "17",
+			"shittiness": "666"
+		},
+		{
+			"name": "Andrew",
+			"age": "88",
+			"shittiness": "420"
+		},
+		{
+			"name": "Emily",
+			"age": "2",
+			"shittiness": "3"
+		},
+		{
+			"name": "Richard",
+			"age": "9",
+			"shittiness": "777"
+		}
+	]
+}

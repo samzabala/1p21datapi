@@ -17,6 +17,8 @@
 						$available_dv = new WP_Query(array(
 							'post_type' => 'data-visual',
 							'post_status' => 'publish',
+							'orderby' => 'title',
+							'order' => 'ASC',
 							'posts_per_page' => -1
 						));
 

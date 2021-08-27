@@ -1,5 +1,5 @@
 /*!
-* 1point21 Data Vizualiser Version 1.2.0.2
+* 1point21 Data Vizualiser Version 1.2.1
 * Admin Styles
 * @license yes
 * DO NOT EDIT THIS CSS FILE
@@ -178,9 +178,15 @@ $gutter: 40px;
 	
 }
 
+#TB_window {
+	overflow-y:scroll;
+}
+
 div#TB_ajaxContent {
 	max-width:100%;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
+	height:auto!important;
+
 }

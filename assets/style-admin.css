@@ -1,5 +1,5 @@
 /*!
-* 1point21 Data Vizualiser Version 1.2.0.2
+* 1point21 Data Vizualiser Version 1.2.1
 * Admin Styles
 * @license yes
 * DO NOT EDIT THIS CSS FILE
@@ -59,7 +59,6 @@
       width: calc(50% - 40px); }
     ._1p21_dv-col-3 ._1p21_dv-field {
       width: calc(33.33% - 40px); } }
-
 ._1p21_dv-content {
   padding: 30px 2em;
   margin: 40px auto 0;
@@ -105,8 +104,12 @@
 #acf-group_5d4206c985d00 .dv-code textarea {
   font-family: monospace; }
 
+#TB_window {
+  overflow-y: scroll; }
+
 div#TB_ajaxContent {
   max-width: 100%;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  height: auto !important; }

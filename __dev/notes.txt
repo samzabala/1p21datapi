@@ -1,0 +1,39 @@
+Types and ways to display
+
+bar
+- Bar Basic
+- Bar Reflection (Vertical)
+- Bar Reflection (Horizontal)
+- Bar Comparison (Separate Graphs w/ Toggle) (toggle when only when more than 2)
+- Bar Toggle
+- Bar Timelapse
+
+Line
+- Line Basic
+- Line Reflection (Vertical)
+- Line Reflection (Horizontal)
+- Line Comparison (Separate Graphs w/ Toggle) (toggle when only when more than 2)
+- Line Toggle
+- Line Timelapse
+
+Scatter
+- Scatter Basic
+- Scatter Reflection (Vertical)
+- Scatter Reflection (Horizontal)
+- Scatter Comparison (Separate Graphs w/ Toggle) (toggle when only when more than 2)
+- Scatter Toggle
+- Scatter Timelapse
+
+
+
+Pie
+- Pie Basic
+- Sunburst
+- Pie Comparison (Separate Graphs w/ Toggle) (toggle when only when more than 2)
+- Pie Toggle
+- Pie Timelapse
+
+
+TODO:
+- convert line graph to horse race
+- multipl suppiort for axes

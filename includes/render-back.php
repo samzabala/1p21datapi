@@ -8,6 +8,45 @@
 
  this where u generate php bois and validate which ones are valid
 */
+
+function _1p21_dv_parse_row_data($data = array(), $multiple_key = null){
+
+	$to_return = array();
+
+
+
+	foreach( $data as $i=>$row ){
+		$to_return[$i][0] = $row[0];
+		$to_return[$i][1] = $row[1];
+
+
+		if( 
+			!empty($data['color']['palette'])
+			&& $data['type'] !== 'pie'
+			&& isset($to_return[$i]['color'])
+		) {
+
+			if($validation_src_color_row_exists == false){
+				$validation_src_color_row_exists = true;
+			}
+
+			$to_return[$i]['color'] = $row['color'];
+		}
+
+		if(  $data['src']['type'] == 'scatter' && $to_return[$i]['area'] ) {
+			if($validation_src_scatter_row_exists == false){
+				$validation_src_scatter_row_exists = true;
+			}
+			$to_return[$i]['area'] = $row['area'];
+		}
+
+		if($multiple_key !== null) {
+			$to_return[$i]['_parent'] = $multiple_key;
+		}
+	}
+
+	return $to_return;
+}
 function _1p21_dv_get_data_visual_object($args = array()) {
 	global $_1p21_dv;
 
@@ -80,7 +119,7 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 		
 		$retrieved_dv_post_meta = _1p21_dv_deep_sub_fields(array(
 			'id' => $id,
-			'fields' => $_1p21_dv_fields_cpt['fields'],
+			'fields' => $_1p21_dv_fields_groups['single_post']['fields'],
 		));
 
 		// fields that make the bby
@@ -123,33 +162,27 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 				$data_src_arr['data'] = $data_visual['src']['text'];
 				break;
 			case 'rows':
+
+
 				$parsed_src_rows = array();
 
-				foreach( $data_visual['src']['row'] as $i=>$row ){
-					$parsed_src_rows[$i][0] = $row[0];
-					$parsed_src_rows[$i][1] = $row[1];
+				if( isset($data_visual['src']['multiple']) && $data_visual['src']['multiple'] == true ){
+					_1p21_dv_output_arr($data_visual['src']['row_m']);
+					foreach( $data_visual['src']['row_m'] as $m_key => $data ){
 
-
-					if( 
-						!empty($data_visual['color']['palette'])
-						&& $data_visual['type'] !== 'pie'
-						&& isset($parsed_src_rows[$i]['color'])
-					) {
-
-						if($validation_src_color_row_exists == false){
-							$validation_src_color_row_exists = true;
+						foreach(_1p21_dv_parse_row_data( $data['data_set'], $m_key) as $dat) {
+							array_push(
+								$parsed_src_rows,
+								$dat
+							);
 						}
-
-						$parsed_src_rows[$i]['color'] = $row['color'];
 					}
 
-					if(  $data_visual['src']['type'] == 'scatter' && $parsed_src_rows[$i]['area'] ) {
-						if($validation_src_scatter_row_exists == false){
-							$validation_src_scatter_row_exists = true;
-						}
-						$parsed_src_rows[$i]['area'] = $row['area'];
-					}
+				}else{
+					$parsed_src_rows = _1p21_dv_parse_row_data($data_visual['src']['row']);
 				}
+
+				
 
 				$data_src_arr['data'] = $parsed_src_rows;
 				break;
@@ -159,10 +192,22 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
 		//validate data lkeys
 		if( $data_visual['src']['type'] == 'rows' ){
+
+
+			//already setup as single level
+			unset($data_visual['src']['pre_nest']);
+			unset($data_visual['src']['key']);
+
+
 			$data_visual['key'] = array(
 				0=>0,
 				1=>1
 			);
+
+			if( isset($data_visual['src']['multiple']) && isset($data_visual['src']['multiple']) == true ){
+
+				$data_visual['key']['multiple'] = '_parent';
+			}
 
 			if($validation_src_color_row_exists == true){
 				$data_visual['key']['color'] = 'color';
@@ -190,8 +235,14 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 		if( !isset($data_visual['src']['multiple']) ){
 			//src
 				unset($data_visual['reverse']['multiple']);
-				unset($data_visual['src']['multiple_key']);
+				unset($data_visual['src']['pre_nest']);
+				unset($data_visual['key']['multiple']);
 			//
+
+		}
+		
+		if( isset($data_visual['src']['pre_nest']) && $data_visual['src']['pre_nest'] == true ){
+			unset($data_visual['key']['multiple']);
 
 		}
 
