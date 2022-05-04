@@ -1,0 +1,37 @@
+{
+	"root": true,
+	"env": {
+		"browser": true,
+		"es2021": true,
+		"node": true,
+		"webextensions": true
+	},
+	"extends": ["eslint:recommended"],
+	"globals": {
+		"document": "readonly",
+		"window": "readonly",
+		"navigator": "readonly",
+		"d3": "readonly"
+	},
+	"parserOptions": {
+		"sourceType": "module",
+		"ecmaVersion": 12,
+		"ecmaFeatures": {
+			"globalReturn": true,
+			"jsx": true,
+			"modules": true
+		},
+		"babelOptions": {
+			"plugins": [
+				"@babel/plugin-proposal-class-properties",
+				"@babel/plugin-proposal-private-methods"
+			]
+		}
+	},
+	"parser": "@babel/eslint-parser",
+	"plugins": [],
+	"rules": {
+		"no-unused-vars": "off",
+		"no-unexpected-multiline": "off"
+	}
+}

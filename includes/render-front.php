@@ -89,7 +89,6 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 
 			//script
 				$render .= "<script>
-				//<![CDATA[
 				(function(){
 					document.addEventListener('DOMContentLoaded', function() {
 						/*_1p21.d*/ new dataVisualizer('#{$wrapper_id}',{\n";
@@ -179,6 +178,7 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 											foreach($value as $sub_setting => $sub_value){
 										
 												//they are all strings
+												$sub_value = str_replace('\'','"',$sub_value);
 
 												switch($sub_setting){
 													case 'data': 
@@ -380,7 +380,6 @@ function _1p21_div_get_data_visualizer($args = array(),$echo = false){
 						});
 					})
 				}());
-				//]]>
 				</script>";
 				
 

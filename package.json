@@ -1,0 +1,55 @@
+{
+	"name": "1p21datapi",
+	"version": "1.0.0",
+	"description": "Make pretty graphs with this yo",
+	"main": "assets/dataVisualizer.lib.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "watch 'npm run build' src",
+		"prettier": "prettier --write .",
+		"js-build": "rollup --config rollup.config.js",
+		"sass-build-datavisualizer": "sass --style=expanded --no-source-map --no-error-css src/data-visualizer/scss/dataVisualizer.scss:assets/css/dataVisualizer.css",
+		"sass-build-admin": "sass --style=expanded --no-source-map --no-error-css src/admin/scss/style-admin.scss:assets/css/style-admin.css",
+		"sass-build": "npm run sass-build-datavisualizer; npm run sass-build-admin;",
+		"build": "npm run js-build; npm run sass-build;"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/samzabala/1p21datapi.git"
+	},
+	"keywords": [
+		"yes"
+	],
+	"author": "1Point21 Interactive",
+	"license": "eh",
+	"bugs": {
+		"url": "https://github.com/samzabala/1p21datapi/issues"
+	},
+	"homepage": "https://github.com/samzabala/1p21datapi#readme",
+	"devDependencies": {
+		"@babel/cli": "^7.12.1",
+		"@babel/core": "^7.17.8",
+		"@babel/eslint-parser": "^7.17.0",
+		"@babel/plugin-proposal-class-properties": "^7.13.0",
+		"@babel/plugin-proposal-private-methods": "^7.13.0",
+		"@babel/preset-env": "^7.16.11",
+		"@rollup/plugin-babel": "^5.3.0",
+		"@rollup/plugin-eslint": "^8.0.1",
+		"@rollup/plugin-node-resolve": "^11.2.0",
+		"rollup-plugin-copy": "^3.4.0",
+		"autoprefixer": "^10.2.5",
+		"cssnano": "^5.0.17",
+		"dart-sass": "^1.25.0",
+		"eslint": "^8.11.0",
+		"postcss": "^8.4.6",
+		"postcss-cli": "^9.1.0",
+		"prettier": "^2.2.1",
+		"rollup": "^2.41.4",
+		"sass": "^1.33.0",
+		"watch": "^0.13.0"
+	},
+	"dependencies": {
+		"d3": "^6.5.0",
+		"d3-v6-tip": "^1.0.9"
+	}
+}

@@ -21,9 +21,8 @@ function _1p21_dv_parse_row_data($data = array(), $multiple_key = null){
 
 
 		if( 
-			!empty($data['color']['palette'])
-			&& $data['type'] !== 'pie'
-			&& isset($to_return[$i]['color'])
+			$data['type'] !== 'pie'
+			&& isset($row['color'])
 		) {
 
 			if($validation_src_color_row_exists == false){
@@ -33,7 +32,7 @@ function _1p21_dv_parse_row_data($data = array(), $multiple_key = null){
 			$to_return[$i]['color'] = $row['color'];
 		}
 
-		if(  $data['src']['type'] == 'scatter' && $to_return[$i]['area'] ) {
+		if(  $data['src']['type'] == 'scatter' && $row[$i]['area'] ) {
 			if($validation_src_scatter_row_exists == false){
 				$validation_src_scatter_row_exists = true;
 			}
@@ -44,6 +43,7 @@ function _1p21_dv_parse_row_data($data = array(), $multiple_key = null){
 			$to_return[$i]['_parent'] = $multiple_key;
 		}
 	}
+
 
 	return $to_return;
 }
@@ -204,16 +204,20 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 				1=>1
 			);
 
+			$test_keys = $data_src_arr['data'];
+
+
 			if( isset($data_visual['src']['multiple']) && isset($data_visual['src']['multiple']) == true ){
 
 				$data_visual['key']['multiple'] = '_parent';
+				$test_keys = $data_src_arr['data'][0];
 			}
 
-			if($validation_src_color_row_exists == true){
+			if(isset($test_keys['color'])){
 				$data_visual['key']['color'] = 'color';
 			}
 
-			if($validation_src_scatter_row_exists == true){
+			if(isset($test_keys['scatter'])){
 				$data_visual['key']['scatter'] = 'scatter';
 			}
 		}
@@ -273,7 +277,6 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 				switch($data_visual[$coordinate]['ticks']){
 					case false:
 						unset($data_visual[$coordinate]['ticks_amount']);
-						unset($data_visual[$coordinate]['label']);
 						unset($data_visual[$coordinate]['grid']);
 						unset($data_visual[$coordinate]['grid_increment']);
 					case true: //let false casecade to true too
@@ -305,7 +308,12 @@ function _1p21_dv_get_data_visual_object($args = array()) {
 
 
 			//no data means it fucks with the name. no need for legegends
-			if( !isset($data_visual['key']['color']) || $data_visual['key']['color'] == null){
+			if( 
+				$data_visual['src']['type'] !== 'rows'
+				&& (
+					!isset($data_visual['key']['color'])
+					|| $data_visual['key']['color'] == null
+				) ){
 				// unset($data_visual['color']['legend']);
 				unset($data_visual['reverse']['color']);
 			}

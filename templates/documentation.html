@@ -1,678 +1,1568 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-<head>
-	<meta charset="utf-8"/>
-</head>
-<body>
+	<head>
+		<meta charset="utf-8" />
+	</head>
+	<body>
+		<!-- DO NOT EDIT OR REMOVE documentation.php as this is compiled from README.md. README.md must be edited instead -->
 
-<!-- DO NOT EDIT OR REMOVE documentation.php as this is compiled from README.md. README.md must be edited instead -->
+		<h1 id="1point21datavizualizer">1Point21 Data Vizualizer</h1>
 
-<h1 id="1point21datavizualizer">1Point21 Data Vizualizer</h1>
+		<p>
+			Plugin URI:
+			<a href="https://github.com/samzabala/1p21datapi"
+				>https://github.com/samzabala/1p21datapi</a
+			><br />
+			Description: Data visualizer using d3 and svgs<br />
+			Version: 2.0.0 Author: 1Point21 Interactive<br />
+			Author URI:
+			<a href="https://www.1point21interactive.com/"
+				>https://www.1point21interactive.com/</a
+			>
+		</p>
 
-<p>Plugin URI: <a href="https://github.com/samzabala/1p21datapi">https://github.com/samzabala/1p21datapi</a><br />
-Description: Data visualizer using d3 and svgs<br />
-Version: 2.0.0
-Author: 1Point21 Interactive<br />
-Author URI: <a href="https://www.1point21interactive.com/">https://www.1point21interactive.com/</a></p>
+		<h2 id="tableofcontents">Table of contents</h2>
 
-<h2 id="tableofcontents">Table of contents</h2>
+		<ol>
+			<li><a href="#shortcode">Shortcode</a></li>
+			<li><a href="#shortcodeparameters">Shortcode Parameters</a></li>
+			<li><a href="#backendsettings">Backend Settings</a></li>
+			<li><a href="#functions">Functions</a></li>
+			<li><a href="#troubleshooting">Troubleshooting</a></li>
+		</ol>
 
-<ol>
-<li><a href="#shortcode">Shortcode</a></li>
-<li><a href="#shortcodeparameters">Shortcode Parameters</a></li>
-<li><a href="#backendsettings">Backend Settings</a></li>
-<li><a href="#functions">Functions</a></li>
-<li><a href="#troubleshooting">Troubleshooting</a></li>
-</ol>
+		<hr />
 
-<hr />
+		<h2 id="shortcode">Shortcode</h2>
 
-<h2 id="shortcode">Shortcode</h2>
+		<p>
+			You can add a data visualizer using the shortcode <code>dv</code> or
+			<code>data_visualizer</code>
+		</p>
 
-<p>You can add a data visualizer using the shortcode <code>dv</code> or <code>data_visualizer</code></p>
+		<p>Examples:</p>
 
-<p>Examples:</p>
+		<h3 id="usingdv">Using <code>dv</code></h3>
 
-<h3 id="usingdv">Using <code>dv</code></h3>
-
-<pre><code>[dv id=666 width=800 height=600]
+		<pre><code>[dv id=666 width=800 height=600]
 </code></pre>
 
-<h3 id="usingdata_visualizer">Using <code>data_visualizer</code></h3>
+		<h3 id="usingdata_visualizer">Using <code>data_visualizer</code></h3>
 
-<pre><code>[data_visalizer id=666 width=800 height=600]
+		<pre><code>[data_visalizer id=666 width=800 height=600]
 </code></pre>
 
-<p><em><strong>Note:</strong> in case</em> <code>dv</code> <em>conflicts with another shortcode, the plugin will output an error in the back end and advise to use</em> <code>data_visualizer</code></p>
+		<p>
+			<em><strong>Note:</strong> in case</em> <code>dv</code>
+			<em
+				>conflicts with another shortcode, the plugin will output an error in
+				the back end and advise to use</em
+			>
+			<code>data_visualizer</code>
+		</p>
 
-<h2 id="shortcodeparameters">Shortcode Parameters</h2>
+		<h2 id="shortcodeparameters">Shortcode Parameters</h2>
 
-<ul>
-<li><p><strong><code>id</code></strong></p>
+		<ul>
+			<li>
+				<p>
+					<strong><code>id</code></strong>
+				</p>
 
-<p><strong>[ REQUIRED | Default: <code>null</code> | type: number ]</strong></p>
+				<p>
+					<strong
+						>[ REQUIRED | Default: <code>null</code> | type: number
+						]</strong
+					>
+				</p>
 
-<p>post id of the graph to display.</p></li>
-<li><p><strong><code>align</code></strong></p>
+				<p>post id of the graph to display.</p>
+			</li>
+			<li>
+				<p>
+					<strong><code>align</code></strong>
+				</p>
 
-<p><strong>[ Optional | Default: <code>'center'</code> | type: string | options available: <code>'left'</code>,<code>'center'</code>,<code>'right'</code> ]</strong></p>
+				<p>
+					<strong
+						>[ Optional | Default: <code>'center'</code> | type: string |
+						options available:
+						<code>'left'</code>,<code>'center'</code>,<code>'right'</code>
+						]</strong
+					>
+				</p>
 
-<p>alignment of title and description</p></li>
-<li><p><strong><code>margin</code></strong></p>
+				<p>alignment of title and description</p>
+			</li>
+			<li>
+				<p>
+					<strong><code>margin</code></strong>
+				</p>
 
-<p><strong>[ Optional | Default: <code>10</code> | type: number,array ]</strong></p>
+				<p>
+					<strong
+						>[ Optional | Default: <code>10</code> | type: number,array
+						]</strong
+					>
+				</p>
 
-<p>gutter to set on graph canvas to compensate space for ticks and labels.</p>
+				<p>
+					gutter to set on graph canvas to compensate space for ticks and
+					labels.
+				</p>
 
-<p>For multiple set margins, separate each margin with commas. The sequence of margins must replicate the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin">shorthand css margin property</a></p>
+				<p>
+					For multiple set margins, separate each margin with commas. The
+					sequence of margins must replicate the
+					<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin"
+						>shorthand css margin property</a
+					>
+				</p>
 
-<p>eg:</p>
+				<p>eg:</p>
 
-<p>This will set all sides to 40</p>
+				<p>This will set all sides to 40</p>
 
-<pre><code>[dv id=666 margin=40]
+				<pre><code>[dv id=666 margin=40]
 </code></pre>
 
-<p>This will set top and bottom sides to 40, and left and right sides to 60</p>
-
-<pre><code>[dv id=666 margin=40,60]
-</code></pre></li>
-<li><p><strong><code>width</code></strong></p>
-
-<p><strong>[ Optional | Default: <code>600</code> | type: number ]</strong></p>
-
-<p>width of canvas.</p>
-
-<p>Note that this setting will also act like an aspect ratio to ensure responsiveness. Size below 600 may not be recommended depending on the number of data to render</p>
-
-<p>if graph has small spacing or font sizes look too big, the default canvas just isn&#8217;t enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p></li>
-<li><p><strong><code>height</code></strong></p>
-
-<p><strong>[ Optional | Default: <code>600</code> | type: number ]</strong></p>
-
-<p>height canvas.</p>
-
-<p>Note that this setting will also act like an aspect ratio to ensure responsiveness. Size below 600 may not be recommended depending on the number of data to render</p>
-
-<p>if graph has small spacing or font sizes look too big, the default canvas just isn&#8217;t enough space to display all the data visual elements with spacing. adjust until spacing of data is rendered as desired.</p></li>
-<li><p><strong><code>font_size</code></strong></p>
-
-<p><strong>[ Optional | Default: <code>'16px'</code> | type: number / string ]</strong></p>
-
-<p>css base font size to size all text relative to</p>
-
-<p>If given a number, it will be interpreted as pixels.</p></li>
-<li><p><strong><code>transition</code></strong></p>
-
-<p><strong>[ Optional | Default: <code>1500</code> | type: number ]</strong></p>
-
-<p>how long should all animations or transitions take</p></li>
-<li><p><strong><code>delay</code></strong></p>
-
-<p><strong>[ Optional | Default: <code>250</code> | type: number ]</strong></p>
-
-<p>delay of rendering the graph.</p></li>
-</ul>
-
-<h2 id="backendsettings">Backend Settings</h2>
-
-<h3 id="description">Description</h3>
-
-<p><strong>[ Optional | Default: <code>''</code> | Meta Key : <code>'dv_description'</code> ]</strong></p>
-
-<p>Add a subtitle or description for the data visual</p>
-
-<h3 id="sourcesettings">Source Settings</h3>
-
-<h4 id="multiplegraph"><em>Multiple Graph</em></h4>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_src_multiple'</code> | Default: <code>false</code> | type: boolean ]</strong></p>
-
-<p>Enable mutliple graphs of data groups setup</p>
-
-<h4 id="source"><em>Source</em></h4>
-
-<ul>
-<li><p><strong>Source Type</strong></p>
-
-<p><strong>[ REQUIRED | Meta Key : <code>'dv_src'</code> | options: &#8216;File (csv,tsv)&#8217;, &#8216;URL&#8217;, &#8216;Text (JSON code)&#8217;, &#8216;Rows (UI Field)&#8217; ]</strong></p>
-
-<p>Type of source on how the data will be imported. (For now, accepted files are json,csv,tsv,dsv)</p>
-
-<p>depending on set option, one of the fields below for data input will be shown.</p>
-
-<ul>
-<li><p><strong>File</strong></p>
-
-<p><strong>[ REQUIRED | Meta Key : <code>'dv_src_file'</code> | Valid file types: <code>csv</code>, <code>tsv</code> | Available when: <em>Source Type</em> is &#8216;File (csv,tsv)&#8217; ]</strong></p>
-
-<p>Input directly from the media library.</p>
-
-<p><em><strong>Note:</strong> JSON is not allowed through this method for security</em></p></li>
-<li><p><strong>URL (url)</strong></p>
-
-<p><strong>[ REQUIRED | Meta Key : <code>'dv_src_url'</code> | Valid file types: <code>csv</code>, <code>tsv</code>, <code>json</code> | Available when: <em>Source Type</em> is &#8216;URL&#8217; ]</strong></p>
-
-<p>Input data through an external file&#8217;s url</p></li>
-<li><p><strong>Text (JSON code)</strong></p>
-
-<p><strong>[ REQUIRED | Meta Key : <code>'dv_src_text'</code> | Valid file types: <code>json</code> | Available when: <em>Source Type</em> is &#8216;Text (JSON code)&#8217; ]</strong></p>
-
-<p>Input through the data in json format through a textbox. recommended for a more customized and controlled data</p></li>
-<li><p><strong>Rows</strong></p>
-
-<p><strong>[ REQUIRED | Meta Key : <code>'dv_src_row'</code> | Valid file types: Available when: <em>Source Type</em> is &#8216;Rows (UI Field)&#8217; ]</strong></p>
-
-<p>Input via acf repeater fields. For each row there are available input fields</p>
-
-<ul>
-<li><p><strong>Name</strong></p>
-
-<p><strong>[ REQUIRED | Meta Key : <code>'dv_src_row_'.$index.'_0'</code> ]</strong></p>
-
-<p>Name for the data</p></li>
-<li><p><strong>Value</strong></p>
-
-<p><strong>[ REQUIRED | Meta Key : <code>'dv_src_row_'.$index.'_1'</code> ]</strong></p>
-
-<p>Value for the data</p></li>
-<li><p><strong>Category</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_src_row_'.$index.'_color'</code> | Available when: <em>Type</em> is set to &#8216;Bar&#8217;, &#8216;Line&#8217;, &#8216;Scatter Plot&#8217; ]</strong></p>
-
-<p>Category value to represent the color the data</p></li>
-<li><p><strong>Plot Point Area</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_src_row_'.$index.'_area'</code> | Available when: <em>Type</em> is set to &#8216;Scatter Plot&#8217; ]</strong></p>
-
-<p>Numeric data value that will influence the size of the scatter plot point</p></li>
-</ul></li>
-</ul></li>
-<li><p><strong>Source Key</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_src_key'</code> | Default: <code>null</code> | Valid file types: Available when: <em>Source Type</em> is NOT &#8216;Rows (UI Field)&#8217; ]</strong></p>
-
-<p>object key to the data to use.</p>
-
-<p>if left blank, data will be taken from the root level</p>
-
-<p>if there is a value, the data returned from that key will be used</p></li>
-<li><p><strong>Multiple Source Key</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_src_key_multiple'</code> | Default: <code>null</code> | Valid file types: Available when: <em>Source Type</em> is NOT &#8216;Rows (UI Field)&#8217;, <em>Multiple Graph</em> is <code>true</code> ]</strong></p>
-
-<p>object key to the data to use.</p>
-
-<p>if left blank, data will be taken from the root level</p>
-
-<p>if there is a value, the data returned from that key will be used</p></li>
-</ul>
-
-<h3 id="datasettings">Data Settings</h3>
-
-<h4 id="type"><em>Type</em></h4>
-
-<p><strong>[ REQUIRED | Default: <em>Bar</em> | Meta Key : <code>'dv_type'</code> | options: <em>Bar</em>, <em>Line</em>, <em>Pie</em>, <em>Scatter Plot</em> ]</strong></p>
-
-<p>Type of graph the data will be presented as.</p>
-
-<h4 id="datakeys"><em>Data Keys</em></h4>
-
-<p><strong>[ Available when: <em>Source Type</em> is NOT &#8216;Rows (UI Field)&#8217; ]</strong></p>
-
-<ul>
-<li><p><strong>Name Key</strong></p>
-
-<p><strong>[ REQUIRED | Meta Key : <code>'dv_key_0'</code> | Default: <code>null</code> ]</strong></p>
-
-<p>Key relative to a datum instance&#8217;s level to represent the data' name</p></li>
-<li><p><strong>Value Key</strong></p>
-
-<p><strong>[ REQUIRED | Meta Key : <code>'dv_key_1'</code> | Default: <code>null</code> ]</strong></p>
-
-<p>Key relative to a datum instance&#8217;s level to represent the data&#8217;s value</p></li>
-<li><p><strong>Plot Points Area Key</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_key_area'</code> | Default: <code>null</code> | Available when: <em>Type</em> is &#8216;Scatter Plot&#8217; ]</strong></p>
-
-<p>Key relative to a datum instance&#8217;s level to represent the data&#8217;s value</p></li>
-<li><p><strong>Color Key</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_key_color'</code> | Default: <code>null</code> | <em>Type</em> is NOT &#8216;Pie&#8217; ]</strong></p>
-
-<p>Key relative to a datum instance&#8217;s level to represent the data&#8217;s value</p></li>
-</ul>
-
-<h4 id="reversesettings"><em>Reverse Settings</em></h4>
-
-<p>Check or set to true the following you would like to reverse order of</p>
-
-<ul>
-<li><p><strong>Reverse Name Order</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_reverse_0'</code> | Default: <code>false</code> | type: boolean | Available When: <em>Multiple Graph</em> is <code>true</code> ]</strong></p></li>
-<li><p><strong>Reverse Value Order</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_reverse_1'</code> | Default: <code>false</code> | type: boolean | Available When: <em>Multiple Graph</em> is <code>true</code> ]</strong></p></li>
-<li><p><strong>Reverse Multiple Data Order</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_reverse_multiple'</code> | Default: <code>false</code> | type: boolean | Available When: <em>Multiple Graph</em> is <code>true</code> ]</strong></p>
-
-<p>Reverse order of data groups</p></li>
-</ul>
-
-<h4 id="setnamekeyasnumeric"><em>Set Name Key As Numeric?</em></h4>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_name_is_num'</code> | Default: <code>false</code> | <em>Type</em> is &#8216;Line&#8217;, &#8216;Scatter&#8217; ]</strong></p>
-
-<p>Adds numeric capabilities to name data.</p>
-
-<p>_<em><strong>Note:</strong> If the data for the name data key is not numeric, this will cause errors and the graph will not render properly</em></p>
-
-<h4 id="formatsettings"><em>Format Settings</em></h4>
-
-<p><strong>[ Optional | Available for: <code>name</code>, <code>value</code>, <code>color</code> <em>keys</em> ]</strong></p>
-
-<p>These are optional settings to allow reformatting data on the visualizer</p>
-
-<ul>
-<li><p><strong>Prepend</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_format_'.$data_key.'_prepend'</code> | Default: <code>''</code> ]</strong></p>
-
-<p>Character/s to append to the data.</p>
-
-<p><em><strong>Note:</strong> Input will be translated as a parsed string</em></p></li>
-<li><p><strong>Append</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_format_'.$data_key.'_append'</code> | Default: <code>''</code> ]</strong></p>
-
-<p>Character/s to append to the data.</p>
-
-<p><em><strong>Note:</strong> Input will be translated as a parsed string</em></p></li>
-<li><p><strong>Divider</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_format_'.$data_key.'_divider'</code> | Default: <code>1</code> | Available for/when: <code>value</code> key; <em>Set Name Key As Numeric?</em> is set to <code>true</code> ]</strong></p>
-
-<p>Amount to divide numeric data by. good for shortening values.</p>
-
-<p>For example, presenting <code>'100000'</code> as dollar value in thousands as <code>'$100K'</code></p>
-
-<blockquote>
-<p><code>'$'</code> Comes from set <strong>Prepend</strong></p>
-
-<p><code>100000</code> is divided by <strong>Divider</strong> set to <code>1000</code> to shorten to <code>100</code></p>
-
-<p><code>'K'</code> comes from set <strong>Append</strong></p>
-</blockquote></li>
-<li><p><strong>Advanced</strong></p>
-
-<ul>
-<li><p><strong>Format Parameter</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_format_'.$data_key.'_parameter'</code> | Default: <code>null</code> ]</strong></p>
-
-<p>Accepts a string that follows the format for <a href="https://github.com/d3/d3-format#locale_format"><code>d3.format()</code></a></p>
-
-<p>Or a javascript function that passes the <code>data</code> and its <code>index</code></p>
-
-<pre><code>function(data,index) {
+				<p>
+					This will set top and bottom sides to 40, and left and right sides
+					to 60
+				</p>
+
+				<pre><code>[dv id=666 margin=40,60]
+</code></pre>
+			</li>
+			<li>
+				<p>
+					<strong><code>width</code></strong>
+				</p>
+
+				<p>
+					<strong
+						>[ Optional | Default: <code>600</code> | type: number ]</strong
+					>
+				</p>
+
+				<p>width of canvas.</p>
+
+				<p>
+					Note that this setting will also act like an aspect ratio to ensure
+					responsiveness. Size below 600 may not be recommended depending on
+					the number of data to render
+				</p>
+
+				<p>
+					if graph has small spacing or font sizes look too big, the default
+					canvas just isn&#8217;t enough space to display all the data visual
+					elements with spacing. adjust until spacing of data is rendered as
+					desired.
+				</p>
+			</li>
+			<li>
+				<p>
+					<strong><code>height</code></strong>
+				</p>
+
+				<p>
+					<strong
+						>[ Optional | Default: <code>600</code> | type: number ]</strong
+					>
+				</p>
+
+				<p>height canvas.</p>
+
+				<p>
+					Note that this setting will also act like an aspect ratio to ensure
+					responsiveness. Size below 600 may not be recommended depending on
+					the number of data to render
+				</p>
+
+				<p>
+					if graph has small spacing or font sizes look too big, the default
+					canvas just isn&#8217;t enough space to display all the data visual
+					elements with spacing. adjust until spacing of data is rendered as
+					desired.
+				</p>
+			</li>
+			<li>
+				<p>
+					<strong><code>font_size</code></strong>
+				</p>
+
+				<p>
+					<strong
+						>[ Optional | Default: <code>'16px'</code> | type: number /
+						string ]</strong
+					>
+				</p>
+
+				<p>css base font size to size all text relative to</p>
+
+				<p>If given a number, it will be interpreted as pixels.</p>
+			</li>
+			<li>
+				<p>
+					<strong><code>transition</code></strong>
+				</p>
+
+				<p>
+					<strong
+						>[ Optional | Default: <code>1500</code> | type: number
+						]</strong
+					>
+				</p>
+
+				<p>how long should all animations or transitions take</p>
+			</li>
+			<li>
+				<p>
+					<strong><code>delay</code></strong>
+				</p>
+
+				<p>
+					<strong
+						>[ Optional | Default: <code>250</code> | type: number ]</strong
+					>
+				</p>
+
+				<p>delay of rendering the graph.</p>
+			</li>
+		</ul>
+
+		<h2 id="backendsettings">Backend Settings</h2>
+
+		<h3 id="description">Description</h3>
+
+		<p>
+			<strong
+				>[ Optional | Default: <code>''</code> | Meta Key :
+				<code>'dv_description'</code> ]</strong
+			>
+		</p>
+
+		<p>Add a subtitle or description for the data visual</p>
+
+		<h3 id="sourcesettings">Source Settings</h3>
+
+		<h4 id="multiplegraph"><em>Multiple Graph</em></h4>
+
+		<p>
+			<strong
+				>[ Optional | Meta Key : <code>'dv_src_multiple'</code> | Default:
+				<code>false</code> | type: boolean ]</strong
+			>
+		</p>
+
+		<p>Enable mutliple graphs of data groups setup</p>
+
+		<h4 id="source"><em>Source</em></h4>
+
+		<ul>
+			<li>
+				<p><strong>Source Type</strong></p>
+
+				<p>
+					<strong
+						>[ REQUIRED | Meta Key : <code>'dv_src'</code> | options:
+						&#8216;File (csv,tsv)&#8217;, &#8216;URL&#8217;, &#8216;Text
+						(JSON code)&#8217;, &#8216;Rows (UI Field)&#8217; ]</strong
+					>
+				</p>
+
+				<p>
+					Type of source on how the data will be imported. (For now, accepted
+					files are json,csv,tsv,dsv)
+				</p>
+
+				<p>
+					depending on set option, one of the fields below for data input will
+					be shown.
+				</p>
+
+				<ul>
+					<li>
+						<p><strong>File</strong></p>
+
+						<p>
+							<strong
+								>[ REQUIRED | Meta Key : <code>'dv_src_file'</code> |
+								Valid file types: <code>csv</code>, <code>tsv</code> |
+								Available when: <em>Source Type</em> is &#8216;File
+								(csv,tsv)&#8217; ]</strong
+							>
+						</p>
+
+						<p>Input directly from the media library.</p>
+
+						<p>
+							<em
+								><strong>Note:</strong> JSON is not allowed through this
+								method for security</em
+							>
+						</p>
+					</li>
+					<li>
+						<p><strong>URL (url)</strong></p>
+
+						<p>
+							<strong
+								>[ REQUIRED | Meta Key : <code>'dv_src_url'</code> |
+								Valid file types: <code>csv</code>, <code>tsv</code>,
+								<code>json</code> | Available when:
+								<em>Source Type</em> is &#8216;URL&#8217; ]</strong
+							>
+						</p>
+
+						<p>Input data through an external file&#8217;s url</p>
+					</li>
+					<li>
+						<p><strong>Text (JSON code)</strong></p>
+
+						<p>
+							<strong
+								>[ REQUIRED | Meta Key : <code>'dv_src_text'</code> |
+								Valid file types: <code>json</code> | Available when:
+								<em>Source Type</em> is &#8216;Text (JSON code)&#8217;
+								]</strong
+							>
+						</p>
+
+						<p>
+							Input through the data in json format through a textbox.
+							recommended for a more customized and controlled data
+						</p>
+					</li>
+					<li>
+						<p><strong>Rows</strong></p>
+
+						<p>
+							<strong
+								>[ REQUIRED | Meta Key : <code>'dv_src_row'</code> |
+								Valid file types: Available when:
+								<em>Source Type</em> is &#8216;Rows (UI Field)&#8217;
+								]</strong
+							>
+						</p>
+
+						<p>
+							Input via acf repeater fields. For each row there are
+							available input fields
+						</p>
+
+						<ul>
+							<li>
+								<p><strong>Name</strong></p>
+
+								<p>
+									<strong
+										>[ REQUIRED | Meta Key :
+										<code>'dv_src_row_'.$index.'_0'</code> ]</strong
+									>
+								</p>
+
+								<p>Name for the data</p>
+							</li>
+							<li>
+								<p><strong>Value</strong></p>
+
+								<p>
+									<strong
+										>[ REQUIRED | Meta Key :
+										<code>'dv_src_row_'.$index.'_1'</code> ]</strong
+									>
+								</p>
+
+								<p>Value for the data</p>
+							</li>
+							<li>
+								<p><strong>Category</strong></p>
+
+								<p>
+									<strong
+										>[ Optional | Meta Key :
+										<code>'dv_src_row_'.$index.'_color'</code> |
+										Available when: <em>Type</em> is set to
+										&#8216;Bar&#8217;, &#8216;Line&#8217;,
+										&#8216;Scatter Plot&#8217; ]</strong
+									>
+								</p>
+
+								<p>Category value to represent the color the data</p>
+							</li>
+							<li>
+								<p><strong>Plot Point Area</strong></p>
+
+								<p>
+									<strong
+										>[ Optional | Meta Key :
+										<code>'dv_src_row_'.$index.'_area'</code> |
+										Available when: <em>Type</em> is set to
+										&#8216;Scatter Plot&#8217; ]</strong
+									>
+								</p>
+
+								<p>
+									Numeric data value that will influence the size of
+									the scatter plot point
+								</p>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p><strong>Source Key</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_src_key'</code> | Default:
+						<code>null</code> | Valid file types: Available when:
+						<em>Source Type</em> is NOT &#8216;Rows (UI Field)&#8217;
+						]</strong
+					>
+				</p>
+
+				<p>object key to the data to use.</p>
+
+				<p>if left blank, data will be taken from the root level</p>
+
+				<p>if there is a value, the data returned from that key will be used</p>
+			</li>
+			<li>
+				<p><strong>Multiple Source Key</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_src_key_multiple'</code> |
+						Default: <code>null</code> | Valid file types: Available when:
+						<em>Source Type</em> is NOT &#8216;Rows (UI Field)&#8217;,
+						<em>Multiple Graph</em> is <code>true</code> ]</strong
+					>
+				</p>
+
+				<p>object key to the data to use.</p>
+
+				<p>if left blank, data will be taken from the root level</p>
+
+				<p>if there is a value, the data returned from that key will be used</p>
+			</li>
+		</ul>
+
+		<h3 id="datasettings">Data Settings</h3>
+
+		<h4 id="type"><em>Type</em></h4>
+
+		<p>
+			<strong
+				>[ REQUIRED | Default: <em>Bar</em> | Meta Key :
+				<code>'dv_type'</code> | options: <em>Bar</em>, <em>Line</em>,
+				<em>Pie</em>, <em>Scatter Plot</em> ]</strong
+			>
+		</p>
+
+		<p>Type of graph the data will be presented as.</p>
+
+		<h4 id="datakeys"><em>Data Keys</em></h4>
+
+		<p>
+			<strong
+				>[ Available when: <em>Source Type</em> is NOT &#8216;Rows (UI
+				Field)&#8217; ]</strong
+			>
+		</p>
+
+		<ul>
+			<li>
+				<p><strong>Name Key</strong></p>
+
+				<p>
+					<strong
+						>[ REQUIRED | Meta Key : <code>'dv_key_0'</code> | Default:
+						<code>null</code> ]</strong
+					>
+				</p>
+
+				<p>
+					Key relative to a datum instance&#8217;s level to represent the
+					data' name
+				</p>
+			</li>
+			<li>
+				<p><strong>Value Key</strong></p>
+
+				<p>
+					<strong
+						>[ REQUIRED | Meta Key : <code>'dv_key_1'</code> | Default:
+						<code>null</code> ]</strong
+					>
+				</p>
+
+				<p>
+					Key relative to a datum instance&#8217;s level to represent the
+					data&#8217;s value
+				</p>
+			</li>
+			<li>
+				<p><strong>Plot Points Area Key</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_key_area'</code> | Default:
+						<code>null</code> | Available when: <em>Type</em> is
+						&#8216;Scatter Plot&#8217; ]</strong
+					>
+				</p>
+
+				<p>
+					Key relative to a datum instance&#8217;s level to represent the
+					data&#8217;s value
+				</p>
+			</li>
+			<li>
+				<p><strong>Color Key</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_key_color'</code> | Default:
+						<code>null</code> | <em>Type</em> is NOT &#8216;Pie&#8217;
+						]</strong
+					>
+				</p>
+
+				<p>
+					Key relative to a datum instance&#8217;s level to represent the
+					data&#8217;s value
+				</p>
+			</li>
+		</ul>
+
+		<h4 id="reversesettings"><em>Reverse Settings</em></h4>
+
+		<p>Check or set to true the following you would like to reverse order of</p>
+
+		<ul>
+			<li>
+				<p><strong>Reverse Name Order</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_reverse_0'</code> | Default:
+						<code>false</code> | type: boolean | Available When:
+						<em>Multiple Graph</em> is <code>true</code> ]</strong
+					>
+				</p>
+			</li>
+			<li>
+				<p><strong>Reverse Value Order</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_reverse_1'</code> | Default:
+						<code>false</code> | type: boolean | Available When:
+						<em>Multiple Graph</em> is <code>true</code> ]</strong
+					>
+				</p>
+			</li>
+			<li>
+				<p><strong>Reverse Multiple Data Order</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_reverse_multiple'</code> |
+						Default: <code>false</code> | type: boolean | Available When:
+						<em>Multiple Graph</em> is <code>true</code> ]</strong
+					>
+				</p>
+
+				<p>Reverse order of data groups</p>
+			</li>
+		</ul>
+
+		<h4 id="setnamekeyasnumeric"><em>Set Name Key As Numeric?</em></h4>
+
+		<p>
+			<strong
+				>[ Optional | Meta Key : <code>'dv_name_is_num'</code> | Default:
+				<code>false</code> | <em>Type</em> is &#8216;Line&#8217;,
+				&#8216;Scatter&#8217; ]</strong
+			>
+		</p>
+
+		<p>Adds numeric capabilities to name data.</p>
+
+		<p>
+			_<em
+				><strong>Note:</strong> If the data for the name data key is not
+				numeric, this will cause errors and the graph will not render
+				properly</em
+			>
+		</p>
+
+		<h4 id="formatsettings"><em>Format Settings</em></h4>
+
+		<p>
+			<strong
+				>[ Optional | Available for: <code>name</code>, <code>value</code>,
+				<code>color</code> <em>keys</em> ]</strong
+			>
+		</p>
+
+		<p>These are optional settings to allow reformatting data on the visualizer</p>
+
+		<ul>
+			<li>
+				<p><strong>Prepend</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key :
+						<code>'dv_format_'.$data_key.'_prepend'</code> | Default:
+						<code>''</code> ]</strong
+					>
+				</p>
+
+				<p>Character/s to append to the data.</p>
+
+				<p>
+					<em
+						><strong>Note:</strong> Input will be translated as a parsed
+						string</em
+					>
+				</p>
+			</li>
+			<li>
+				<p><strong>Append</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key :
+						<code>'dv_format_'.$data_key.'_append'</code> | Default:
+						<code>''</code> ]</strong
+					>
+				</p>
+
+				<p>Character/s to append to the data.</p>
+
+				<p>
+					<em
+						><strong>Note:</strong> Input will be translated as a parsed
+						string</em
+					>
+				</p>
+			</li>
+			<li>
+				<p><strong>Divider</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key :
+						<code>'dv_format_'.$data_key.'_divider'</code> | Default:
+						<code>1</code> | Available for/when: <code>value</code> key;
+						<em>Set Name Key As Numeric?</em> is set to
+						<code>true</code> ]</strong
+					>
+				</p>
+
+				<p>Amount to divide numeric data by. good for shortening values.</p>
+
+				<p>
+					For example, presenting <code>'100000'</code> as dollar value in
+					thousands as <code>'$100K'</code>
+				</p>
+
+				<blockquote>
+					<p><code>'$'</code> Comes from set <strong>Prepend</strong></p>
+
+					<p>
+						<code>100000</code> is divided by <strong>Divider</strong> set
+						to <code>1000</code> to shorten to <code>100</code>
+					</p>
+
+					<p><code>'K'</code> comes from set <strong>Append</strong></p>
+				</blockquote>
+			</li>
+			<li>
+				<p><strong>Advanced</strong></p>
+
+				<ul>
+					<li>
+						<p><strong>Format Parameter</strong></p>
+
+						<p>
+							<strong
+								>[ Optional | Meta Key :
+								<code>'dv_format_'.$data_key.'_parameter'</code> |
+								Default: <code>null</code> ]</strong
+							>
+						</p>
+
+						<p>
+							Accepts a string that follows the format for
+							<a href="https://github.com/d3/d3-format#locale_format"
+								><code>d3.format()</code></a
+							>
+						</p>
+
+						<p>
+							Or a javascript function that passes the
+							<code>data</code> and its <code>index</code>
+						</p>
+
+						<pre><code>function(data,index) {
 	//format and declare returned formatted data here
 }
-</code></pre></li>
-<li><p><strong>More options will be added soon!</strong></p></li>
-</ul></li>
-</ul>
-
-<h3 id="graphsettings">Graph Settings</h3>
-
-<h4 id="xandysettings">X and Y Settings</h4>
-
-<p><strong>[ Optional | Available when: <em>Type</em> is &#8216;Bar&#8217;,&#8216;Line&#8217;,&#8216;Scatter Plot&#8217; ]</strong></p>
-
-<ul>
-<li><p><strong>Axis Data</strong></p>
-
-<p><strong>[ REQUIRED | Meta Key : <code>'dv_'.$axis.'_data'</code> | Default: &#8216;Name Data&#8217; (For X); &#8216;Value Data&#8217; (For Y); | options: &#8216;Name Data&#8217;, &#8216;Value Data&#8217; ]</strong></p>
-
-<p>Links the data that will be represented along the axis</p></li>
-<li><p><strong>Alignment</strong></p>
-
-<p><strong>[ REQUIRED | Meta Key : <code>'dv_'.$axis.'_align'</code> | Default: &#8216;Bottom&#8217; (For X); &#8216;Left&#8217; (For Y); | options: &#8216;Top&#8217;, &#8216;Bottom&#8217;, &#8216;Left&#8217;, &#8216;Right&#8217; ]</strong></p>
-
-<p>Alignment of the axis</p></li>
-<li><p><strong>Use Ticks?</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_'.$axis.'_ticks'</code> | Default: <code>false</code> ]</strong></p>
-
-<p>Insert ruler along the axis of alignment</p></li>
-<li><p><strong>Label</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_'.$axis.'_label'</code> | Default <code>null</code> ]</strong></p>
-
-<p>Text label along the axis</p></li>
-<li><p><strong>Minimum</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_'.$axis.'_min'</code> | Default: <code>null</code> | Available when: <em>Axis Data</em> is &#8216;Value Data&#8217;; <em>Type</em> is &#8216;Scatter Plot&#8217;, <em>Axis Data</em> is &#8216;Name Data&#8217;, <em>Set Name Key As Numeric?</em> is <code>true</code> ]</strong></p>
-
-<p>Minimum value of the axis.</p>
-
-<p>Leaving blank will automatically set the minimum from the smallest value present in data</p></li>
-<li><p><strong>Maximum</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_'.$axis.'_max'</code> | Default: <code>null</code> | Available when: <em>Axis Data</em> is &#8216;Value Data&#8217;; <em>Type</em> is &#8216;Scatter Plot&#8217;, <em>Axis Data</em> is &#8216;Name Data&#8217;, <em>Set Name Key As Numeric?</em> is <code>true</code>; ]</strong></p>
-
-<p>Maximum value of the axis.</p>
-
-<p>Leaving blank will automatically set the maximum from the largest value present in data</p>
-
-<p>Recommended to increase if more negative space is desired</p></li>
-<li><p><strong>Tick Settings</strong></p>
-
-<p><strong>[ Available when: <em>Use Ticks?</em> is <code>true</code> ]</strong></p>
-
-<ul>
-<li><p><strong>Ticks Amount</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_'.$axis.'_ticks_amount'</code> | Default: <code>null</code> | Available when: <em>Use Ticks?</em> is <code>true</code> and <em>Axis Data</em> is &#8216;Value Data&#8217; OR <em>Type</em> is NOT &#8216;Bar&#8217;, <em>Axis Data</em> is &#8216;Name Data&#8217;, <em>Set Name Key As Numeric?</em> is <code>true</code> OR <em>Type</em> is &#8216;Scatter&#8217;,<em>Set Name Key As Numeric?</em> is <code>true</code>, <em>Axis Data</em> is NOT &#8216;Value Data&#8217; ]</strong></p>
-
-<p>Number of ticks to display</p>
-
-<p>Leaving blank will automatically set the amount based on the data given</p></li>
-<li><p><strong>Add Grid</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_'.$axis.'_grid'</code> | Default: <code>false</code> | Available when: <em>Axis Data</em> is &#8216;Value Data&#8217; or <em>Type</em> is NOT &#8216;Bar&#8217; ]</strong></p>
-
-<p>Enable grid along the axis</p></li>
-<li><p><strong>Grid Increment</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_'.$axis.'_increment'</code> | Default: <code>1</code> | Available when: <em>Add Grid?</em> is <code>true</code> and <em>Ticks Amount</em> is NOT <code>null</code> ]</strong></p>
-
-<p>Amount of grid rules each tick mark will be equal to.</p>
-
-<p><em><strong>Note:</strong> This field is available only if <strong>Tick Amount</strong> is set as the renderer needs a set amount of ticks to calculate the grid rules from</em></p></li>
-</ul></li>
-</ul>
-
-<h4 id="barsettings">Bar Settings</h4>
-
-<p><strong>[ Optional | Available when: <em>Type</em> is &#8216;Bar&#8217; ]</strong></p>
-
-<ul>
-<li><p><strong>Gutter</strong></p>
-
-<p><strong>[ REQUIRED | Meta Key : <code>'dv_bar_gutter'</code> | Default : &#8216;.1&#8217; ]</strong></p>
-
-<p>amount of margin between bars</p></li>
-<li><p><strong>Text within Bar</strong></p>
-
-<p><strong>[ REQUIRED | Meta Key : <code>'dv_bar_text_out'</code> | Default : &#8216;True&#8217; ]</strong></p>
-
-<p>favors placing text inside of bar instead of outside.</p>
-
-<p><strong>NOTE:</strong> if a bar item contains not enough space to place text within it, the text will be placed outside,
-While if this option is not checked, if there&#8217;s not enough space outside of the bar item within the graph&#8217;s space, the text will be displayed within the bar</p>
-
-<p>To override this, either the minimum or the maximum value if the number and maybe name data must be modified to create enough space</p></li>
-</ul>
-
-<h4 id="linesettings">Line Settings</h4>
-
-<p><strong>[ Optional | Available when: <em>Type</em> is &#8216;Line&#8217; ]</strong></p>
-
-<ul>
-<li><p><strong>Line Style</strong></p>
-
-<p><strong>[ REQUIRED | Meta Key : <code>'dv_line_style'</code> | Default : &#8216;None&#8217; | Available Options: &#8216;None&#8217;,&#8216;Curve&#8217;,&#8216;Step&#8217; ]</strong></p>
-
-<p>Style of the line graph</p></li>
-<li><p><strong>Stroke Weight</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_line_weight'</code> | Default : <code>1</code> ]</strong></p>
-
-<p>Thickness of the line graph stroke</p></li>
-<li><p><strong>Stroke Color</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_line_color'</code> | Default : <code>null</code> ]</strong></p>
-
-<p>Color of the line graph</p></li>
-<li><p><strong>Add Plot Points?</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_line_points'</code> | Default : <code>false</code> ]</strong></p>
-
-<p>Enable plot points on the line graph</p>
-
-<p>Additional options become available once this is checked</p></li>
-<li><p><strong>Add Area Fill?</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_line_fill'</code> | Default : <code>false</code> ]</strong></p>
-
-<p>Enable fill on the line graph</p>
-
-<p>Additional options become available once this is checked</p></li>
-<li><p><strong>Plot Point Settings</strong></p>
-
-<p><strong>[ Available when: &#8216;Add Plot Points?&#8217; is <code>true</code> ]</strong></p>
-
-<ul>
-<li><p><strong>Points Color</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_line_points_color'</code> ]</strong></p>
-
-<p>Color of plot points</p>
-
-<p>If not set, the color of the points will be the same as set <em>Stroke Color</em></p>
-
-<p><em><strong>Note:</strong> If <strong>Color Palette</strong> has rows, this data will be overriden</em></p></li>
-<li><p><strong>Size</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_line_points_size'</code> ]</strong></p>
-
-<p>Size of plot points radius</p></li>
-</ul></li>
-<li><p><strong>Area Settings</strong></p>
-
-<p><strong>[ Available when: &#8216;Add Plot Points?&#8217; is <code>true</code> ]</strong></p>
-
-<ul>
-<li><p><strong>Color</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_line_fill_color'</code> ]</strong></p>
-
-<p>Color of the fill</p>
-
-<p>If not set, the fill will be the same as set <em>Stroke Color</em></p></li>
-<li><p><strong>Opacity</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_line_fill_opacity'</code> | Default: <code>.5</code> ]</strong></p>
-
-<p>Opacity of the fill</p></li>
-<li><p><strong>Invert Axis?</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_line_fill_invert'</code> | Default: <code>false</code> ]</strong></p>
-
-<p>Whether or not to invert the fill opposite to the alignment of the axis</p></li>
-</ul></li>
-<li><p><strong>Advanced</strong></p>
-
-<ul>
-<li><p><strong>Dash Array</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_line_dash'</code> | Default: <code>null</code> ]</strong></p>
-
-<p>Set dashes on the line graph. The pattern is <code>dash, gap, dash, gap...</code><br></p>
-
-<p>Check <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray">MDN</a> For more information on the documentation</p></li>
-<li><p><strong>More options will be added soon!</strong></p></li>
-</ul></li>
-</ul>
-
-<h4 id="piesettings">Pie Settings</h4>
-
-<p><strong>[ Optional | Available when: <em>Type</em> is &#8216;Pie&#8217; ]</strong></p>
-
-<ul>
-<li><p><strong>Label Style</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_pi_label_style'</code> | Default: <code>false</code> ]</strong></p>
-
-<p>Whether or not to invert the fill opposite to the alignment of the axis</p></li>
-<li><p><strong>Inner Radius</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_pi_in_radius'</code> | Default: <code>0</code> ]</strong></p>
-
-<p>Radius of pie hole</p></li>
-</ul>
-
-<h4 id="scatterplotareasettings">Scatter Plot Area Settings</h4>
-
-<p><strong>[ Optional | Available when: <em>Type</em> is &#8216;Scatter Plot&#8217; ]</strong></p>
-
-<ul>
-<li><p><strong>Minimum Radius</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_area_min'</code> | Default: <code>10</code> ]</strong></p>
-
-<p>Minimum size of plot points</p></li>
-<li><p><strong>Maximum Radius</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_area_max'</code> | Default: <code>50</code> ]</strong></p>
-
-<p>Maximum size of plot points</p></li>
-<li><p><strong>Opacity</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_area_opacity'</code> | Default: <code>.8</code> ]</strong></p>
-
-<p>Opacity of plot points. Recommended to be below .9 as scatter plots will overlap</p></li>
-</ul>
-
-<h4 id="colorsettings">Color Settings</h4>
-
-<ul>
-<li><p><strong>Color Palette</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_color_palette'</code>, <code>'dv_color_palette_'.$index.'_color'</code> for each color row ]</strong></p>
-
-<p>Repeater field of colors to use for the data. The color will be used based on the datum instance&#8217;s index.</p>
-
-<p>If <em>Color Key</em> is not set and there are colors inputted, the colors will be applied based on the <em>Name Key</em> value of the data</p>
-
-<p>If not set, the plugin&#8217;s loaded css will apply a default color palette</p>
-
-<p>Adding one color will apply the color to all graph elements</p></li>
-<li><p><strong>Legend</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_color_legend'</code> | Default: <code>true</code> (when available) | Available when <em>Color Key</em> is set; <em>Type</em> is &#8216;Pie&#8217;; <em>Category</em> in <em>Row</em> field has any value ]</strong></p>
-
-<p>Enable legend presentation of data</p></li>
-</ul>
-
-<h4 id="textsettings">Text Settings</h4>
-
-<ul>
-<li><p><strong><code>dv_text_name_size</code></strong></p>
-
-<p><strong>[ Optional | Default: <code>.75</code> | type: number ]</strong></p>
-
-<p>Name data&#8217;s relative size to <code>font_size</code> upon display. Will be interpeted as <code>em</code> css unit</p>
-
-<p>This is only visible when both name and data values are set up to display with the graph item</p></li>
-<li><p><strong><code>dv_text_value_size</code></strong></p>
-
-<p><strong>[ Optional | Default: <code>1.75</code> | type: number ]</strong></p>
-
-<p>Value data&#8217;s relative size to <code>font_size</code> upon display. Will be interpeted as <code>em</code> css unit</p>
-
-<p>This is only visible when both name and data values are set up to display with the graph item</p></li>
-<li><p><strong><code>dv_text_ticks_size</code></strong></p>
-
-<p><strong>[ Optional | Default: <code>.75</code> | type: number ]</strong></p>
-
-<p>tick rule text&#8217;s relative size to <code>font_size</code> upon display. Will be interpeted as <code>em</code> css unit</p>
-
-<p>This is only visible ticks are enabled</p></li>
-<li><p><strong><code>dv_text_legend_size</code></strong></p>
-
-<p><strong>[ Optional | Default: <code>.75</code> | type: number ]</strong></p>
-
-<p>color legend text&#8217;s relative size to <code>font_size</code> upon display. Will be interpeted as <code>em</code> css unit</p>
-
-<p>This is only visible legends are enabled</p></li>
-</ul>
-
-<h4 id="tooltipsettings">Tooltip Settings</h4>
-
-<ul>
-<li><p><strong>Enable Tooltip</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_tooltip_enable'</code> | Default: <code>false</code> ]</strong></p>
-
-<p>Whether or not to add tooltip functionality to your graph. When enabled, the following fields will be available as well</p></li>
-<li><p><strong>Text Align</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_tooltip_text_align'</code> | Default: <code>'left'</code> ]</strong></p>
-
-<p>Alignment of tooltip text</p></li>
-<li><p><strong>Width</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_tooltip_width'</code> | Default: <code>'auto'</code> ]</strong></p>
-
-<p>Set width of tooltip. Note that whatever set value this is, it cannot max out 80vw</p></li>
-<li><p><strong>Advanced</strong></p>
-
-<ul>
-<li><p><strong>Direction</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_tooltip_direction'</code> | Default: <code>'n'</code> ]</strong></p>
-
-<p>Function or string that will be used by the <code>d3.tip.direction()</code> method. View documentation <a href="Here">https://github.com/caged/d3-tip/shape/master/docs/positioning-tooltips.md#tipdirection</a></p></li>
-<li><p><strong>Content</strong></p>
-
-<p><strong>[ Optional | Meta Key : <code>'dv_tooltip_content'</code> | Default: <code>null</code> ]</strong></p>
-
-<p>Function that will be used <code>by the d3.tip.html()</code> method. View documentation here: <a href="Here">https://github.com/caged/d3-tip/shape/master/docs/initializing-tooltips.md#d3tip</a></p></li>
-</ul></li>
-</ul>
-
-<h2 id="functions">Functions</h2>
-
-<ul>
-<li><p><strong><code>get_data_visualizer($args = array(),$echo);</code></strong></p>
-
-<p>Function to get html render of data visualizer as string</p>
-
-<ul>
-<li><p><strong><code>$args</code></strong></p>
-
-<p><strong>[ REQUIRED ]</strong></p>
-
-<p>Accepts arguments of the <a href="#shortcodeparameters">shortcode parameters</a> in array format</p></li>
-<li><p><strong>$echo</strong></p>
-
-<p><strong>[ Optional | Default: <code>false</code> ]</strong></p>
-
-<p>Whether to output the html or return a string</p></li>
-</ul></li>
-<li><p><strong><code>the_data_visualizer($args = array());</code></strong></p>
-
-<p>Function to output an existing data visualizer. Unlike <code>get_data_visualizer()</code> this function does not accept an echo parameter because duh.</p></li>
-</ul>
-
-<h2 id="settings">Settings</h2>
-
-<h4 id="enableoptimization">Enable Optimization</h4>
-
-<p>Embeds scripts and stylesheets directly on the markup of the page to optimize performance. May cause script conflicts</p>
-
-<h2 id="troubleshooting">Troubleshooting</h2>
-
-<p>Good luck.</p>
-
-<h1 id="forsamseyesonly">For Sam&#8217;s Eyes only</h1>
-
-<p>[] shortcode modal admin weak
-[] align labels opts</p>
-
-</body>
+</code></pre>
+					</li>
+					<li>
+						<p><strong>More options will be added soon!</strong></p>
+					</li>
+				</ul>
+			</li>
+		</ul>
+
+		<h3 id="graphsettings">Graph Settings</h3>
+
+		<h4 id="xandysettings">X and Y Settings</h4>
+
+		<p>
+			<strong
+				>[ Optional | Available when: <em>Type</em> is
+				&#8216;Bar&#8217;,&#8216;Line&#8217;,&#8216;Scatter Plot&#8217;
+				]</strong
+			>
+		</p>
+
+		<ul>
+			<li>
+				<p><strong>Axis Data</strong></p>
+
+				<p>
+					<strong
+						>[ REQUIRED | Meta Key : <code>'dv_'.$axis.'_data'</code> |
+						Default: &#8216;Name Data&#8217; (For X); &#8216;Value
+						Data&#8217; (For Y); | options: &#8216;Name Data&#8217;,
+						&#8216;Value Data&#8217; ]</strong
+					>
+				</p>
+
+				<p>Links the data that will be represented along the axis</p>
+			</li>
+			<li>
+				<p><strong>Alignment</strong></p>
+
+				<p>
+					<strong
+						>[ REQUIRED | Meta Key : <code>'dv_'.$axis.'_align'</code> |
+						Default: &#8216;Bottom&#8217; (For X); &#8216;Left&#8217; (For
+						Y); | options: &#8216;Top&#8217;, &#8216;Bottom&#8217;,
+						&#8216;Left&#8217;, &#8216;Right&#8217; ]</strong
+					>
+				</p>
+
+				<p>Alignment of the axis</p>
+			</li>
+			<li>
+				<p><strong>Use Ticks?</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_'.$axis.'_ticks'</code> |
+						Default: <code>false</code> ]</strong
+					>
+				</p>
+
+				<p>Insert ruler along the axis of alignment</p>
+			</li>
+			<li>
+				<p><strong>Label</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_'.$axis.'_label'</code> |
+						Default <code>null</code> ]</strong
+					>
+				</p>
+
+				<p>Text label along the axis</p>
+			</li>
+			<li>
+				<p><strong>Minimum</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_'.$axis.'_min'</code> |
+						Default: <code>null</code> | Available when:
+						<em>Axis Data</em> is &#8216;Value Data&#8217;; <em>Type</em> is
+						&#8216;Scatter Plot&#8217;, <em>Axis Data</em> is &#8216;Name
+						Data&#8217;, <em>Set Name Key As Numeric?</em> is
+						<code>true</code> ]</strong
+					>
+				</p>
+
+				<p>Minimum value of the axis.</p>
+
+				<p>
+					Leaving blank will automatically set the minimum from the smallest
+					value present in data
+				</p>
+			</li>
+			<li>
+				<p><strong>Maximum</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_'.$axis.'_max'</code> |
+						Default: <code>null</code> | Available when:
+						<em>Axis Data</em> is &#8216;Value Data&#8217;; <em>Type</em> is
+						&#8216;Scatter Plot&#8217;, <em>Axis Data</em> is &#8216;Name
+						Data&#8217;, <em>Set Name Key As Numeric?</em> is
+						<code>true</code>; ]</strong
+					>
+				</p>
+
+				<p>Maximum value of the axis.</p>
+
+				<p>
+					Leaving blank will automatically set the maximum from the largest
+					value present in data
+				</p>
+
+				<p>Recommended to increase if more negative space is desired</p>
+			</li>
+			<li>
+				<p><strong>Tick Settings</strong></p>
+
+				<p>
+					<strong
+						>[ Available when: <em>Use Ticks?</em> is
+						<code>true</code> ]</strong
+					>
+				</p>
+
+				<ul>
+					<li>
+						<p><strong>Ticks Amount</strong></p>
+
+						<p>
+							<strong
+								>[ Optional | Meta Key :
+								<code>'dv_'.$axis.'_ticks_amount'</code> | Default:
+								<code>null</code> | Available when:
+								<em>Use Ticks?</em> is <code>true</code> and
+								<em>Axis Data</em> is &#8216;Value Data&#8217; OR
+								<em>Type</em> is NOT &#8216;Bar&#8217;,
+								<em>Axis Data</em> is &#8216;Name Data&#8217;,
+								<em>Set Name Key As Numeric?</em> is
+								<code>true</code> OR <em>Type</em> is
+								&#8216;Scatter&#8217;,<em>Set Name Key As Numeric?</em>
+								is <code>true</code>, <em>Axis Data</em> is NOT
+								&#8216;Value Data&#8217; ]</strong
+							>
+						</p>
+
+						<p>Number of ticks to display</p>
+
+						<p>
+							Leaving blank will automatically set the amount based on the
+							data given
+						</p>
+					</li>
+					<li>
+						<p><strong>Add Grid</strong></p>
+
+						<p>
+							<strong
+								>[ Optional | Meta Key :
+								<code>'dv_'.$axis.'_grid'</code> | Default:
+								<code>false</code> | Available when:
+								<em>Axis Data</em> is &#8216;Value Data&#8217; or
+								<em>Type</em> is NOT &#8216;Bar&#8217; ]</strong
+							>
+						</p>
+
+						<p>Enable grid along the axis</p>
+					</li>
+					<li>
+						<p><strong>Grid Increment</strong></p>
+
+						<p>
+							<strong
+								>[ Optional | Meta Key :
+								<code>'dv_'.$axis.'_increment'</code> | Default:
+								<code>1</code> | Available when: <em>Add Grid?</em> is
+								<code>true</code> and <em>Ticks Amount</em> is NOT
+								<code>null</code> ]</strong
+							>
+						</p>
+
+						<p>Amount of grid rules each tick mark will be equal to.</p>
+
+						<p>
+							<em
+								><strong>Note:</strong> This field is available only if
+								<strong>Tick Amount</strong> is set as the renderer
+								needs a set amount of ticks to calculate the grid rules
+								from</em
+							>
+						</p>
+					</li>
+				</ul>
+			</li>
+		</ul>
+
+		<h4 id="barsettings">Bar Settings</h4>
+
+		<p>
+			<strong
+				>[ Optional | Available when: <em>Type</em> is &#8216;Bar&#8217;
+				]</strong
+			>
+		</p>
+
+		<ul>
+			<li>
+				<p><strong>Gutter</strong></p>
+
+				<p>
+					<strong
+						>[ REQUIRED | Meta Key : <code>'dv_bar_gutter'</code> | Default
+						: &#8216;.1&#8217; ]</strong
+					>
+				</p>
+
+				<p>amount of margin between bars</p>
+			</li>
+			<li>
+				<p><strong>Text within Bar</strong></p>
+
+				<p>
+					<strong
+						>[ REQUIRED | Meta Key : <code>'dv_bar_text_out'</code> |
+						Default : &#8216;True&#8217; ]</strong
+					>
+				</p>
+
+				<p>favors placing text inside of bar instead of outside.</p>
+
+				<p>
+					<strong>NOTE:</strong> if a bar item contains not enough space to
+					place text within it, the text will be placed outside, While if this
+					option is not checked, if there&#8217;s not enough space outside of
+					the bar item within the graph&#8217;s space, the text will be
+					displayed within the bar
+				</p>
+
+				<p>
+					To override this, either the minimum or the maximum value if the
+					number and maybe name data must be modified to create enough space
+				</p>
+			</li>
+		</ul>
+
+		<h4 id="linesettings">Line Settings</h4>
+
+		<p>
+			<strong
+				>[ Optional | Available when: <em>Type</em> is &#8216;Line&#8217;
+				]</strong
+			>
+		</p>
+
+		<ul>
+			<li>
+				<p><strong>Line Style</strong></p>
+
+				<p>
+					<strong
+						>[ REQUIRED | Meta Key : <code>'dv_line_style'</code> | Default
+						: &#8216;None&#8217; | Available Options:
+						&#8216;None&#8217;,&#8216;Curve&#8217;,&#8216;Step&#8217;
+						]</strong
+					>
+				</p>
+
+				<p>Style of the line graph</p>
+			</li>
+			<li>
+				<p><strong>Stroke Weight</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_line_weight'</code> | Default
+						: <code>1</code> ]</strong
+					>
+				</p>
+
+				<p>Thickness of the line graph stroke</p>
+			</li>
+			<li>
+				<p><strong>Stroke Color</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_line_color'</code> | Default
+						: <code>null</code> ]</strong
+					>
+				</p>
+
+				<p>Color of the line graph</p>
+			</li>
+			<li>
+				<p><strong>Add Plot Points?</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_line_points'</code> | Default
+						: <code>false</code> ]</strong
+					>
+				</p>
+
+				<p>Enable plot points on the line graph</p>
+
+				<p>Additional options become available once this is checked</p>
+			</li>
+			<li>
+				<p><strong>Add Area Fill?</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_line_fill'</code> | Default :
+						<code>false</code> ]</strong
+					>
+				</p>
+
+				<p>Enable fill on the line graph</p>
+
+				<p>Additional options become available once this is checked</p>
+			</li>
+			<li>
+				<p><strong>Plot Point Settings</strong></p>
+
+				<p>
+					<strong
+						>[ Available when: &#8216;Add Plot Points?&#8217; is
+						<code>true</code> ]</strong
+					>
+				</p>
+
+				<ul>
+					<li>
+						<p><strong>Points Color</strong></p>
+
+						<p>
+							<strong
+								>[ Optional | Meta Key :
+								<code>'dv_line_points_color'</code> ]</strong
+							>
+						</p>
+
+						<p>Color of plot points</p>
+
+						<p>
+							If not set, the color of the points will be the same as set
+							<em>Stroke Color</em>
+						</p>
+
+						<p>
+							<em
+								><strong>Note:</strong> If
+								<strong>Color Palette</strong> has rows, this data will
+								be overriden</em
+							>
+						</p>
+					</li>
+					<li>
+						<p><strong>Size</strong></p>
+
+						<p>
+							<strong
+								>[ Optional | Meta Key :
+								<code>'dv_line_points_size'</code> ]</strong
+							>
+						</p>
+
+						<p>Size of plot points radius</p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p><strong>Area Settings</strong></p>
+
+				<p>
+					<strong
+						>[ Available when: &#8216;Add Plot Points?&#8217; is
+						<code>true</code> ]</strong
+					>
+				</p>
+
+				<ul>
+					<li>
+						<p><strong>Color</strong></p>
+
+						<p>
+							<strong
+								>[ Optional | Meta Key :
+								<code>'dv_line_fill_color'</code> ]</strong
+							>
+						</p>
+
+						<p>Color of the fill</p>
+
+						<p>
+							If not set, the fill will be the same as set
+							<em>Stroke Color</em>
+						</p>
+					</li>
+					<li>
+						<p><strong>Opacity</strong></p>
+
+						<p>
+							<strong
+								>[ Optional | Meta Key :
+								<code>'dv_line_fill_opacity'</code> | Default:
+								<code>.5</code> ]</strong
+							>
+						</p>
+
+						<p>Opacity of the fill</p>
+					</li>
+					<li>
+						<p><strong>Invert Axis?</strong></p>
+
+						<p>
+							<strong
+								>[ Optional | Meta Key :
+								<code>'dv_line_fill_invert'</code> | Default:
+								<code>false</code> ]</strong
+							>
+						</p>
+
+						<p>
+							Whether or not to invert the fill opposite to the alignment
+							of the axis
+						</p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p><strong>Advanced</strong></p>
+
+				<ul>
+					<li>
+						<p><strong>Dash Array</strong></p>
+
+						<p>
+							<strong
+								>[ Optional | Meta Key : <code>'dv_line_dash'</code> |
+								Default: <code>null</code> ]</strong
+							>
+						</p>
+
+						<p>
+							Set dashes on the line graph. The pattern is
+							<code>dash, gap, dash, gap...</code><br />
+						</p>
+
+						<p>
+							Check
+							<a
+								href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray"
+								>MDN</a
+							>
+							For more information on the documentation
+						</p>
+					</li>
+					<li>
+						<p><strong>More options will be added soon!</strong></p>
+					</li>
+				</ul>
+			</li>
+		</ul>
+
+		<h4 id="piesettings">Pie Settings</h4>
+
+		<p>
+			<strong
+				>[ Optional | Available when: <em>Type</em> is &#8216;Pie&#8217;
+				]</strong
+			>
+		</p>
+
+		<ul>
+			<li>
+				<p><strong>Label Style</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_pi_label_style'</code> |
+						Default: <code>false</code> ]</strong
+					>
+				</p>
+
+				<p>
+					Whether or not to invert the fill opposite to the alignment of the
+					axis
+				</p>
+			</li>
+			<li>
+				<p><strong>Inner Radius</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_pi_in_radius'</code> |
+						Default: <code>0</code> ]</strong
+					>
+				</p>
+
+				<p>Radius of pie hole</p>
+			</li>
+		</ul>
+
+		<h4 id="scatterplotareasettings">Scatter Plot Area Settings</h4>
+
+		<p>
+			<strong
+				>[ Optional | Available when: <em>Type</em> is &#8216;Scatter
+				Plot&#8217; ]</strong
+			>
+		</p>
+
+		<ul>
+			<li>
+				<p><strong>Minimum Radius</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_area_min'</code> | Default:
+						<code>10</code> ]</strong
+					>
+				</p>
+
+				<p>Minimum size of plot points</p>
+			</li>
+			<li>
+				<p><strong>Maximum Radius</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_area_max'</code> | Default:
+						<code>50</code> ]</strong
+					>
+				</p>
+
+				<p>Maximum size of plot points</p>
+			</li>
+			<li>
+				<p><strong>Opacity</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_area_opacity'</code> |
+						Default: <code>.8</code> ]</strong
+					>
+				</p>
+
+				<p>
+					Opacity of plot points. Recommended to be below .9 as scatter plots
+					will overlap
+				</p>
+			</li>
+		</ul>
+
+		<h4 id="colorsettings">Color Settings</h4>
+
+		<ul>
+			<li>
+				<p><strong>Color Palette</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_color_palette'</code>,
+						<code>'dv_color_palette_'.$index.'_color'</code> for each color
+						row ]</strong
+					>
+				</p>
+
+				<p>
+					Repeater field of colors to use for the data. The color will be used
+					based on the datum instance&#8217;s index.
+				</p>
+
+				<p>
+					If <em>Color Key</em> is not set and there are colors inputted, the
+					colors will be applied based on the <em>Name Key</em> value of the
+					data
+				</p>
+
+				<p>
+					If not set, the plugin&#8217;s loaded css will apply a default color
+					palette
+				</p>
+
+				<p>Adding one color will apply the color to all graph elements</p>
+			</li>
+			<li>
+				<p><strong>Legend</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_color_legend'</code> |
+						Default: <code>true</code> (when available) | Available when
+						<em>Color Key</em> is set; <em>Type</em> is &#8216;Pie&#8217;;
+						<em>Category</em> in <em>Row</em> field has any value ]</strong
+					>
+				</p>
+
+				<p>Enable legend presentation of data</p>
+			</li>
+		</ul>
+
+		<h4 id="textsettings">Text Settings</h4>
+
+		<ul>
+			<li>
+				<p>
+					<strong><code>dv_text_name_size</code></strong>
+				</p>
+
+				<p>
+					<strong
+						>[ Optional | Default: <code>.75</code> | type: number ]</strong
+					>
+				</p>
+
+				<p>
+					Name data&#8217;s relative size to <code>font_size</code> upon
+					display. Will be interpeted as <code>em</code> css unit
+				</p>
+
+				<p>
+					This is only visible when both name and data values are set up to
+					display with the graph item
+				</p>
+			</li>
+			<li>
+				<p>
+					<strong><code>dv_text_value_size</code></strong>
+				</p>
+
+				<p>
+					<strong
+						>[ Optional | Default: <code>1.75</code> | type: number
+						]</strong
+					>
+				</p>
+
+				<p>
+					Value data&#8217;s relative size to <code>font_size</code> upon
+					display. Will be interpeted as <code>em</code> css unit
+				</p>
+
+				<p>
+					This is only visible when both name and data values are set up to
+					display with the graph item
+				</p>
+			</li>
+			<li>
+				<p>
+					<strong><code>dv_text_ticks_size</code></strong>
+				</p>
+
+				<p>
+					<strong
+						>[ Optional | Default: <code>.75</code> | type: number ]</strong
+					>
+				</p>
+
+				<p>
+					tick rule text&#8217;s relative size to <code>font_size</code> upon
+					display. Will be interpeted as <code>em</code> css unit
+				</p>
+
+				<p>This is only visible ticks are enabled</p>
+			</li>
+			<li>
+				<p>
+					<strong><code>dv_text_legend_size</code></strong>
+				</p>
+
+				<p>
+					<strong
+						>[ Optional | Default: <code>.75</code> | type: number ]</strong
+					>
+				</p>
+
+				<p>
+					color legend text&#8217;s relative size to
+					<code>font_size</code> upon display. Will be interpeted as
+					<code>em</code> css unit
+				</p>
+
+				<p>This is only visible legends are enabled</p>
+			</li>
+		</ul>
+
+		<h4 id="tooltipsettings">Tooltip Settings</h4>
+
+		<ul>
+			<li>
+				<p><strong>Enable Tooltip</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_tooltip_enable'</code> |
+						Default: <code>false</code> ]</strong
+					>
+				</p>
+
+				<p>
+					Whether or not to add tooltip functionality to your graph. When
+					enabled, the following fields will be available as well
+				</p>
+			</li>
+			<li>
+				<p><strong>Text Align</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_tooltip_text_align'</code> |
+						Default: <code>'left'</code> ]</strong
+					>
+				</p>
+
+				<p>Alignment of tooltip text</p>
+			</li>
+			<li>
+				<p><strong>Width</strong></p>
+
+				<p>
+					<strong
+						>[ Optional | Meta Key : <code>'dv_tooltip_width'</code> |
+						Default: <code>'auto'</code> ]</strong
+					>
+				</p>
+
+				<p>
+					Set width of tooltip. Note that whatever set value this is, it
+					cannot max out 80vw
+				</p>
+			</li>
+			<li>
+				<p><strong>Advanced</strong></p>
+
+				<ul>
+					<li>
+						<p><strong>Direction</strong></p>
+
+						<p>
+							<strong
+								>[ Optional | Meta Key :
+								<code>'dv_tooltip_direction'</code> | Default:
+								<code>'n'</code> ]</strong
+							>
+						</p>
+
+						<p>
+							Function or string that will be used by the
+							<code>d3.tip.direction()</code> method. View documentation
+							<a href="Here"
+								>https://github.com/caged/d3-tip/shape/master/docs/positioning-tooltips.md#tipdirection</a
+							>
+						</p>
+					</li>
+					<li>
+						<p><strong>Content</strong></p>
+
+						<p>
+							<strong
+								>[ Optional | Meta Key :
+								<code>'dv_tooltip_content'</code> | Default:
+								<code>null</code> ]</strong
+							>
+						</p>
+
+						<p>
+							Function that will be used
+							<code>by the d3.tip.html()</code> method. View documentation
+							here:
+							<a href="Here"
+								>https://github.com/caged/d3-tip/shape/master/docs/initializing-tooltips.md#d3tip</a
+							>
+						</p>
+					</li>
+				</ul>
+			</li>
+		</ul>
+
+		<h2 id="functions">Functions</h2>
+
+		<ul>
+			<li>
+				<p>
+					<strong
+						><code
+							>get_data_visualizer($args = array(),$echo);</code
+						></strong
+					>
+				</p>
+
+				<p>Function to get html render of data visualizer as string</p>
+
+				<ul>
+					<li>
+						<p>
+							<strong><code>$args</code></strong>
+						</p>
+
+						<p><strong>[ REQUIRED ]</strong></p>
+
+						<p>
+							Accepts arguments of the
+							<a href="#shortcodeparameters">shortcode parameters</a> in
+							array format
+						</p>
+					</li>
+					<li>
+						<p><strong>$echo</strong></p>
+
+						<p>
+							<strong>[ Optional | Default: <code>false</code> ]</strong>
+						</p>
+
+						<p>Whether to output the html or return a string</p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p>
+					<strong><code>the_data_visualizer($args = array());</code></strong>
+				</p>
+
+				<p>
+					Function to output an existing data visualizer. Unlike
+					<code>get_data_visualizer()</code> this function does not accept an
+					echo parameter because duh.
+				</p>
+			</li>
+		</ul>
+
+		<h2 id="settings">Settings</h2>
+
+		<h4 id="enableoptimization">Enable Optimization</h4>
+
+		<p>
+			Embeds scripts and stylesheets directly on the markup of the page to
+			optimize performance. May cause script conflicts
+		</p>
+
+		<h2 id="troubleshooting">Troubleshooting</h2>
+
+		<p>Good luck.</p>
+
+		<h1 id="forsamseyesonly">For Sam&#8217;s Eyes only</h1>
+
+		<p>[] shortcode modal admin weak [] align labels opts</p>
+	</body>
 </html>
-

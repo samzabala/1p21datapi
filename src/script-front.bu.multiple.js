@@ -900,7 +900,7 @@
 
 					}
 				
-			}
+				}
 				
 
 				return shift;
@@ -2352,7 +2352,6 @@
 										getArcPath(getPiData(i),true,'centroid',1,false), // second is outer radius.
 									],
 									end = [
-
 										getArcPath(getPiData(i),true,'centroid',1,false),
 										getArcPath(getPiData(i),false,'centroid',2.25,false),
 									];

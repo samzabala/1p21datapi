@@ -1,8 +1,5 @@
-
-
-
 {
-	"hoe" : [
+	"hoe": [
 		{
 			"name": "Helen",
 			"age": "10",
@@ -30,7 +27,7 @@
 		}
 	],
 
-	"thot" : [
+	"thot": [
 		{
 			"name": "Tony",
 			"age": "12",
@@ -57,7 +54,7 @@
 			"shittiness": "777"
 		}
 	],
-	"bitch" : [
+	"bitch": [
 		{
 			"name": "Helen",
 			"age": "10",
@@ -84,7 +81,7 @@
 			"shittiness": "777"
 		}
 	],
-	"ass" : [
+	"ass": [
 		{
 			"name": "Tony",
 			"age": "33",

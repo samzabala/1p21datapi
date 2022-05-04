@@ -1,26 +1,25 @@
 /*!
-* 1point21 Data Vizualiser Version 1.2.1
-* Admin Script
-* DO NOT EDIT min.js
-* edit its corresponding unminified js file in /src instead
-*/
+ * 1point21 Data Vizualiser Version 1.2.1
+ * Admin Script
+ * DO NOT EDIT min.js
+ * edit its corresponding unminified js file in /src instead
+ */
 
-(function(window){
-	"use strict";
+(function (window) {
+	'use strict';
 	var _1p21 = window._1p21 || {};
 
-	var runValidation = function(field,isInvalid,alertString,consoleString){
-		if( isInvalid ){
+	var runValidation = function (field, isInvalid, alertString, consoleString) {
+		if (isInvalid) {
 			field.classList.add('invalid');
 			alert(alertString);
 			throw new Error(consoleString);
-		}else{
+		} else {
 			field.classList.remove('invalid');
 		}
-	}
+	};
 
-	var appendShortcode = function(e,dis){
-		
+	var appendShortcode = function (e, dis) {
 		e.stopPropagation();
 		e.preventDefault();
 
@@ -29,47 +28,51 @@
 
 		console.log(fields);
 		//validate
-		fields.forEach(function(field){
-			if( field.value ){
-
+		fields.forEach(function (field) {
+			if (field.value) {
 				console.log(field);
-			
-				var parsedValue = (function(){
-					var toReturn = field.value.toString(), //a striing
-					isInvalid = false,
-					alertString = '',
-					consoleString = '';
 
-					switch(field.name) {
+				var parsedValue = (function () {
+					var toReturn = field.value.toString(), //a striing
+						isInvalid = false,
+						alertString = '',
+						consoleString = '';
+
+					switch (field.name) {
 						case 'id':
 							toReturn = parseInt(field.value);
 							isInvalid = Number.isNaN(toReturn);
 							alertString = 'Invalid data visualizer';
 							consoleString = 'ID was invalid';
 							break;
-						
+
 						case 'align':
-							isInvalid = ( toReturn !== 'right' && toReturn !== 'center' && toReturn !== 'left' && toReturn !== '' );
-							alertString = field.name+ ' has an invalid alignment';
+							isInvalid =
+								toReturn !== 'right' &&
+								toReturn !== 'center' &&
+								toReturn !== 'left' &&
+								toReturn !== '';
+							alertString = field.name + ' has an invalid alignment';
 							consoleString = 'align is invalid';
 							break;
 
 						case 'margin':
 							toReturn = field.value;
 							isInvalid = false;
-							
-							field.value.split(',').forEach(function(margin){
-								if(!isInvalid){
+
+							field.value.split(',').forEach(function (margin) {
+								if (!isInvalid) {
 									var marginParsed = parseFloat(margin);
 									var marginInvalid = Number.isNaN(marginParsed);
 
-									if(marginInvalid){
+									if (marginInvalid) {
 										isInvalid = true;
 									}
 								}
 							});
 
-							alertString = 'one or more margin values was invalid. Must be a number';
+							alertString =
+								'one or more margin values was invalid. Must be a number';
 							consoleString = field.name + ' was invalid';
 
 							break;
@@ -79,47 +82,42 @@
 						case 'width':
 						case 'transition':
 						case 'delay':
-
 							toReturn = parseFloat(field.value);
 							isInvalid = Number.isNaN(toReturn);
-							alertString = field.name.replace('_',' ') + ' value is invalid';
+							alertString =
+								field.name.replace('_', ' ') + ' value is invalid';
 							consoleString = field.name + ' was invalid';
 							break;
-
 					}
 
-
-					runValidation(field,isInvalid,alertString,consoleString);
-
+					runValidation(field, isInvalid, alertString, consoleString);
 
 					return toReturn;
-				
-				}())
+				})();
 
-				inputs.push([field.name,parsedValue]);
-			}else{
-				if(field.name == 'id') {
-					alert('A data visual is required')
-					throw new Error ('id was not given');
-
+				inputs.push([field.name, parsedValue]);
+			} else {
+				if (field.name == 'id') {
+					alert('A data visual is required');
+					throw new Error('id was not given');
 				}
 			}
-		})
-
-		var shortCode = "[data_visualizer";
-		
-		inputs.forEach(function(input){
-			shortCode += " "+input[0]+"="+input[1];
 		});
 
-		shortCode += "]";
+		var shortCode = '[data_visualizer';
+
+		inputs.forEach(function (input) {
+			shortCode += ' ' + input[0] + '=' + input[1];
+		});
+
+		shortCode += ']';
 
 		window.send_to_editor(shortCode);
 
 		tb_remove();
 		return false;
-	}
+	};
 
 	_1p21.appendShortcode = appendShortcode;
 	window._1p21 = _1p21;
-}(window))
+})(window);

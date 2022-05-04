@@ -1704,15 +1704,7 @@ $_1p21_dv_fields_groups = array(
 						'type' => 'text',
 						'instructions' => 'Label for horizontal data. will default to y axis key',
 						'required' => 0,
-						'conditional_logic' => array(
-							array(
-								array(
-									'field' => 'field_5d49b51b576ae',
-									'operator' => '==',
-									'value' => '1',
-								),
-							),
-						),
+						'conditional_logic' => 0,
 						'wrapper' => array(
 							'width' => '',
 							'class' => '',
@@ -1762,7 +1754,7 @@ $_1p21_dv_fields_groups = array(
 							'class' => 'dv-code',
 							'id' => '',
 						),
-						'default_value' => 0,
+						'default_value' => '',
 						'placeholder' => '',
 						'prepend' => '',
 						'append' => '',
@@ -2132,15 +2124,7 @@ $_1p21_dv_fields_groups = array(
 						'type' => 'text',
 						'instructions' => 'Label for horizontal data. will default to y axis key',
 						'required' => 0,
-						'conditional_logic' => array(
-							array(
-								array(
-									'field' => 'field_5d49b81e8a9b1',
-									'operator' => '==',
-									'value' => '1',
-								),
-							),
-						),
+						'conditional_logic' => 0,
 						'wrapper' => array(
 							'width' => '',
 							'class' => '',
@@ -2190,7 +2174,7 @@ $_1p21_dv_fields_groups = array(
 							'class' => 'dv-code',
 							'id' => '',
 						),
-						'default_value' => 0,
+						'default_value' => '',
 						'placeholder' => '',
 						'prepend' => '',
 						'append' => '',

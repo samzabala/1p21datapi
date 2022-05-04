@@ -1,0 +1,23 @@
+{
+	"extends": "stylelint-config-recommended",
+	"rules": {
+		"no-duplicate-selectors": null,
+		"function-comma-newline-after": "never-multi-line",
+		"function-comma-newline-before": "never-multi-line",
+		"function-comma-space-after": "never-multi-line",
+		"function-comma-space-before": "never-multi-line",
+		"function-max-empty-lines": "never-multi-line",
+		"function-parentheses-newline-inside": "never-multi-line",
+		"function-parentheses-space-inside": "never-multi-line",
+		"function-whitespace-after": "never-multi-line",
+		"declaration-block-no-duplicate-properties": null,
+		"font-family-no-missing-generic-family-keyword": null,
+		"declaration-block-no-shorthand-property-overrides": null,
+		"max-line-length": 120,
+		"indentation": {
+			"except": ["param"],
+			"ignore": null
+		},
+		"no-descending-specificity": null
+	}
+}
